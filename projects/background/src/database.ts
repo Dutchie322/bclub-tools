@@ -1,7 +1,6 @@
 import { IEnrichedChatRoomMessage } from 'models';
 
 function upgradeDatabase(db: IDBDatabase) {
-  console.log('upgrade to ' + db.version);
   switch (db.version) {
     case 1:
       const chatRoomLogsStore = db.createObjectStore('chatRoomLogs', {
@@ -11,6 +10,7 @@ function upgradeDatabase(db: IDBDatabase) {
       chatRoomLogsStore.createIndex('chatRoom_idx', 'chatRoom');
       chatRoomLogsStore.createIndex('senderName_idx', 'sender.name');
       chatRoomLogsStore.createIndex('sessionId_idx', 'session.id');
+      chatRoomLogsStore.createIndex('sessionMemberNumber_idx', 'session.memberNumber');
       chatRoomLogsStore.createIndex('timestamp_idx', 'timestamp');
       chatRoomLogsStore.createIndex('type_idx', 'type');
   }
@@ -29,6 +29,7 @@ function openDatabase() {
 
     openRequest.addEventListener('blocked', () => {
       alert('Could not open database, make sure all tabs are closed and reload.');
+      reject('blocked');
     });
 
     openRequest.addEventListener('error', () => {
@@ -69,7 +70,8 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage) {
     },
     session: {
       id: data.SessionId,
-      name: data.LoginName
+      name: data.LoginName,
+      memberNumber: data.MemberNumber
     },
     timestamp: new Date(data.Timestamp),
     type: data.Type

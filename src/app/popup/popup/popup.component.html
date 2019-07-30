@@ -1,0 +1,19 @@
+<mat-toolbar>
+  <span *ngIf="loggedIn; else notLoggedInTemplate">Logged in as {{ player.Name }}</span>
+  <ng-template #notLoggedInTemplate>Not logged in</ng-template>
+</mat-toolbar>
+
+<mat-list *ngIf="loggedIn">
+  <h3 mat-subheader>Online Friends</h3>
+  <mat-list-item *ngFor="let friend of onlineFriends">
+    <mat-icon mat-list-icon>person</mat-icon>
+    <h4 mat-line>{{ friend.MemberName }} <span class="member-number">({{ friend.MemberNumber }})</span></h4>
+    <p mat-line *ngIf="friend.ChatRoomName === '-Private-'" class="unavailable-chat-room">Private</p>
+    <p mat-line *ngIf="friend.ChatRoomName">Chat room: {{ friend.ChatRoomName }}</p>
+    <p mat-line *ngIf="!friend.ChatRoomName" class="unavailable-chat-room">None</p>
+  </mat-list-item>
+</mat-list>
+
+<pre>
+{{ player | json }}
+</pre>

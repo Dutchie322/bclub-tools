@@ -5,11 +5,11 @@ import { IAccountBeep } from 'models';
 export function notifyAccountBeep(beep: IAccountBeep) {
   const opt = {
     type: 'basic',
-    title: `BClub: Beep from ${beep.MemberName}`,
+    title: `Beep from ${beep.MemberName}`,
     message: beep.ChatRoomName
       ? `She's currently in chatroom ${beep.ChatRoomName}`
       : 'She isn\'t in a chatroom right now',
     iconUrl: 'assets/bclub-logo.png'
   };
-  chrome.notifications.create('', opt, id => console.log('notification id: ' + id));
+  chrome.notifications.create('', opt);
 }

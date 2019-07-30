@@ -3,16 +3,16 @@ import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class Guard implements CanActivate {
+export class QueryPathRouterGuard implements CanActivate {
 
   constructor(private router: Router) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean>|boolean {
+  canActivate(route: ActivatedRouteSnapshot, _: RouterStateSnapshot): Observable<boolean>|boolean {
 
     let page = route.queryParams.page;
 
     if (!page) {
-      page = 'controls';
+      page = 'popup';
     }
 
     this.router.navigate(['/' + page]);

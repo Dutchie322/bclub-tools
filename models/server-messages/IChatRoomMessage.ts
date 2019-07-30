@@ -1,4 +1,4 @@
-import { IChatRoom } from 'models/IChatRoom';
+import { IChatRoom } from '../game';
 
 export interface IChatRoomMessage {
   Content: string;
@@ -10,5 +10,6 @@ export interface IEnrichedChatRoomMessage extends IChatRoomMessage {
   ChatRoom: IChatRoom;
   LoginName: string;
   SessionId: string;
+  MemberNumber: number;
   Timestamp: string | Date;
 }

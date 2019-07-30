@@ -1,4 +1,4 @@
-import { ICharacter } from 'models/ICharacter';
+import { ICharacter } from '../game';
 
 export interface IChatRoomSync {
   Background: string;

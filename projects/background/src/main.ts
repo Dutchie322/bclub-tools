@@ -5,26 +5,31 @@ import { writeChatLog } from './database';
 import { IServerMessage, IAccountBeep, IEnrichedChatRoomMessage, IAccountQueryResult, ILoginResponse } from 'models';
 import { notifyAccountBeep } from './notifications';
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender) => {
   if (!message || !message.event) {
     return;
   }
 
   console.log('background received message:');
   console.log(message);
+  console.log(sender);
 
   switch (message.event) {
     case 'AccountBeep':
       handleAccountBeep(message);
       break;
     case 'AccountQueryResult':
-      handleAccountQueryResult(message);
+      handleAccountQueryResult(sender.tab.id, message);
       break;
     case 'ChatRoomMessage':
       handleChatRoomMessage(message);
       break;
     case 'LoginResponse':
-      handleLoginResponse(message);
+      handleLoginResponse(sender.tab.id, message);
+      break;
+    case 'disconnect':
+    case 'ForceDisconnect':
+      handleDisconnect(sender.tab.id);
       break;
   }
 });
@@ -33,31 +38,37 @@ function handleAccountBeep(message: IServerMessage<IAccountBeep>) {
   notifyAccountBeep(message.data);
 }
 
-function handleAccountQueryResult(message: IServerMessage<IAccountQueryResult>) {
+function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccountQueryResult>) {
   if (message.data.Query !== 'OnlineFriends') {
     return;
   }
 
-  storeForCurrentTab('online_friends', message.data.Result);
+  storeForTab(tabId, 'online_friends', message.data.Result);
 }
 
 function handleChatRoomMessage(message: IServerMessage<IEnrichedChatRoomMessage>) {
   writeChatLog(message.data);
 }
 
-function handleLoginResponse(message: IServerMessage<ILoginResponse>) {
-  storeForCurrentTab('player', message.data);
+function handleLoginResponse(tabId: number, message: IServerMessage<ILoginResponse>) {
+  storeForTab(tabId, 'player', message.data);
 }
 
-function storeForCurrentTab(key: string, data: any) {
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    const activeTabId = tabs[0].id;
-    chrome.storage.local.set({
-      [`${key}_${activeTabId}`]: data
-    });
+function handleDisconnect(tabId: number) {
+  clearStorageForTab(tabId);
+}
+
+function storeForTab(tabId: number, key: string, data: any) {
+  chrome.storage.local.set({
+    [`${key}_${tabId}`]: data
   });
 }
 
-chrome.tabs.onRemoved.addListener((tabId) => {
-  chrome.storage.local.remove([`player_${tabId}`, `online_friends_${tabId}`]);
-});
+function clearStorageForTab(tabId: number) {
+  chrome.storage.local.remove([
+    `online_friends_${tabId}`,
+    `player_${tabId}`
+  ]);
+}
+
+chrome.tabs.onRemoved.addListener(clearStorageForTab);
