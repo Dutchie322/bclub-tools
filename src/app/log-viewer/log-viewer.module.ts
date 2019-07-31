@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
+import { LogViewerComponent } from './log-viewer/log-viewer.component';
+import { LogViewerRoutingModule } from './log-viewer-routing.module';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    LogViewerComponent
+  ],
   imports: [
-    CommonModule
+    CommonModule,
+    LogViewerRoutingModule
   ]
 })
 export class LogViewerModule { }

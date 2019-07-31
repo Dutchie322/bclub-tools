@@ -3,6 +3,8 @@
   <ng-template #notLoggedInTemplate>Not logged in</ng-template>
 </mat-toolbar>
 
+<button mat-button (click)="openLogViewer()">Log Viewer</button>
+
 <mat-list *ngIf="loggedIn">
   <h3 mat-subheader>Online Friends</h3>
   <mat-list-item *ngFor="let friend of onlineFriends">
@@ -13,7 +15,3 @@
     <p mat-line *ngIf="!friend.ChatRoomName" class="unavailable-chat-room">None</p>
   </mat-list-item>
 </mat-list>
-
-<pre>
-{{ player | json }}
-</pre>

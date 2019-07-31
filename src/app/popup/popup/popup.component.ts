@@ -11,6 +11,8 @@ export class PopupComponent {
   public onlineFriends: IAccountQueryResultItem[] = [];
   public player: IPlayer = undefined;
 
+  public logViewerLink: string;
+
   get loggedIn() {
     return this.player && this.player.MemberNumber > 0;
   }
@@ -28,6 +30,12 @@ export class PopupComponent {
     });
     this.retrieveForCurrentTab<IAccountQueryResultItem[]>('online_friends').then(friends => {
       this.onlineFriends = friends;
+    });
+  }
+
+  public openLogViewer() {
+    chrome.tabs.create({
+      url: '/index.html?page=log-viewer'
     });
   }
 

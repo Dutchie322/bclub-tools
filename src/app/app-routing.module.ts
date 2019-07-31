@@ -1,16 +1,27 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { QueryPathRouterGuard } from './query-path-router.guard';
+
 import { AppComponent } from './app.component';
-import { PopupComponent } from './popup/popup/popup.component';
-import { OptionsComponent } from './options/options/options.component';
-import { PopupModule } from './popup/popup.module';
-import { OptionsModule } from './options/options.module';
+import { QueryPathRouterGuard } from './query-path-router.guard';
 
 const routes: Routes = [
-  { path: 'popup', component: PopupComponent },
-  { path: 'options', component: OptionsComponent },
-  { path: '**', component: AppComponent, canActivate: [QueryPathRouterGuard] }
+  {
+    path: 'log-viewer',
+    loadChildren: () => import('./log-viewer/log-viewer.module').then(mod => mod.LogViewerModule)
+  },
+  {
+    path: 'options',
+    loadChildren: () => import('./options/options.module').then(mod => mod.OptionsModule)
+  },
+  {
+    path: 'popup',
+    loadChildren: () => import('./popup/popup.module').then(mod => mod.PopupModule)
+  },
+  {
+    path: '**',
+    component: AppComponent,
+    canActivate: [QueryPathRouterGuard]
+  }
 ];
 
 @NgModule({
@@ -21,11 +32,9 @@ const routes: Routes = [
   ],
   imports: [
     // Third party
-    RouterModule.forRoot(routes),
-
-    // Own modules
-    OptionsModule,
-    PopupModule
+    RouterModule.forRoot(routes, {
+      useHash: false
+    })
   ],
   exports: [RouterModule]
 })
