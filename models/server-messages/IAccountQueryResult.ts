@@ -7,5 +7,5 @@ export interface IAccountQueryResultItem {
   ChatRoomName: string;
   MemberName: string;
   MemberNumber: number;
-  Type: 'Friend';
+  Type: 'Friend' | 'Submissive';
 }

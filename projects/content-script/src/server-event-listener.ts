@@ -1,6 +1,9 @@
 /// <reference types="@types/socket.io"/>
 
-import { generatePersistentScriptWithWait } from './script-generators';
+import {
+  generatePersistentScript,
+  generatePersistentScriptWithWait
+} from './script-generators';
 import {
   IChatRoom,
   IChatRoomMessage,
@@ -25,6 +28,7 @@ declare global {
 
 generatePersistentScriptWithWait('ServerSocket', listenToServerEvents);
 generatePersistentScriptWithWait('ServerSocket', pollOnlineFriends);
+generatePersistentScript(pollVariables);
 
 function listenToServerEvents(handshake: string) {
   function createForwarder<TMessage>(event: string, enrichData?: (data: TMessage) => TMessage) {
@@ -59,4 +63,20 @@ function pollOnlineFriends() {
       window.ServerSocket.emit('AccountQuery', { Query: 'OnlineFriends' });
     }
   }, 10000);
+}
+
+function pollVariables(handshake: string) {
+  function sanitizeObject(obj: any): any {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
+  setInterval(() => {
+    window.postMessage({
+      handshake,
+      event: 'VariablesUpdate',
+      data: {
+        Player: sanitizeObject(window.Player)
+      }
+    }, '*');
+  }, 1000);
 }

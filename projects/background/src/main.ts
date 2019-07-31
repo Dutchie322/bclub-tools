@@ -2,7 +2,7 @@
 
 import './database';
 import { writeChatLog } from './database';
-import { IServerMessage, IAccountBeep, IEnrichedChatRoomMessage, IAccountQueryResult, ILoginResponse } from 'models';
+import { IServerMessage, IAccountBeep, IEnrichedChatRoomMessage, IAccountQueryResult, ILoginResponse, IVariablesUpdate } from 'models';
 import { notifyAccountBeep } from './notifications';
 
 chrome.runtime.onMessage.addListener((message, sender) => {
@@ -31,6 +31,9 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     case 'ForceDisconnect':
       handleDisconnect(sender.tab.id);
       break;
+    case 'VariablesUpdate':
+      handleVariablesUpdate(sender.tab.id, message);
+      break;
   }
 });
 
@@ -56,6 +59,12 @@ function handleLoginResponse(tabId: number, message: IServerMessage<ILoginRespon
 
 function handleDisconnect(tabId: number) {
   clearStorageForTab(tabId);
+}
+
+function handleVariablesUpdate(tabId: number, message: IServerMessage<IVariablesUpdate>) {
+  console.log('updating variables:');
+  console.log(message);
+  storeForTab(tabId, 'player', message.data.Player);
 }
 
 function storeForTab(tabId: number, key: string, data: any) {
