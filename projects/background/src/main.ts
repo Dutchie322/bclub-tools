@@ -62,8 +62,6 @@ function handleDisconnect(tabId: number) {
 }
 
 function handleVariablesUpdate(tabId: number, message: IServerMessage<IVariablesUpdate>) {
-  console.log('updating variables:');
-  console.log(message);
   storeForTab(tabId, 'player', message.data.Player);
 }
 

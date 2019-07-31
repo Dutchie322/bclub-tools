@@ -3,8 +3,10 @@ import { IChatRoom } from '../game';
 export interface IChatRoomMessage {
   Content: string;
   Sender: number;
-  Type: 'Chat' | 'Whisper' | 'Action' | 'Emote' | 'ServerMessage';
+  Type: ChatRoomMessageType;
 }
+
+export type ChatRoomMessageType = 'Chat' | 'Whisper' | 'Action' | 'Emote' | 'ServerMessage';
 
 export interface IEnrichedChatRoomMessage extends IChatRoomMessage {
   ChatRoom: IChatRoom;
