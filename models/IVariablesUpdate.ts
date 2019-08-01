@@ -1,3 +1,6 @@
+import { CurrentScreen, IPlayer } from './game';
+
 export interface IVariablesUpdate {
-  [key: string]: any;
+  CurrentScreen: CurrentScreen;
+  Player: IPlayer;
 }

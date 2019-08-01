@@ -11,7 +11,6 @@ import {
   IEnrichedChatRoomMessage,
   IAccountBeep,
   IServerMessage,
-  ILoginResponse,
   IChatRoomSync,
   IAccountQueryResult,
   CurrentScreen
@@ -47,14 +46,18 @@ function listenToServerEvents(handshake: string) {
     ...data,
     ChatRoom: window.ChatRoomData,
     SessionId: window.Player.OnlineID,
-    LoginName: window.Player.AccountName,
+    PlayerName: window.Player.Name,
     MemberNumber: window.Player.MemberNumber,
     Timestamp: new Date()
   } as IEnrichedChatRoomMessage));
   createForwarder<IChatRoomSync>('ChatRoomSync');
-  createForwarder<ILoginResponse>('LoginResponse');
   createForwarder('disconnect');
   createForwarder('ForceDisconnect');
+
+  // Retrieve online friends on login
+  window.ServerSocket.on('LoginResponse', () => {
+    window.ServerSocket.emit('AccountQuery', { Query: 'OnlineFriends' });
+  });
 }
 
 function pollOnlineFriends() {
@@ -75,6 +78,7 @@ function pollVariables(handshake: string) {
       handshake,
       event: 'VariablesUpdate',
       data: {
+        CurrentScreen: sanitizeObject(window.CurrentScreen),
         Player: sanitizeObject(window.Player)
       }
     }, '*');

@@ -2,17 +2,22 @@
 
 import './database';
 import { writeChatLog } from './database';
-import { IServerMessage, IAccountBeep, IEnrichedChatRoomMessage, IAccountQueryResult, ILoginResponse, IVariablesUpdate } from 'models';
-import { notifyAccountBeep } from './notifications';
+import {
+  IAccountBeep,
+  IAccountQueryResult,
+  IEnrichedChatRoomMessage,
+  IServerMessage,
+  IVariablesUpdate,
+  store,
+  clearStorage,
+  retrieve,
+} from '../../../models';
+import { notifyAccountBeep, notifyFriendChange } from './notifications';
 
 chrome.runtime.onMessage.addListener((message, sender) => {
   if (!message || !message.event) {
     return;
   }
-
-  console.log('background received message:');
-  console.log(message);
-  console.log(sender);
 
   switch (message.event) {
     case 'AccountBeep':
@@ -24,9 +29,6 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     case 'ChatRoomMessage':
       handleChatRoomMessage(message);
       break;
-    case 'LoginResponse':
-      handleLoginResponse(sender.tab.id, message);
-      break;
     case 'disconnect':
     case 'ForceDisconnect':
       handleDisconnect(sender.tab.id);
@@ -34,8 +36,14 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     case 'VariablesUpdate':
       handleVariablesUpdate(sender.tab.id, message);
       break;
+    default:
+      console.log('background received unhandled message:');
+      console.log(message);
+      break;
   }
 });
+
+chrome.tabs.onRemoved.addListener(clearStorage);
 
 function handleAccountBeep(message: IServerMessage<IAccountBeep>) {
   notifyAccountBeep(message.data);
@@ -46,36 +54,37 @@ function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccoun
     return;
   }
 
-  storeForTab(tabId, 'online_friends', message.data.Result);
+  retrieve(tabId, 'online_friends').then(previous => {
+    if (typeof previous === 'undefined') {
+      return;
+    }
+
+    const current = message.data.Result;
+    let cameOnline = [];
+    let wentOffline = [];
+
+    cameOnline = current.filter(f => !previous.find(p => p.MemberNumber === f.MemberNumber));
+    wentOffline = previous.filter(p => !current.find(f => f.MemberNumber === p.MemberNumber));
+
+    cameOnline.forEach(f => notifyFriendChange('online', f));
+    wentOffline.forEach(f => notifyFriendChange('offline', f));
+  });
+
+  store(tabId, 'online_friends', message.data.Result);
 }
 
 function handleChatRoomMessage(message: IServerMessage<IEnrichedChatRoomMessage>) {
   writeChatLog(message.data);
 }
 
-function handleLoginResponse(tabId: number, message: IServerMessage<ILoginResponse>) {
-  storeForTab(tabId, 'player', message.data);
-}
-
 function handleDisconnect(tabId: number) {
-  clearStorageForTab(tabId);
+  clearStorage(tabId);
 }
 
 function handleVariablesUpdate(tabId: number, message: IServerMessage<IVariablesUpdate>) {
-  storeForTab(tabId, 'player', message.data.Player);
+  if (message.data.CurrentScreen === 'Login') {
+    clearStorage(tabId);
+  } else {
+    store(tabId, 'player', message.data.Player);
+  }
 }
-
-function storeForTab(tabId: number, key: string, data: any) {
-  chrome.storage.local.set({
-    [`${key}_${tabId}`]: data
-  });
-}
-
-function clearStorageForTab(tabId: number) {
-  chrome.storage.local.remove([
-    `online_friends_${tabId}`,
-    `player_${tabId}`
-  ]);
-}
-
-chrome.tabs.onRemoved.addListener(clearStorageForTab);

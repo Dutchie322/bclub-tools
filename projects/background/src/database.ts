@@ -70,7 +70,7 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage) {
     },
     session: {
       id: data.SessionId,
-      name: data.LoginName,
+      name: data.PlayerName,
       memberNumber: data.MemberNumber
     },
     timestamp: new Date(data.Timestamp),

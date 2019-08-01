@@ -10,8 +10,18 @@
   <mat-list-item *ngFor="let friend of onlineFriends">
     <mat-icon mat-list-icon>person</mat-icon>
     <h4 mat-line>{{ friend.MemberName }} <span class="member-number">({{ friend.MemberNumber }})</span></h4>
-    <p mat-line *ngIf="friend.ChatRoomName === '-Private-'" class="unavailable-chat-room">Private</p>
-    <p mat-line *ngIf="friend.ChatRoomName">Chat room: {{ friend.ChatRoomName }}</p>
-    <p mat-line *ngIf="!friend.ChatRoomName" class="unavailable-chat-room">None</p>
+    <p mat-line>
+      <ng-container *ngIf="friend.ChatRoomName; else noChatRoom">
+        <ng-container *ngIf="friend.ChatRoomName === '-Private-'; else publicChatRoom">
+          <span class="unavailable-chat-room">Private chat room</span>
+        </ng-container>
+        <ng-template #publicChatRoom>
+          Chat room: {{ friend.ChatRoomName }}
+        </ng-template>
+      </ng-container>
+      <ng-template #noChatRoom>
+        <span class="unavailable-chat-room">Not in a chat room</span>
+      </ng-template>
+    </p>
   </mat-list-item>
 </mat-list>

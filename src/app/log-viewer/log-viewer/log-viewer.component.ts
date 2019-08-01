@@ -1,30 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IChatLog } from 'models';
+import { DatabaseService } from '../database.service';
 
 @Component({
   selector: 'app-log-viewer',
   templateUrl: './log-viewer.component.html',
   styleUrls: ['./log-viewer.component.scss']
 })
-export class LogViewerComponent implements OnInit {
+export class LogViewerComponent {
   public logs: IChatLog[];
+  public sessionMemberNumbers: number[];
 
-  constructor() {
-    let db: IDBDatabase;
-    indexedDB
-      .open('bclub-tools', 1)
-      .addEventListener('success', event => {
-        db = (event.target as IDBOpenDBRequest).result;
-        db.transaction('chatRoomLogs')
-          .objectStore('chatRoomLogs')
-          .getAll()
-          .addEventListener('success', event => {
-            this.logs = (event.target as IDBRequest<IChatLog[]>).result;
-          });
-      });
-  }
-
-  ngOnInit() {
+  constructor(private database: DatabaseService) {
+    const set = new Set<number>();
+    this.database.transaction('chatRoomLogs').then(transaction => {
+      transaction.objectStore('chatRoomLogs')
+        .index('sessionMemberNumber_idx')
+        .openKeyCursor()
+        .addEventListener('success', event => {
+          const cursor = (event.target as IDBRequest<IDBCursor>).result;
+          if (cursor) {
+            set.add(cursor.key as number);
+            cursor.continue();
+          } else {
+            this.sessionMemberNumbers = Array.from(set);
+          }
+        });
+    });
   }
 
 }

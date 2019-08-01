@@ -10,7 +10,7 @@ export type ChatRoomMessageType = 'Chat' | 'Whisper' | 'Action' | 'Emote' | 'Ser
 
 export interface IEnrichedChatRoomMessage extends IChatRoomMessage {
   ChatRoom: IChatRoom;
-  LoginName: string;
+  PlayerName: string;
   SessionId: string;
   MemberNumber: number;
   Timestamp: string | Date;
