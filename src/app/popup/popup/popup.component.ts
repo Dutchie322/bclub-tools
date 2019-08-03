@@ -35,7 +35,7 @@ export class PopupComponent {
 
   public openLogViewer() {
     chrome.tabs.create({
-      url: '/index.html?page=log-viewer'
+      url: '/index.html?page=/log-viewer'
     });
   }
 
