@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IChatLog } from 'models';
-import { DatabaseService } from '../database.service';
+import { ChatLogsService } from '../chat-logs.service';
+import { IMember, IChatSession } from '../models';
 
 @Component({
   selector: 'app-log-viewer',
@@ -9,23 +10,15 @@ import { DatabaseService } from '../database.service';
 })
 export class LogViewerComponent {
   public logs: IChatLog[];
-  public sessionMemberNumbers: number[];
+  public members: IMember[];
+  public chatSessions: IChatSession[];
 
-  constructor(private database: DatabaseService) {
-    const set = new Set<number>();
-    this.database.transaction('chatRoomLogs').then(transaction => {
-      transaction.objectStore('chatRoomLogs')
-        .index('sessionMemberNumber_idx')
-        .openKeyCursor()
-        .addEventListener('success', event => {
-          const cursor = (event.target as IDBRequest<IDBCursor>).result;
-          if (cursor) {
-            set.add(cursor.key as number);
-            cursor.continue();
-          } else {
-            this.sessionMemberNumbers = Array.from(set);
-          }
-        });
+  constructor(private chatLogsService: ChatLogsService) {
+    this.chatLogsService.findMembers().then(members => {
+      this.members = members;
+      this.chatLogsService.findChatRoomsForMemberNumber(this.members[0].memberNumber).then(sessions => {
+        this.chatSessions = sessions;
+      });
     });
   }
 

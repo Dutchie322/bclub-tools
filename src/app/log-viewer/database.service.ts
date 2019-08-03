@@ -1,27 +1,19 @@
 import { Injectable } from '@angular/core';
+import { openDatabase } from 'models';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DatabaseService {
 
   private db: IDBDatabase;
 
   constructor() {}
 
-  private connect(): Promise<IDBDatabase> {
-    if (this.db) {
-      return Promise.resolve(this.db);
+  private async connect(): Promise<IDBDatabase> {
+    if (!this.db) {
+      this.db = await openDatabase();
     }
 
-    return new Promise((resolve, reject) => {
-      indexedDB
-        .open('bclub-tools', 1)
-        .addEventListener('success', event => {
-          this.db = (event.target as IDBOpenDBRequest).result;
-          resolve(this.db);
-        });
-    });
+    return this.db;
   }
 
   public async transaction(storeNames: string | string[], mode?: IDBTransactionMode): Promise<IDBTransaction> {
