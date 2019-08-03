@@ -1,12 +1,22 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { LogViewerComponent } from './log-viewer/log-viewer.component';
+import { LogViewerComponent } from './members/members.component';
+import { ChatSessionsComponent } from './chat-sessions/chat-sessions.component';
+import { ChatReplayComponent } from './chat-replay/chat-replay.component';
 
 const routes: Routes = [
   {
-    path: '**',
+    path: '',
     component: LogViewerComponent
+  },
+  {
+    path: ':memberNumber',
+    component: ChatSessionsComponent
+  },
+  {
+    path: ':memberNumber/:sessionId/:chatRoom',
+    component: ChatReplayComponent
   }
 ];
 

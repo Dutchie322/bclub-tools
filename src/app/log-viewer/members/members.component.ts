@@ -4,9 +4,9 @@ import { ChatLogsService } from '../chat-logs.service';
 import { IMember, IChatSession } from '../models';
 
 @Component({
-  selector: 'app-log-viewer',
-  templateUrl: './log-viewer.component.html',
-  styleUrls: ['./log-viewer.component.scss']
+  selector: 'app-members',
+  templateUrl: './members.component.html',
+  styleUrls: ['./members.component.scss']
 })
 export class LogViewerComponent {
   public logs: IChatLog[];

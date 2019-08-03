@@ -36,7 +36,7 @@ export class ChatLogsService {
     return new Promise(resolve => {
       const chatRooms: IChatSession[] = [];
       transaction.objectStore('chatRoomLogs')
-        .index('chatRoom_idx')
+        .index('member_session_chatRoom_idx')
         .openCursor(null, 'nextunique')
         .addEventListener('success', event => {
           const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
@@ -53,6 +53,18 @@ export class ChatLogsService {
           } else {
             resolve(chatRooms);
           }
+        });
+    });
+  }
+
+  public async findChatReplay(memberNumber: number, sessionId: string, chatRoom: string): Promise<IChatLog[]> {
+    const transaction = await this.databaseService.transaction('chatRoomLogs');
+    return new Promise(resolve => {
+      transaction.objectStore('chatRoomLogs')
+        .index('member_session_chatRoom_idx')
+        .getAll([chatRoom, sessionId, memberNumber])
+        .addEventListener('success', event => {
+          resolve((event.target as IDBRequest<IChatLog[]>).result);
         });
     });
   }
