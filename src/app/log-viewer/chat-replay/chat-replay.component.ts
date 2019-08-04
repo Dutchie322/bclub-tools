@@ -1,31 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatLogsService } from '../chat-logs.service';
-import { IChatLog } from 'models';
+import { map, exhaustMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { ChatLineComponent } from './chat-line/chat-line.component';
 
 @Component({
   selector: 'app-chat-replay',
   templateUrl: './chat-replay.component.html',
   styleUrls: ['./chat-replay.component.scss']
 })
-export class ChatReplayComponent implements OnInit {
-  public chatLogs: IChatLog[];
+export class ChatReplayComponent implements OnInit, OnDestroy {
+  private subscription: Subscription;
+
+  @ViewChild('chatReplay', {
+    read: ViewContainerRef,
+    static: true
+  })
+  private chatReplayContainer: ViewContainerRef;
 
   constructor(
-    route: ActivatedRoute,
-    chatLogsService: ChatLogsService
-  ) {
-    route.paramMap.subscribe(params => {
-      const memberNumber = +params.get('memberNumber');
-      const sessionId = params.get('sessionId');
-      const chatRoom = params.get('chatRoom');
-      chatLogsService.findChatReplay(memberNumber, sessionId, chatRoom).then(chatLogs => {
-        this.chatLogs = chatLogs;
-      });
-    });
-  }
+    private route: ActivatedRoute,
+    private chatLogsService: ChatLogsService,
+    private componentFactoryResolver: ComponentFactoryResolver
+  ) {}
 
   ngOnInit() {
+    this.subscription = this.route.paramMap.pipe(
+      map(params => ({
+        memberNumber: +params.get('memberNumber'),
+        sessionId: params.get('sessionId'),
+        chatRoom: params.get('chatRoom')
+      })),
+      exhaustMap(params => this.chatLogsService.findChatReplay(params.memberNumber, params.sessionId, params.chatRoom)),
+      map(chatLog => {
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ChatLineComponent);
+        const componentRef = this.chatReplayContainer.createComponent(componentFactory);
+        componentRef.instance.chatLog = chatLog;
+      })
+    ).subscribe();
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DatabaseService } from './database.service';
 import { IChatLog } from 'models';
 import { IChatSession, IMember } from './models';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ChatLogsService {
@@ -57,15 +58,28 @@ export class ChatLogsService {
     });
   }
 
-  public async findChatReplay(memberNumber: number, sessionId: string, chatRoom: string): Promise<IChatLog[]> {
-    const transaction = await this.databaseService.transaction('chatRoomLogs');
-    return new Promise(resolve => {
-      transaction.objectStore('chatRoomLogs')
-        .index('member_session_chatRoom_idx')
-        .getAll([chatRoom, sessionId, memberNumber])
-        .addEventListener('success', event => {
-          resolve((event.target as IDBRequest<IChatLog[]>).result);
+  public findChatReplay(memberNumber: number, sessionId: string, chatRoom: string): Observable<IChatLog> {
+    return new Observable(subscriber => {
+      this.databaseService.transaction('chatRoomLogs').then(transaction => {
+        const request = transaction.objectStore('chatRoomLogs')
+          .index('member_session_chatRoom_idx')
+          .openCursor([chatRoom, sessionId, memberNumber]);
+
+        request.addEventListener('success', event => {
+          const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+          if (cursor) {
+            const chatLog = cursor.value as IChatLog;
+            subscriber.next(chatLog);
+            cursor.continue();
+          } else {
+            subscriber.complete();
+          }
         });
+
+        request.addEventListener('error', event => {
+          subscriber.error((event.target as IDBRequest<IDBCursorWithValue>).error);
+        });
+      });
     });
   }
 }
