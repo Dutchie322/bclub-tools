@@ -15,6 +15,7 @@ import {
   IAccountQueryResult,
   CurrentScreen
 } from '../../../models';
+import { IChatRoomSearchResult } from 'models/server-messages/IChatRoomSearchResult';
 
 declare global {
   interface Window {
@@ -51,6 +52,7 @@ function listenToServerEvents(handshake: string) {
     Timestamp: new Date()
   } as IEnrichedChatRoomMessage));
   createForwarder<IChatRoomSync>('ChatRoomSync');
+  createForwarder<IChatRoomSearchResult[]>('ChatRoomSearchResult');
   createForwarder('disconnect');
   createForwarder('ForceDisconnect');
 
@@ -64,6 +66,7 @@ function pollOnlineFriends() {
   setInterval(() => {
     if (window.CurrentScreen !== 'Login') {
       window.ServerSocket.emit('AccountQuery', { Query: 'OnlineFriends' });
+      window.ServerSocket.emit('ChatRoomSearch', { Query: '' });
     }
   }, 10000);
 }

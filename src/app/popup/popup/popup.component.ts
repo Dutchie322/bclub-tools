@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { ICharacter, IAccountQueryResultItem, IPlayer } from 'models';
+import { Component, TrackByFunction } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { IAccountQueryResultItem, IPlayer, IChatRoomSearchResult, retrieve, ICharacter, StorageKeys, onChanged, IOwnership } from 'models';
 
 @Component({
   selector: 'app-popup',
@@ -7,30 +8,52 @@ import { ICharacter, IAccountQueryResultItem, IPlayer } from 'models';
   styleUrls: ['./popup.component.scss']
 })
 export class PopupComponent {
-  public character: ICharacter[] = [];
-  public onlineFriends: IAccountQueryResultItem[] = [];
-  public player: IPlayer = undefined;
+  public characters = new MatTableDataSource<ICharacter>();
+  public chatRooms = new MatTableDataSource<IChatRoomSearchResult>();
+  public onlineFriends = new MatTableDataSource<IAccountQueryResultItem>();
+  public player: IPlayer;
 
-  public logViewerLink: string;
+  public characterColumns = ['name', 'owner', 'permission', 'reputation'];
+  public chatRoomColumns = ['name', 'creator', 'members', 'description'];
+  public onlineFriendColumns = ['type', 'name', 'chatRoom'];
 
   get loggedIn() {
     return this.player && this.player.MemberNumber > 0;
   }
 
   constructor() {
-    // this.getVariables(['Character', 'Player']).then(variables => {
-    //   this.character = variables.Character as ICharacter[];
-    //   this.player = variables.Player as IPlayer;
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
-    this.retrieveForCurrentTab<IPlayer>('player').then(player => {
-      this.player = player;
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      const tabId = tabs[0].id;
+      retrieve(tabId, 'chatRoomCharacter').then(characters => this.characters.data = characters);
+      retrieve(tabId, 'chatRoomSearchResult').then(chatRooms => this.chatRooms.data = chatRooms);
+      retrieve(tabId, 'onlineFriends').then(friends => this.onlineFriends.data = friends);
+      retrieve(tabId, 'player').then(player => this.player = player);
+
+      onChanged(tabId, (changes, areaName) => {
+        console.log(changes);
+
+        if (areaName !== 'local') {
+          return;
+        }
+
+        if (changes.chatRoomCharacter) {
+          this.characters.data = changes.chatRoomCharacter.newValue;
+        }
+
+        if (changes.chatRoomSearchResult) {
+          this.chatRooms.data = changes.chatRoomSearchResult.newValue;
+        }
+
+        if (changes.onlineFriends) {
+          this.onlineFriends.data = changes.onlineFriends.newValue;
+        }
+
+        if (changes.player) {
+          this.player = changes.player.newValue;
+        }
+      });
     });
-    this.retrieveForCurrentTab<IAccountQueryResultItem[]>('online_friends').then(friends => {
-      this.onlineFriends = friends;
-    });
+
   }
 
   public openLogViewer() {
@@ -39,32 +62,58 @@ export class PopupComponent {
     });
   }
 
-  private retrieveForCurrentTab<T>(key: string): Promise<T> {
-    return new Promise(resolve => {
-      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-        const activeTabId = tabs[0].id;
-        const storageKey = `${key}_${activeTabId}`;
-        chrome.storage.local.get([storageKey], data => resolve(data[storageKey]));
-      });
-    });
+  public dominantReputationToText(character: ICharacter) {
+    let dominant = 0;
+    const rep = character.Reputation.find(r => r.Type === 'Dominant');
+    if (rep) {
+      dominant = rep.Value;
+    }
+
+    if (dominant > 0) {
+      return `Dominant ${dominant}%`;
+    } else if (dominant < 0) {
+      return `Submissive ${Math.abs(dominant)}%`;
+    }
+    return 'Neutral';
   }
 
-  private getVariables<T extends string, U = { [K in T]?: unknown }>(names: T[]): Promise<U> {
-    return new Promise((resolve, reject) => {
-      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-        chrome.tabs.sendMessage(tabs[0].id, {
-          command: 'get-var',
-          variables: names
-        }, (response) => {
-          if (response) {
-            console.log('got response');
-            console.log(response);
-            resolve(response.variables);
-          } else {
-            reject(chrome.runtime.lastError);
-          }
-        });
-      });
-    });
+  public ownerToText(owner: string, ownership: IOwnership) {
+    if (ownership) {
+      return `${ownership.Name} (${ownership.MemberNumber}) - ` +
+        (ownership.Stage === 0 ? 'On trial for ' : 'Collared for ') +
+        Math.floor((new Date().getTime() - ownership.Start) / 86400000).toString() +
+        ' days';
+    } else if (owner) {
+      return owner;
+    }
+    return 'None';
   }
+
+  public permissionToText(permission: number) {
+    /*
+    PermissionLevel0	Everyone, no exceptions
+    PermissionLevel1	Everyone, except blacklist
+    PermissionLevel2	Owner, whitelist & Dominants
+    PermissionLevel3	Owner and whitelist only
+    PermissionLevel4	Owner only
+    */
+    switch (permission) {
+      case 0:
+        return 'Everyone, no exceptions';
+      case 1:
+        return 'Everyone, except blacklist';
+      case 2:
+        return 'Owner, whitelist & Dominants';
+      case 3:
+        return 'Owner and whitelist only';
+      case 4:
+        return 'Owner only';
+      default:
+        return permission;
+    }
+  }
+
+  public trackByCharacter: TrackByFunction<ICharacter> = (_, character) => character.MemberNumber;
+  public trackByChatRoom: TrackByFunction<IChatRoomSearchResult> = (_, chatRoom) => chatRoom.Name;
+  public trackByFriend: TrackByFunction<IAccountQueryResultItem> = (_, friend) => friend.MemberNumber;
 }

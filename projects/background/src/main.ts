@@ -11,6 +11,8 @@ import {
   store,
   clearStorage,
   retrieve,
+  IChatRoomSync,
+  IChatRoomSearchResult,
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
 
@@ -28,6 +30,12 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       break;
     case 'ChatRoomMessage':
       handleChatRoomMessage(message);
+      break;
+    case 'ChatRoomSearchResult':
+      handleChatRoomSearchResult(sender.tab.id, message);
+      break;
+    case 'ChatRoomSync':
+      handleChatRoomSync(sender.tab.id, message);
       break;
     case 'disconnect':
     case 'ForceDisconnect':
@@ -54,7 +62,7 @@ function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccoun
     return;
   }
 
-  retrieve(tabId, 'online_friends').then(previous => {
+  retrieve(tabId, 'onlineFriends').then(previous => {
     if (typeof previous === 'undefined') {
       return;
     }
@@ -70,11 +78,19 @@ function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccoun
     wentOffline.forEach(f => notifyFriendChange('offline', f));
   });
 
-  store(tabId, 'online_friends', message.data.Result);
+  store(tabId, 'onlineFriends', message.data.Result);
 }
 
 function handleChatRoomMessage(message: IServerMessage<IEnrichedChatRoomMessage>) {
   writeChatLog(message.data);
+}
+
+function handleChatRoomSearchResult(tabId: number, message: IServerMessage<IChatRoomSearchResult[]>) {
+  store(tabId, 'chatRoomSearchResult', message.data);
+}
+
+function handleChatRoomSync(tabId: number, message: IServerMessage<IChatRoomSync>) {
+  store(tabId, 'chatRoomCharacter', message.data.Character);
 }
 
 function handleDisconnect(tabId: number) {
