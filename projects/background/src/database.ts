@@ -1,4 +1,4 @@
-import { IEnrichedChatRoomMessage, openDatabase } from '../../../models';
+import { IEnrichedChatRoomMessage, openDatabase, IChatLog } from '../../../models';
 
 export async function writeChatLog(data: IEnrichedChatRoomMessage) {
   const db = await openDatabase();
@@ -9,12 +9,14 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage) {
   });
 
   const chatLogs = transaction.objectStore('chatRoomLogs');
+  const senderChar = data.ChatRoom.Character.find(c => c.MemberNumber === data.Sender);
   const chatLog = {
     chatRoom: data.ChatRoom.Name,
     content: data.Content,
     sender: {
       id: data.Sender,
-      name: data.ChatRoom.Character.find(c => c.MemberNumber === data.Sender).Name
+      name: senderChar.Name,
+      color: senderChar.LabelColor,
     },
     session: {
       id: data.SessionId,
@@ -23,7 +25,7 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage) {
     },
     timestamp: new Date(data.Timestamp),
     type: data.Type
-  };
+  } as IChatLog;
 
   const request = chatLogs.add(chatLog);
   request.addEventListener('error', () => {

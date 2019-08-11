@@ -6,6 +6,7 @@ export interface IChatLog {
   sender: {
     id: number;
     name: string;
+    color: string;
   };
   session: {
     id: string;
