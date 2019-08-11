@@ -3,7 +3,18 @@
   <ng-template #notLoggedInTemplate>Not logged in</ng-template>
 </mat-toolbar>
 
-<button mat-button (click)="openLogViewer()">Log Viewer</button>
+<button mat-button mat-stroked-button color="accent" class="primary-character-btn" (click)="openLogViewer()">Log Viewer</button>
+<button mat-button mat-stroked-button color="accent" class="more-characters-menu-btn" aria-label="Log Viewer for other characters" [matMenuTriggerFor]="charactersMenu">
+  <mat-icon>expand_more</mat-icon>
+</button>
+
+<mat-menu #charactersMenu="matMenu">
+  <ng-template [ngIf]="alternativeCharacters?.length > 0">
+    <button mat-menu-item *ngFor="let char of alternativeCharacters" (click)="openLogViewer(char.memberNumber)">
+      {{ char.name }} ({{ char.memberNumber }})
+    </button>
+  </ng-template>
+</mat-menu>
 
 <mat-tab-group>
   <mat-tab label="Online Friends">

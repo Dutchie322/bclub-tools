@@ -4,7 +4,9 @@ import { IChatLog } from 'models';
 import { IChatSession, IMember } from './models';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ChatLogsService {
 
   constructor(private databaseService: DatabaseService) { }

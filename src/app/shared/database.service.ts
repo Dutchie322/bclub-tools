@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { openDatabase } from 'models';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DatabaseService {
 
   private db: IDBDatabase;

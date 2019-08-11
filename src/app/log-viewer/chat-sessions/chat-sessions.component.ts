@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatLogsService } from '../chat-logs.service';
+import { ChatLogsService } from '../../shared/chat-logs.service';
 import { ActivatedRoute } from '@angular/router';
-import { IChatSession } from '../models';
+import { IChatSession } from '../../shared/models';
 
 @Component({
   selector: 'app-chat-sessions',
@@ -9,6 +9,7 @@ import { IChatSession } from '../models';
   styleUrls: ['./chat-sessions.component.scss']
 })
 export class ChatSessionsComponent implements OnInit {
+  public memberNumber: number;
   public chatSessions: IChatSession[];
 
   constructor(
@@ -16,9 +17,17 @@ export class ChatSessionsComponent implements OnInit {
     chatLogsService: ChatLogsService
   ) {
     route.paramMap.subscribe(params => {
-      const memberNumber = +params.get('memberNumber');
-      chatLogsService.findChatRoomsForMemberNumber(memberNumber).then(chatSessions => {
-        this.chatSessions = chatSessions;
+      this.memberNumber = +params.get('memberNumber');
+      chatLogsService.findChatRoomsForMemberNumber(this.memberNumber).then(chatSessions => {
+        this.chatSessions = chatSessions.sort((a, b) => {
+          if (a.start < b.start) {
+            return -1;
+          }
+          if (a.start > b.start) {
+            return 1;
+          }
+          return 0;
+        });
       });
     });
   }

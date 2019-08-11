@@ -1,6 +1,8 @@
 import { Component, TrackByFunction } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { IAccountQueryResultItem, IPlayer, IChatRoomSearchResult, retrieve, ICharacter, StorageKeys, onChanged, IOwnership } from 'models';
+import { IAccountQueryResultItem, IPlayer, IChatRoomSearchResult, retrieve, ICharacter, onChanged, IOwnership } from 'models';
+import { ChatLogsService } from 'src/app/shared/chat-logs.service';
+import { IMember } from 'src/app/shared/models';
 
 @Component({
   selector: 'app-popup',
@@ -12,6 +14,7 @@ export class PopupComponent {
   public chatRooms = new MatTableDataSource<IChatRoomSearchResult>();
   public onlineFriends = new MatTableDataSource<IAccountQueryResultItem>();
   public player: IPlayer;
+  public alternativeCharacters: IMember[];
 
   public characterColumns = ['name', 'owner', 'permission', 'reputation'];
   public chatRoomColumns = ['name', 'creator', 'members', 'description'];
@@ -21,7 +24,7 @@ export class PopupComponent {
     return this.player && this.player.MemberNumber > 0;
   }
 
-  constructor() {
+  constructor(private chatLogsService: ChatLogsService) {
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       const tabId = tabs[0].id;
       retrieve(tabId, 'chatRoomCharacter').then(characters => this.characters.data = characters);
@@ -54,11 +57,25 @@ export class PopupComponent {
       });
     });
 
+    this.chatLogsService.findMembers().then(members => {
+      this.alternativeCharacters = members.filter(m => {
+        if (this.loggedIn) {
+          return m.memberNumber !== this.player.MemberNumber;
+        }
+        return true;
+      });
+    });
   }
 
-  public openLogViewer() {
+  public openLogViewer(memberNumber?: number) {
+    let url = '/index.html?page=/log-viewer';
+    if (memberNumber) {
+      url += '/' + memberNumber;
+    } else if (this.loggedIn) {
+      url += '/' + this.player.MemberNumber;
+    }
     chrome.tabs.create({
-      url: '/index.html?page=/log-viewer'
+      url
     });
   }
 

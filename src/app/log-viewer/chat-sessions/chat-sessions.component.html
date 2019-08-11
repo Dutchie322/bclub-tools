@@ -1,3 +1,8 @@
-<pre>
-  {{ chatSessions | json }}
-</pre>
+<mat-toolbar>Sessions</mat-toolbar>
+<mat-list>
+  <mat-list-item *ngFor="let session of chatSessions">
+    <a [routerLink]="['/log-viewer', memberNumber, session.sessionId, session.chatRoom]">
+      {{ session.chatRoom }} (Date: {{ session.start.toLocaleDateString() }} {{ session.start.toLocaleTimeString()}})
+    </a>
+  </mat-list-item>
+</mat-list>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ChatLogsService } from '../chat-logs.service';
+import { ChatLogsService } from '../../shared/chat-logs.service';
 import { map, exhaustMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { ChatLineComponent } from './chat-line/chat-line.component';
