@@ -26,6 +26,7 @@ export class ChatReplayComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ChatLineComponent);
     this.subscription = this.route.paramMap.pipe(
       map(params => ({
         memberNumber: +params.get('memberNumber'),
@@ -34,7 +35,6 @@ export class ChatReplayComponent implements OnInit, OnDestroy {
       })),
       exhaustMap(params => this.chatLogsService.findChatReplay(params.memberNumber, params.sessionId, params.chatRoom)),
       map(chatLog => {
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ChatLineComponent);
         const componentRef = this.chatReplayContainer.createComponent(componentFactory);
         componentRef.instance.chatLog = chatLog;
       })

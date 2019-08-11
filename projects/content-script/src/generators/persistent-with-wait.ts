@@ -7,7 +7,7 @@ export function generatePersistentScriptWithWait<V extends keyof Window, K exten
 
   const stringifiedArgs = args.map(value => JSON.stringify(value)).join(',');
   const stringifiedBody = `(${executor.toString()})('${handshake}',${stringifiedArgs});`;
-  const wrapped = wrapWaitUntilWindowVariable.toString().replace('/* BODY */', stringifiedBody);
+  const wrapped = wrapWaitUntilWindowVariable.toString().replace('/** @preserve BODY */', stringifiedBody);
 
   const scriptTag = document.createElement('script');
   const scriptBody = document.createTextNode(`(${wrapped})('${variableName}');`);
@@ -46,7 +46,7 @@ function wrapWaitUntilWindowVariable<V extends keyof Window>(variableName: V) {
   });
 
   promise.then(() => {
-    /* BODY */
+    /** @preserve BODY */
   })
   .catch(error => {
     console.error(error);

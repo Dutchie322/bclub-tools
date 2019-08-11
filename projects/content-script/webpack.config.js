@@ -1,6 +1,7 @@
 const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
 
-module.exports = {
+var config = {
   entry: './src/main.ts',
   module: {
     rules: [
@@ -18,4 +19,27 @@ module.exports = {
     filename: 'main.js',
     path: path.resolve( __dirname, '..', '..', 'dist', 'bclub-tools', 'content-script')
   }
+};
+
+module.exports = (env, argv) => {
+  if (argv.mode === 'development') {
+    config.devtool = 'source-map';
+  }
+
+  if (argv.mode === 'production') {
+    config.optimization = {
+      minimizer: [
+        // new TerserPlugin({
+        //   terserOptions: {
+        //     output: {
+        //       comments: /@preserve/i,
+        //     },
+        //   },
+        //   extractComments: true
+        // })
+      ],
+    };
+  }
+
+  return config;
 };

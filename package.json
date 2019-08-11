@@ -6,16 +6,12 @@
     "start": "ng serve",
     "build": "npm run build:popup && npm run build:background && npm run build:content-script",
     "build:debug": "npm run build:popup:debug && npm run build:background:debug && npm run build:content-script:debug",
-
     "build:popup": "ng build --aot --output-hashing=none --source-map=false",
     "build:popup:debug": "ng build --aot",
-
     "build:background": "webpack-cli --config ./projects/background/webpack.config.js --context ./projects/background/ --mode=production",
     "build:background:debug": "webpack-cli --config ./projects/background/webpack.config.js --context ./projects/background/ --mode=development",
-
-    "build:content-script": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=development",
+    "build:content-script": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=production",
     "build:content-script:debug": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=development",
-
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
