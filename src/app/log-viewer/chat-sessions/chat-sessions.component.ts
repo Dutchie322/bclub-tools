@@ -20,10 +20,10 @@ export class ChatSessionsComponent implements OnInit {
       this.memberNumber = +params.get('memberNumber');
       chatLogsService.findChatRoomsForMemberNumber(this.memberNumber).then(chatSessions => {
         this.chatSessions = chatSessions.sort((a, b) => {
-          if (a.start < b.start) {
+          if (a.start > b.start) {
             return -1;
           }
-          if (a.start > b.start) {
+          if (a.start < b.start) {
             return 1;
           }
           return 0;
