@@ -3,16 +3,20 @@ import { ChatRoomMessageType } from 'models';
 export interface IChatLog {
   chatRoom: string;
   content: string;
-  sender: {
-    id: number;
-    name: string;
-    color: string;
-  };
-  session: {
-    id: string;
-    name: string;
-    memberNumber: number;
-  };
+  sender: IChatSender;
+  session: IChatSessionPerspective;
   timestamp: Date;
   type: ChatRoomMessageType;
+}
+
+export interface IChatSender {
+  id: number;
+  name: string;
+  color: string;
+}
+
+export interface IChatSessionPerspective {
+  id: string;
+  name: string;
+  memberNumber: number;
 }

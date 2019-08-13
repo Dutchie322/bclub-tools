@@ -1,1 +1,6 @@
-<div #chatReplay></div>
+<mat-toolbar>
+  <span>Chat replay</span>
+  <span class="spacer"></span>
+  <mat-checkbox [formControl]="showWhispers">Show Whispers</mat-checkbox>
+</mat-toolbar>
+<app-chat-line *ngFor="let chatLog of chatReplay$ | async" [chatLog]="chatLog"></app-chat-line>

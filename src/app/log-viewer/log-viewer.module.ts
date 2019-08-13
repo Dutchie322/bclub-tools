@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -21,12 +23,18 @@ import { SharedModule } from '../shared/shared.module';
     ChatLineComponent
   ],
   imports: [
+    // Angular modules
     CommonModule,
-    SharedModule,
-    LogViewerRoutingModule,
+    ReactiveFormsModule,
 
+    // Material modules
+    MatCheckboxModule,
     MatListModule,
-    MatToolbarModule
+    MatToolbarModule,
+
+    // Own modules
+    SharedModule,
+    LogViewerRoutingModule
   ]
 })
 export class LogViewerModule { }
