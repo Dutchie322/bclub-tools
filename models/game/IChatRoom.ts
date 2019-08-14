@@ -1,8 +1,8 @@
-import { ICharacter } from './ICharacter';
+import { IChatRoomCharacter } from './ICharacter';
 
 export interface IChatRoom {
   Background: string;
-  Character: ICharacter[];
+  Character: IChatRoomCharacter[];
   CreatorID: number;
   Name: string;
   SourceMemberNumber: number;

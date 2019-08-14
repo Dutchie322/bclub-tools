@@ -1,10 +1,11 @@
-export interface ICharacter {
+export interface IChatRoomCharacter {
   ActivePose: 'Kneel' | undefined;
-  Appearance: IAppearance[];
+  Appearance: IChatRoomAppearance[];
   AssetFamily: 'Female3DCG';
   Creation: number;
   ID: number;
   ItemPermission: number;
+  Inventory: IChatRoomInventoryItem[];
   LabelColor: string;
   Lover: string;
   MemberNumber: number;
@@ -14,10 +15,15 @@ export interface ICharacter {
   Reputation: IReputation[];
 }
 
-export interface IAppearance {
+export interface IChatRoomAppearance {
   Color: string;
   Group: string;
   Name: string;
+}
+
+export interface IChatRoomInventoryItem {
+  Name: string;
+  Group: string;
 }
 
 export interface IOwnership {
