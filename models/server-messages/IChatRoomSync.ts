@@ -1,8 +1,8 @@
-import { ICharacter } from '../game';
+import { IChatRoomCharacter } from '../game';
 
 export interface IChatRoomSync {
   Background: string;
-  Character: ICharacter[];
+  Character: IChatRoomCharacter[];
   CreatorID: number;
   Name: string;
   SourceMemberNumber: number;
