@@ -1,6 +1,10 @@
-import { IEnrichedChatRoomMessage, openDatabase, IChatLog } from '../../../models';
+import { IEnrichedChatRoomMessage, openDatabase, IChatLog, IEnrichedChatRoomChat } from '../../../models';
 
-export async function writeChatLog(data: IEnrichedChatRoomMessage) {
+export async function writeChatLog(data: IEnrichedChatRoomMessage | IEnrichedChatRoomChat) {
+  function isClientWhisper(message: IEnrichedChatRoomMessage | IEnrichedChatRoomChat): message is IEnrichedChatRoomChat {
+    return (message as IEnrichedChatRoomChat).Target !== undefined;
+  }
+
   const db = await openDatabase();
   const transaction = db.transaction('chatRoomLogs', 'readwrite');
   transaction.addEventListener('error', () => {
@@ -26,6 +30,13 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage) {
     timestamp: new Date(data.Timestamp),
     type: data.Type
   } as IChatLog;
+
+  if (isClientWhisper(data)) {
+    chatLog.target = {
+      name: data.TargetName,
+      memberNumber: data.Target
+    };
+  }
 
   const request = chatLogs.add(chatLog);
   request.addEventListener('error', () => {

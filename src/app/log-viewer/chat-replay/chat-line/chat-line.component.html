@@ -6,7 +6,7 @@
       <span class="content">{{ chatLog.content }}</span>
     </ng-container>
     <ng-container *ngSwitchCase="'Whisper'">
-      <span [ngStyle]="{ 'font-style': 'italic', color: getColor(chatLog.sender.color) }">{{ chatLog.sender.name }}: </span>
+      <span [ngStyle]="{ 'font-style': 'italic', color: getColor(chatLog.sender.color) }">{{ chatLog.sender.name }}{{ chatLog.target ? ' to ' + chatLog.target.name : '' }}: </span>
       <span class="content" style="font-style: italic">{{ chatLog.content }}</span>
     </ng-container>
     <ng-container *ngSwitchCase="'Emote'">

@@ -36,7 +36,8 @@ function listenToServerEvents(handshake: string) {
       window.postMessage({
         handshake,
         event,
-        data: enrichData ? enrichData(data) : data
+        data: enrichData ? enrichData(data) : data,
+        type: 'server'
       } as IServerMessage<TMessage>, '*');
     });
   }

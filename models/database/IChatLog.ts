@@ -5,6 +5,7 @@ export interface IChatLog {
   content: string;
   sender: IChatSender;
   session: IChatSessionPerspective;
+  target?: IWhisperTarget;
   timestamp: Date;
   type: ChatRoomMessageType;
 }
@@ -17,6 +18,11 @@ export interface IChatSender {
 
 export interface IChatSessionPerspective {
   id: string;
+  name: string;
+  memberNumber: number;
+}
+
+export interface IWhisperTarget {
   name: string;
   memberNumber: number;
 }

@@ -13,6 +13,8 @@ import {
   retrieve,
   IChatRoomSync,
   IChatRoomSearchResult,
+  IClientMessage,
+  IEnrichedChatRoomChat,
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
 
@@ -27,6 +29,9 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       break;
     case 'AccountQueryResult':
       handleAccountQueryResult(sender.tab.id, message);
+      break;
+    case 'ChatRoomChat':
+      handleChatRoomChat(message);
       break;
     case 'ChatRoomMessage':
       handleChatRoomMessage(message);
@@ -79,6 +84,10 @@ function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccoun
   });
 
   store(tabId, 'onlineFriends', message.data.Result);
+}
+
+function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
+  writeChatLog(message.data);
 }
 
 function handleChatRoomMessage(message: IServerMessage<IEnrichedChatRoomMessage>) {
