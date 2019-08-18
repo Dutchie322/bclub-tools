@@ -66,8 +66,10 @@ function listenToServerEvents(handshake: string) {
 function pollOnlineFriends() {
   setInterval(() => {
     if (window.CurrentScreen !== 'Login') {
+      const searchInput = document.getElementById('InputSearch') as HTMLInputElement;
+
       window.ServerSocket.emit('AccountQuery', { Query: 'OnlineFriends' });
-      window.ServerSocket.emit('ChatRoomSearch', { Query: '' });
+      window.ServerSocket.emit('ChatRoomSearch', { Query: searchInput ? searchInput.value : '' });
     }
   }, 10000);
 }
