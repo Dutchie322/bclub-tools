@@ -1,16 +1,17 @@
 export function openDatabase() {
   return new Promise<IDBDatabase>((resolve, reject) => {
-    const openRequest = indexedDB.open('bclub-tools', 2);
+    const openRequest = indexedDB.open('bclub-tools', 3);
 
     openRequest.addEventListener('blocked', () => {
       alert('Could not open database, make sure all tabs are closed and reload.');
-      reject('blocked');
+      reject(new Error('Open database request blocked'));
     });
 
-    openRequest.addEventListener('error', () => {
+    openRequest.addEventListener('error', event => {
+      const request = event.target as IDBOpenDBRequest;
       console.error('Error while opening database:');
-      console.error(openRequest.error);
-      reject(openRequest.error);
+      console.error(request.error);
+      reject(request.error);
     });
 
     openRequest.addEventListener('upgradeneeded', event => {
@@ -38,14 +39,20 @@ function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
     chatRoomLogsStore.createIndex('senderName_idx', 'sender.name');
     chatRoomLogsStore.createIndex('sessionId_idx', 'session.id');
     chatRoomLogsStore.createIndex('sessionMemberNumber_idx', 'session.memberNumber');
-    chatRoomLogsStore.createIndex('timestamp_idx', 'timestamp');
-    chatRoomLogsStore.createIndex('type_idx', 'type');
   } else {
     chatRoomLogsStore = transaction.objectStore('chatRoomLogs');
   }
 
   if (!chatRoomLogsStore.indexNames.contains('member_session_chatRoom_idx')) {
     chatRoomLogsStore.createIndex('member_session_chatRoom_idx', ['chatRoom', 'session.id', 'session.memberNumber'], { unique: false });
+  }
+
+  if (chatRoomLogsStore.indexNames.contains('timestamp_idx')) {
+    chatRoomLogsStore.deleteIndex('timestamp_idx');
+  }
+
+  if (chatRoomLogsStore.indexNames.contains('type_idx')) {
+    chatRoomLogsStore.deleteIndex('type_idx');
   }
 }
 
