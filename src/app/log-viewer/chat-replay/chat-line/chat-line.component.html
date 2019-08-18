@@ -2,21 +2,25 @@
   <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
   <ng-container [ngSwitch]="chatLog.type">
     <ng-container *ngSwitchCase="'Chat'">
-      <span class="sender" [ngStyle]="{ color: getColor(chatLog.sender.color) }">{{ chatLog.sender.name }}: </span>
-      <span class="content">{{ chatLog.content }}</span>
+      <span class="chat">
+        <span class="sender" [ngStyle]="{ color: getColor(chatLog.sender.color) }">{{ chatLog.sender.name }}</span>:
+        <span class="content">{{ chatLog.content }}</span>
+      </span>
     </ng-container>
     <ng-container *ngSwitchCase="'Whisper'">
-      <span [ngStyle]="{ 'font-style': 'italic', color: getColor(chatLog.sender.color) }">{{ chatLog.sender.name }}{{ chatLog.target ? ' to ' + chatLog.target.name : '' }}: </span>
-      <span class="content" style="font-style: italic">{{ chatLog.content }}</span>
+      <span class="whisper">
+        <span class="sender" [ngStyle]="{ color: getColor(chatLog.sender.color) }">{{ chatLog.sender.name }}{{ chatLog.target ? ' to ' + chatLog.target.name : '' }}</span>:
+        <span class="content">{{ chatLog.content }}</span>
+      </span>
     </ng-container>
     <ng-container *ngSwitchCase="'Emote'">
-      <span [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">*{{ chatLog.sender.name }} {{ chatLog.content }}*</span>
+      <span class="emote" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">*{{ chatLog.sender.name }} {{ chatLog.content }}*</span>
     </ng-container>
     <ng-container *ngSwitchCase="'Action'">
-      <span [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ chatLog.content }})</span>
+      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ chatLog.content }})</span>
     </ng-container>
     <ng-container *ngSwitchCase="'ServerMessage'">
-      <span [ngSwitch]="chatLog.content" style="font-weight: bold">
+      <span [ngSwitch]="chatLog.content" class="server-message">
         <ng-container *ngSwitchCase="'OfferStartTrial'">{{ chatLog.sender.name }} is offering {{ chatLog.session.name }} to start a trial period as her submissive.</ng-container>
         <ng-container *ngSwitchCase="'StartTrial'">The Bondage Club is pleased to announce that {{ chatLog.sender.name }} is starting a 3 days minimum trial period as a submissive.</ng-container>
         <ng-container *ngSwitchCase="'OfferEndTrial'">{{ chatLog.sender.name }} has prepared a great collaring ceremony. A maid brings a slave collar, which her submissive must consent to wear.</ng-container>
