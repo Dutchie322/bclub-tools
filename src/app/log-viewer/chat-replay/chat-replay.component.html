@@ -3,4 +3,5 @@
   <span class="spacer"></span>
   <mat-checkbox [formControl]="showWhispers">Show Whispers</mat-checkbox>
 </mat-toolbar>
+<mat-progress-bar mode="indeterminate" *ngIf="loading$ | async"></mat-progress-bar>
 <app-chat-line *ngFor="let chatLog of chatReplay$ | async" [chatLog]="chatLog"></app-chat-line>
