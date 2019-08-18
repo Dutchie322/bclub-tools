@@ -30,6 +30,9 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     case 'server':
       handleServerMessage(message, sender);
       break;
+    default:
+      console.error('Unhandled message:');
+      console.log(message);
   }
 });
 
@@ -40,8 +43,11 @@ function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtim
     case 'ChatRoomChat':
       handleChatRoomChat(message);
       break;
+    case 'VariablesUpdate':
+      handleVariablesUpdate(sender.tab.id, message);
+      break;
     default:
-      console.log('background received unhandled client message:');
+      console.error('Unhandled client message:');
       console.log(message);
       break;
   }
@@ -68,11 +74,8 @@ function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtim
     case 'ForceDisconnect':
       handleDisconnect(sender.tab.id);
       break;
-    case 'VariablesUpdate':
-      handleVariablesUpdate(sender.tab.id, message);
-      break;
     default:
-      console.log('background received unhandled server message:');
+      console.error('Unhandled server message:');
       console.log(message);
       break;
   }

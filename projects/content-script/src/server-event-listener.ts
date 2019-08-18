@@ -35,9 +35,9 @@ function listenToServerEvents(handshake: string) {
     window.ServerSocket.on(event, (data: TMessage) => {
       window.postMessage({
         handshake,
+        type: 'server',
         event,
         data: enrichData ? enrichData(data) : data,
-        type: 'server'
       } as IServerMessage<TMessage>, '*');
     });
   }
@@ -82,6 +82,7 @@ function pollVariables(handshake: string) {
   setInterval(() => {
     window.postMessage({
       handshake,
+      type: 'client',
       event: 'VariablesUpdate',
       data: {
         CurrentScreen: sanitizeObject(window.CurrentScreen),

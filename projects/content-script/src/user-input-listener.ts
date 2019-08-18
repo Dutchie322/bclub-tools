@@ -25,9 +25,9 @@ function listenForUserSentEvents(handshake: string) {
 
     window.postMessage({
       handshake,
+      type: 'client',
       event,
       data: eventsToForward[event](data),
-      type: 'client'
     } as IClientMessage<TMessage>, '*');
   }
 
