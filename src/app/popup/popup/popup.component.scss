@@ -20,3 +20,11 @@ table {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
+
+.container {
+  display: flex;
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+}

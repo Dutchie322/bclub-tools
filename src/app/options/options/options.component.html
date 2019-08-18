@@ -1,1 +1,22 @@
-<p>options works!</p>
+<mat-toolbar>Options</mat-toolbar>
+<ng-container [formGroup]="settingsForm">
+  <mat-list formGroupName="notifications">
+    <h2 matSubheader>Notifications</h2>
+    <mat-list-item>
+      <mat-checkbox formControlName="beeps">
+        Beeps
+      </mat-checkbox>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-checkbox formControlName="friendOnline">
+        Friend online
+      </mat-checkbox>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-checkbox formControlName="friendOffline">
+        Friend offline
+      </mat-checkbox>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </mat-list>
+</ng-container>

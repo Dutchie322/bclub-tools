@@ -1,9 +1,21 @@
-import { IStorageMap, StorageKeys, STORAGE_KEYS } from './IStorageMap';
+import { IStorageMap, StorageKeys, STORAGE_KEYS, GlobalStorageKeys, IGlobalStorageMap } from './IStorageMap';
+
+export function retrieveGlobal<K extends GlobalStorageKeys>(key: K): Promise<IGlobalStorageMap[K] | undefined> {
+  return new Promise(resolve => {
+    chrome.storage.local.get([key], data => resolve(data[key]));
+  });
+}
 
 export function retrieve<K extends StorageKeys>(tabId: number, key: K): Promise<IStorageMap[K] | undefined> {
   return new Promise(resolve => {
     const storageKey = `${key}_${tabId}`;
     chrome.storage.local.get([storageKey], data => resolve(data[storageKey]));
+  });
+}
+
+export function storeGlobal<K extends GlobalStorageKeys>(key: K, data: IGlobalStorageMap[K]) {
+  chrome.storage.local.set({
+    [key]: data
   });
 }
 
@@ -25,7 +37,9 @@ export function onChanged(
       .filter(key => key.endsWith(suffix))
       .forEach(key => tabChanges[key.substr(0, key.length - suffix.length)] = changes[key]);
 
-    callback(tabChanges, areaName);
+    if (Object.keys(changes).length > 0) {
+      callback(tabChanges, areaName);
+    }
   });
 }
 

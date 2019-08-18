@@ -79,6 +79,16 @@ export class PopupComponent {
     });
   }
 
+  public openOptions() {
+    if (chrome.runtime.openOptionsPage) {
+      chrome.runtime.openOptionsPage();
+    } else {
+      chrome.tabs.create({
+        url: '/index.html?page=/options'
+      });
+    }
+  }
+
   public dominantReputationToText(character: IChatRoomCharacter) {
     let dominant = 0;
     const rep = character.Reputation.find(r => r.Type === 'Dominant');

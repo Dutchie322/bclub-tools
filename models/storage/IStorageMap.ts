@@ -1,6 +1,8 @@
-import { IPlayer, IChatRoomCharacter } from 'models/game';
-import { IAccountQueryResultItem } from 'models';
-import { IChatRoomSearchResult } from 'models/server-messages';
+import { IAccountQueryResultItem, IChatRoomCharacter, IChatRoomSearchResult, IPlayer, ISettings } from 'models';
+
+export const GLOBAL_STORAGE_KEYS = [
+  'settings'
+] as const;
 
 export const STORAGE_KEYS = [
   'chatRoomCharacter',
@@ -9,7 +11,12 @@ export const STORAGE_KEYS = [
   'player'
 ] as const;
 
+export type GlobalStorageKeys = typeof GLOBAL_STORAGE_KEYS[number];
 export type StorageKeys = typeof STORAGE_KEYS[number];
+
+export interface IGlobalStorageMap {
+  'settings': ISettings;
+}
 
 export interface IStorageMap {
   'chatRoomCharacter': IChatRoomCharacter[];

@@ -39,5 +39,6 @@
     "https://www.bondageprojects.com/*",
     "http://ben987.x10host.com/*",
     "https://ben987.x10host.com/*"
-  ]
+  ],
+  "options_page": "index.html?page=/options"
 }
