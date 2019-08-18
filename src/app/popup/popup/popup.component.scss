@@ -10,15 +10,18 @@ table {
   font-style: italic;
 }
 
+.primary-character-btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .more-characters-menu-btn {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left: 0;
-}
-
-.primary-character-btn {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  padding-right: 5px;
+  padding-left: 5px;
+  min-width: auto;
 }
 
 .container {
