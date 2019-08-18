@@ -23,15 +23,37 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     return;
   }
 
+  switch (message.type) {
+    case 'client':
+      handleClientMessage(message, sender);
+      break;
+    case 'server':
+      handleServerMessage(message, sender);
+      break;
+  }
+});
+
+chrome.tabs.onRemoved.addListener(clearStorage);
+
+function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtime.MessageSender) {
+  switch (message.event) {
+    case 'ChatRoomChat':
+      handleChatRoomChat(message);
+      break;
+    default:
+      console.log('background received unhandled client message:');
+      console.log(message);
+      break;
+  }
+}
+
+function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtime.MessageSender) {
   switch (message.event) {
     case 'AccountBeep':
       handleAccountBeep(message);
       break;
     case 'AccountQueryResult':
       handleAccountQueryResult(sender.tab.id, message);
-      break;
-    case 'ChatRoomChat':
-      handleChatRoomChat(message);
       break;
     case 'ChatRoomMessage':
       handleChatRoomMessage(message);
@@ -50,13 +72,11 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       handleVariablesUpdate(sender.tab.id, message);
       break;
     default:
-      console.log('background received unhandled message:');
+      console.log('background received unhandled server message:');
       console.log(message);
       break;
   }
-});
-
-chrome.tabs.onRemoved.addListener(clearStorage);
+}
 
 function handleAccountBeep(message: IServerMessage<IAccountBeep>) {
   notifyAccountBeep(message.data);
