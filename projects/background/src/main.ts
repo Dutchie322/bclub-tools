@@ -110,7 +110,9 @@ function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccoun
 }
 
 function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
-  writeChatLog(message.data);
+  if (message.data.Type === 'Whisper') {
+    writeChatLog(message.data);
+  }
 }
 
 function handleChatRoomMessage(message: IServerMessage<IEnrichedChatRoomMessage>) {
