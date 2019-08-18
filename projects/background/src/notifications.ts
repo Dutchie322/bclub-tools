@@ -1,8 +1,13 @@
 /// <reference types="chrome"/>
 
-import { IAccountBeep, IAccountQueryResultItem } from 'models';
+import { IAccountBeep, IAccountQueryResultItem, retrieveGlobal } from '../../../models';
 
-export function notifyAccountBeep(beep: IAccountBeep) {
+export async function notifyAccountBeep(beep: IAccountBeep) {
+  const settings = await retrieveGlobal('settings');
+  if (!settings.notifications.beeps) {
+    return;
+  }
+
   const opt = {
     type: 'basic',
     title: `Beep from ${beep.MemberName}`,
@@ -14,10 +19,12 @@ export function notifyAccountBeep(beep: IAccountBeep) {
   chrome.notifications.create('', opt);
 }
 
-export function notifyFriendChange(type: 'online' | 'offline', friend: IAccountQueryResultItem) {
-  console.log('notify friend change: ' + type);
-  console.log(friend);
-
+export async function notifyFriendChange(type: 'online' | 'offline', friend: IAccountQueryResultItem) {
+  const settings = await retrieveGlobal('settings');
+  if ((type === 'online' && !settings.notifications.friendOnline)
+    || (type === 'offline' && !settings.notifications.friendOffline)) {
+    return;
+  }
   const opt = {
     type: 'basic',
     title: `${friend.MemberName} is now ${type}`,
