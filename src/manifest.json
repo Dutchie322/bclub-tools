@@ -40,5 +40,13 @@
     "http://ben987.x10host.com/*",
     "https://ben987.x10host.com/*"
   ],
-  "options_page": "index.html?page=/options"
+  "options_ui": {
+    "page": "index.html?page=/options"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{69662ce5-5fcc-4d0a-ad93-b8b663bd47ac}",
+      "strict_min_version": "60.0"
+    }
+  }
 }
