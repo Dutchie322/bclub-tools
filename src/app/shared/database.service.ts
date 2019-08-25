@@ -8,6 +8,12 @@ export class DatabaseService {
 
   private db: IDBDatabase;
 
+  public get objectStoreNames() {
+    return this.connect().then(db => {
+      return Array.from(db.objectStoreNames);
+    });
+  }
+
   constructor() {}
 
   private async connect(): Promise<IDBDatabase> {

@@ -84,4 +84,31 @@ export class ChatLogsService {
       });
     });
   }
+
+  public getTotalSize(): Observable<number> {
+    return new Observable<number>(subscriber => {
+      let size = 0;
+      this.databaseService.transaction('chatRoomLogs').then(transaction => {
+        const request = transaction.objectStore('chatRoomLogs')
+          .openCursor();
+
+        request.addEventListener('success', event => {
+          const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+          if (cursor) {
+            const storedObject = cursor.value;
+            const json = JSON.stringify(storedObject);
+            size += json.length;
+            cursor.continue();
+          } else {
+            subscriber.next(size);
+            subscriber.complete();
+          }
+        });
+
+        request.addEventListener('error', event => {
+          subscriber.error((event.target as IDBRequest<IDBCursorWithValue>).error);
+        });
+      });
+    });
+  }
 }

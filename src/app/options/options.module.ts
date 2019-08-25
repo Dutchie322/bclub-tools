@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
@@ -21,6 +22,7 @@ import { OptionsRoutingModule } from './options-routing.module';
     ReactiveFormsModule,
 
     // Angular Material modules
+    MatButtonModule,
     MatCheckboxModule,
     MatCardModule,
     MatListModule,
