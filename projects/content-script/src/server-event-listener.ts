@@ -69,7 +69,7 @@ function pollOnlineFriends() {
       const searchInput = document.getElementById('InputSearch') as HTMLInputElement;
 
       window.ServerSocket.emit('AccountQuery', { Query: 'OnlineFriends' });
-      window.ServerSocket.emit('ChatRoomSearch', { Query: searchInput ? searchInput.value : '' });
+      // window.ServerSocket.emit('ChatRoomSearch', { Query: searchInput ? searchInput.value : '' });
     }
   }, 10000);
 }
