@@ -1,27 +1,83 @@
-# BclubTools
+# Bondage Club Tools
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.0.
+A web extension for the [Bondage Club](https://www.patreon.com/BondageProjects) game.
 
-## Development server
+## Features
+- Automatic logging of chat rooms, with a viewer to read the transcripts back.
+- Optionally sending a Windows notification when someone beeps you.
+- Optionally detecting when friends come online or go offline and sending a Windows notification when it happens.
+- Up-to-date friends list in popup.
+- Quick overview of the characters in the currently joined chat room (name, ownership, dominant level).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# Development
 
-## Code scaffolding
+This project uses the following technologies, so prior knowledge of these is required if you want to contribute.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- [TypeScript](https://www.typescriptlang.org/)
+- [Angular](https://angular.io/)
+- [Angular Material](https://material.angular.io/)
+- [IndexedDB](https://developer.mozilla.org/en-US/docs/IndexedDB)
+- [WebExtension API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions) (largely the same as Chrome Extension API, but also compatible with Firefox)
 
-## Build
+## Components
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+The extension is divided into three main components:
 
-## Running unit tests
+- App
+- Content script
+- Background script
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### App
 
-## Running end-to-end tests
+The app contains the following parts of the extension:
+- Log viewer
+- Options page
+- Popup (which is shown when you click on the button in the toolbar)
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+This is an Angular app with some fancy routing to separate the different components listed above. It uses Angular Material for easy to use interface building blocks.
 
-## Further help
+This can be found in the `src/app` directory.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Content script
+
+The content script is the bridge between the game and the extension. It listens to events from the Bondage Club server as well as user input and sends the data to the background script for further processing.
+
+This is a very hacky solution but works well otherwise. TypeScript helps a lot to make sense of it all. It can be found in the `projects/content-script` directory.
+
+### Background
+
+The background script is an event based script which listens to events from the content script and processes them further. This includes storing data in the IndexedDB but also sending notifications if the user wants it to.
+
+This can be found in the `projects/background` directory.
+
+## Requirements
+
+To develop locally you'll need:
+- [NodeJS LTS](https://nodejs.org/en/), if using Windows, be sure to install to Windows PATH.
+- Yarn, can be installed using `npm install -g yarn` after installing NodeJS.
+- For coding I recommend [Visual Studio Code](https://code.visualstudio.com/).
+
+## Setup
+
+1. Clone repository to a directory of your choice.
+2. Open command prompt in the directory where you cloned the repository.
+3. Execute `yarn` to install the dependencies (this can take a while).
+4. After this you can build the project with `yarn build`.
+5. This will build everything you need to run the extension locally in the `dist` directory.
+
+## Using local build
+
+### Chrome
+
+1. Open the Extension Management page by navigating to `chrome://extensions`.
+2. Enable Developer Mode by clicking the toggle switch next to **Developer mode**.
+3. Click the **LOAD UNPACKED** button and select the extension directory.
+
+See also [this page](https://developer.chrome.com/extensions/getstarted).
+
+### Firefox
+
+1. Open `about:debugging` in Firefox.
+2. Click `Load Temporary Add-on` and select any file in your extension's directory.
+
+See also [this page](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Temporary_Installation_in_Firefox).
