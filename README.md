@@ -14,6 +14,7 @@ A web extension for the [Bondage Club](https://www.patreon.com/BondageProjects) 
 This project uses the following technologies, so prior knowledge of these is required if you want to contribute.
 
 - [TypeScript](https://www.typescriptlang.org/)
+- [RxJS](https://rxjs.dev/)
 - [Angular](https://angular.io/)
 - [Angular Material](https://material.angular.io/)
 - [IndexedDB](https://developer.mozilla.org/en-US/docs/IndexedDB)
