@@ -95,7 +95,22 @@ export class OptionsComponent implements OnDestroy {
   }
 
   public uploadDatabase() {
-    alert('hello');
+    const input = document.createElement('input') as HTMLInputElement;
+    input.accept = 'application/json,.json';
+    input.type = 'file';
+    input.addEventListener('change', () => {
+      const file = input.files[0];
+      if (file.name.match(/\.(json)$/)) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          console.log(reader.result);
+        };
+        reader.readAsText(file);
+      } else {
+        alert('File not supported, .json files only');
+      }
+    });
+    input.click();
   }
 
   private async clearDatabase() {

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { openDatabase } from 'models';
 
 @Injectable({
@@ -22,6 +23,33 @@ export class DatabaseService {
     }
 
     return this.db;
+  }
+
+  public calculateTableSize(storeName: string) {
+    return new Observable<number>(subscriber => {
+      let size = 0;
+      this.transaction(storeName).then(transaction => {
+        const request = transaction.objectStore(storeName)
+          .openCursor();
+
+        request.addEventListener('success', event => {
+          const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+          if (cursor) {
+            const storedObject = cursor.value;
+            const json = JSON.stringify(storedObject);
+            size += json.length;
+            cursor.continue();
+          } else {
+            subscriber.next(size);
+            subscriber.complete();
+          }
+        });
+
+        request.addEventListener('error', event => {
+          subscriber.error((event.target as IDBRequest<IDBCursorWithValue>).error);
+        });
+      });
+    });
   }
 
   public async transaction(storeNames: string | string[], mode?: IDBTransactionMode): Promise<IDBTransaction> {
