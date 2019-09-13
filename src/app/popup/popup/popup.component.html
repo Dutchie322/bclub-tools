@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar style="min-width: 780px;">
   <span *ngIf="loggedIn; else notLoggedInTemplate">Logged in as {{ player.Name }}</span>
   <ng-template #notLoggedInTemplate>Not logged in</ng-template>
 </mat-toolbar>
