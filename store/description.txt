@@ -1,0 +1,5 @@
+Adds a popup which displays the current characters in the chat room, the current chat rooms and an overview of your online friends.
+
+Also includes chat and whisper logging which is stored locally, meaning that your chat logs never leave your computer. There is an interface to browse through past chat sessions as well.
+
+The extension can also be configured to show notifications when you receive a beep, or when a friend comes online or goes offline.
