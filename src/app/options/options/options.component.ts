@@ -6,6 +6,7 @@ import { tap, map } from 'rxjs/operators';
 import { storeGlobal, ISettings, retrieveGlobal } from 'models';
 import { DatabaseService } from 'src/app/shared/database.service';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
+import { humanFileSize } from 'src/app/shared/utils/human-file-size';
 
 @Component({
   selector: 'app-options',
@@ -22,7 +23,7 @@ export class OptionsComponent implements OnDestroy {
       friendOffline: new FormControl(false)
     })
   });
-  public chatLogsSize$: Observable<number>;
+  public chatLogsSize$: Observable<string>;
 
   constructor(
     private chatLogsService: ChatLogsService,
@@ -47,7 +48,9 @@ export class OptionsComponent implements OnDestroy {
       tap(() => this.showSavedNotice())
     ).subscribe();
 
-    this.chatLogsSize$ = this.chatLogsService.getTotalSize();
+    this.chatLogsSize$ = this.chatLogsService.getTotalSize().pipe(
+      map(value => humanFileSize(value))
+    );
   }
 
   ngOnDestroy() {
