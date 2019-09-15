@@ -3,7 +3,9 @@ import {
   IClientMessage, IEnrichedChatRoomChat, IChatRoomChat
 } from '../../../models';
 
-generatePersistentScriptWithWait('ServerSocket', listenForUserSentEvents);
+const cleanUpFns = [];
+
+cleanUpFns.push(generatePersistentScriptWithWait('ServerSocket', listenForUserSentEvents));
 
 function listenForUserSentEvents(handshake: string) {
   const eventsToForward = {

@@ -26,9 +26,11 @@ declare global {
   }
 }
 
-generatePersistentScriptWithWait('ServerSocket', listenToServerEvents);
-generatePersistentScriptWithWait('ServerSocket', pollOnlineFriends);
-generatePersistentScript(pollVariables);
+const cleanUpFns = [];
+
+cleanUpFns.push(generatePersistentScriptWithWait('ServerSocket', listenToServerEvents));
+cleanUpFns.push(generatePersistentScriptWithWait('ServerSocket', pollOnlineFriends));
+cleanUpFns.push(generatePersistentScript(pollVariables));
 
 function listenToServerEvents(handshake: string) {
   function createForwarder<TMessage>(event: string, enrichData?: (data: TMessage) => TMessage) {
@@ -66,7 +68,7 @@ function listenToServerEvents(handshake: string) {
 function pollOnlineFriends() {
   setInterval(() => {
     if (window.CurrentScreen !== 'Login') {
-      const searchInput = document.getElementById('InputSearch') as HTMLInputElement;
+      // const searchInput = document.getElementById('InputSearch') as HTMLInputElement;
 
       window.ServerSocket.emit('AccountQuery', { Query: 'OnlineFriends' });
       // window.ServerSocket.emit('ChatRoomSearch', { Query: searchInput ? searchInput.value : '' });

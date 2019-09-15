@@ -1,7 +1,7 @@
 export function generatePersistentScript<K extends any>(
   executor: (handshake: string, ...args: K[]) => void,
   ...args: K[]
-) {
+): () => void {
   const handshake = window.crypto.getRandomValues(new Uint32Array(5)).toString();
 
   const stringifiedArgs = args.map(value => JSON.stringify(value)).join(',');
@@ -14,12 +14,29 @@ export function generatePersistentScript<K extends any>(
   scriptTag.appendChild(scriptBody);
   document.body.append(scriptTag);
 
-  window.addEventListener('message', ({ data }) => {
+  const listener = ({ data }) => {
     if (data.handshake !== handshake) {
       return;
     }
     delete data.handshake;
 
-    chrome.runtime.sendMessage(data);
-  }, false);
+    try {
+      chrome.runtime.sendMessage(data);
+      console.log('successfully sent');
+      console.log(data);
+    } catch (e) {
+      console.warn('failed to send');
+      console.log(data);
+      deregister();
+    }
+  };
+
+  const deregister = () => {
+    document.body.removeChild(scriptTag);
+    window.removeEventListener('message', listener);
+  };
+
+  window.addEventListener('message', listener, false);
+
+  return deregister;
 }

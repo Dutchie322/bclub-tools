@@ -17,24 +17,13 @@
       "128": "assets/bclub-logo.png"
     }
   },
-  "content_scripts": [
-    {
-      "matches": [
-        "http://www.bondageprojects.com/*",
-        "https://www.bondageprojects.com/*",
-        "http://ben987.x10host.com/*",
-        "https://ben987.x10host.com/*"
-      ],
-      "run_at": "document_idle",
-      "js": ["content-script/main.js"]
-    }
-  ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "permissions": [
     "activeTab",
     "notifications",
     "storage",
     "unlimitedStorage",
+    "webNavigation",
     "http://www.bondageprojects.com/*",
     "https://www.bondageprojects.com/*",
     "http://ben987.x10host.com/*",
