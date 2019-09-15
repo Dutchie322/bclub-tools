@@ -15,6 +15,9 @@ import {
   IChatRoomSearchResult,
   IClientMessage,
   IEnrichedChatRoomChat,
+  retrieveGlobal,
+  storeGlobal,
+  ISettings,
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
 
@@ -33,6 +36,20 @@ chrome.webNavigation.onCompleted.addListener(() => {
 });
 
 chrome.runtime.onInstalled.addListener(() => {
+  // Ensure default settings
+  retrieveGlobal('settings').then(settings => {
+    storeGlobal('settings', {
+      notifications: {
+        beeps: false,
+        friendOnline: false,
+        friendOffline: false,
+        ...settings ? settings.notifications : {}
+      },
+      ...settings
+    } as ISettings);
+  });
+
+  // Inject content scripts in applicable tabs
   [
     'http://www.bondageprojects.com/college/*',
     'https://www.bondageprojects.com/college/*',
