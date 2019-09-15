@@ -35,6 +35,8 @@ export interface IOwnership {
    */
   Stage: number;
   Start: number;
+  StartTrialOfferedByMemberNumber: number;
+  EndTrialOfferedByMemberNumber: number;
 }
 
 export interface IReputation {

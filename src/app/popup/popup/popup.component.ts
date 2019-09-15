@@ -106,10 +106,16 @@ export class PopupComponent {
 
   public ownerToText(owner: string, ownership: IOwnership) {
     if (ownership) {
-      return `${ownership.Name} (${ownership.MemberNumber}) - ` +
-        (ownership.Stage === 0 ? 'On trial for ' : 'Collared for ') +
-        Math.floor((new Date().getTime() - ownership.Start) / 86400000).toString() +
-        ' days';
+      if (ownership.MemberNumber) {
+        return `${ownership.Name} (${ownership.MemberNumber}) - ` +
+          (ownership.Stage === 0 ? 'On trial for ' : 'Collared for ') +
+          Math.floor((new Date().getTime() - ownership.Start) / 86400000).toString() +
+          ' days';
+      } else if (ownership.StartTrialOfferedByMemberNumber) {
+        return `Offered a trial by ${ownership.StartTrialOfferedByMemberNumber}`;
+      } else if (ownership.EndTrialOfferedByMemberNumber) {
+        return `Offered a collar by ${ownership.EndTrialOfferedByMemberNumber}`;
+      }
     } else if (owner) {
       return owner;
     }
