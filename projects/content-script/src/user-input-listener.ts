@@ -1,13 +1,8 @@
-import { generatePersistentScriptWithWait } from './script-generators';
 import {
   IClientMessage, IEnrichedChatRoomChat, IChatRoomChat
 } from '../../../models';
 
-const cleanUpFns = [];
-
-cleanUpFns.push(generatePersistentScriptWithWait('ServerSocket', listenForUserSentEvents));
-
-function listenForUserSentEvents(handshake: string) {
+export function listenForUserSentEvents(handshake: string) {
   const eventsToForward = {
     ChatRoomChat: (data: IChatRoomChat) => ({
       ...data,

@@ -1,38 +1,14 @@
-/// <reference types="@types/socket.io"/>
-
 import {
-  generatePersistentScript,
-  generatePersistentScriptWithWait
-} from './script-generators';
-import {
-  IChatRoom,
   IChatRoomMessage,
-  IPlayer,
   IEnrichedChatRoomMessage,
   IAccountBeep,
   IServerMessage,
+  IChatRoomSearchResult,
   IChatRoomSync,
-  IAccountQueryResult,
-  CurrentScreen
+  IAccountQueryResult
 } from '../../../models';
-import { IChatRoomSearchResult } from 'models/server-messages/IChatRoomSearchResult';
 
-declare global {
-  interface Window {
-    ChatRoomData: IChatRoom;
-    CurrentScreen: CurrentScreen;
-    Player: IPlayer;
-    ServerSocket: SocketIO.Server;
-  }
-}
-
-const cleanUpFns = [];
-
-cleanUpFns.push(generatePersistentScriptWithWait('ServerSocket', listenToServerEvents));
-cleanUpFns.push(generatePersistentScriptWithWait('ServerSocket', pollOnlineFriends));
-cleanUpFns.push(generatePersistentScript(pollVariables));
-
-function listenToServerEvents(handshake: string) {
+export function listenToServerEvents(handshake: string) {
   function createForwarder<TMessage>(event: string, enrichData?: (data: TMessage) => TMessage) {
     window.ServerSocket.on(event, (data: TMessage) => {
       window.postMessage({
@@ -65,7 +41,7 @@ function listenToServerEvents(handshake: string) {
   });
 }
 
-function pollOnlineFriends() {
+export function pollOnlineFriends() {
   setInterval(() => {
     if (window.CurrentScreen !== 'Login') {
       // const searchInput = document.getElementById('InputSearch') as HTMLInputElement;
@@ -76,7 +52,7 @@ function pollOnlineFriends() {
   }, 10000);
 }
 
-function pollVariables(handshake: string) {
+export function pollVariables(handshake: string) {
   function sanitizeObject(obj: any): any {
     return JSON.parse(JSON.stringify(obj));
   }
