@@ -39,20 +39,11 @@ function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
     chatRoomLogsStore.createIndex('senderName_idx', 'sender.name');
     chatRoomLogsStore.createIndex('sessionId_idx', 'session.id');
     chatRoomLogsStore.createIndex('sessionMemberNumber_idx', 'session.memberNumber');
+    chatRoomLogsStore.createIndex('member_session_chatRoom_idx', ['chatRoom', 'session.id', 'session.memberNumber'], { unique: false });
+    chatRoomLogsStore.deleteIndex('timestamp_idx');
+    chatRoomLogsStore.deleteIndex('type_idx');
   } else {
     chatRoomLogsStore = transaction.objectStore('chatRoomLogs');
-  }
-
-  if (!chatRoomLogsStore.indexNames.contains('member_session_chatRoom_idx')) {
-    chatRoomLogsStore.createIndex('member_session_chatRoom_idx', ['chatRoom', 'session.id', 'session.memberNumber'], { unique: false });
-  }
-
-  if (chatRoomLogsStore.indexNames.contains('timestamp_idx')) {
-    chatRoomLogsStore.deleteIndex('timestamp_idx');
-  }
-
-  if (chatRoomLogsStore.indexNames.contains('type_idx')) {
-    chatRoomLogsStore.deleteIndex('type_idx');
   }
 }
 
