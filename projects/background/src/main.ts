@@ -21,20 +21,6 @@ import {
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
 
-chrome.webNavigation.onCompleted.addListener(() => {
-  chrome.tabs.executeScript({
-    runAt: 'document_idle',
-    file: 'content-script/main.js'
-  });
-}, {
-  url: [
-    { urlMatches: 'http://www.bondageprojects.com/college/' },
-    { urlMatches: 'https://www.bondageprojects.com/college/' },
-    { urlMatches: 'https://ben987.x10host.com/'},
-    { urlMatches: 'http://ben987.x10host.com/'}
-  ]
-});
-
 chrome.runtime.onInstalled.addListener(() => {
   // Ensure default settings
   retrieveGlobal('settings').then(settings => {
