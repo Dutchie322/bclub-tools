@@ -33,8 +33,6 @@ export class PopupComponent {
       retrieve(tabId, 'player').then(player => this.player = player);
 
       onChanged(tabId, (changes, areaName) => {
-        console.log(changes);
-
         if (areaName !== 'local') {
           return;
         }

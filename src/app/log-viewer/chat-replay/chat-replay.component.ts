@@ -46,8 +46,7 @@ export class ChatReplayComponent {
 
             acc.push(value);
             return acc;
-          }, []),
-          tap(() => console.log('reduce done'))
+          }, [])
         )
       ),
       tap(() => this.loadingSubject.next(false))

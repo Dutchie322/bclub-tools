@@ -22,11 +22,11 @@ export function generatePersistentScript<K extends any>(
 
     try {
       chrome.runtime.sendMessage(data);
-      console.log('successfully sent');
-      console.log(data);
+      // console.log('successfully sent');
+      // console.log(data);
     } catch (e) {
-      console.warn('failed to send');
-      console.log(data);
+      // console.warn('failed to send');
+      // console.log(data);
       deregister();
     }
   };
