@@ -106,7 +106,13 @@ export class OptionsComponent implements OnDestroy {
       if (file.name.match(/\.(json)$/)) {
         const reader = new FileReader();
         reader.onload = () => {
-          console.log(reader.result);
+          console.log(`Loaded file: ${humanFileSize((reader.result as string).length)}`);
+          this.clearDatabase().then(() => {
+            return this.importDatabase(reader.result as string);
+          })
+          .catch(error => {
+            console.error(error);
+          });
         };
         reader.readAsText(file);
       } else {
@@ -118,6 +124,7 @@ export class OptionsComponent implements OnDestroy {
 
   private async clearDatabase() {
     return new Promise(async (resolve, reject) => {
+      console.log('Clearing database...');
       const objectStoreNames = await this.databaseService.objectStoreNames;
       const transaction = await this.databaseService.transaction(objectStoreNames, 'readwrite');
       transaction.onerror = event => {
@@ -125,10 +132,13 @@ export class OptionsComponent implements OnDestroy {
       };
       let count = 0;
       objectStoreNames.forEach(storeName => {
+        console.log(`Clearing ${storeName}...`);
         transaction.objectStore(storeName).clear().onsuccess = () => {
           count++;
+          console.log(`Done ${storeName}`);
           if (count === objectStoreNames.length) {
             // cleared all object stores
+            console.log('Done with all');
             resolve();
           }
         };
@@ -138,23 +148,33 @@ export class OptionsComponent implements OnDestroy {
 
   private async importDatabase(jsonString: string) {
     return new Promise(async (resolve, reject) => {
+      console.log('Importing database...');
       const objectStoreNames = await this.databaseService.objectStoreNames;
       const transaction = await this.databaseService.transaction(objectStoreNames, 'readwrite');
       transaction.onerror = event => {
         reject(event);
       };
-      const importObject = JSON.parse(jsonString);
+      const importObject = JSON.parse(jsonString, (_, value) => {
+        // tslint:disable-next-line: max-line-length
+        if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3,6}|)Z$/.test(value)) {
+          return new Date(value);
+        }
+        return value;
+      });
       objectStoreNames.forEach(storeName => {
+        console.log(`Importing ${storeName}...`);
         let count = 0;
         importObject[storeName].forEach((toAdd: {}) => {
           const request = transaction.objectStore(storeName).add(toAdd);
           request.onsuccess = () => {
             count++;
             if (count === importObject[storeName].length) {
+              console.log(`Done ${storeName}`);
               // added all objects for this store
               delete importObject[storeName];
               if (Object.keys(importObject).length === 0) {
                 // added all object stores
+                console.log('Done with all');
                 resolve();
               }
             }
