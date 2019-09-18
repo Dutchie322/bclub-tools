@@ -55,7 +55,7 @@ export function pollOnlineFriends() {
         Space: window.ChatRoomSpace
       });
     }
-  }, 15000);
+  }, 10000);
 }
 
 export function pollVariables(handshake: string) {
