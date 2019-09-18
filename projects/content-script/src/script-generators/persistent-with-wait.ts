@@ -34,7 +34,6 @@ export function generatePersistentScriptWithWait<V extends keyof Window, K exten
   };
 
   const deregister = () => {
-    console.warn('deregistering');
     window.removeEventListener('message', listener);
     document.body.removeChild(scriptTag);
   };

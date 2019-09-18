@@ -1,6 +1,7 @@
-import { CurrentScreen, IPlayer } from './game';
+import { ChatRoomSpace, CurrentScreen, IPlayer } from './game';
 
 export interface IVariablesUpdate {
+  ChatRoomSpace: ChatRoomSpace;
   CurrentScreen: CurrentScreen;
   Player: IPlayer;
 }

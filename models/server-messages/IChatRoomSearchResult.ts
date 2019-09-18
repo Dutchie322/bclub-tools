@@ -4,4 +4,11 @@ export interface IChatRoomSearchResult {
   MemberCount: number;
   MemberLimit: number;
   Description: string;
+  Friends: IChatRoomSearchResultFriend[];
+}
+
+export interface IChatRoomSearchResultFriend {
+  MemberName: string;
+  MemberNumber: number;
+  Type: 'Friend' | 'Submissive';
 }

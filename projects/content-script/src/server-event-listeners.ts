@@ -44,12 +44,18 @@ export function listenToServerEvents(handshake: string) {
 export function pollOnlineFriends() {
   setInterval(() => {
     if (window.CurrentScreen !== 'Login') {
-      // const searchInput = document.getElementById('InputSearch') as HTMLInputElement;
-
-      window.ServerSocket.emit('AccountQuery', { Query: 'OnlineFriends' });
-      // window.ServerSocket.emit('ChatRoomSearch', { Query: searchInput ? searchInput.value : '' });
+      window.ServerSocket.emit('AccountQuery', {
+        Query: 'OnlineFriends'
+      });
     }
-  }, 10000);
+    if (window.CurrentScreen === 'ChatSearch') {
+      const searchInput = document.getElementById('InputSearch') as HTMLInputElement;
+      window.ServerSocket.emit('ChatRoomSearch', {
+        Query: searchInput ? searchInput.value.toUpperCase().trim() : '',
+        Space: window.ChatRoomSpace
+      });
+    }
+  }, 15000);
 }
 
 export function pollVariables(handshake: string) {
@@ -63,6 +69,7 @@ export function pollVariables(handshake: string) {
       type: 'client',
       event: 'VariablesUpdate',
       data: {
+        ChatRoomSpace: sanitizeObject(window.ChatRoomSpace),
         CurrentScreen: sanitizeObject(window.CurrentScreen),
         Player: sanitizeObject(window.Player)
       }

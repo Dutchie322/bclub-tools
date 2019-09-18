@@ -18,7 +18,7 @@ export class PopupComponent {
 
   public characterColumns = ['name', 'owner', 'permission', 'reputation'];
   public chatRoomColumns = ['name', 'creator', 'members', 'description'];
-  public onlineFriendColumns = ['type', 'name', 'chatRoom'];
+  public onlineFriendColumns = ['name', 'chatRoom', 'type'];
 
   get loggedIn() {
     return this.player && this.player.MemberNumber > 0;

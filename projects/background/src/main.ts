@@ -171,7 +171,11 @@ function handleDisconnect(tabId: number) {
 function handleVariablesUpdate(tabId: number, message: IServerMessage<IVariablesUpdate>) {
   if (message.data.CurrentScreen === 'Login') {
     clearStorage(tabId);
-  } else {
-    store(tabId, 'player', message.data.Player);
+    return;
+  }
+
+  store(tabId, 'player', message.data.Player);
+  if (message.data.CurrentScreen !== 'ChatRoom') {
+    store(tabId, 'chatRoomCharacter', []);
   }
 }
