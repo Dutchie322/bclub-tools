@@ -75,7 +75,7 @@
       <tr mat-row *matRowDef="let row; columns: chatRoomColumns;"></tr>
     </table>
   </mat-tab> -->
-  <mat-tab label="Characters" [disabled]="!characters.data.length">
+  <mat-tab label="Characters" [disabled]="!characters.data?.length">
     <table mat-table [dataSource]="characters" [trackBy]="trackByCharacter" matSort>
       <ng-container matColumnDef="name" mat-sort-header>
         <th mat-header-cell *matHeaderCellDef>Name</th>
