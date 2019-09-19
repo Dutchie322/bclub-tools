@@ -15,6 +15,7 @@ export function listenForUserSentEvents(handshake: string) {
       Timestamp: new Date()
     } as IEnrichedChatRoomChat)
   } as {[event: string]: (data: any) => any };
+
   function forwardMessage<TMessage>(event: string, data: any) {
     if (!eventsToForward[event]) {
       return;

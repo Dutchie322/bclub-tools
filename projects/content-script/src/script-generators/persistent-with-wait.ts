@@ -1,8 +1,10 @@
+import registry from './registry';
+
 export function generatePersistentScriptWithWait<V extends keyof Window, K extends any>(
   variableName: V,
   executor: (handshake: string, ...args: K[]) => void,
   ...args: K[]
-): () => void {
+) {
   const handshake = window.crypto.getRandomValues(new Uint32Array(5)).toString();
 
   const stringifiedArgs = args.map(value => JSON.stringify(value)).join(',');
@@ -24,23 +26,17 @@ export function generatePersistentScriptWithWait<V extends keyof Window, K exten
 
     try {
       chrome.runtime.sendMessage(data);
-      // console.log('successfully sent');
-      // console.log(data);
     } catch (e) {
-      // console.warn('failed to send');
-      // console.log(data);
-      deregister();
+      registry.deregisterAll();
     }
   };
 
-  const deregister = () => {
+  registry.add(() => {
     window.removeEventListener('message', listener);
     document.body.removeChild(scriptTag);
-  };
+  });
 
   window.addEventListener('message', listener, false);
-
-  return deregister;
 }
 
 function wrapWaitUntilWindowVariable<V extends keyof Window>(variableName: V) {
