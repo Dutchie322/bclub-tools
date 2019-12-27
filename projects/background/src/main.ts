@@ -39,8 +39,8 @@ chrome.runtime.onInstalled.addListener(() => {
   [
     'http://www.bondageprojects.com/college/*',
     'https://www.bondageprojects.com/college/*',
-    'http://ben987.x10host.com/*',
-    'https://ben987.x10host.com/*'
+    'http://www.bondageprojects.elementfx.com/*',
+    'https://www.bondageprojects.elementfx.com/*'
   ].forEach(url => {
     chrome.tabs.query({
       url

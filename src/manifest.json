@@ -1,7 +1,7 @@
 {
   "name": "Bondage Club Tools",
   "description" : "Enriches the experience for Bondage Club.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "manifest_version": 2,
   "icons": {
     "128": "assets/bclub-logo.png"
@@ -22,8 +22,8 @@
       "matches": [
         "http://www.bondageprojects.com/*",
         "https://www.bondageprojects.com/*",
-        "http://ben987.x10host.com/*",
-        "https://ben987.x10host.com/*"
+        "http://www.bondageprojects.elementfx.com/*",
+        "https://www.bondageprojects.elementfx.com/*"
       ],
       "run_at": "document_idle",
       "js": ["content-script/main.js"]
@@ -37,8 +37,8 @@
     "unlimitedStorage",
     "http://www.bondageprojects.com/*",
     "https://www.bondageprojects.com/*",
-    "http://ben987.x10host.com/*",
-    "https://ben987.x10host.com/*"
+    "http://www.bondageprojects.elementfx.com/*",
+    "https://www.bondageprojects.elementfx.com/*"
   ],
   "options_ui": {
     "page": "index.html?page=/options"
