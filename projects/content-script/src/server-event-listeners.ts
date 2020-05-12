@@ -15,7 +15,7 @@ export function listenToServerEvents(handshake: string) {
         handshake,
         type: 'server',
         event,
-        data: enrichData ? enrichData(data) : data,
+        data: JSON.parse(JSON.stringify(enrichData ? enrichData(data) : data)),
       } as IServerMessage<TMessage>, '*');
     });
   }

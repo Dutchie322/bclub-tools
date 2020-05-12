@@ -25,7 +25,7 @@ export function listenForUserSentEvents(handshake: string) {
       handshake,
       type: 'client',
       event,
-      data: eventsToForward[event](data),
+      data: JSON.parse(JSON.stringify(eventsToForward[event](data))),
     } as IClientMessage<TMessage>, '*');
   }
 
