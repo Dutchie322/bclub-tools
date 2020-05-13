@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "npm run build:popup && npm run build:background && npm run build:content-script",
     "build:debug": "npm run build:popup:debug && npm run build:background:debug && npm run build:content-script:debug",
-    "build:popup": "ng build --aot --output-hashing=none --source-map=false",
+    "build:popup": "ng build --aot --prod --output-hashing=none --source-map=false",
     "build:popup:debug": "ng build --aot",
     "build:background": "webpack-cli --config ./projects/background/webpack.config.js --context ./projects/background/ --mode=production",
     "build:background:debug": "webpack-cli --config ./projects/background/webpack.config.js --context ./projects/background/ --mode=development",
