@@ -37,8 +37,12 @@ chrome.runtime.onInstalled.addListener(() => {
 
   // Inject content scripts in applicable tabs
   [
-    'http://www.bondageprojects.com/college/*',
-    'https://www.bondageprojects.com/college/*',
+    'http://bondageprojects.com/*',
+    'https://bondageprojects.com/*',
+    'http://www.bondageprojects.com/*',
+    'https://www.bondageprojects.com/*',
+    'http://bondageprojects.elementfx.com/*',
+    'https://bondageprojects.elementfx.com/*',
     'http://www.bondageprojects.elementfx.com/*',
     'https://www.bondageprojects.elementfx.com/*'
   ].forEach(url => {
