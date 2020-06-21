@@ -9,5 +9,6 @@ declare global {
     CurrentScreen: CurrentScreen;
     Player: IPlayer;
     ServerSocket: SocketIO.Server;
+    TimerProcess: typeof TimerProcess;
   }
 }
