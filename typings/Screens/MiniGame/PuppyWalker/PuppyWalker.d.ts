@@ -1,0 +1,11 @@
+declare function PuppyWalkerLoad(): void;
+declare function PuppyWalkerDraw(Puppy: any, X: any, Fail: any): void;
+declare function PuppyWalkerRun(): void;
+declare function PuppyWalkerVerifyEnd(): void;
+declare function PuppyWalkerDoMove(MoveType: any): void;
+declare function PuppyWalkerClick(): void;
+declare var PuppyWalkerBackground: string;
+declare var PuppyWalkerMoves: number[];
+declare var PuppyWalkerMovesTimer: number[];
+declare var PuppyWalkerEscape: number[];
+declare var PuppyWalkerGenerateMoveTimer: number;

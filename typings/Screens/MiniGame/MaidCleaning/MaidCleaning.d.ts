@@ -1,0 +1,12 @@
+declare function MaidCleaningGenerateSpots(MaxSpot: any): void;
+declare function MaidCleaningDrawSpots(): void;
+declare function MaidCleaningLoad(): void;
+declare function MaidCleaningRun(): void;
+declare function MaidCleaningEnd(Victory: any): void;
+declare function MaidCleaningDoMove(): void;
+declare function MaidCleaningClick(): void;
+declare var MaidCleaningBackground: string;
+declare var MaidCleaningSpots: any;
+declare var MaidCleaningPlayerX: number;
+declare var MaidCleaningPlayerY: number;
+declare var MaidCleaningSpotSize: number;

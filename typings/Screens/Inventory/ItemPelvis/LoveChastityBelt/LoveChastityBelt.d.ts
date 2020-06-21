@@ -1,0 +1,12 @@
+declare function InventoryItemPelvisLoveChastityBeltLoad(): void;
+declare function InventoryItemPelvisLoveChastityBeltDraw(): void;
+declare function InventoryItemPelvisLoveChastityBeltClick(): void;
+declare function InventoryItemPelvisLoveChastityBeltCanInsert(C: any): boolean;
+declare function InventoryItemPelvisLoveChastityBeltSetTypeTo(Type: any, Message: any): void;
+declare function InventoryItemPelvisLoveChastityBeltUpdate(): void;
+declare function InventoryItemPelvisLoveChastityBeltIntensityCanIncrease(): boolean;
+declare function InventoryItemPelvisLoveChastityBeltIntensityCanDecrease(): boolean;
+declare function InventoryItemPelvisLoveChastityBeltTriggerShock(): void;
+declare function InventoryItemPelvisLoveChastityBeltLoadType(): void;
+declare function InventoryItemPelvisLoveChastityBeltSetIntensity(Modifier: any): void;
+declare var InventoryItemPelvisLoveChastityBeltLastAction: string;

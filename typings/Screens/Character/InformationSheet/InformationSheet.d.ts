@@ -1,0 +1,11 @@
+declare function InformationSheetGetLove(Love: any): string;
+declare function InformationSheetRun(): void;
+declare function InformationSheetSecondScreenRun(): void;
+declare function InformationSheetClick(): void;
+declare function InformationSheetExit(): void;
+declare function InformationSheetLoadCharacter(C: any): void;
+declare var InformationSheetBackground: string;
+declare var InformationSheetSelection: any;
+declare var InformationSheetPreviousModule: string;
+declare var InformationSheetPreviousScreen: string;
+declare var InformationSheetSecondScreen: boolean;

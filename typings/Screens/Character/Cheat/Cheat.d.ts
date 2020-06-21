@@ -1,0 +1,18 @@
+declare function CheatValidate(): void;
+declare function CheatActive(CheatName: any): boolean;
+declare function CheatFactor(CheatName: any, Factor: any): any;
+declare function CheatImport(): void;
+declare function CheatExport(): void;
+declare function CheatRun(): void;
+declare function CheatClick(): void;
+declare function CheatExit(): void;
+declare var CheatBackground: string;
+declare var CheatAllow: boolean;
+declare var CheatList: string[];
+declare var CheatBonusList: string[];
+declare var CheatBonusFactor: number;
+declare var CheatBonusTime: number;
+declare var CheatActivated: any[];
+declare var CheatBrowserName: string;
+declare var CheatBrowserVersion: string;
+declare var CheatBrowserTime: number;

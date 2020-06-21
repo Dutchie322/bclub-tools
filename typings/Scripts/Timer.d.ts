@@ -1,0 +1,14 @@
+declare function TimerToString(T: any): string;
+declare function TimerHourToString(T: any): string;
+declare function TimerInventoryRemove(): void;
+declare function TimerInventoryRemoveSet(C: any, AssetGroup: any, Timer: any): void;
+declare function TimerPrivateOwnerBeep(): void;
+declare function TimerProcess(Timestamp: any): void;
+declare function TimermsToTime(s: any): string;
+declare var CurrentTime: number;
+declare var TimerRunInterval: number;
+declare var TimerCycle: number;
+declare var TimerLastTime: number;
+declare var TimerLastArousalProgress: number;
+declare var TimerLastArousalProgressCount: number;
+declare var TimerLastArousalDecay: number;

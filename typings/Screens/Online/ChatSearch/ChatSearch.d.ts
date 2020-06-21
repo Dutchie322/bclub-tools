@@ -1,0 +1,12 @@
+declare function ChatSearchLoad(): void;
+declare function ChatSearchRun(): void;
+declare function ChatSearchClick(): void;
+declare function ChatSearchKeyDown(): void;
+declare function ChatSearchExit(): void;
+declare function ChatSearchJoin(): void;
+declare function ChatSearchResponse(data: any): void;
+declare function ChatSearchQuery(): void;
+declare var ChatSearchBackground: string;
+declare var ChatSearchResult: any[];
+declare var ChatSearchMessage: string;
+declare var ChatSearchLeaveRoom: string;

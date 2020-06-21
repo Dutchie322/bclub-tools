@@ -1,0 +1,12 @@
+declare function ElementValue(ID: any, Value: any): any;
+declare function ElementContent(ID: any, Content: any): string;
+declare function ElementCreateTextArea(ID: any): void;
+declare function ElementCreateInput(ID: any, Type: any, Value: any, MaxLength: any): void;
+declare function ElementCreateDiv(ID: any): void;
+declare function ElementRemove(ID: any): void;
+declare function ElementPosition(ElementID: any, X: any, Y: any, W: any, H: any): void;
+declare function ElementPositionFix(ElementID: any, Font: any, X: any, Y: any, W: any, H: any): void;
+declare function ElementSetDataAttribute(ID: any, Name: any, Value: any): void;
+declare function ElementScrollToEnd(ID: any): void;
+declare function ElementIsScrolledToEnd(ID: any): boolean;
+declare function ElementFocus(ID: any): void;

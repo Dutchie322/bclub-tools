@@ -1,0 +1,16 @@
+declare function AsylumMeetingCanReleasePlayer(): boolean;
+declare function AsylumMeetingCannotReleasePlayer(): any;
+declare function AsylumMeetingCanRestrainPlayer(): boolean;
+declare function AsylumMeetingCanKiss(): any;
+declare function AsylumMeetingLoad(): void;
+declare function AsylumMeetingRun(): void;
+declare function AsylumMeetingClick(): void;
+declare function AsylumMeetingSmoke(): void;
+declare function AsylumMeetingBuyVibratingWand(): void;
+declare function AsylumMeetingReleaseForMoney(): void;
+declare function AsylumMeetingRunAway(RepChange: any): void;
+declare function AsylumMeetingRestrainPlayer(RestraintsType: any): void;
+declare function AsylumMeetingBlush(BlushType: any): void;
+declare var AsylumMeetingBackground: string;
+declare var AsylumMeetingPatientLeft: any;
+declare var AsylumMeetingPatientRight: any;

@@ -1,0 +1,18 @@
+declare function EmptyStruggleSuccess(): boolean;
+declare function EmptyStruggleFail(): boolean;
+declare function EmptyStruggleProgress(): boolean;
+declare function EmptySlaveMarketReadyForBondageTraining(): boolean;
+declare function EmptyLoad(): void;
+declare function EmptyRun(): void;
+declare function EmptyClick(): void;
+declare function EmptyManagementMainHall(): void;
+declare function EmptyManagementCell(): void;
+declare function EmptyShopRelease(): void;
+declare function EmptyShopEnd(Sold: any): void;
+declare function EmptySlaveMarketTrainingStart(TrainingType: any): void;
+declare function EmptySlaveMarketTrainingLevelIs(TestLevel: any): boolean;
+declare function EmptySlaveMarketTrainingProgress(Intensity: any): void;
+declare function EmptySlaveMarketTrainingEnd(Status: any): void;
+declare var EmptyBackground: string;
+declare var EmptyCharacter: any[];
+declare var EmptyCharacterOffset: number;

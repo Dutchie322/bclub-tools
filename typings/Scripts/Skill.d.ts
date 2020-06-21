@@ -1,0 +1,17 @@
+declare function SkillChange(SkillType: any, SkillLevel: any, SkillProgress: any, Push: any): void;
+declare function SkillLoad(NewSkill: any): void;
+declare function SkillGetLevel(C: any, SkillType: any): any;
+declare function SkillGetLevelReal(C: any, SkillType: any): any;
+declare function SkillGetProgress(C: any, SkillType: any): any;
+declare function SkillProgress(SkillType: any, SkillProgress: any): void;
+declare function SkillSetRatio(SkillType: any, Ratio: any, Push: any): void;
+declare function SkillGetRatio(SkillType: any): number;
+declare function SkillGetWithRatio(SkillType: any): number;
+declare function SkillModifierChange(Change: any): void;
+declare function SkillModifierReset(): void;
+declare var SkillModifier: number;
+declare var SkillModifierMax: number;
+declare var SkillModifierMin: number;
+declare var SkillLevelMaximum: number;
+declare var SkillLevelMinimum: number;
+declare var SkillBondageRatio: number;

@@ -1,0 +1,14 @@
+declare function ChatCreateLoad(): void;
+declare function ChatCreateRun(): void;
+declare function ChatCreateClick(): void;
+declare function ChatCreateKeyDown(): void;
+declare function ChatCreateExit(): void;
+declare function ChatCreateResponse(data: any): void;
+declare function ChatCreateRoom(): void;
+declare var ChatCreateBackground: string;
+declare var ChatCreateResult: any[];
+declare var ChatCreateMessage: string;
+declare var ChatCreatePrivate: any;
+declare var ChatCreateBackgroundIndex: number;
+declare var ChatCreateBackgroundSelect: string;
+declare var ChatCreateBackgroundList: any;

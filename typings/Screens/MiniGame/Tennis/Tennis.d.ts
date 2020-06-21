@@ -1,0 +1,17 @@
+declare function TennisServe(CharacterLeftServe: any): void;
+declare function TennisGetScore(PointFor: any, PointAgainst: any): any;
+declare function TennisLoad(): void;
+declare function TennisRun(): void;
+declare function TennisVerifyEnd(): void;
+declare function TennisClick(): void;
+declare var TennisBackground: string;
+declare var TennisCharacterLeft: any;
+declare var TennisCharacterRight: any;
+declare var TennisCharacterLeftPoint: number;
+declare var TennisCharacterRightPoint: number;
+declare var TennisCharacterLeftRacket: number;
+declare var TennisCharacterRightRacket: number;
+declare var TennisBallX: number;
+declare var TennisBallY: number;
+declare var TennisBallSpeed: number;
+declare var TennisBallAngle: number;
