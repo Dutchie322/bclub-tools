@@ -21,6 +21,9 @@ export class OptionsComponent implements OnDestroy {
       beeps: new FormControl(false),
       friendOnline: new FormControl(false),
       friendOffline: new FormControl(false)
+    }),
+    tools: new FormGroup({
+      fpsCounter: new FormControl(false)
     })
   });
   public chatLogsSize$: Observable<string>;
@@ -42,6 +45,9 @@ export class OptionsComponent implements OnDestroy {
           beeps: value.notifications.beeps,
           friendOnline: value.notifications.friendOnline,
           friendOffline: value.notifications.friendOffline
+        },
+        tools: {
+          fpsCounter: value.tools.fpsCounter
         }
       } as ISettings)),
       tap(settings => storeGlobal('settings', settings)),

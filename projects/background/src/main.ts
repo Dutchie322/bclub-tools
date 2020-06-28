@@ -18,6 +18,7 @@ import {
   retrieveGlobal,
   storeGlobal,
   ISettings,
+  IChatRoomSyncSingle,
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
 
@@ -29,7 +30,11 @@ chrome.runtime.onInstalled.addListener(() => {
         beeps: false,
         friendOnline: false,
         friendOffline: false,
-        ...settings ? settings.notifications : {}
+        ...(settings ? settings.notifications : {})
+      },
+      tools: {
+        fpsCounter: false,
+        ...(settings ? settings.tools : {})
       },
       ...settings
     } as ISettings);
@@ -111,6 +116,9 @@ function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtim
     case 'ChatRoomSync':
       handleChatRoomSync(sender.tab.id, message);
       break;
+    case 'ChatRoomSyncSingle':
+      handleChatRoomSyncSingle(sender.tab.id, message);
+      break;
     case 'disconnect':
     case 'ForceDisconnect':
       handleDisconnect(sender.tab.id);
@@ -166,6 +174,13 @@ function handleChatRoomSearchResult(tabId: number, message: IServerMessage<IChat
 
 function handleChatRoomSync(tabId: number, message: IServerMessage<IChatRoomSync>) {
   store(tabId, 'chatRoomCharacter', message.data.Character);
+}
+
+async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<IChatRoomSyncSingle>) {
+  const characters = await retrieve(tabId, 'chatRoomCharacter');
+  const i = characters.findIndex(char => char.MemberNumber === message.data.Character.MemberNumber);
+  characters[i] = message.data.Character;
+  store(tabId, 'chatRoomCharacter', characters);
 }
 
 function handleDisconnect(tabId: number) {

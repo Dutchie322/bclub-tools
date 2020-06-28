@@ -1,19 +1,23 @@
 import registry from './registry';
 
+type Unregister = () => void;
+
 export function generatePersistentScriptWithWait<V extends keyof Window, K extends any>(
   variableName: V,
-  executor: (handshake: string, ...args: K[]) => void,
+  executor: (handshake: string, ...args: K[]) => void | Unregister,
   ...args: K[]
 ) {
   const handshake = window.crypto.getRandomValues(new Uint32Array(5)).toString();
 
   const stringifiedArgs = args.map(value => JSON.stringify(value)).join(',');
-  const stringifiedBody = `(${executor.toString()})('${handshake}',${stringifiedArgs});`;
-  const wrapped = wrapWaitUntilWindowVariable.toString().replace('/** @preserve BODY */', stringifiedBody);
+  const stringifiedBody = `(${executor.toString()})('${handshake}',${stringifiedArgs})`;
+  const wrapped = wrapWaitUntilWindowVariable.toString()
+    .replace(/\${functionName}/g, executor.name)
+    .replace('/** @preserve BODY */', stringifiedBody);
 
-  const scriptTag = document.createElement('script');
-  const scriptBody = document.createTextNode(`(${wrapped})('${variableName}');`);
   const id = 'bclubDataPropagator' + window.crypto.getRandomValues(new Uint32Array(1));
+  const scriptTag = document.createElement('script');
+  const scriptBody = document.createTextNode(`(${wrapped})('${id}','${variableName}');`);
   scriptTag.id = id;
   scriptTag.appendChild(scriptBody);
   document.body.append(scriptTag);
@@ -31,7 +35,7 @@ export function generatePersistentScriptWithWait<V extends keyof Window, K exten
     }
   };
 
-  registry.add(() => {
+  registry.add(id, () => {
     window.removeEventListener('message', listener);
     document.body.removeChild(scriptTag);
   });
@@ -39,29 +43,41 @@ export function generatePersistentScriptWithWait<V extends keyof Window, K exten
   window.addEventListener('message', listener, false);
 }
 
-function wrapWaitUntilWindowVariable<V extends keyof Window>(variableName: V) {
-  const promise = new Promise((resolve, reject) => {
+function wrapWaitUntilWindowVariable<V extends keyof Window>(scriptId: string, variableName: V) {
+  new Promise((resolve, reject) => {
     const maxWaitTime = 3000;
     const startTime = new Date().getTime();
 
     function check() {
       const found = !!window[variableName];
       if (found) {
+        console.log('[Bondage Club Tools] Executing function "${functionName}" ' + scriptId);
         resolve(window[variableName]);
       } else if (new Date().getTime() - startTime >= maxWaitTime) {
-        reject(`variable '${variableName}' not found after ${maxWaitTime / 1000} seconds`);
+        reject(`Variable '${variableName}' not found after ${maxWaitTime / 1000} seconds`);
       } else {
         setTimeout(() => { check(); }, 250);
       }
     }
 
     check();
-  });
-
-  promise.then(() => {
-    /** @preserve BODY */
+  })
+  .then(() => {
+    return /** @preserve BODY */;
+  })
+  .then((possibleUnregisterFn: unknown) => {
+    if (typeof possibleUnregisterFn === 'function') {
+      console.log('[Bondage Club Tools] Found unregister function');
+      window.addEventListener('BondagClub.Deregister', (event: CustomEvent) => {
+        if (event.detail.scriptId !== scriptId) {
+          return;
+        }
+        console.log('[Bondage Club Tools] Received deregister for "${functionName}" ' + scriptId);
+        possibleUnregisterFn();
+      });
+    }
   })
   .catch(error => {
-    console.error(error);
+    console.error('[Bondage Club Tools] ', error);
   });
 }

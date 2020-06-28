@@ -1,15 +1,19 @@
 type DegisterFn = () => void;
 
 class DeregistrationRegistry {
-  private callbacks: DegisterFn[] = [];
+  private callbacks: { [key: string]: DegisterFn } = {};
 
-  public add(callback: DegisterFn) {
-    this.callbacks.push(callback);
+  public add(scriptId: string, callback: DegisterFn) {
+    this.callbacks[scriptId] = callback;
   }
 
   public deregisterAll() {
-    this.callbacks.forEach(fn => fn());
-    this.callbacks = [];
+    const scriptIds = Object.keys(this.callbacks);
+    scriptIds.forEach(scriptId => {
+      window.dispatchEvent(new CustomEvent('BondagClub.Deregister', { detail: { scriptId } }));
+      this.callbacks[scriptId]();
+    });
+    this.callbacks = {};
   }
 }
 

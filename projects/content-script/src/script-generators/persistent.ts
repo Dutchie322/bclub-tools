@@ -29,7 +29,7 @@ export function generatePersistentScript<K extends any>(
     }
   };
 
-  registry.add(() => {
+  registry.add(id, () => {
     document.body.removeChild(scriptTag);
     window.removeEventListener('message', listener);
   });

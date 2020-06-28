@@ -5,6 +5,7 @@ import {
   IServerMessage,
   IChatRoomSearchResult,
   IChatRoomSync,
+  IChatRoomSyncSingle,
   IAccountQueryResult
 } from '../../../models';
 
@@ -31,6 +32,7 @@ export function listenToServerEvents(handshake: string) {
     Timestamp: new Date()
   } as IEnrichedChatRoomMessage));
   createForwarder<IChatRoomSync>('ChatRoomSync');
+  createForwarder<IChatRoomSyncSingle>('ChatRoomSyncSingle');
   createForwarder<IChatRoomSearchResult[]>('ChatRoomSearchResult');
   createForwarder('disconnect');
   createForwarder('ForceDisconnect');
