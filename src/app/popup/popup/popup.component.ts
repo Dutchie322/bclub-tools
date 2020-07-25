@@ -89,7 +89,7 @@ export class PopupComponent {
 
   public dominantReputationToText(character: IChatRoomCharacter) {
     let dominant = 0;
-    const rep = character.Reputation.find(r => r.Type === 'Dominant');
+    const rep = (character.Reputation || []).find(r => r.Type === 'Dominant');
     if (rep) {
       dominant = rep.Value;
     }
