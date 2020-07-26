@@ -2,23 +2,29 @@
 /// <reference path="../../../typings/Scripts/Timer.d.ts" />
 
 export function frameCounter() {
-  let FPS = 0;
+  let lastKnownFrameRate = 0;
   let ProxyEnabled = true;
-  let TimerFrameCalculationCycles = 0;
-  let TimerLastFrameCalculation = 0;
+  let frames = 0;
+  let lastCalculationTime = 0;
+  let lastTimestamp = 0;
 
   const handler = {
     apply(target, thisArg, argumentsList) {
       if (ProxyEnabled) {
-        TimerLastFrameCalculation = Math.floor(TimerLastFrameCalculation + TimerRunInterval);
-        if (TimerLastFrameCalculation >= 1000) {
-          FPS = TimerCycle - TimerFrameCalculationCycles;
-          TimerFrameCalculationCycles = TimerCycle;
-          TimerLastFrameCalculation = 0;
-        }
-        // DrawTextFit(`${FPS} FPS`, 25, 6, 50, 'white');
+        const timestamp = argumentsList[0];
+        const timerRunInterval = timestamp - lastTimestamp;
+        lastTimestamp = timestamp;
 
-        const text = `${FPS} FPS`;
+        frames++;
+
+        lastCalculationTime += timerRunInterval;
+        if (lastCalculationTime >= 1000) {
+          lastKnownFrameRate = frames;
+          frames = 0;
+          lastCalculationTime = 0;
+        }
+
+        const text = `${lastKnownFrameRate} FPS`;
         MainCanvas.font = '14px Arial';
         MainCanvas.fillStyle = 'black';
         MainCanvas.fillText(text, 31, 8);

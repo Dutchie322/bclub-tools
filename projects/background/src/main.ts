@@ -19,6 +19,7 @@ import {
   storeGlobal,
   ISettings,
   IChatRoomSyncSingle,
+  executeForAllGameTabs,
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
 
@@ -41,25 +42,10 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 
   // Inject content scripts in applicable tabs
-  [
-    'http://bondageprojects.com/*',
-    'https://bondageprojects.com/*',
-    'http://www.bondageprojects.com/*',
-    'https://www.bondageprojects.com/*',
-    'http://bondageprojects.elementfx.com/*',
-    'https://bondageprojects.elementfx.com/*',
-    'http://www.bondageprojects.elementfx.com/*',
-    'https://www.bondageprojects.elementfx.com/*'
-  ].forEach(url => {
-    chrome.tabs.query({
-      url
-    }, tabs => {
-      tabs.forEach(tab => {
-        chrome.tabs.executeScript(tab.id, {
-          runAt: 'document_idle',
-          file: 'content-script/main.js'
-        });
-      });
+  executeForAllGameTabs(tab => {
+    chrome.tabs.executeScript(tab.id, {
+      runAt: 'document_idle',
+      file: 'content-script/main.js'
     });
   });
 });

@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { storeGlobal, ISettings, retrieveGlobal } from 'models';
+import { storeGlobal, ISettings, retrieveGlobal, executeForAllGameTabs } from 'models';
 import { DatabaseService } from 'src/app/shared/database.service';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { humanFileSize } from 'src/app/shared/utils/human-file-size';
@@ -51,7 +51,8 @@ export class OptionsComponent implements OnDestroy {
         }
       } as ISettings)),
       tap(settings => storeGlobal('settings', settings)),
-      tap(() => this.showSavedNotice())
+      tap(() => this.showSavedNotice()),
+      tap(settings => executeForAllGameTabs(tab => chrome.tabs.sendMessage(tab.id, settings)))
     ).subscribe();
 
     this.chatLogsSize$ = this.chatLogsService.getTotalSize().pipe(
