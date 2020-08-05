@@ -9,6 +9,8 @@ declare global {
     ChatRoomData: IChatRoom;
     ChatRoomSpace: ChatRoomSpace;
     CurrentScreen: CurrentScreen;
+    CharacterAppearanceReturnRoom: CurrentScreen;
+    InformationSheetPreviousScreen: CurrentScreen;
     Player: IPlayer;
     ServerSocket: SocketIO.Server;
     TimerProcess: typeof TimerProcess;
