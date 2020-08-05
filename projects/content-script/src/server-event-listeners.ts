@@ -65,6 +65,23 @@ export function pollVariables(handshake: string) {
     return JSON.parse(JSON.stringify(obj));
   }
 
+  function isInChat() {
+    switch(window.CurrentScreen) {
+      case 'ChatRoom':
+      case 'ChatAdmin':
+        return true;
+      case 'Appearance':
+        return window.CharacterAppearanceReturnRoom === 'ChatRoom';
+      case 'InformationSheet':
+      case 'Preference':
+      case 'FriendList':
+      case 'Title':
+      case 'OnlineProfile':
+        return window.InformationSheetPreviousScreen === 'ChatRoom';
+    }
+    return false;
+  }
+
   setInterval(() => {
     window.postMessage({
       handshake,
@@ -73,6 +90,7 @@ export function pollVariables(handshake: string) {
       data: {
         ChatRoomSpace: sanitizeObject(window.ChatRoomSpace),
         CurrentScreen: sanitizeObject(window.CurrentScreen),
+        InChat: isInChat(),
         Player: sanitizeObject(window.Player)
       }
     }, '*');

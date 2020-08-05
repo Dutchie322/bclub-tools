@@ -180,7 +180,7 @@ function handleVariablesUpdate(tabId: number, message: IServerMessage<IVariables
   }
 
   store(tabId, 'player', message.data.Player);
-  if (message.data.CurrentScreen !== 'ChatRoom') {
+  if (!message.data.InChat) {
     store(tabId, 'chatRoomCharacter', []);
   }
 }
