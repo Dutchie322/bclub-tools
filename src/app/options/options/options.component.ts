@@ -114,12 +114,10 @@ export class OptionsComponent implements OnDestroy {
         const reader = new FileReader();
         reader.onload = () => {
           console.log(`Loaded file: ${humanFileSize((reader.result as string).length)}`);
-          this.clearDatabase().then(() => {
-            return this.importDatabase(reader.result as string);
-          })
-          .catch(error => {
-            console.error(error);
-          });
+          this.importDatabase(reader.result as string)
+            .catch(error => {
+              console.error(error);
+            });
         };
         reader.readAsText(file);
       } else {
@@ -129,13 +127,13 @@ export class OptionsComponent implements OnDestroy {
     input.click();
   }
 
-  private async clearDatabase() {
-    return new Promise(async (resolve, reject) => {
+  public async clearDatabase() {
+    if (chrome.extension.getBackgroundPage().confirm('Are you sure you want to delete everything?')) {
       console.log('Clearing database...');
       const objectStoreNames = await this.databaseService.objectStoreNames;
       const transaction = await this.databaseService.transaction(objectStoreNames, 'readwrite');
       transaction.onerror = event => {
-        reject(event);
+        console.error(event);
       };
       let count = 0;
       objectStoreNames.forEach(storeName => {
@@ -144,13 +142,11 @@ export class OptionsComponent implements OnDestroy {
           count++;
           console.log(`Done ${storeName}`);
           if (count === objectStoreNames.length) {
-            // cleared all object stores
             console.log('Done with all');
-            resolve();
           }
         };
       });
-    });
+    }
   }
 
   private async importDatabase(jsonString: string) {
