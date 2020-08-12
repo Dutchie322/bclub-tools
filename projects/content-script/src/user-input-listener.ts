@@ -1,12 +1,35 @@
 import {
-  IClientMessage, IEnrichedChatRoomChat, IChatRoomChat
+  IClientMessage, IEnrichedChatRoomChat, IChatRoomChat, IChatRoomCharacter
 } from '../../../models';
 
 export function listenForUserSentEvents(handshake: string) {
+  function mapCharacter(character: IChatRoomCharacter) {
+    return {
+      ID: character.ID,
+      Name: character.Name,
+      Title: character.Title,
+      Reputation: character.Reputation,
+      Creation: character.Creation,
+      Lovership: character.Lovership,
+      Description: character.Description,
+      Owner: character.Owner,
+      MemberNumber: character.MemberNumber,
+      LabelColor: character.LabelColor,
+      ItemPermission: character.ItemPermission,
+      Ownership: character.Ownership,
+    };
+  }
   const eventsToForward = {
     ChatRoomChat: (data: IChatRoomChat) => ({
-      ...data,
-      ChatRoom: window.ChatRoomData,
+      Content: data.Content,
+      Target: data.Target,
+      Type: data.Type,
+      ChatRoom: {
+        Background: window.ChatRoomData.Background,
+        Description: window.ChatRoomData.Description,
+        Name: window.ChatRoomData.Name,
+        Character: window.ChatRoomData.Character.map(mapCharacter)
+      },
       SessionId: window.Player.OnlineID,
       Sender: window.Player.MemberNumber,
       PlayerName: window.Player.Name,
@@ -25,7 +48,7 @@ export function listenForUserSentEvents(handshake: string) {
       handshake,
       type: 'client',
       event,
-      data: JSON.parse(JSON.stringify(eventsToForward[event](data))),
+      data: eventsToForward[event](data),
     } as IClientMessage<TMessage>, '*');
   }
 
