@@ -1,12 +1,12 @@
 import {
   IChatRoomMessage,
-  IEnrichedChatRoomMessage,
   IAccountBeep,
   IServerMessage,
   IChatRoomSearchResult,
   IChatRoomSync,
   IChatRoomSyncSingle,
-  IAccountQueryResult
+  IAccountQueryResult,
+  IChatRoomCharacter
 } from '../../../models';
 
 /**
@@ -29,6 +29,22 @@ export function listenToServerEvents(handshake: string) {
       } as IServerMessage<TOutgoingMessage>, '*');
     });
   }
+  function mapCharacter(character: IChatRoomCharacter) {
+    return {
+      ID: character.ID,
+      Name: character.Name,
+      Title: character.Title,
+      Reputation: character.Reputation,
+      Creation: character.Creation,
+      Lovership: character.Lovership,
+      Description: character.Description,
+      Owner: character.Owner,
+      MemberNumber: character.MemberNumber,
+      LabelColor: character.LabelColor,
+      ItemPermission: character.ItemPermission,
+      Ownership: character.Ownership,
+    };
+  }
 
   createForwarder<IAccountBeep, IAccountBeep>('AccountBeep', data => ({
     ChatRoomName: data.ChatRoomName,
@@ -46,11 +62,16 @@ export function listenToServerEvents(handshake: string) {
       Type: result.Type
     }))
   }));
-  createForwarder<IChatRoomMessage, IEnrichedChatRoomMessage>('ChatRoomMessage', data => ({
+  createForwarder<IChatRoomMessage, any>('ChatRoomMessage', data => ({
     Content: data.Content,
     Sender: data.Sender,
     Type: data.Type,
-    ChatRoom: window.ChatRoomData,
+    ChatRoom: {
+      Background: window.ChatRoomData.Background,
+      Description: window.ChatRoomData.Description,
+      Name: window.ChatRoomData.Name,
+      Character: window.ChatRoomData.Character.map(mapCharacter)
+    },
     SessionId: window.Player.OnlineID,
     PlayerName: window.Player.Name,
     MemberNumber: window.Player.MemberNumber,
@@ -61,36 +82,10 @@ export function listenToServerEvents(handshake: string) {
     Description: data.Description,
     Background: data.Background,
     SourceMemberNumber: data.SourceMemberNumber,
-    Character: data.Character.map(c => ({
-      ID: c.ID,
-      Name: c.Name,
-      Title: c.Title,
-      Reputation: c.Reputation,
-      Creation: c.Creation,
-      Lovership: c.Lovership,
-      Description: c.Description,
-      Owner: c.Owner,
-      MemberNumber: c.MemberNumber,
-      LabelColor: c.LabelColor,
-      ItemPermission: c.ItemPermission,
-      Ownership: c.Ownership,
-    }))
+    Character: data.Character.map(mapCharacter)
   }));
   createForwarder<IChatRoomSyncSingle, any>('ChatRoomSyncSingle', data => ({
-    Character: {
-      ID: data.Character.ID,
-      Name: data.Character.Name,
-      Title: data.Character.Title,
-      Reputation: data.Character.Reputation,
-      Creation: data.Character.Creation,
-      Lovership: data.Character.Lovership,
-      Description: data.Character.Description,
-      Owner: data.Character.Owner,
-      MemberNumber: data.Character.MemberNumber,
-      LabelColor: data.Character.LabelColor,
-      ItemPermission: data.Character.ItemPermission,
-      Ownership: data.Character.Ownership,
-    },
+    Character: mapCharacter(data.Character),
     SourceMemberNumber: data.SourceMemberNumber
   }));
   createForwarder<IChatRoomSearchResult[], any>('ChatRoomSearchResult', data => data.map(result => ({
