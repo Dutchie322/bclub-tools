@@ -2,5 +2,8 @@
 export type CurrentScreen =
   'ChatRoom' |
   'ChatSearch' |
+  'ChatAdmin' |
   'Login' |
-  'MainHall';
+  'MainHall' |
+  'InformationSheet' | 'Preference' | 'FriendList' | 'Title' | 'OnlineProfile' |
+  'Appearance';

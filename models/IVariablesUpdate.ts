@@ -4,4 +4,5 @@ export interface IVariablesUpdate {
   ChatRoomSpace: ChatRoomSpace;
   CurrentScreen: CurrentScreen;
   Player: IPlayer;
+  InChat: boolean;
 }
