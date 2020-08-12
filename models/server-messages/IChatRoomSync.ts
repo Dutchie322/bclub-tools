@@ -1,9 +1,14 @@
 import { IChatRoomCharacter } from '../game';
 
 export interface IChatRoomSync {
-  Background: string;
-  Character: IChatRoomCharacter[];
-  CreatorID: number;
   Name: string;
+  Description: string;
+  Admin: string[];
+  Ban: string[];
+  Background: string;
+  Limit: number;
   SourceMemberNumber: number;
+  Locked: boolean;
+  Private: boolean;
+  Character: IChatRoomCharacter[];
 }

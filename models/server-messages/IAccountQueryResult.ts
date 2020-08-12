@@ -5,6 +5,7 @@ export interface IAccountQueryResult {
 
 export interface IAccountQueryResultItem {
   ChatRoomName: string;
+  ChatRoomSpace: string;
   MemberName: string;
   MemberNumber: number;
   Type: 'Friend' | 'Submissive';
