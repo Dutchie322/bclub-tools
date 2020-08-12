@@ -21,8 +21,9 @@ export function isDevelopmentMode() {
   return !('update_url' in chrome.runtime.getManifest());
 }
 
-export function log(message?: any, ...optionalParams: any[]) {
+export function log(...params: any[]) {
   if (isDevelopmentMode()) {
-    console.log(`[Bondage Club Tools] ${message}`, optionalParams);
+    params.unshift('[Bondage Club Tools]');
+    console.log.apply(console, params);
   }
 }
