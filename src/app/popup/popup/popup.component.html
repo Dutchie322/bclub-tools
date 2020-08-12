@@ -45,7 +45,7 @@
       </ng-container>
       <ng-container matColumnDef="type" mat-sort-header>
         <th mat-header-cell *matHeaderCellDef>Type</th>
-        <td mat-cell *matCellDef="let friend">{{ friend.Type }}</td>
+        <td mat-cell *matCellDef="let friend">{{ friendTypeToText(friend.Type) }}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="onlineFriendColumns; sticky: true"></tr>
@@ -91,7 +91,7 @@
       </ng-container>
       <ng-container matColumnDef="reputation" mat-sort-header>
         <th mat-header-cell *matHeaderCellDef>Reputation</th>
-        <td mat-cell *matCellDef="let character">{{ dominantReputationToText(character) }}</td>
+        <td mat-cell *matCellDef="let character">{{ dominantReputationToText(character.Reputation) }}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="characterColumns; sticky: true"></tr>

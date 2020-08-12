@@ -1,6 +1,6 @@
 import { Component, TrackByFunction } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { IAccountQueryResultItem, IPlayer, IChatRoomSearchResult, retrieve, IChatRoomCharacter, onChanged, IOwnership } from 'models';
+import { IAccountQueryResultItem, IPlayer, IChatRoomSearchResult, retrieve, IChatRoomCharacter, onChanged, IOwnership, IReputation } from 'models';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { IMember } from 'src/app/shared/models';
 
@@ -87,9 +87,17 @@ export class PopupComponent {
     }
   }
 
-  public dominantReputationToText(character: IChatRoomCharacter) {
+  public friendTypeToText(friendType: string) {
+    if (friendType === 'Submissive') {
+      return 'Lover or sub';
+    }
+
+    return friendType;
+  }
+
+  public dominantReputationToText(reputation: IReputation[]) {
     let dominant = 0;
-    const rep = (character.Reputation || []).find(r => r.Type === 'Dominant');
+    const rep = (reputation || []).find(r => r.Type === 'Dominant');
     if (rep) {
       dominant = rep.Value;
     }
