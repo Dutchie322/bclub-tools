@@ -41,7 +41,7 @@ export function frameCounter() {
   window.TimerProcess = proxy;
 
   return () => {
-    console.log('[Bondage Club Tools] Removing frame counter');
+    // console.log('[Bondage Club Tools] Removing frame counter');
     ProxyEnabled = false;
   };
 }

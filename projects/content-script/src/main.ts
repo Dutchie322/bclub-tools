@@ -4,9 +4,9 @@ import { frameCounter } from './performance-counter';
 import { generatePersistentScriptWithWait, generatePersistentScript } from './script-generators';
 import { listenToServerEvents, pollOnlineFriends, pollVariables } from './server-event-listeners';
 import { listenForUserSentEvents } from './user-input-listener';
-import { retrieveGlobal } from '../../../models';
+import { retrieveGlobal, log } from '../../../models';
 
-console.log('[Bondage Club Tools] Injecting scripts...');
+log('Injecting scripts...');
 
 retrieveGlobal('settings').then(settings => {
   if (settings.tools.fpsCounter) {
@@ -16,5 +16,5 @@ retrieveGlobal('settings').then(settings => {
   generatePersistentScriptWithWait('ServerSocket', listenToServerEvents);
   generatePersistentScriptWithWait('ServerSocket', pollOnlineFriends);
   generatePersistentScript(pollVariables);
-  console.log('[Bondage Club Tools] Done injecting scripts.');
+  log('Done injecting scripts.');
 });

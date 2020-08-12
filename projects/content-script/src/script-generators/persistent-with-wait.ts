@@ -51,7 +51,7 @@ function wrapWaitUntilWindowVariable<V extends keyof Window>(scriptId: string, v
     function check() {
       const found = !!window[variableName];
       if (found) {
-        console.log('[Bondage Club Tools] Executing function "${functionName}" ' + scriptId);
+        // console.log('[Bondage Club Tools] Executing function "${functionName}" ' + scriptId);
         resolve(window[variableName]);
       } else if (new Date().getTime() - startTime >= maxWaitTime) {
         reject(`Variable '${variableName}' not found after ${maxWaitTime / 1000} seconds`);
@@ -67,12 +67,12 @@ function wrapWaitUntilWindowVariable<V extends keyof Window>(scriptId: string, v
   })
   .then((possibleUnregisterFn: unknown) => {
     if (typeof possibleUnregisterFn === 'function') {
-      console.log('[Bondage Club Tools] Found unregister function');
+      // console.log('[Bondage Club Tools] Found unregister function');
       window.addEventListener('BondagClub.Deregister', (event: CustomEvent) => {
         if (event.detail.scriptId !== scriptId) {
           return;
         }
-        console.log('[Bondage Club Tools] Received deregister for "${functionName}" ' + scriptId);
+        // console.log('[Bondage Club Tools] Received deregister for "${functionName}" ' + scriptId);
         possibleUnregisterFn();
       });
     }

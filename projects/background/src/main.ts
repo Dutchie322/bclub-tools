@@ -63,7 +63,7 @@ chrome.runtime.onMessage.addListener((message, sender) => {
       handleServerMessage(message, sender);
       break;
     default:
-      console.error('Unhandled message:');
+      console.error('[Bondage Club Tools] Unhandled message:');
       console.log(message);
   }
 });
@@ -79,7 +79,7 @@ function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtim
       handleVariablesUpdate(sender.tab.id, message);
       break;
     default:
-      console.error('Unhandled client message:');
+      console.error('[Bondage Club Tools] Unhandled client message:');
       console.log(message);
       break;
   }
@@ -110,7 +110,7 @@ function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtim
       handleDisconnect(sender.tab.id);
       break;
     default:
-      console.error('Unhandled server message:');
+      console.error('[Bondage Club Tools] Unhandled server message:');
       console.log(message);
       break;
   }

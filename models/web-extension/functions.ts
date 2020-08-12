@@ -16,3 +16,13 @@ export function executeForAllGameTabs(action: (tab: chrome.tabs.Tab) => void) {
     });
   });
 }
+
+export function isDevelopmentMode() {
+  return !('update_url' in chrome.runtime.getManifest());
+}
+
+export function log(message?: any, ...optionalParams: any[]) {
+  if (isDevelopmentMode()) {
+    console.log(`[Bondage Club Tools] ${message}`, optionalParams);
+  }
+}
