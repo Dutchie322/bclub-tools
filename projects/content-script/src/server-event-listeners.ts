@@ -54,16 +54,17 @@ export function listenToServerEvents(handshake: string) {
   }));
   createForwarder<IAccountQueryResult, IAccountQueryResult>('AccountQueryResult', data => ({
     Query: data.Query,
-    Result: data.Result.map(result => ({
+    Result: data.Result ? data.Result.map(result => ({
       ChatRoomName: result.ChatRoomName,
       ChatRoomSpace: result.ChatRoomSpace,
       MemberName: result.MemberName,
       MemberNumber: result.MemberNumber,
       Type: result.Type
-    }))
+    })) : null
   }));
   createForwarder<IChatRoomMessage, any>('ChatRoomMessage', data => ({
     Content: data.Content,
+    Dictionary: data.Dictionary,
     Sender: data.Sender,
     Type: data.Type,
     ChatRoom: {

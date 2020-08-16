@@ -22,6 +22,7 @@ export function listenForUserSentEvents(handshake: string) {
   const eventsToForward = {
     ChatRoomChat: (data: IChatRoomChat) => ({
       Content: data.Content,
+      Dictionary: data.Dictionary,
       Target: data.Target,
       Type: data.Type,
       ChatRoom: {

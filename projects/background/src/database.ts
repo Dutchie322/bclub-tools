@@ -17,6 +17,7 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage | IEnrichedCha
   const chatLog = {
     chatRoom: data.ChatRoom.Name,
     content: data.Content,
+    dictionary: data.Dictionary,
     sender: {
       id: data.Sender,
       name: senderChar.Name,

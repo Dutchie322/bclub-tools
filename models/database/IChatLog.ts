@@ -3,6 +3,7 @@ import { ChatRoomMessageType } from 'models';
 export interface IChatLog {
   chatRoom: string;
   content: string;
+  dictionary?: {};
   sender: IChatSender;
   session: IChatSessionPerspective;
   target?: IWhisperTarget;

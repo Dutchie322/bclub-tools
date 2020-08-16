@@ -2,6 +2,7 @@ import { IChatRoom } from '../game';
 
 export interface IChatRoomMessage {
   Content: string;
+  Dictionary?: {};
   Sender: number;
   Type: ChatRoomMessageType;
 }
