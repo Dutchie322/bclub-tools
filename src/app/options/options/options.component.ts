@@ -90,12 +90,14 @@ export class OptionsComponent implements OnDestroy {
           transaction.objectStore(storeName).openCursor().onsuccess = event => {
             const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
             if (cursor) {
-              allObjects.push(cursor.value);
+              const value = cursor.value;
+              delete value.id;
+              allObjects.push(value);
               cursor.continue();
             } else {
               exportObject[storeName] = allObjects;
               if (objectStoreNames.length === Object.keys(exportObject).length) {
-                resolve(JSON.stringify(exportObject));
+                resolve(JSON.stringify(exportObject, null, 2));
               }
             }
           };
@@ -167,7 +169,10 @@ export class OptionsComponent implements OnDestroy {
       objectStoreNames.forEach(storeName => {
         console.log(`Importing ${storeName}...`);
         let count = 0;
-        importObject[storeName].forEach((toAdd: {}) => {
+        importObject[storeName].forEach((toAdd: any) => {
+          if (toAdd.id) {
+            delete toAdd.id;
+          }
           const request = transaction.objectStore(storeName).add(toAdd);
           request.onsuccess = () => {
             count++;

@@ -36,8 +36,10 @@ export class DatabaseService {
           const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
           if (cursor) {
             const storedObject = cursor.value;
-            const json = JSON.stringify(storedObject);
+            delete storedObject.id;
+            const json = JSON.stringify(storedObject, null, 2);
             size += json.length;
+            subscriber.next(size);
             cursor.continue();
           } else {
             subscriber.next(size);
