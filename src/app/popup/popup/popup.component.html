@@ -23,12 +23,12 @@
 <mat-tab-group>
   <mat-tab label="Online Friends">
     <table mat-table [dataSource]="onlineFriends" [trackBy]="trackByFriend" matSort>
-      <ng-container matColumnDef="name" mat-sort-header>
-        <th mat-header-cell *matHeaderCellDef>Name</th>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
         <td mat-cell *matCellDef="let friend">{{ friend.MemberName }} ({{ friend.MemberNumber }})</td>
       </ng-container>
-      <ng-container matColumnDef="chatRoom" mat-sort-header>
-        <th mat-header-cell *matHeaderCellDef>Chat Room</th>
+      <ng-container matColumnDef="chatRoom">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Chat Room</th>
         <td mat-cell *matCellDef="let friend">
           <ng-container *ngIf="friend.ChatRoomName; else noChatRoom">
             <ng-container *ngIf="friend.ChatRoomName === '-Private-'; else publicChatRoom">
@@ -43,8 +43,8 @@
           </ng-template>
         </td>
       </ng-container>
-      <ng-container matColumnDef="type" mat-sort-header>
-        <th mat-header-cell *matHeaderCellDef>Type</th>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
         <td mat-cell *matCellDef="let friend">{{ friendTypeToText(friend.Type) }}</td>
       </ng-container>
 
@@ -54,20 +54,20 @@
   </mat-tab>
   <!-- <mat-tab label="Chat Rooms">
     <table mat-table [dataSource]="chatRooms" [trackBy]="trackByChatRoom" matSort>
-      <ng-container matColumnDef="name" mat-sort-header>
-        <th mat-header-cell *matHeaderCellDef>Name</th>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
         <td mat-cell *matCellDef="let chatRoom">{{ chatRoom.Name }}</td>
       </ng-container>
-      <ng-container matColumnDef="creator" mat-sort-header>
-        <th mat-header-cell *matHeaderCellDef>Creator</th>
+      <ng-container matColumnDef="creator">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Creator</th>
         <td mat-cell *matCellDef="let chatRoom">{{ chatRoom.Creator }}</td>
       </ng-container>
-      <ng-container matColumnDef="members" mat-sort-header>
-        <th mat-header-cell *matHeaderCellDef>Members</th>
+      <ng-container matColumnDef="members">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Members</th>
         <td mat-cell *matCellDef="let chatRoom">{{ chatRoom.MemberCount }} / {{ chatRoom.MemberLimit }}</td>
       </ng-container>
-      <ng-container matColumnDef="description" mat-sort-header>
-        <th mat-header-cell *matHeaderCellDef>Description</th>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
         <td mat-cell *matCellDef="let chatRoom">{{ chatRoom.Description }}</td>
       </ng-container>
 

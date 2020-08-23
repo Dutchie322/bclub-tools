@@ -89,7 +89,7 @@ export class PopupComponent {
 
   public friendTypeToText(friendType: string) {
     if (friendType === 'Submissive') {
-      return 'Lover or sub';
+      return 'Lover/Submissive';
     }
 
     return friendType;

@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { LogViewerComponent } from './members/members.component';
@@ -31,7 +34,10 @@ import { SharedModule } from '../shared/shared.module';
     // Material modules
     MatCheckboxModule,
     MatListModule,
+    MatPaginatorModule,
     MatProgressBarModule,
+    MatSortModule,
+    MatTableModule,
     MatToolbarModule,
 
     // Own modules

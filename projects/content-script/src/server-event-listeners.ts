@@ -129,7 +129,7 @@ export function pollOnlineFriends() {
 
 export function pollVariables(handshake: string) {
   function isInChat() {
-    switch(window.CurrentScreen) {
+    switch (window.CurrentScreen) {
       case 'ChatRoom':
       case 'ChatAdmin':
         return true;

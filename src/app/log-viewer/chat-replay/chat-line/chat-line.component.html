@@ -14,9 +14,12 @@
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'Emote'">
-      <span class="emote" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">*{{ chatLog.sender.name }} {{ chatLog.content }}*</span>
+      <span class="emote" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }"><ng-container *ngIf="!isGeneralAction(chatLog.content)">*{{ chatLog.sender.name }} </ng-container>{{ chatLog.content }}*</span>
     </ng-container>
     <ng-container *ngSwitchCase="'Action'">
+      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ chatLog.content }})</span>
+    </ng-container>
+    <ng-container *ngSwitchCase="'Activity'">
       <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ chatLog.content }})</span>
     </ng-container>
     <ng-container *ngSwitchCase="'ServerMessage'">

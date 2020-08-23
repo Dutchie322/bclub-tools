@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatLogsService } from '../../shared/chat-logs.service';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { ChatLogsService } from '../../shared/chat-logs.service';
 import { IChatSession } from '../../shared/models';
 
 @Component({
@@ -10,7 +11,9 @@ import { IChatSession } from '../../shared/models';
 })
 export class ChatSessionsComponent implements OnInit {
   public memberNumber: number;
-  public chatSessions: IChatSession[];
+  public chatSessions = new MatTableDataSource<IChatSession>();
+
+  public chatSessionsColumns = ['chatRoom', 'date'];
 
   constructor(
     route: ActivatedRoute,
@@ -19,7 +22,7 @@ export class ChatSessionsComponent implements OnInit {
     route.paramMap.subscribe(params => {
       this.memberNumber = +params.get('memberNumber');
       chatLogsService.findChatRoomsForMemberNumber(this.memberNumber).then(chatSessions => {
-        this.chatSessions = chatSessions.sort((a, b) => {
+        this.chatSessions.data = chatSessions.sort((a, b) => {
           if (a.start > b.start) {
             return -1;
           }

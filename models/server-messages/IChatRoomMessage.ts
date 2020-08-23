@@ -7,7 +7,7 @@ export interface IChatRoomMessage {
   Type: ChatRoomMessageType;
 }
 
-export type ChatRoomMessageType = 'Chat' | 'Whisper' | 'Action' | 'Emote' | 'ServerMessage';
+export type ChatRoomMessageType = 'Chat' | 'Whisper' | 'Action' | 'Activity' | 'Emote' | 'ServerMessage';
 
 export interface IEnrichedChatRoomMessage extends IChatRoomMessage {
   ChatRoom: IChatRoom;
