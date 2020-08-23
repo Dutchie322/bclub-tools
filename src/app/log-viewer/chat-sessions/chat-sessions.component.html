@@ -1,5 +1,5 @@
 <mat-toolbar>Sessions</mat-toolbar>
-<table mat-table [dataSource]="chatSessions" matSort>
+<table mat-table [dataSource]="chatSessions" matSort matSortActive="start" matSortDirection="desc" matSortDisableClear>
   <ng-container matColumnDef="chatRoom">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Chat Room</th>
     <td mat-cell *matCellDef="let session">
@@ -8,7 +8,7 @@
       </a>
     </td>
   </ng-container>
-  <ng-container matColumnDef="date">
+  <ng-container matColumnDef="start">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</th>
     <td mat-cell *matCellDef="let session">{{ session.start.toLocaleDateString() }} {{ session.start.toLocaleTimeString()}}</td>
   </ng-container>
