@@ -31,6 +31,7 @@
     "@angular/router": "~8.1.0",
     "firebase": "^6.3.0",
     "lodash-es": "^4.17.11",
+    "papaparse": "^5.2.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IChatLog } from 'models';
+import { DialogBundleService } from '../../../shared/dialog-bundle.service';
 
 @Component({
   selector: 'app-chat-line',
@@ -17,7 +18,7 @@ export class ChatLineComponent {
     this.cleanChatLog = this.copyChatLog(chatLog);
   }
 
-  constructor() { }
+  constructor(private dialogBundleService: DialogBundleService) { }
 
   public getColor(color: string) {
     return color || 'gray';
@@ -36,6 +37,31 @@ export class ChatLineComponent {
 
   public isGeneralAction(message: string) {
     return message.charAt(0) === '*';
+  }
+
+  public renderContent(chatLog: IChatLog): string {
+    let content = chatLog.content;
+
+    if (chatLog.type === 'Action' || chatLog.type === 'ServerMessage') {
+      content = chatLog.type === 'ServerMessage' ? 'ServerMessage' + content : content;
+      content = this.dialogBundleService.findDialog(content);
+      if (chatLog.dictionary) {
+        for (const dictionary of chatLog.dictionary) {
+          content = content.replace(dictionary.Tag, String(dictionary.Text));
+        }
+      }
+    }
+
+    if (chatLog.type === 'Activity') {
+      content = this.dialogBundleService.findActivity(content);
+      if (chatLog.dictionary) {
+        for (const dictionary of chatLog.dictionary) {
+          content = content.replace(dictionary.Tag, String(dictionary.Text));
+        }
+      }
+    }
+
+    return content;
   }
 
   private copyChatLog(chatLog: IChatLog): IChatLog {

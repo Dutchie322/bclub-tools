@@ -17,10 +17,10 @@
       <span class="emote" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }"><ng-container *ngIf="!isGeneralAction(chatLog.content)">*{{ chatLog.sender.name }} </ng-container>{{ chatLog.content }}*</span>
     </ng-container>
     <ng-container *ngSwitchCase="'Action'">
-      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ chatLog.content }})</span>
+      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ renderContent(chatLog) }})</span>
     </ng-container>
     <ng-container *ngSwitchCase="'Activity'">
-      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ chatLog.content }})</span>
+      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ renderContent(chatLog) }})</span>
     </ng-container>
     <ng-container *ngSwitchCase="'ServerMessage'">
       <span [ngSwitch]="chatLog.content" class="server-message">
@@ -28,7 +28,7 @@
         <ng-container *ngSwitchCase="'StartTrial'">The Bondage Club is pleased to announce that {{ chatLog.sender.name }} is starting a 3 days minimum trial period as a submissive.</ng-container>
         <ng-container *ngSwitchCase="'OfferEndTrial'">{{ chatLog.sender.name }} has prepared a great collaring ceremony. A maid brings a slave collar, which her submissive must consent to wear.</ng-container>
         <ng-container *ngSwitchCase="'EndTrial'">The Bondage Club is proud to announce that {{ chatLog.sender.name }} is now fully collared. Her fate is in her Mistress' hands.</ng-container>
-        <ng-container *ngSwitchDefault>{{ chatLog.content }}</ng-container>
+        <ng-container *ngSwitchDefault>{{ renderContent(chatLog) }}</ng-container>
       </span>
     </ng-container>
   </ng-container>
