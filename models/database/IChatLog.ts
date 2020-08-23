@@ -16,6 +16,8 @@ export interface IChatLogDictionary {
   Text?: string | number;
   TextToLookUp?: string;
   MemberNumber?: number;
+  AssetName?: string;
+  AssetGroupName?: string;
 }
 
 export interface IChatSender {

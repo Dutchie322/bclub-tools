@@ -47,7 +47,19 @@ export class ChatLineComponent {
       content = this.dialogBundleService.findDialog(content);
       if (chatLog.dictionary) {
         for (const dictionary of chatLog.dictionary) {
-          content = content.replace(dictionary.Tag, String(dictionary.Text));
+          let replacement = String(dictionary.Text);
+          if (dictionary.Tag === 'DestinationCharacter') {
+            replacement += this.dialogBundleService.findDialog('\'s');
+          } else if (dictionary.TextToLookUp) {
+            replacement = this.dialogBundleService.findDialog(dictionary.TextToLookUp);
+          } else if (dictionary.AssetName) {
+            const entry = chatLog.dictionary.find(kvp => !!kvp.AssetGroupName);
+            replacement = this.dialogBundleService.findAssetName(dictionary.AssetName, entry && entry.AssetGroupName);
+          } else if (dictionary.AssetGroupName) {
+            replacement = this.dialogBundleService.findAssetGroupName(dictionary.AssetGroupName);
+          }
+
+          content = content.replace(dictionary.Tag, replacement);
         }
       }
     }
@@ -56,7 +68,9 @@ export class ChatLineComponent {
       content = this.dialogBundleService.findActivity(content);
       if (chatLog.dictionary) {
         for (const dictionary of chatLog.dictionary) {
-          content = content.replace(dictionary.Tag, String(dictionary.Text));
+          if (dictionary.Text) {
+            content = content.replace(dictionary.Tag, String(dictionary.Text));
+          }
         }
       }
     }
