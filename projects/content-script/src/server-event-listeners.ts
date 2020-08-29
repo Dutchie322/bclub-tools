@@ -6,7 +6,9 @@ import {
   IChatRoomSync,
   IChatRoomSyncSingle,
   IAccountQueryResult,
-  IChatRoomCharacter
+  IChatRoomCharacter,
+  ILoginResponse,
+  IPlayer
 } from '../../../models';
 
 /**
@@ -101,6 +103,14 @@ export function listenToServerEvents(handshake: string) {
       Type: friend.Type
     }))
   })));
+  createForwarder<ILoginResponse, IPlayer>('LoginResponse', data => ({
+    AccountName: data.AccountName,
+    MemberNumber: data.MemberNumber,
+    Name: data.Name,
+    FriendList: data.FriendList,
+    Lovership: data.Lovership,
+    Ownership: data.Ownership
+  }));
   createForwarder('disconnect');
   createForwarder('ForceDisconnect');
 
@@ -153,13 +163,7 @@ export function pollVariables(handshake: string) {
       data: {
         ChatRoomSpace: window.ChatRoomSpace,
         CurrentScreen: window.CurrentScreen,
-        InChat: isInChat(),
-        Player: {
-          AccountName: window.Player.AccountName,
-          MemberNumber: window.Player.MemberNumber,
-          Name: window.Player.Name,
-          OnlineID: window.Player.OnlineID
-        }
+        InChat: isInChat()
       }
     }, '*');
   }, 1000);

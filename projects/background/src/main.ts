@@ -1,7 +1,7 @@
 /// <reference types="chrome"/>
 
-import './database';
-import { writeChatLog } from './database';
+import './chat-log';
+import { writeChatLog } from './chat-log';
 import {
   IAccountBeep,
   IAccountQueryResult,
@@ -20,8 +20,10 @@ import {
   ISettings,
   IChatRoomSyncSingle,
   executeForAllGameTabs,
+  IPlayer
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
+import { writeMember } from './member';
 
 chrome.runtime.onInstalled.addListener(() => {
   // Ensure default settings
@@ -105,6 +107,9 @@ function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtim
     case 'ChatRoomSyncSingle':
       handleChatRoomSyncSingle(sender.tab.id, message);
       break;
+    case 'LoginResponse':
+      handleLoginResponse(sender.tab.id, message);
+      break;
     case 'disconnect':
     case 'ForceDisconnect':
       handleDisconnect(sender.tab.id);
@@ -142,6 +147,8 @@ function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccoun
   });
 
   store(tabId, 'onlineFriends', message.data.Result);
+
+  message.data.Result.forEach(friend => writeMember(friend));
 }
 
 function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
@@ -160,6 +167,8 @@ function handleChatRoomSearchResult(tabId: number, message: IServerMessage<IChat
 
 function handleChatRoomSync(tabId: number, message: IServerMessage<IChatRoomSync>) {
   store(tabId, 'chatRoomCharacter', message.data.Character);
+
+  message.data.Character.forEach(character => writeMember(character));
 }
 
 async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<IChatRoomSyncSingle>) {
@@ -167,6 +176,10 @@ async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<I
   const i = characters.findIndex(char => char.MemberNumber === message.data.Character.MemberNumber);
   characters[i] = message.data.Character;
   store(tabId, 'chatRoomCharacter', characters);
+}
+
+function handleLoginResponse(tabId: number, message: IServerMessage<IPlayer>) {
+  store(tabId, 'player', message.data);
 }
 
 function handleDisconnect(tabId: number) {
@@ -179,7 +192,6 @@ function handleVariablesUpdate(tabId: number, message: IServerMessage<IVariables
     return;
   }
 
-  store(tabId, 'player', message.data.Player);
   if (!message.data.InChat) {
     store(tabId, 'chatRoomCharacter', []);
   }

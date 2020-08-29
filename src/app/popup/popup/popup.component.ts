@@ -117,10 +117,6 @@ export class PopupComponent {
           (ownership.Stage === 0 ? 'On trial for ' : 'Collared for ') +
           Math.floor((new Date().getTime() - ownership.Start) / 86400000).toString() +
           ' days';
-      } else if (ownership.StartTrialOfferedByMemberNumber) {
-        return `Offered a trial by ${ownership.StartTrialOfferedByMemberNumber}`;
-      } else if (ownership.EndTrialOfferedByMemberNumber) {
-        return `Offered a collar by ${ownership.EndTrialOfferedByMemberNumber}`;
       }
     } else if (owner) {
       return owner;

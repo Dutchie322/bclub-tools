@@ -52,6 +52,7 @@
       <tr mat-row *matRowDef="let row; columns: onlineFriendColumns;"></tr>
     </table>
   </mat-tab>
+  <!-- Disabled until the ChatRoomSpace variable behaves more consistently or I can be bothered working around it -->
   <!-- <mat-tab label="Chat Rooms">
     <table mat-table [dataSource]="chatRooms" [trackBy]="trackByChatRoom" matSort>
       <ng-container matColumnDef="name">

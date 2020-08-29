@@ -1,6 +1,6 @@
 export function openDatabase() {
   return new Promise<IDBDatabase>((resolve, reject) => {
-    const openRequest = indexedDB.open('bclub-tools', 3);
+    const openRequest = indexedDB.open('bclub-tools', 4);
 
     openRequest.addEventListener('blocked', () => {
       alert('Could not open database, make sure all tabs are closed and reload.');
@@ -45,6 +45,15 @@ function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
   } else {
     chatRoomLogsStore = transaction.objectStore('chatRoomLogs');
   }
+  let memberStore: IDBObjectStore;
+  if (!db.objectStoreNames.contains('members')) {
+    memberStore = db.createObjectStore('members', {
+      autoIncrement: true,
+      keyPath: 'memberNumber'
+    });
+    memberStore.createIndex('memberName_idx', 'memberName', { unique: false });
+    memberStore.createIndex('type_idx', 'type', { unique: false });
+  }
 }
 
 function addDatabaseEventHandlers(db: IDBDatabase) {
@@ -54,3 +63,18 @@ function addDatabaseEventHandlers(db: IDBDatabase) {
   });
 }
 
+export async function addToObjectStore(storeName: string, value: any) {
+  const db = await openDatabase();
+  const transaction = db.transaction(storeName, 'readwrite');
+  transaction.addEventListener('error', () => {
+    console.error(`Error during transaction for store ${storeName}`);
+    console.error(transaction.error);
+  });
+
+  const store = transaction.objectStore(storeName);
+  const request = store.add(value);
+  request.addEventListener('error', () => {
+    console.error(`Error while writing to store ${storeName}`);
+    console.error(request.error);
+  });
+}

@@ -1,1 +1,1 @@
-export type ChatRoomSpace = '' | 'Asylum';
+export type ChatRoomSpace = '' | 'Asylum' | 'LARP';
