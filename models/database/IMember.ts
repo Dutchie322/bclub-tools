@@ -1,15 +1,19 @@
 export interface IMember {
+  playerMemberNumber: number;
+  playerMemberName: string;
   memberNumber: number;
   memberName: string;
-  type: 'Member' | 'Friend' | 'Submissive' | 'Lover' | 'Owner';
+  type: MemberType;
   creation?: number;
   title?: string;
   description?: string;
   labelColor?: string;
   lovership?: IMemberLovership[];
   ownership?: IMemberOwnership;
-  lastSeen: number;
+  lastSeen: Date;
 }
+
+export type MemberType = 'Member' | 'Friend' | 'Submissive' | 'Lover' | 'Owner';
 
 export interface IMemberLovership {
   memberNumber: number;

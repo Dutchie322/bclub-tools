@@ -40,19 +40,23 @@ function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
     chatRoomLogsStore.createIndex('sessionId_idx', 'session.id');
     chatRoomLogsStore.createIndex('sessionMemberNumber_idx', 'session.memberNumber');
     chatRoomLogsStore.createIndex('member_session_chatRoom_idx', ['chatRoom', 'session.id', 'session.memberNumber'], { unique: false });
-    chatRoomLogsStore.deleteIndex('timestamp_idx');
-    chatRoomLogsStore.deleteIndex('type_idx');
+    if (chatRoomLogsStore.indexNames.contains('timestamp_idx')) {
+      chatRoomLogsStore.deleteIndex('timestamp_idx');
+    }
+    if (chatRoomLogsStore.indexNames.contains('type_idx')) {
+      chatRoomLogsStore.deleteIndex('type_idx');
+    }
   } else {
     chatRoomLogsStore = transaction.objectStore('chatRoomLogs');
   }
   let memberStore: IDBObjectStore;
   if (!db.objectStoreNames.contains('members')) {
     memberStore = db.createObjectStore('members', {
-      autoIncrement: true,
-      keyPath: 'memberNumber'
+      autoIncrement: false,
+      keyPath: ['playerMemberNumber', 'memberNumber']
     });
-    memberStore.createIndex('memberName_idx', 'memberName', { unique: false });
-    memberStore.createIndex('type_idx', 'type', { unique: false });
+    memberStore.createIndex('memberName_idx', ['playerMemberNumber', 'memberName'], { unique: false });
+    memberStore.createIndex('type_idx', ['playerMemberNumber', 'type'], { unique: false });
   }
 }
 
@@ -63,7 +67,7 @@ function addDatabaseEventHandlers(db: IDBDatabase) {
   });
 }
 
-export async function addToObjectStore(storeName: string, value: any) {
+export async function addOrUpdateObjectStore(storeName: string, value: any) {
   const db = await openDatabase();
   const transaction = db.transaction(storeName, 'readwrite');
   transaction.addEventListener('error', () => {
@@ -72,7 +76,7 @@ export async function addToObjectStore(storeName: string, value: any) {
   });
 
   const store = transaction.objectStore(storeName);
-  const request = store.add(value);
+  const request = store.put(value);
   request.addEventListener('error', () => {
     console.error(`Error while writing to store ${storeName}`);
     console.error(request.error);

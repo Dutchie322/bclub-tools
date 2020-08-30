@@ -2,7 +2,7 @@ import {
   IEnrichedChatRoomMessage,
   IChatLog,
   IEnrichedChatRoomChat,
-  addToObjectStore
+  addOrUpdateObjectStore
 } from '../../../models';
 
 export async function writeChatLog(data: IEnrichedChatRoomMessage | IEnrichedChatRoomChat) {
@@ -36,5 +36,5 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage | IEnrichedCha
     };
   }
 
-  await addToObjectStore('chatRoomLogs', chatLog);
+  await addOrUpdateObjectStore('chatRoomLogs', chatLog);
 }

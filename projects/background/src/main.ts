@@ -125,7 +125,7 @@ function handleAccountBeep(message: IServerMessage<IAccountBeep>) {
   notifyAccountBeep(message.data);
 }
 
-function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccountQueryResult>) {
+async function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccountQueryResult>) {
   if (message.data.Query !== 'OnlineFriends') {
     return;
   }
@@ -148,7 +148,8 @@ function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccoun
 
   store(tabId, 'onlineFriends', message.data.Result);
 
-  message.data.Result.forEach(friend => writeMember(friend));
+  const player = await retrieve(tabId, 'player');
+  message.data.Result.forEach(friend => writeMember(player, friend));
 }
 
 function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
@@ -165,10 +166,11 @@ function handleChatRoomSearchResult(tabId: number, message: IServerMessage<IChat
   store(tabId, 'chatRoomSearchResult', message.data);
 }
 
-function handleChatRoomSync(tabId: number, message: IServerMessage<IChatRoomSync>) {
+async function handleChatRoomSync(tabId: number, message: IServerMessage<IChatRoomSync>) {
   store(tabId, 'chatRoomCharacter', message.data.Character);
 
-  message.data.Character.forEach(character => writeMember(character));
+  const player = await retrieve(tabId, 'player');
+  message.data.Character.forEach(character => writeMember(player, character));
 }
 
 async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<IChatRoomSyncSingle>) {
@@ -176,10 +178,15 @@ async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<I
   const i = characters.findIndex(char => char.MemberNumber === message.data.Character.MemberNumber);
   characters[i] = message.data.Character;
   store(tabId, 'chatRoomCharacter', characters);
+
+  const player = await retrieve(tabId, 'player');
+  writeMember(player, message.data.Character);
 }
 
 function handleLoginResponse(tabId: number, message: IServerMessage<IPlayer>) {
   store(tabId, 'player', message.data);
+
+  // TODO update member store with own lovers and owner
 }
 
 function handleDisconnect(tabId: number) {
