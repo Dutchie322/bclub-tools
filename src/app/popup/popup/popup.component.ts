@@ -111,16 +111,12 @@ export class PopupComponent {
     return 'Neutral';
   }
 
-  public ownerToText(owner: string, ownership: IOwnership) {
-    if (ownership) {
-      if (ownership.MemberNumber) {
-        return `${ownership.Name} (${ownership.MemberNumber}) - ` +
-          (ownership.Stage === 0 ? 'On trial for ' : 'Collared for ') +
-          Math.floor((new Date().getTime() - ownership.Start) / 86400000).toString() +
-          ' days';
-      }
-    } else if (owner) {
-      return owner;
+  public ownerToText(ownership: IOwnership) {
+    if (ownership && ownership.MemberNumber) {
+      return `${ownership.Name} (${ownership.MemberNumber}) - ` +
+        (ownership.Stage === 0 ? 'On trial for ' : 'Collared for ') +
+        Math.floor((new Date().getTime() - ownership.Start) / 86400000).toString() +
+        ' days';
     }
     return 'None';
   }
