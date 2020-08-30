@@ -32,43 +32,52 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
     playerMemberNumber: context.MemberNumber,
     playerMemberName: context.Name,
     memberNumber: data.MemberNumber,
+    type: determineMemberType(member.type, 'Member'),
     lastSeen: new Date()
   });
 
   if (isAccountQueryResultItem(data)) {
-    member = Object.assign(member, {
-      memberName: data.MemberName,
-      type: determineMemberType(member.type, data.Type),
-      chatRoomName: data.ChatRoomName,
-      chatRoomSpace: data.ChatRoomSpace
+    member = Object.assign(member, mapAccountQueryResultItem(data), {
+      type: determineMemberType(member.type, data.Type)
     });
   }
   if (isChatRoomCharacter(data)) {
-    member = Object.assign(member, {
-      memberName: data.Name,
-      type: determineMemberType(member.type, 'Member'),
-      creation: data.Creation,
-      title: data.Title,
-      description: data.Description,
-      labelColor: data.LabelColor,
-      lovership: data.Lovership ? data.Lovership.map(lover => ({
-        memberNumber: lover.MemberNumber,
-        name: lover.Name,
-        start: lover.Start,
-        stage: lover.Stage
-      })) : undefined,
-      ownership: data.Ownership ? {
-        memberNumber: data.Ownership.MemberNumber,
-        name: data.Ownership.Name,
-        start: data.Ownership.Start,
-        stage: data.Ownership.Stage
-      } : undefined
-    });
+    member = Object.assign(member, mapChatRoomCharacter(data));
   }
 
   await addOrUpdateObjectStore('members', member);
 
   return member;
+}
+
+function mapAccountQueryResultItem(data: IAccountQueryResultItem) {
+  return {
+    memberName: data.MemberName,
+    chatRoomName: data.ChatRoomName,
+    chatRoomSpace: data.ChatRoomSpace
+  };
+}
+
+function mapChatRoomCharacter(data: IChatRoomCharacter) {
+  return {
+    memberName: data.Name,
+    creation: data.Creation,
+    title: data.Title,
+    description: data.Description,
+    labelColor: data.LabelColor,
+    lovership: data.Lovership ? data.Lovership.map(lover => ({
+      memberNumber: lover.MemberNumber,
+      name: lover.Name,
+      start: lover.Start,
+      stage: lover.Stage
+    })) : undefined,
+    ownership: data.Ownership ? {
+      memberNumber: data.Ownership.MemberNumber,
+      name: data.Ownership.Name,
+      start: data.Ownership.Start,
+      stage: data.Ownership.Stage
+    } : undefined
+  };
 }
 
 export async function writeFriends(player: IPlayer) {
@@ -133,16 +142,16 @@ export async function retrieveMember(playerMemberNumber: number, memberNumber: n
   });
 }
 
-function determineMemberType(currentType: MemberType | '', newType: MemberType): MemberType {
-  const order = {
-    Member: 0,
-    Friend: 1,
-    Submissive: 2,
-    Lover: 3,
-    Owner: 4
-  } as { [key in MemberType]: number; };
+const MemberTypeOrder = {
+  Member: 0,
+  Friend: 1,
+  Submissive: 2,
+  Lover: 3,
+  Owner: 4
+} as { [key in MemberType]: number; };
 
-  if (!currentType || order[newType] > order[currentType]) {
+function determineMemberType(currentType: MemberType | '', newType: MemberType): MemberType {
+  if (!currentType || MemberTypeOrder[newType] > MemberTypeOrder[currentType]) {
     return newType;
   }
   return currentType;

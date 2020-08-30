@@ -138,11 +138,9 @@ async function handleAccountQueryResult(tabId: number, message: IServerMessage<I
   const previous = await retrieve(tabId, 'onlineFriends');
   if (typeof previous !== 'undefined') {
     const current = friends;
-    let cameOnline: IMember[] = [];
-    let wentOffline: IMember[] = [];
 
-    cameOnline = current.filter(f => !previous.find(p => p.memberNumber === f.memberNumber));
-    wentOffline = previous.filter(p => !current.find(f => f.memberNumber === p.memberNumber));
+    const cameOnline = current.filter(f => !previous.find(p => p.memberNumber === f.memberNumber));
+    const wentOffline = previous.filter(p => !current.find(f => f.memberNumber === p.memberNumber));
 
     cameOnline.forEach(f => notifyFriendChange('online', f));
     await Promise.all(wentOffline.map(async friend => {
