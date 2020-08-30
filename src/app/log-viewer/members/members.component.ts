@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ChatLogsService } from '../../shared/chat-logs.service';
-import { IMember } from '../../shared/models';
+import { IPlayerMember } from '../../shared/models';
 
 @Component({
   selector: 'app-members',
@@ -8,7 +8,7 @@ import { IMember } from '../../shared/models';
   styleUrls: ['./members.component.scss']
 })
 export class LogViewerComponent {
-  public members: IMember[];
+  public members: IPlayerMember[];
 
   constructor(private chatLogsService: ChatLogsService) {
     this.chatLogsService.findMembers().then(members => {

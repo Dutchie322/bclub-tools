@@ -1,2 +1,2 @@
 export * from './IChatSession';
-export * from './IMember';
+export * from './IPlayerMember';

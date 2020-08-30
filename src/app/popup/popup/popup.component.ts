@@ -1,8 +1,18 @@
 import { Component, TrackByFunction } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { IAccountQueryResultItem, IPlayer, IChatRoomSearchResult, retrieve, IChatRoomCharacter, onChanged, IOwnership, IReputation } from 'models';
+import {
+  IAccountQueryResultItem,
+  IPlayer,
+  IChatRoomSearchResult,
+  retrieve,
+  IChatRoomCharacter,
+  onChanged,
+  IOwnership,
+  IReputation,
+  IMember
+} from 'models';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
-import { IMember } from 'src/app/shared/models';
+import { IPlayerMember } from 'src/app/shared/models';
 
 @Component({
   selector: 'app-popup',
@@ -12,9 +22,9 @@ import { IMember } from 'src/app/shared/models';
 export class PopupComponent {
   public characters = new MatTableDataSource<IChatRoomCharacter>();
   public chatRooms = new MatTableDataSource<IChatRoomSearchResult>();
-  public onlineFriends = new MatTableDataSource<IAccountQueryResultItem>();
+  public onlineFriends = new MatTableDataSource<IMember>();
   public player: IPlayer;
-  public alternativeCharacters: IMember[];
+  public alternativeCharacters: IPlayerMember[];
 
   public characterColumns = ['name', 'owner', 'permission', 'reputation'];
   public chatRoomColumns = ['name', 'creator', 'members', 'description'];
@@ -85,14 +95,6 @@ export class PopupComponent {
         url: '/index.html?page=/options'
       });
     }
-  }
-
-  public friendTypeToText(friendType: string) {
-    if (friendType === 'Submissive') {
-      return 'Lover/Submissive';
-    }
-
-    return friendType;
   }
 
   public dominantReputationToText(reputation: IReputation[]) {

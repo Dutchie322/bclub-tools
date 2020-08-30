@@ -1,4 +1,4 @@
-export interface IMember {
+export interface IPlayerMember {
   memberNumber: number;
   name: string;
 }

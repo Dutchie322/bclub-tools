@@ -38,7 +38,9 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
   if (isAccountQueryResultItem(data)) {
     member = Object.assign(member, {
       memberName: data.MemberName,
-      type: determineMemberType(member.type, data.Type)
+      type: determineMemberType(member.type, data.Type),
+      chatRoomName: data.ChatRoomName,
+      chatRoomSpace: data.ChatRoomSpace
     });
   }
   if (isChatRoomCharacter(data)) {
@@ -65,6 +67,8 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
   }
 
   await addOrUpdateObjectStore('members', member);
+
+  return member;
 }
 
 export async function writeFriends(player: IPlayer) {
@@ -106,7 +110,14 @@ export async function writeFriends(player: IPlayer) {
   }
 }
 
-async function retrieveMember(playerMemberNumber: number, memberNumber: number) {
+export async function removeChatRoomData(member: IMember) {
+  const storedMember = await retrieveMember(member.playerMemberNumber, member.memberNumber);
+  delete storedMember.chatRoomName;
+  delete storedMember.chatRoomSpace;
+  await addOrUpdateObjectStore('members', storedMember);
+}
+
+export async function retrieveMember(playerMemberNumber: number, memberNumber: number) {
   const db = await openDatabase();
   const transaction = db.transaction('members', 'readonly');
   return await new Promise<IMember>((resolve, reject) => {

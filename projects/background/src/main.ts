@@ -20,10 +20,11 @@ import {
   ISettings,
   IChatRoomSyncSingle,
   executeForAllGameTabs,
-  IPlayer
+  IPlayer,
+  IMember
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
-import { writeMember, writeFriends } from './member';
+import { writeMember, writeFriends, removeChatRoomData, retrieveMember } from './member';
 
 chrome.runtime.onInstalled.addListener(() => {
   // Ensure default settings
@@ -70,7 +71,7 @@ chrome.runtime.onMessage.addListener((message, sender) => {
   }
 });
 
-chrome.tabs.onRemoved.addListener(clearStorage);
+chrome.tabs.onRemoved.addListener(cleanUpData);
 
 function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtime.MessageSender) {
   switch (message.event) {
@@ -90,7 +91,7 @@ function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtim
 function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtime.MessageSender) {
   switch (message.event) {
     case 'AccountBeep':
-      handleAccountBeep(message);
+      handleAccountBeep(sender.tab.id, message);
       break;
     case 'AccountQueryResult':
       handleAccountQueryResult(sender.tab.id, message);
@@ -121,8 +122,9 @@ function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtim
   }
 }
 
-function handleAccountBeep(message: IServerMessage<IAccountBeep>) {
-  notifyAccountBeep(message.data);
+async function handleAccountBeep(tabId: number, message: IServerMessage<IAccountBeep>) {
+  const player = await retrieve(tabId, 'player');
+  notifyAccountBeep(message.data, player.MemberNumber);
 }
 
 async function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccountQueryResult>) {
@@ -130,26 +132,26 @@ async function handleAccountQueryResult(tabId: number, message: IServerMessage<I
     return;
   }
 
-  retrieve(tabId, 'onlineFriends').then(previous => {
-    if (typeof previous === 'undefined') {
-      return;
-    }
+  const player = await retrieve(tabId, 'player');
+  const friends = await Promise.all(message.data.Result.map(friend => writeMember(player, friend)));
 
-    const current = message.data.Result;
-    let cameOnline = [];
-    let wentOffline = [];
+  const previous = await retrieve(tabId, 'onlineFriends');
+  if (typeof previous !== 'undefined') {
+    const current = friends;
+    let cameOnline: IMember[] = [];
+    let wentOffline: IMember[] = [];
 
-    cameOnline = current.filter(f => !previous.find(p => p.MemberNumber === f.MemberNumber));
-    wentOffline = previous.filter(p => !current.find(f => f.MemberNumber === p.MemberNumber));
+    cameOnline = current.filter(f => !previous.find(p => p.memberNumber === f.memberNumber));
+    wentOffline = previous.filter(p => !current.find(f => f.memberNumber === p.memberNumber));
 
     cameOnline.forEach(f => notifyFriendChange('online', f));
-    wentOffline.forEach(f => notifyFriendChange('offline', f));
-  });
+    await Promise.all(wentOffline.map(async friend => {
+      await removeChatRoomData(friend);
+      notifyFriendChange('offline', friend);
+    }));
+  }
 
-  store(tabId, 'onlineFriends', message.data.Result);
-
-  const player = await retrieve(tabId, 'player');
-  message.data.Result.forEach(friend => writeMember(player, friend));
+  store(tabId, 'onlineFriends', friends);
 }
 
 function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
@@ -190,16 +192,24 @@ function handleLoginResponse(tabId: number, message: IServerMessage<IPlayer>) {
 }
 
 function handleDisconnect(tabId: number) {
-  clearStorage(tabId);
+  cleanUpData(tabId);
 }
 
 function handleVariablesUpdate(tabId: number, message: IServerMessage<IVariablesUpdate>) {
   if (message.data.CurrentScreen === 'Login') {
-    clearStorage(tabId);
+    cleanUpData(tabId);
     return;
   }
 
   if (!message.data.InChat) {
     store(tabId, 'chatRoomCharacter', []);
   }
+}
+
+async function cleanUpData(tabId: number) {
+  const friends = await retrieve(tabId, 'onlineFriends');
+  if (friends) {
+    await Promise.all(friends.map(friend => removeChatRoomData(friend)));
+  }
+  clearStorage(tabId);
 }

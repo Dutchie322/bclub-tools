@@ -4,13 +4,15 @@ export interface IMember {
   memberNumber: number;
   memberName: string;
   type: MemberType;
+  lastSeen: Date;
+  chatRoomName?: string;
+  chatRoomSpace?: string;
   creation?: number;
   title?: string;
   description?: string;
   labelColor?: string;
   lovership?: IMemberLovership[];
   ownership?: IMemberOwnership;
-  lastSeen: Date;
 }
 
 export type MemberType = 'Member' | 'Friend' | 'Submissive' | 'Lover' | 'Owner';
