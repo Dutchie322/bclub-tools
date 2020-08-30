@@ -5,6 +5,7 @@ import {
   addOrUpdateObjectStore,
   openDatabase,
   MemberType,
+  IPlayer,
 } from '../../../models';
 
 interface PlayerContext {
@@ -25,22 +26,7 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
     return;
   }
 
-  const db = await openDatabase();
-  const transaction = db.transaction('members', 'readonly');
-  let member = await new Promise<IMember>((resolve, reject) => {
-    const request = transaction.objectStore('members').get([context.MemberNumber, data.MemberNumber]);
-    request.addEventListener('error', () => {
-      console.error(`Error while reading store members`);
-      console.error(request.error);
-      reject(request.error);
-    });
-    request.addEventListener('success', event => {
-      resolve((event.target as IDBRequest<IMember>).result);
-    });
-  });
-
-  console.log('retrieved:');
-  console.log(member);
+  let member = await retrieveMember(context.MemberNumber, data.MemberNumber);
 
   member = Object.assign({}, member, {
     playerMemberNumber: context.MemberNumber,
@@ -63,12 +49,12 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
       title: data.Title,
       description: data.Description,
       labelColor: data.LabelColor,
-      lovership: data.Lovership.map(lover => ({
+      lovership: data.Lovership ? data.Lovership.map(lover => ({
         memberNumber: lover.MemberNumber,
         name: lover.Name,
         start: lover.Start,
         stage: lover.Stage
-      })),
+      })) : undefined,
       ownership: data.Ownership ? {
         memberNumber: data.Ownership.MemberNumber,
         name: data.Ownership.Name,
@@ -78,13 +64,65 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
     });
   }
 
-  console.log('storing:');
-  console.log(member);
-
   await addOrUpdateObjectStore('members', member);
 }
 
-function determineMemberType(currentType: MemberType, newType: MemberType): MemberType {
+export async function writeFriends(player: IPlayer) {
+  if (player.FriendList) {
+    await Promise.all(player.FriendList.map(async friend => {
+      let member = await retrieveMember(player.MemberNumber, friend);
+      member = Object.assign({}, member, {
+        playerMemberNumber: player.MemberNumber,
+        playerMemberName: player.Name,
+        memberNumber: friend,
+        type: determineMemberType(member && member.type, 'Friend')
+      });
+      await addOrUpdateObjectStore('members', member);
+    }));
+  }
+  if (player.Lovership) {
+    await Promise.all(player.Lovership.map(async lover => {
+      let member = await retrieveMember(player.MemberNumber, lover.MemberNumber);
+      member = Object.assign({}, member, {
+        playerMemberNumber: player.MemberNumber,
+        playerMemberName: player.Name,
+        memberNumber: lover.MemberNumber,
+        memberName: lover.Name,
+        type: determineMemberType(member && member.type, 'Lover')
+      });
+      await addOrUpdateObjectStore('members', member);
+    }));
+  }
+  if (player.Ownership) {
+    let member = await retrieveMember(player.MemberNumber, player.Ownership.MemberNumber);
+    member = Object.assign({}, member, {
+      playerMemberNumber: player.MemberNumber,
+      playerMemberName: player.Name,
+      memberNumber: player.Ownership.MemberNumber,
+      memberName: player.Ownership.Name,
+      type: determineMemberType(member && member.type, 'Owner')
+    });
+    await addOrUpdateObjectStore('members', member);
+  }
+}
+
+async function retrieveMember(playerMemberNumber: number, memberNumber: number) {
+  const db = await openDatabase();
+  const transaction = db.transaction('members', 'readonly');
+  return await new Promise<IMember>((resolve, reject) => {
+    const request = transaction.objectStore('members').get([playerMemberNumber, memberNumber]);
+    request.addEventListener('error', () => {
+      console.error(`Error while reading store members`);
+      console.error(request.error);
+      reject(request.error);
+    });
+    request.addEventListener('success', event => {
+      resolve((event.target as IDBRequest<IMember>).result);
+    });
+  });
+}
+
+function determineMemberType(currentType: MemberType | '', newType: MemberType): MemberType {
   const order = {
     Member: 0,
     Friend: 1,

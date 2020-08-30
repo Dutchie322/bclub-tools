@@ -23,7 +23,7 @@ import {
   IPlayer
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
-import { writeMember } from './member';
+import { writeMember, writeFriends } from './member';
 
 chrome.runtime.onInstalled.addListener(() => {
   // Ensure default settings
@@ -186,7 +186,7 @@ async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<I
 function handleLoginResponse(tabId: number, message: IServerMessage<IPlayer>) {
   store(tabId, 'player', message.data);
 
-  // TODO update member store with own lovers and owner
+  writeFriends(message.data);
 }
 
 function handleDisconnect(tabId: number) {

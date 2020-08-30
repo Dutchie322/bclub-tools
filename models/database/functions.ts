@@ -1,3 +1,5 @@
+type StoreNames = 'chatRoomLogs' | 'members';
+
 export function openDatabase() {
   return new Promise<IDBDatabase>((resolve, reject) => {
     const openRequest = indexedDB.open('bclub-tools', 4);
@@ -67,7 +69,7 @@ function addDatabaseEventHandlers(db: IDBDatabase) {
   });
 }
 
-export async function addOrUpdateObjectStore(storeName: string, value: any) {
+export async function addOrUpdateObjectStore(storeName: StoreNames, value: any) {
   const db = await openDatabase();
   const transaction = db.transaction(storeName, 'readwrite');
   transaction.addEventListener('error', () => {
