@@ -1,7 +1,6 @@
 import { Component, TrackByFunction } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import {
-  IAccountQueryResultItem,
   IPlayer,
   IChatRoomSearchResult,
   retrieve,
@@ -128,6 +127,7 @@ export class PopupComponent {
 
   public permissionToText(permission: number) {
     /*
+    TODO Update with lovers
     PermissionLevel0	Everyone, no exceptions
     PermissionLevel1	Everyone, except blacklist
     PermissionLevel2	Owner, whitelist & Dominants
@@ -152,5 +152,5 @@ export class PopupComponent {
 
   public trackByCharacter: TrackByFunction<IChatRoomCharacter> = (_, character) => character.MemberNumber;
   public trackByChatRoom: TrackByFunction<IChatRoomSearchResult> = (_, chatRoom) => chatRoom.Name;
-  public trackByFriend: TrackByFunction<IAccountQueryResultItem> = (_, friend) => friend.MemberNumber;
+  public trackByFriend: TrackByFunction<IMember> = (_, friend) => friend.memberNumber;
 }
