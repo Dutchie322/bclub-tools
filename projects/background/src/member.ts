@@ -68,13 +68,13 @@ function mapChatRoomCharacter(data: IChatRoomCharacter) {
     lovership: data.Lovership ? data.Lovership.map(lover => ({
       memberNumber: lover.MemberNumber,
       name: lover.Name,
-      start: lover.Start,
+      start: new Date(lover.Start),
       stage: lover.Stage
     })) : undefined,
     ownership: data.Ownership ? {
       memberNumber: data.Ownership.MemberNumber,
       name: data.Ownership.Name,
-      start: data.Ownership.Start,
+      start: new Date(data.Ownership.Start),
       stage: data.Ownership.Stage
     } : undefined
   };
