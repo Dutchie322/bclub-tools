@@ -123,12 +123,12 @@ export class PopupComponent {
 
   public permissionToText(permission: number) {
     /*
-    TODO Update with lovers
-    PermissionLevel0	Everyone, no exceptions
-    PermissionLevel1	Everyone, except blacklist
-    PermissionLevel2	Owner, whitelist & Dominants
-    PermissionLevel3	Owner and whitelist only
-    PermissionLevel4	Owner only
+    PermissionLevel0 Everyone, no exceptions
+    PermissionLevel1 Everyone, except blacklist
+    PermissionLevel2 Owner, Lover, whitelist & Dominants
+    PermissionLevel3 Owner, Lover and whitelist only
+    PermissionLevel4 Owner and Lover only
+    PermissionLevel5 Owner only
     */
     switch (permission) {
       case 0:
@@ -136,10 +136,12 @@ export class PopupComponent {
       case 1:
         return 'Everyone, except blacklist';
       case 2:
-        return 'Owner, whitelist & Dominants';
+        return 'Owner, Lover, whitelist & Dominants';
       case 3:
-        return 'Owner and whitelist only';
+        return 'Owner, Lover and whitelist only';
       case 4:
+        return 'Owner and Lover only';
+      case 5:
         return 'Owner only';
       default:
         return permission;
