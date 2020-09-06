@@ -1,8 +1,0 @@
-<mat-toolbar>Characters</mat-toolbar>
-<mat-list>
-  <mat-list-item *ngFor="let member of members">
-    <a [routerLink]="['/log-viewer', member.memberNumber]">
-      {{ member.name }} ({{ member.memberNumber }})
-    </a>
-  </mat-list-item>
-</mat-list>

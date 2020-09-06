@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DatabaseService } from './database.service';
 import { IChatLog } from 'models';
-import { IChatSession, IPlayerMember } from './models';
+import { IChatSession, IPlayerCharacter } from './models';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,10 +11,10 @@ export class ChatLogsService {
 
   constructor(private databaseService: DatabaseService) { }
 
-  public async findMembers(): Promise<IPlayerMember[]> {
+  public async findPlayerCharacters(): Promise<IPlayerCharacter[]> {
     const transaction = await this.databaseService.transaction('chatRoomLogs');
     return new Promise(resolve => {
-      const members: IPlayerMember[] = [];
+      const members: IPlayerCharacter[] = [];
       transaction.objectStore('chatRoomLogs')
         .index('sessionMemberNumber_idx')
         .openCursor(null, 'nextunique')

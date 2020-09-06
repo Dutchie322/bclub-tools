@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { LogViewerComponent } from './members/members.component';
+import { PlayerCharactersComponent } from './player-characters/player-characters.component';
 import { ChatSessionsComponent } from './chat-sessions/chat-sessions.component';
 import { ChatReplayComponent } from './chat-replay/chat-replay.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LogViewerComponent
+    component: PlayerCharactersComponent
   },
   {
     path: ':memberNumber',

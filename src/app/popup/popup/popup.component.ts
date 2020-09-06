@@ -11,7 +11,7 @@ import {
   IMember
 } from 'models';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
-import { IPlayerMember } from 'src/app/shared/models';
+import { IPlayerCharacter } from 'src/app/shared/models';
 
 @Component({
   selector: 'app-popup',
@@ -23,7 +23,7 @@ export class PopupComponent {
   public chatRooms = new MatTableDataSource<IChatRoomSearchResult>();
   public onlineFriends = new MatTableDataSource<IMember>();
   public player: IPlayer;
-  public alternativeCharacters: IPlayerMember[];
+  public alternativeCharacters: IPlayerCharacter[];
 
   public characterColumns = ['name', 'owner', 'permission', 'reputation'];
   public chatRoomColumns = ['name', 'creator', 'members', 'description'];
@@ -64,7 +64,7 @@ export class PopupComponent {
       });
     });
 
-    this.chatLogsService.findMembers().then(members => {
+    this.chatLogsService.findPlayerCharacters().then(members => {
       this.alternativeCharacters = members.filter(m => {
         if (this.loggedIn) {
           return m.memberNumber !== this.player.MemberNumber;
