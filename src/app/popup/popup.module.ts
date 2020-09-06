@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -26,6 +27,7 @@ import { SharedModule } from '../shared/shared.module';
     MatIconModule,
     MatMenuModule,
     MatListModule,
+    MatSortModule,
     MatTabsModule,
     MatTableModule,
     MatToolbarModule
