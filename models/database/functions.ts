@@ -1,4 +1,4 @@
-type StoreNames = 'chatRoomLogs' | 'members';
+export type StoreNames = 'chatRoomLogs' | 'members';
 
 export function openDatabase() {
   return new Promise<IDBDatabase>((resolve, reject) => {

@@ -1,10 +1,10 @@
 export interface IMember {
   playerMemberNumber: number;
   playerMemberName: string;
-  memberNumber: number;
-  memberName: string;
   type: MemberType;
-  lastSeen: Date;
+  memberNumber: number;
+  memberName?: string;
+  lastSeen?: Date;
   chatRoomName?: string;
   chatRoomSpace?: string;
   creation?: number;

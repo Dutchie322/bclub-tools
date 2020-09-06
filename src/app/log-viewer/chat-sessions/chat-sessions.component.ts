@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ChatLogsService } from '../../shared/chat-logs.service';
 import { IChatSession } from '../../shared/models';
-import { MatSort } from '@angular/material/sort';
+import { IMember } from 'models';
+import { MemberService } from 'src/app/shared/member.service';
 
 @Component({
   selector: 'app-chat-sessions',
@@ -15,18 +17,20 @@ export class ChatSessionsComponent implements OnInit {
 
   public memberNumber: number;
   public chatSessions = new MatTableDataSource<IChatSession>();
+  public members = new MatTableDataSource<IMember>();
 
   public chatSessionsColumns = ['chatRoom', 'start'];
+  public membersColumns = ['name', 'memberNumber', 'type', 'lastSeen'];
 
   constructor(
     route: ActivatedRoute,
-    chatLogsService: ChatLogsService
+    chatLogsService: ChatLogsService,
+    memberService: MemberService
   ) {
-    route.paramMap.subscribe(params => {
+    route.paramMap.subscribe(async params => {
       this.memberNumber = +params.get('memberNumber');
-      chatLogsService.findChatRoomsForMemberNumber(this.memberNumber).then(chatSessions => {
-        this.chatSessions.data = chatSessions;
-      });
+      this.chatSessions.data = await chatLogsService.findChatRoomsForMemberNumber(this.memberNumber);
+      this.members.data = await memberService.findMembersWithName(this.memberNumber);
     });
   }
 
