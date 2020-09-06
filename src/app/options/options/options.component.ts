@@ -169,6 +169,9 @@ export class OptionsComponent implements OnDestroy {
       objectStoreNames.forEach(storeName => {
         console.log(`Importing ${storeName}...`);
         let count = 0;
+        if (!importObject[storeName]) {
+          return;
+        }
         importObject[storeName].forEach((toAdd: any) => {
           if (toAdd.id) {
             delete toAdd.id;
