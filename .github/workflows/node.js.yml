@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -25,5 +25,17 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: yarn
+      name: install dependencies
     - run: yarn build
+      name: build
+    - run: yarn lint
+      name: lint
     #- run: yarn test
+    #  name: test
+    - run: yarn package
+      name: package
+    - uses: actions/upload-artifact@v2
+      name: upload artifacts
+      with:
+        name: extension
+        path: dist
