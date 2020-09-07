@@ -32,7 +32,7 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
     playerMemberNumber: context.MemberNumber,
     playerMemberName: context.Name,
     memberNumber: data.MemberNumber,
-    type: determineMemberType(member.type, 'Member'),
+    type: determineMemberType(member && member.type, 'Member'),
     lastSeen: new Date()
   });
 
