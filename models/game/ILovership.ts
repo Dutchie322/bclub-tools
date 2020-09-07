@@ -1,5 +1,8 @@
 export interface ILovership {
-  MemberNumber: number;
+  /**
+   * Undefined in case of an NPC
+   */
+  MemberNumber?: number;
   Name: string;
   /**
    * Timestamp

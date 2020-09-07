@@ -106,7 +106,7 @@ export async function writeFriends(player: IPlayer) {
       await addOrUpdateObjectStore('members', member);
     }));
   }
-  if (player.Ownership) {
+  if (player.Ownership && player.Ownership.MemberNumber) {
     let member = await retrieveMember(player.MemberNumber, player.Ownership.MemberNumber);
     member = Object.assign({}, member, {
       playerMemberNumber: player.MemberNumber,
