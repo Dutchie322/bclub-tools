@@ -8,6 +8,8 @@ A web extension for the [Bondage Club](https://www.patreon.com/BondageProjects) 
 - Optionally detecting when friends come online or go offline and sending a Windows notification when it happens.
 - Up-to-date friends list in popup.
 - Quick overview of the characters in the currently joined chat room (name, ownership, dominant level).
+- Optionally show an FPS counter to help find performance issues within the game.
+- Keeps track of people met in the game, when they were last online and allows one to keep notes on them.
 
 # Development
 
