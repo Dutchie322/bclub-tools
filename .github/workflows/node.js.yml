@@ -20,22 +20,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      name: Check out code
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
     - run: yarn
-      name: install dependencies
+      name: Install dependencies
     - run: yarn build
-      name: build
+      name: Build extension
     - run: yarn lint
-      name: lint
+      name: Lint code
     #- run: yarn test
-    #  name: test
+    #  name: Run tests
     - run: yarn package
-      name: package
+      name: Package extension
     - uses: actions/upload-artifact@v2
-      name: upload artifacts
+      name: Upload artifacts
       with:
-        name: extension
-        path: dist
+        name: bclub-tools
+        path: dist/bclub-tools
