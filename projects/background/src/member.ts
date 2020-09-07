@@ -94,7 +94,7 @@ export async function writeFriends(player: IPlayer) {
     }));
   }
   if (player.Lovership) {
-    await Promise.all(player.Lovership.map(async lover => {
+    await Promise.all(player.Lovership.filter(lover => lover.MemberNumber).map(async lover => {
       let member = await retrieveMember(player.MemberNumber, lover.MemberNumber);
       member = Object.assign({}, member, {
         playerMemberNumber: player.MemberNumber,
