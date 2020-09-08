@@ -37,8 +37,7 @@ chrome.runtime.onInstalled.addListener(() => {
         chatRoomRefresh: true,
         fpsCounter: false,
         ...(settings ? settings.tools : {})
-      },
-      ...settings
+      }
     } as ISettings);
   });
 

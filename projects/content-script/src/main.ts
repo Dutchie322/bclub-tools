@@ -2,7 +2,7 @@
 
 import { frameCounter } from './performance-counter';
 import { generatePersistentScriptWithWait, generatePersistentScript } from './script-generators';
-import {  chatRoomRefresh, listenToServerEvents, pollOnlineFriends, pollVariables } from './server-event-listeners';
+import { chatRoomRefresh, listenToServerEvents, pollOnlineFriends, pollVariables } from './server-event-listeners';
 import { listenForUserSentEvents } from './user-input-listener';
 import { retrieveGlobal, log } from '../../../models';
 
