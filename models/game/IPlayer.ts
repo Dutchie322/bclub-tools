@@ -9,6 +9,7 @@ export interface IPlayer {
   FriendList: number[];
   Lovership: ILovership[];
   Ownership?: IOwnership;
+  OnlineID: string;
 }
 
 export interface IPlayerChatSettings {

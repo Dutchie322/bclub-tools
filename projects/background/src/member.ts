@@ -5,7 +5,7 @@ import {
   addOrUpdateObjectStore,
   openDatabase,
   MemberType,
-  IPlayer,
+  IStoredPlayer,
 } from '../../../models';
 
 interface PlayerContext {
@@ -80,7 +80,7 @@ function mapChatRoomCharacter(data: IChatRoomCharacter) {
   };
 }
 
-export async function writeFriends(player: IPlayer) {
+export async function writeFriends(player: IStoredPlayer) {
   if (player.FriendList) {
     await Promise.all(player.FriendList.map(async friend => {
       let member = await retrieveMember(player.MemberNumber, friend);

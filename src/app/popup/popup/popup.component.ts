@@ -1,7 +1,7 @@
 import { Component, TrackByFunction } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import {
-  IPlayer,
+  IStoredPlayer,
   IChatRoomSearchResult,
   retrieve,
   IChatRoomCharacter,
@@ -22,7 +22,7 @@ export class PopupComponent {
   public characters = new MatTableDataSource<IChatRoomCharacter>();
   public chatRooms = new MatTableDataSource<IChatRoomSearchResult>();
   public onlineFriends = new MatTableDataSource<IMember>();
-  public player: IPlayer;
+  public player: IStoredPlayer;
   public alternativeCharacters: IPlayerCharacter[];
 
   public characterColumns = ['name', 'owner', 'permission', 'reputation'];

@@ -6,4 +6,5 @@ export * from './ICharacter';
 export * from './IChatRoom';
 export * from './ILovership';
 export * from './IOwnership';
+export * from './IPlayer';
 export * from './IReputation';

@@ -20,7 +20,7 @@ import {
   ISettings,
   IChatRoomSyncSingle,
   executeForAllGameTabs,
-  IPlayer,
+  IStoredPlayer,
   IMember
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
@@ -183,7 +183,7 @@ async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<I
   writeMember(player, message.data.Character);
 }
 
-function handleLoginResponse(tabId: number, message: IServerMessage<IPlayer>) {
+function handleLoginResponse(tabId: number, message: IServerMessage<IStoredPlayer>) {
   store(tabId, 'player', message.data);
 
   writeFriends(message.data);
