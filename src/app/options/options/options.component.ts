@@ -23,6 +23,7 @@ export class OptionsComponent implements OnDestroy {
       friendOffline: new FormControl(false)
     }),
     tools: new FormGroup({
+      chatRoomRefresh: new FormControl(true),
       fpsCounter: new FormControl(false)
     })
   });
@@ -34,7 +35,7 @@ export class OptionsComponent implements OnDestroy {
     private snackBar: MatSnackBar
   ) {
     retrieveGlobal('settings').then(settings => {
-      this.settingsForm.setValue(settings, {
+      this.settingsForm.patchValue(settings, {
         emitEvent: false
       });
     });
@@ -47,6 +48,7 @@ export class OptionsComponent implements OnDestroy {
           friendOffline: value.notifications.friendOffline
         },
         tools: {
+          chatRoomRefresh: value.tools.chatRoomRefresh,
           fpsCounter: value.tools.fpsCounter
         }
       } as ISettings)),
