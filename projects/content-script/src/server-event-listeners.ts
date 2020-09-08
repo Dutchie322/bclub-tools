@@ -7,6 +7,7 @@ import {
   IChatRoomSyncSingle,
   IAccountQueryResult,
   IChatRoomCharacter,
+  IChatRoomSearch,
   ILoginResponse,
   IPlayer
 } from '../../../models';
@@ -121,20 +122,35 @@ export function listenToServerEvents(handshake: string) {
 }
 
 export function pollOnlineFriends() {
-  setInterval(() => {
+  const timerHandle = setInterval(() => {
     if (window.CurrentScreen !== 'Login') {
       window.ServerSocket.emit('AccountQuery', {
         Query: 'OnlineFriends'
       });
     }
+  }, 10000);
+
+  return () => {
+    clearInterval(timerHandle);
+  }
+}
+
+export function chatRoomRefresh() {
+  const timerHandle = setInterval(() => {
     if (window.CurrentScreen === 'ChatSearch') {
       const searchInput = document.getElementById('InputSearch') as HTMLInputElement;
       window.ServerSocket.emit('ChatRoomSearch', {
         Query: searchInput ? searchInput.value.toUpperCase().trim() : '',
-        Space: window.ChatRoomSpace
-      });
+        Space: window.ChatRoomSpace,
+        FullRooms: (window.Player.ChatSettings && window.Player.ChatSettings.SearchShowsFullRooms),
+        Ignore: window.ChatSearchIgnoredRooms
+      } as IChatRoomSearch);
     }
   }, 10000);
+
+  return () => {
+    clearInterval(timerHandle);
+  };
 }
 
 export function pollVariables(handshake: string) {

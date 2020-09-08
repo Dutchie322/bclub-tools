@@ -10,5 +10,6 @@ export interface INotificationSettings {
 }
 
 export interface IToolsSettings {
+  chatRoomRefresh: boolean;
   fpsCounter: boolean;
 }
