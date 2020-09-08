@@ -21,7 +21,10 @@
   </mat-list>
   <mat-list formGroupName="tools">
     <h2 matSubheader>Tools</h2>
-    <p>You need to reload the game after changing these settings.</p>
+    <p matSubheader class="warning">
+      <mat-icon>warning</mat-icon>
+      You need to reload the game after changing these settings.
+    </p>
     <mat-list-item>
       <mat-checkbox formControlName="chatRoomRefresh">
         Automatically refresh chat room search
