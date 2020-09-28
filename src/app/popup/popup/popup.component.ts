@@ -1,5 +1,5 @@
-import { Component, TrackByFunction } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, TrackByFunction, ViewChild } from '@angular/core';
+import { MatSort, MatTableDataSource } from '@angular/material';
 import {
   IStoredPlayer,
   IChatRoomSearchResult,
@@ -8,7 +8,8 @@ import {
   onChanged,
   IOwnership,
   IReputation,
-  IMember
+  IMember,
+  MemberTypeOrder,
 } from 'models';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { IPlayerCharacter } from 'src/app/shared/models';
@@ -19,6 +20,16 @@ import { IPlayerCharacter } from 'src/app/shared/models';
   styleUrls: ['./popup.component.scss']
 })
 export class PopupComponent {
+  @ViewChild('onlineFriendsSort', { static: true }) set onlineFriendsSort(sort: MatSort) {
+    this.onlineFriends.sort = sort;
+    this.onlineFriends.sortingDataAccessor = (data, sortHeaderId) => {
+      if (sortHeaderId === 'type') {
+        return MemberTypeOrder[data[sortHeaderId]];
+      }
+      return data[sortHeaderId];
+    };
+  }
+
   public characters = new MatTableDataSource<IChatRoomCharacter>();
   public chatRooms = new MatTableDataSource<IChatRoomSearchResult>();
   public onlineFriends = new MatTableDataSource<IMember>();
@@ -27,7 +38,7 @@ export class PopupComponent {
 
   public characterColumns = ['name', 'owner', 'permission', 'reputation'];
   public chatRoomColumns = ['name', 'creator', 'members', 'description'];
-  public onlineFriendColumns = ['name', 'chatRoom', 'type'];
+  public onlineFriendColumns = ['memberName', 'chatRoomName', 'type'];
 
   get loggedIn() {
     return this.player && this.player.MemberNumber > 0;

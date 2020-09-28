@@ -18,6 +18,12 @@ export class ChatSessionsComponent {
   }
   @ViewChild('membersSort', {static: true}) set membersSort(sort: MatSort) {
     this.members.sort = sort;
+    this.members.sortingDataAccessor = (data, sortHeaderId) => {
+      if (sortHeaderId === 'type') {
+        return MemberTypeOrder[data[sortHeaderId]];
+      }
+      return data[sortHeaderId];
+    };
   }
 
   public memberNumber: number;
@@ -36,12 +42,6 @@ export class ChatSessionsComponent {
       this.memberNumber = +params.get('memberNumber');
       this.chatSessions.data = await chatLogsService.findChatRoomsForMemberNumber(this.memberNumber);
       this.members.data = await memberService.findMembersWithName(this.memberNumber);
-      this.members.sortingDataAccessor = (data, sortHeaderId) => {
-        if (sortHeaderId === 'type') {
-          return MemberTypeOrder[data[sortHeaderId]];
-        }
-        return data[sortHeaderId];
-      };
     });
   }
 }
