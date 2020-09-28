@@ -21,28 +21,33 @@ import {
   IChatRoomSyncSingle,
   executeForAllGameTabs,
   IStoredPlayer,
-  IMember
+  IPlayerWithRelations
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
-import { writeMember, writeFriends, removeChatRoomData, retrieveMember } from './member';
+import { writeMember, writeFriends, removeChatRoomData } from './member';
 
-chrome.runtime.onInstalled.addListener(() => {
-  // Ensure default settings
-  retrieveGlobal('settings').then(settings => {
-    storeGlobal('settings', {
-      notifications: {
-        beeps: false,
-        friendOnline: false,
-        friendOffline: false,
-        ...(settings ? settings.notifications : {})
-      },
-      tools: {
-        chatRoomRefresh: true,
-        fpsCounter: false,
-        ...(settings ? settings.tools : {})
-      }
-    } as ISettings);
+chrome.browserAction.onClicked.addListener(() => {
+  chrome.tabs.create({
+    url: '/index.html?page=/log-viewer'
   });
+});
+
+chrome.runtime.onInstalled.addListener(async () => {
+  // Ensure default settings
+  const settings = await retrieveGlobal('settings');
+  await storeGlobal('settings', {
+    notifications: {
+      beeps: false,
+      friendOnline: false,
+      friendOffline: false,
+      ...(settings ? settings.notifications : {})
+    },
+    tools: {
+      chatRoomRefresh: true,
+      fpsCounter: false,
+      ...(settings ? settings.tools : {})
+    }
+  } as ISettings);
 
   // Inject content scripts in applicable tabs
   executeForAllGameTabs(tab => {
@@ -183,8 +188,11 @@ async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<I
   writeMember(player, message.data.Character);
 }
 
-function handleLoginResponse(tabId: number, message: IServerMessage<IStoredPlayer>) {
-  store(tabId, 'player', message.data);
+function handleLoginResponse(tabId: number, message: IServerMessage<IPlayerWithRelations>) {
+  setPlayerLoggedIn(tabId, {
+    MemberNumber: message.data.MemberNumber,
+    Name: message.data.Name
+  });
 
   writeFriends(message.data);
 }
@@ -199,9 +207,26 @@ function handleVariablesUpdate(tabId: number, message: IServerMessage<IVariables
     return;
   }
 
-  if (!message.data.InChat) {
+  if (typeof message.data.InChat !== 'undefined' && !message.data.InChat) {
     store(tabId, 'chatRoomCharacter', []);
   }
+
+  if (message.data.Player && message.data.Player.MemberNumber > 0) {
+    setPlayerLoggedIn(tabId, message.data.Player);
+  }
+}
+
+function setPlayerLoggedIn(tabId: number, player: IStoredPlayer) {
+  store(tabId, 'player', player);
+
+  chrome.browserAction.setPopup({
+    tabId,
+    popup: 'index.html'
+  });
+  chrome.browserAction.setTitle({
+    tabId,
+    title: `${chrome.runtime.getManifest().name}: ${player.Name}`
+  });
 }
 
 async function cleanUpData(tabId: number) {
@@ -210,4 +235,13 @@ async function cleanUpData(tabId: number) {
     await Promise.all(friends.map(friend => removeChatRoomData(friend)));
   }
   clearStorage(tabId);
+
+  chrome.browserAction.setPopup({
+    tabId,
+    popup: ''
+  });
+  chrome.browserAction.setTitle({
+    tabId,
+    title: chrome.runtime.getManifest().name
+  });
 }

@@ -11,7 +11,6 @@
     "persistent": false
   },
   "browser_action": {
-    "default_popup": "index.html",
     "default_title": "Bondage Club Tools",
     "default_icon": {
       "128": "assets/bclub-logo.png"

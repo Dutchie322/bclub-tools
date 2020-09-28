@@ -14,8 +14,12 @@ export function retrieve<K extends StorageKeys>(tabId: number, key: K): Promise<
 }
 
 export function storeGlobal<K extends GlobalStorageKeys>(key: K, data: IGlobalStorageMap[K]) {
-  chrome.storage.local.set({
-    [key]: data
+  return new Promise<IGlobalStorageMap[K]>(resolve => {
+    chrome.storage.local.set({
+      [key]: data
+    }, () => {
+      resolve(data);
+    });
   });
 }
 

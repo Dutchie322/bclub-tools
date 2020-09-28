@@ -9,7 +9,7 @@ import {
   IChatRoomCharacter,
   IChatRoomSearch,
   ILoginResponse,
-  IStoredPlayer
+  IStoredPlayer, IPlayerWithRelations
 } from '../../../models';
 
 /**
@@ -104,8 +104,7 @@ export function listenToServerEvents(handshake: string) {
       Type: friend.Type
     }))
   })));
-  createForwarder<ILoginResponse, IStoredPlayer>('LoginResponse', data => ({
-    AccountName: data.AccountName,
+  createForwarder<ILoginResponse, IPlayerWithRelations>('LoginResponse', data => ({
     MemberNumber: data.MemberNumber,
     Name: data.Name,
     FriendList: data.FriendList,
