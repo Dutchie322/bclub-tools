@@ -5,7 +5,8 @@ import {
   addOrUpdateObjectStore,
   openDatabase,
   MemberType,
-  IPlayerWithRelations
+  MemberTypeOrder,
+  IPlayerWithRelations,
 } from '../../../models';
 
 interface PlayerContext {
@@ -141,14 +142,6 @@ export async function retrieveMember(playerMemberNumber: number, memberNumber: n
     });
   });
 }
-
-const MemberTypeOrder = {
-  Member: 0,
-  Friend: 1,
-  Submissive: 2,
-  Lover: 3,
-  Owner: 4
-} as { [key in MemberType]: number; };
 
 function determineMemberType(currentType: MemberType | '', newType: MemberType): MemberType {
   if (!currentType || MemberTypeOrder[newType] > MemberTypeOrder[currentType]) {

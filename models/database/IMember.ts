@@ -30,3 +30,11 @@ export interface IMemberOwnership {
   start: number;
   stage: number;
 }
+
+export const MemberTypeOrder = {
+  Member: 0,
+  Friend: 1,
+  Submissive: 2,
+  Lover: 3,
+  Owner: 4
+} as { [key in MemberType]: number; };
