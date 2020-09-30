@@ -151,7 +151,8 @@ export function chatRoomRefresh() {
       window.ServerSocket.emit('ChatRoomSearch', {
         Query: searchInput ? searchInput.value.toUpperCase().trim() : '',
         Space: window.ChatRoomSpace,
-        FullRooms: (window.Player.ChatSettings && window.Player.ChatSettings.SearchShowsFullRooms),
+        FullRooms: (window.Player.ChatSettings && window.Player.ChatSettings.SearchShowsFullRooms)
+                || (window.Player.OnlineSettings && window.Player.OnlineSettings.SearchShowsFullRooms),
         Ignore: window.ChatSearchIgnoredRooms
       } as IChatRoomSearch);
     }
