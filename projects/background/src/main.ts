@@ -4,7 +4,6 @@ import './chat-log';
 import { writeChatLog } from './chat-log';
 import {
   IAccountBeep,
-  IAccountQueryResult,
   IEnrichedChatRoomMessage,
   IServerMessage,
   IVariablesUpdate,
@@ -21,7 +20,8 @@ import {
   IChatRoomSyncSingle,
   executeForAllGameTabs,
   IStoredPlayer,
-  IPlayerWithRelations
+  IPlayerWithRelations,
+  IAccountQueryOnlineFriendsResult
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
 import { writeMember, writeFriends, removeChatRoomData } from './member';
@@ -99,7 +99,9 @@ function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtim
       handleAccountBeep(sender.tab.id, message);
       break;
     case 'AccountQueryResult':
-      handleAccountQueryResult(sender.tab.id, message);
+      if (message.data.Query === 'OnlineFriends') {
+        handleAccountQueryOnlineFriendsResult(sender.tab.id, message);
+      }
       break;
     case 'ChatRoomMessage':
       handleChatRoomMessage(message);
@@ -132,11 +134,7 @@ async function handleAccountBeep(tabId: number, message: IServerMessage<IAccount
   notifyAccountBeep(message.data, player.MemberNumber);
 }
 
-async function handleAccountQueryResult(tabId: number, message: IServerMessage<IAccountQueryResult>) {
-  if (message.data.Query !== 'OnlineFriends') {
-    return;
-  }
-
+async function handleAccountQueryOnlineFriendsResult(tabId: number, message: IServerMessage<IAccountQueryOnlineFriendsResult>) {
   const player = await retrieve(tabId, 'player');
   const friends = await Promise.all(message.data.Result.map(friend => writeMember(player, friend)));
 

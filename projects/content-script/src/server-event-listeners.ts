@@ -9,7 +9,9 @@ import {
   IChatRoomCharacter,
   IChatRoomSearch,
   ILoginResponse,
-  IStoredPlayer, IPlayerWithRelations
+  IStoredPlayer,
+  IPlayerWithRelations,
+  IAccountQueryOnlineFriendsResult
 } from '../../../models';
 
 /**
@@ -55,16 +57,24 @@ export function listenToServerEvents(handshake: string) {
     MemberName: data.MemberName,
     MemberNumber: data.MemberNumber
   }));
-  createForwarder<IAccountQueryResult, IAccountQueryResult>('AccountQueryResult', data => ({
-    Query: data.Query,
-    Result: data.Result ? data.Result.map(result => ({
-      ChatRoomName: result.ChatRoomName,
-      ChatRoomSpace: result.ChatRoomSpace,
-      MemberName: result.MemberName,
-      MemberNumber: result.MemberNumber,
-      Type: result.Type
-    })) : null
-  }));
+  createForwarder<IAccountQueryResult, any>('AccountQueryResult', data => {
+    if (data.Query !== 'OnlineFriends') {
+      return {
+        Query: data.Query
+      };
+    }
+
+    return {
+      Query: data.Query,
+      Result: data.Result ? data.Result.map(result => ({
+        ChatRoomName: result.ChatRoomName,
+        ChatRoomSpace: result.ChatRoomSpace,
+        MemberName: result.MemberName,
+        MemberNumber: result.MemberNumber,
+        Type: result.Type
+      })) : []
+    };
+  });
   createForwarder<IChatRoomMessage, any>('ChatRoomMessage', data => ({
     Content: data.Content,
     Dictionary: data.Dictionary,

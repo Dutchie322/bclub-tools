@@ -1,5 +1,5 @@
 import {
-  IAccountQueryResultItem,
+  IAccountQueryResultOnlineFriend,
   IChatRoomCharacter,
   IMember,
   addOrUpdateObjectStore,
@@ -14,9 +14,9 @@ interface PlayerContext {
   Name: string;
 }
 
-export async function writeMember(context: PlayerContext, data: IAccountQueryResultItem | IChatRoomCharacter) {
-  function isAccountQueryResultItem(input: any): input is IAccountQueryResultItem {
-    return (input as IAccountQueryResultItem).ChatRoomName !== undefined;
+export async function writeMember(context: PlayerContext, data: IAccountQueryResultOnlineFriend | IChatRoomCharacter) {
+  function isAccountQueryResultItem(input: any): input is IAccountQueryResultOnlineFriend {
+    return (input as IAccountQueryResultOnlineFriend).ChatRoomName !== undefined;
   }
   function isChatRoomCharacter(input: any): input is IChatRoomCharacter {
     return (input as IChatRoomCharacter).ID !== undefined;
@@ -51,7 +51,7 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
   return member;
 }
 
-function mapAccountQueryResultItem(data: IAccountQueryResultItem) {
+function mapAccountQueryResultItem(data: IAccountQueryResultOnlineFriend) {
   return {
     memberName: data.MemberName,
     chatRoomName: data.ChatRoomName,
