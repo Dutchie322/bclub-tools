@@ -62,7 +62,7 @@ function mapAccountQueryResultItem(data: IAccountQueryResultOnlineFriend) {
 function mapChatRoomCharacter(data: IChatRoomCharacter) {
   return {
     memberName: data.Name,
-    creation: data.Creation,
+    creation: new Date(data.Creation),
     title: data.Title,
     dominant: data.Reputation && data.Reputation.find(r => r.Type === 'Dominant')
       ? data.Reputation.find(r => r.Type === 'Dominant').Value

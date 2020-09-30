@@ -54,4 +54,25 @@ export class MemberInfoComponent implements OnDestroy {
   public absolute(x: number) {
     return Math.abs(x);
   }
+
+  public lovershipStageToName(stage: number) {
+    switch (stage) {
+      case 0: return 'Dating';
+      case 1: return 'Engaged';
+      case 2: return 'Married';
+    }
+    return stage;
+  }
+
+  public ownershipStageToName(stage: number) {
+    switch (stage) {
+      case 0: return 'On trial';
+      case 1: return 'Collared';
+    }
+    return stage;
+  }
+
+  public timeToDays(start: Date) {
+    return Math.floor((new Date().getTime() - start.getTime()) / 86400000).toString();
+  }
 }

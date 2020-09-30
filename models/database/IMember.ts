@@ -7,7 +7,7 @@ export interface IMember {
   lastSeen?: Date;
   chatRoomName?: string;
   chatRoomSpace?: string;
-  creation?: number;
+  creation?: Date;
   title?: string;
   dominant?: number;
   description?: string;
@@ -22,14 +22,14 @@ export type MemberType = 'Member' | 'Friend' | 'Submissive' | 'Lover' | 'Owner';
 export interface IMemberLovership {
   memberNumber: number;
   name: string;
-  start: number;
+  start: Date;
   stage: number;
 }
 
 export interface IMemberOwnership {
   memberNumber: number;
   name: string;
-  start: number;
+  start: Date;
   stage: number;
 }
 
