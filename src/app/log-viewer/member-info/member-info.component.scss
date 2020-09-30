@@ -1,7 +1,7 @@
 .description {
   font-size: 16px;
   font-family: Arial;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 .member-name {
@@ -10,4 +10,11 @@
 
 .empty-value {
   font-style: italic;
+}
+
+.notes {
+  font-size: 16px;
+  font-family: Arial;
+  height: 100%;
+  width: calc(100% - 6px);
 }
