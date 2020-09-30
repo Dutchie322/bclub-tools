@@ -26,6 +26,9 @@ export class PopupComponent {
       if (sortHeaderId === 'type') {
         return MemberTypeOrder[data[sortHeaderId]];
       }
+      if (sortHeaderId === 'memberName') {
+        return data[sortHeaderId].toLocaleUpperCase();
+      }
       return data[sortHeaderId];
     };
   }
