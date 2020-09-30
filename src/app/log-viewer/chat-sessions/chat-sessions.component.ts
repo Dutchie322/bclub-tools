@@ -15,12 +15,21 @@ import { MemberService } from 'src/app/shared/member.service';
 export class ChatSessionsComponent {
   @ViewChild('chatSessionsSort', {static: true}) set chatSessionsSort(sort: MatSort) {
     this.chatSessions.sort = sort;
+    this.chatSessions.sortingDataAccessor = (data, sortHeaderId) => {
+      if (sortHeaderId === 'chatRoom') {
+        return data[sortHeaderId].toLocaleUpperCase();
+      }
+      return data[sortHeaderId];
+    };
   }
   @ViewChild('membersSort', {static: true}) set membersSort(sort: MatSort) {
     this.members.sort = sort;
     this.members.sortingDataAccessor = (data, sortHeaderId) => {
       if (sortHeaderId === 'type') {
         return MemberTypeOrder[data[sortHeaderId]];
+      }
+      if (sortHeaderId === 'memberName') {
+        return data[sortHeaderId].toLocaleUpperCase();
       }
       return data[sortHeaderId];
     };
