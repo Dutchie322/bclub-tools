@@ -64,6 +64,9 @@ function mapChatRoomCharacter(data: IChatRoomCharacter) {
     memberName: data.Name,
     creation: data.Creation,
     title: data.Title,
+    dominant: data.Reputation && data.Reputation.find(r => r.Type === 'Dominant')
+      ? data.Reputation.find(r => r.Type === 'Dominant').Value
+      : 0,
     description: data.Description,
     labelColor: data.LabelColor,
     lovership: data.Lovership ? data.Lovership.map(lover => ({

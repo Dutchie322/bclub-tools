@@ -9,10 +9,12 @@ export interface IMember {
   chatRoomSpace?: string;
   creation?: number;
   title?: string;
+  dominant?: number;
   description?: string;
   labelColor?: string;
   lovership?: IMemberLovership[];
   ownership?: IMemberOwnership;
+  notes?: string;
 }
 
 export type MemberType = 'Member' | 'Friend' | 'Submissive' | 'Lover' | 'Owner';
