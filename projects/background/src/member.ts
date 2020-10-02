@@ -22,11 +22,6 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
     return (input as IChatRoomCharacter).ID !== undefined;
   }
 
-  if (context.MemberNumber === data.MemberNumber) {
-    // No need to store ourselves
-    return;
-  }
-
   let member = await retrieveMember(context.MemberNumber, data.MemberNumber);
 
   member = Object.assign({}, member, {
