@@ -1,12 +1,10 @@
-<mat-toolbar>
-  <span class="member-name" [ngStyle]="{ color: member.labelColor || 'inherit' }">{{ member.memberName }}</span>
-</mat-toolbar>
 <ng-container [formGroup]="memberForm">
-  <div fxLayout="row" fxLayoutAlign="none">
-    <div fxFlex="0 0 500px">
-      <img #appearanceImage src="" />
-    </div>
-    <div fxFlex="0 0 450px">
+  <div gdGap="0 5px" gdColumns="500px minmax(210px, max-content) minmax(min-content, 1fr) minmax(300px, 1fr)" gdRows="64px auto">
+    <img #appearanceImage gdRow="span 2" src="" />
+    <mat-toolbar gdColumn="span 3">
+      <span class="member-name" [ngStyle]="{ color: member.labelColor || 'inherit' }">{{ member.memberName }}</span>
+    </mat-toolbar>
+    <div>
       <mat-list>
         <mat-list-item>
           <mat-icon mat-list-icon>format_list_numbered</mat-icon>
@@ -47,7 +45,7 @@
         <mat-list-item>
           <mat-icon mat-list-icon>favorite</mat-icon>
           <div mat-line>Lovers</div>
-          <div mat-line *ngFor="let lover of member.lovership">
+          <div mat-line class="relationship" *ngFor="let lover of member.lovership">
             <ng-container *ngIf="lover.memberNumber; else npcLover">
               {{ lover.name }} ({{ lover.memberNumber }}): {{ lovershipStageToName(lover.stage) }} for
               {{ timeToDays(lover.start) }} days (since {{ lover.start | date }})
@@ -61,7 +59,7 @@
         <mat-list-item>
           <mat-icon mat-list-icon>supervisor_account</mat-icon>
           <div mat-line>Owner</div>
-          <div mat-line *ngIf="member.ownership; else noOwner">
+          <div mat-line class="relationship" *ngIf="member.ownership; else noOwner">
             <ng-container *ngIf="member.ownership.memberNumber; else npcOwner">
               {{ member.ownership.name }} ({{ member.ownership.memberNumber }}):
               {{ ownershipStageToName(member.ownership.stage) }} for {{ timeToDays(member.ownership.start) }} days (since
@@ -77,11 +75,11 @@
         </mat-list-item>
       </mat-list>
     </div>
-    <div fxFlex="auto">
+    <div>
       <h2>Description</h2>
       <div class="description">{{ member.description }}</div>
     </div>
-    <div fxFlex="0 0 300px">
+    <div>
       <h2>Notes</h2>
       <textarea formControlName="notes" class="notes"></textarea>
     </div>
