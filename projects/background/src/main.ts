@@ -21,10 +21,11 @@ import {
   executeForAllGameTabs,
   IStoredPlayer,
   IPlayerWithRelations,
-  IAccountQueryOnlineFriendsResult
+  IAccountQueryOnlineFriendsResult,
+  addOrUpdateObjectStore
 } from '../../../models';
 import { notifyAccountBeep, notifyFriendChange } from './notifications';
-import { writeMember, writeFriends, removeChatRoomData } from './member';
+import { writeMember, writeFriends, removeChatRoomData, retrieveMember } from './member';
 
 chrome.browserAction.onClicked.addListener(() => {
   chrome.tabs.create({
@@ -82,6 +83,9 @@ function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtim
   switch (message.event) {
     case 'ChatRoomChat':
       handleChatRoomChat(message);
+      break;
+    case 'CommonDrawAppearanceBuild':
+      handleCommonDrawAppearanceBuild(sender.tab.id, message);
       break;
     case 'VariablesUpdate':
       handleVariablesUpdate(sender.tab.id, message);
@@ -193,6 +197,15 @@ function handleLoginResponse(tabId: number, message: IServerMessage<IPlayerWithR
   });
 
   writeFriends(message.data);
+}
+
+async function handleCommonDrawAppearanceBuild(tabId: number, message: IClientMessage<any>) {
+  const player = await retrieve(tabId, 'player');
+  const member = await retrieveMember(player.MemberNumber, message.data.MemberNumber);
+  if (member) {
+    member.appearance = message.data.ImageData;
+    await addOrUpdateObjectStore('members', member);
+  }
 }
 
 function handleDisconnect(tabId: number) {

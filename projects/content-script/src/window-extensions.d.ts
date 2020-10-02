@@ -13,5 +13,6 @@ declare global {
     Player: IPlayer;
     ServerSocket: SocketIO.Server;
     TimerProcess: typeof TimerProcess;
+    CommonDrawAppearanceBuild: (c: any, callbacks: object) => void;
   }
 }

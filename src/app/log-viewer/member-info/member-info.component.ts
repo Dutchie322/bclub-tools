@@ -1,10 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { retrieveMember } from 'projects/background/src/member';
 import { IMember, addOrUpdateObjectStore } from 'models';
 import { FormGroup, FormControl } from '@angular/forms';
-import { map, debounceTime, switchMap, switchMapTo, tap } from 'rxjs/operators';
-import { Subscription, Observable, from } from 'rxjs';
+import { debounceTime, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-member-info',
@@ -15,6 +15,9 @@ export class MemberInfoComponent implements OnDestroy {
   private formSubscription: Subscription;
   private playerCharacter: number;
   private memberNumber: number;
+
+  @ViewChild('appearanceImage', { static: true })
+  public appearanceImageElement: ElementRef<HTMLImageElement>;
 
   public member: IMember;
 
@@ -28,6 +31,9 @@ export class MemberInfoComponent implements OnDestroy {
       this.memberNumber = +params.get('memberNumber');
       // TODO convert this to map()
       this.member = await retrieveMember(this.playerCharacter, this.memberNumber);
+      if (this.member.appearance) {
+        this.appearanceImageElement.nativeElement.src = this.member.appearance;
+      }
       this.memberForm.patchValue({
         notes: this.member.notes
       }, {

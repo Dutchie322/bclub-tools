@@ -10,6 +10,7 @@ export interface IMember {
   creation?: Date;
   title?: string;
   dominant?: number;
+  appearance?: string;
   description?: string;
   labelColor?: string;
   lovership?: IMemberLovership[];
