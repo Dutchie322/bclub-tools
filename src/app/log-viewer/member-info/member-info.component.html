@@ -45,8 +45,13 @@
           <mat-icon mat-list-icon>favorite</mat-icon>
           <div mat-line>Lovers</div>
           <div mat-line *ngFor="let lover of member.lovership">
-            {{ lover.name }} ({{ lover.memberNumber }}): {{ lovershipStageToName(lover.stage) }} for
-            {{ timeToDays(lover.start) }} days (since {{ lover.start | date }})
+            <ng-container *ngIf="lover.memberNumber; else npcLover">
+              {{ lover.name }} ({{ lover.memberNumber }}): {{ lovershipStageToName(lover.stage) }} for
+              {{ timeToDays(lover.start) }} days (since {{ lover.start | date }})
+            </ng-container>
+            <ng-template #npcLover>
+              {{ lover.name | slice:4 }}
+            </ng-template>
           </div>
           <div mat-line *ngIf="!member.lovership || member.lovership.length === 0" class="empty-value">None</div>
         </mat-list-item>
@@ -54,9 +59,14 @@
           <mat-icon mat-list-icon>supervisor_account</mat-icon>
           <div mat-line>Owner</div>
           <div mat-line *ngIf="member.ownership; else noOwner">
-            {{ member.ownership.name }} ({{ member.ownership.memberNumber }}):
-            {{ ownershipStageToName(member.ownership.stage) }} for {{ timeToDays(member.ownership.start) }} days (since
-            {{ member.ownership.start | date }})
+            <ng-container *ngIf="member.ownership.memberNumber; else npcOwner">
+              {{ member.ownership.name }} ({{ member.ownership.memberNumber }}):
+              {{ ownershipStageToName(member.ownership.stage) }} for {{ timeToDays(member.ownership.start) }} days (since
+              {{ member.ownership.start | date }})
+            </ng-container>
+            <ng-template #npcOwner>
+              {{ member.ownership.name | slice:4 }}
+            </ng-template>
           </div>
           <ng-template #noOwner>
             <div mat-line class="empty-value">None</div>
@@ -70,7 +80,7 @@
     </div>
     <div fxFlex="0 0 300px">
       <h2>Notes</h2>
-      <textarea formControlName="notes" class="notes" style=""></textarea>
+      <textarea formControlName="notes" class="notes"></textarea>
     </div>
   </div>
 </ng-container>
