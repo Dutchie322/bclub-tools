@@ -99,7 +99,14 @@ export class OptionsComponent implements OnDestroy {
             } else {
               exportObject[storeName] = allObjects;
               if (objectStoreNames.length === Object.keys(exportObject).length) {
-                resolve(JSON.stringify(exportObject, null, 2));
+                resolve(JSON.stringify(exportObject, (key, value) => {
+                  if (typeof value === 'string' && value.startsWith('data:image/png;base64,')) {
+                    // Base64 encoded images are too big for JSON stringify.
+                    // Skip them until I get around to building a better export mechanism.
+                    return null;
+                  }
+                  return value;
+                }, 2));
               }
             }
           };
