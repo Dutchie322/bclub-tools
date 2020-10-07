@@ -77,7 +77,7 @@ chrome.runtime.onMessage.addListener((message, sender) => {
   }
 });
 
-chrome.tabs.onRemoved.addListener(cleanUpData);
+chrome.tabs.onRemoved.addListener(tabId => cleanUpData(tabId, true));
 
 function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtime.MessageSender) {
   switch (message.event) {
@@ -240,19 +240,21 @@ function setPlayerLoggedIn(tabId: number, player: IStoredPlayer) {
   });
 }
 
-async function cleanUpData(tabId: number) {
+async function cleanUpData(tabId: number, isTabClosed = false) {
   const friends = await retrieve(tabId, 'onlineFriends');
   if (friends) {
     await Promise.all(friends.map(friend => removeChatRoomData(friend)));
   }
   clearStorage(tabId);
 
-  chrome.browserAction.setPopup({
-    tabId,
-    popup: ''
-  });
-  chrome.browserAction.setTitle({
-    tabId,
-    title: chrome.runtime.getManifest().name
-  });
+  if (!isTabClosed) {
+    chrome.browserAction.setPopup({
+      tabId,
+      popup: ''
+    });
+    chrome.browserAction.setTitle({
+      tabId,
+      title: chrome.runtime.getManifest().name
+    });
+  }
 }
