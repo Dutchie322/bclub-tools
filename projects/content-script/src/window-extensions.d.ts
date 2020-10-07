@@ -12,7 +12,7 @@ declare global {
     InformationSheetPreviousScreen: CurrentScreen;
     Player: IPlayer;
     ServerSocket: SocketIO.Server;
-    TimerProcess: typeof TimerProcess;
+    TimerProcess: (Timestamp: number) => void;
     CommonDrawAppearanceBuild: (c: any, callbacks: object) => void;
   }
 }

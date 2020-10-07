@@ -14,6 +14,7 @@
     "build:content-script:debug": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=development",
     "package": "node ./release/create-package.js",
     "test": "ng test",
+    "test:ci": "npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
