@@ -4,13 +4,17 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   MatCheckboxModule,
+  MatDatepickerModule,
   MatIconModule,
   MatListModule,
   MatPaginatorModule,
   MatProgressBarModule,
+  MatSnackBarModule,
   MatSortModule,
   MatTableModule,
   MatToolbarModule,
+  MatInputModule,
+  MatSelectModule,
 } from '@angular/material';
 
 import { PlayerCharactersComponent } from './player-characters/player-characters.component';
@@ -40,10 +44,14 @@ import { MemberInfoComponent } from './member-info/member-info.component';
 
     // Material modules
     MatCheckboxModule,
+    MatDatepickerModule,
     MatIconModule,
+    MatInputModule,
     MatListModule,
     MatPaginatorModule,
     MatProgressBarModule,
+    MatSelectModule,
+    MatSnackBarModule,
     MatSortModule,
     MatTableModule,
     MatToolbarModule,

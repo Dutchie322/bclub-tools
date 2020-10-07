@@ -18,7 +18,23 @@ export interface IMember {
   notes?: string;
 }
 
-export type MemberType = 'Member' | 'Friend' | 'Submissive' | 'Lover' | 'Owner';
+export const MemberTypes = [
+  'Member',
+  'Friend',
+  'Submissive',
+  'Lover',
+  'Owner'
+] as const;
+
+export type MemberType = typeof MemberTypes[number];
+
+export const MemberTypeOrder = {
+  Member: 0,
+  Friend: 1,
+  Submissive: 2,
+  Lover: 3,
+  Owner: 4
+} as { [key in MemberType]: number; };
 
 export interface IMemberLovership {
   memberNumber: number;
@@ -33,11 +49,3 @@ export interface IMemberOwnership {
   start: Date;
   stage: number;
 }
-
-export const MemberTypeOrder = {
-  Member: 0,
-  Friend: 1,
-  Submissive: 2,
-  Lover: 3,
-  Owner: 4
-} as { [key in MemberType]: number; };

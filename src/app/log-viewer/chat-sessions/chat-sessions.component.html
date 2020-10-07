@@ -9,6 +9,7 @@
         </a>
       </td>
     </ng-container>
+
     <ng-container matColumnDef="start">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</th>
       <td mat-cell *matCellDef="let session">{{ session.start.toLocaleDateString() }} {{ session.start.toLocaleTimeString()}}</td>
@@ -17,28 +18,64 @@
     <tr mat-header-row *matHeaderRowDef="chatSessionsColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: chatSessionsColumns;"></tr>
   </table>
+
+  <mat-paginator #chatSessionsPaginator hidePageSize="true" pageSize="15" showFirstLastButtons></mat-paginator>
 </div>
 
-<div class="table-wrapper">
-  <table mat-table [dataSource]="members" matSort #membersSort="matSort" matSortActive="memberName" matSortDirection="asc" matSortDisableClear>
+<div class="table-wrapper" [formGroup]="memberSearchForm">
+  <table mat-table [dataSource]="members" matSort #membersSort="matSort" matSortActive="lastSeen" matSortDirection="desc" matSortDisableClear>
     <ng-container matColumnDef="memberName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <mat-form-field (click)="$event.stopPropagation()">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="memberName" type="text" placeholder="Name" />
+        </mat-form-field>
+      </th>
       <td mat-cell *matCellDef="let member">
         <a [routerLink]="['/log-viewer', memberNumber, 'member', member.memberNumber]">
           {{ member.memberName }}
         </a>
       </td>
     </ng-container>
+
     <ng-container matColumnDef="memberNumber">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Member Number</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <mat-form-field (click)="$event.stopPropagation()">
+          <mat-label>Member Number</mat-label>
+          <input matInput formControlName="memberNumber" type="text" placeholder="Member Number" />
+        </mat-form-field>
+      </th>
       <td mat-cell *matCellDef="let member">{{ member.memberNumber }}</td>
     </ng-container>
+
     <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <mat-form-field (click)="$event.stopPropagation()">
+          <mat-label>Type</mat-label>
+          <mat-select formControlName="type" multiple>
+            <mat-option *ngFor="let memberType of memberTypes" [value]="memberType">
+              {{ memberType }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </th>
       <td mat-cell *matCellDef="let member">{{ member.type }}</td>
     </ng-container>
+
     <ng-container matColumnDef="lastSeen">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Seen Date</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        Last Seen Date
+        <!-- Needs Angular Material update to v10 -->
+        <!-- <mat-form-field>
+          <mat-label>Last seen date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="Start date">
+            <input matEndDate placeholder="End date">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field> -->
+      </th>
       <td mat-cell *matCellDef="let member">
         <ng-container *ngIf="member.lastSeen; else neverSeen">
           {{ member.lastSeen.toLocaleDateString() }} {{ member.lastSeen.toLocaleTimeString()}}
@@ -50,4 +87,6 @@
     <tr mat-header-row *matHeaderRowDef="membersColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: membersColumns;"></tr>
   </table>
+
+  <mat-paginator #membersPaginator hidePageSize="true" pageSize="15" showFirstLastButtons></mat-paginator>
 </div>
