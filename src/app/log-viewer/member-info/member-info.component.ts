@@ -1,10 +1,12 @@
-import { Component, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
+import { debounceTime, tap, map, switchMap } from 'rxjs/operators';
+import { Subscription, Observable } from 'rxjs';
 import { retrieveMember } from 'projects/background/src/member';
 import { IMember, addOrUpdateObjectStore } from 'models';
-import { FormGroup, FormControl } from '@angular/forms';
-import { debounceTime, tap } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { MemberService } from 'src/app/shared/member.service';
 
 @Component({
   selector: 'app-member-info',
@@ -16,30 +18,29 @@ export class MemberInfoComponent implements OnDestroy {
   private playerCharacter: number;
   private memberNumber: number;
 
-  @ViewChild('appearanceImage', { static: true })
-  public appearanceImageElement: ElementRef<HTMLImageElement>;
-
-  public member: IMember;
+  public member$: Observable<IMember>;
 
   public memberForm = new FormGroup({
     notes: new FormControl('')
   });
 
-  constructor(route: ActivatedRoute) {
-    route.paramMap.subscribe(async params => {
-      this.playerCharacter = +params.get('playerCharacter');
-      this.memberNumber = +params.get('memberNumber');
-      // TODO convert this to map()
-      this.member = await retrieveMember(this.playerCharacter, this.memberNumber);
-      if (this.member.appearance) {
-        this.appearanceImageElement.nativeElement.src = this.member.appearance;
-      }
-      this.memberForm.patchValue({
-        notes: this.member.notes
-      }, {
-        emitEvent: false
-      });
-    });
+  constructor(
+    route: ActivatedRoute,
+    memberService: MemberService,
+    private snackBar: MatSnackBar
+  ) {
+    this.member$ = route.paramMap.pipe(
+      map(params => ({
+        playerCharacter: +params.get('playerCharacter'),
+        memberNumber: +params.get('memberNumber')
+      })),
+      tap(params => {
+        this.playerCharacter = params.playerCharacter;
+        this.memberNumber = params.memberNumber;
+      }),
+      switchMap(params => memberService.retrieveMember(params.playerCharacter, params.memberNumber)),
+      tap(member => this.memberForm.patchValue({ notes: member.notes }, { emitEvent: false }))
+    );
 
     this.formSubscription = this.memberForm.valueChanges.pipe(
       debounceTime(1000),
@@ -47,8 +48,11 @@ export class MemberInfoComponent implements OnDestroy {
         const member = await retrieveMember(this.playerCharacter, this.memberNumber);
         member.notes = value.notes;
         await addOrUpdateObjectStore('members', member);
-        console.log('stored:');
-        console.log(member);
+      }),
+      tap(() => {
+        this.snackBar.open('Notes saved', undefined, {
+          duration: 2000,
+        });
       })
     ).subscribe();
   }
