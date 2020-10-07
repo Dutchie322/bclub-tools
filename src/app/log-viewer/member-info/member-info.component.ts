@@ -2,9 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
-import { debounceTime, tap, map, switchMap } from 'rxjs/operators';
+import { debounceTime, tap, map, switchMap, mergeMap } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
-import { retrieveMember } from 'projects/background/src/member';
 import { IMember, addOrUpdateObjectStore } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
 
@@ -44,13 +43,12 @@ export class MemberInfoComponent implements OnDestroy {
 
     this.formSubscription = this.memberForm.valueChanges.pipe(
       debounceTime(1000),
-      tap(async value => {
-        const member = await retrieveMember(this.playerCharacter, this.memberNumber);
-        member.notes = value.notes;
-        await addOrUpdateObjectStore('members', member);
-      }),
-      tap(() => {
-        this.snackBar.open('Notes saved', undefined, {
+      switchMap(values => memberService.retrieveMember(this.playerCharacter, this.memberNumber).pipe(
+        map(member => ({ ...member, notes: values.notes } as IMember)),
+      )),
+      mergeMap(member => addOrUpdateObjectStore('members', member)),
+      tap(member => {
+        this.snackBar.open(`Notes for ${member.memberName} saved`, undefined, {
           duration: 2000,
         });
       })

@@ -69,18 +69,25 @@ function addDatabaseEventHandlers(db: IDBDatabase) {
   });
 }
 
-export async function addOrUpdateObjectStore(storeName: StoreNames, value: any) {
-  const db = await openDatabase();
-  const transaction = db.transaction(storeName, 'readwrite');
-  transaction.addEventListener('error', () => {
-    console.error(`Error during transaction for store ${storeName}`);
-    console.error(transaction.error);
-  });
+export function addOrUpdateObjectStore<T>(storeName: StoreNames, value: T): Promise<T> {
+  return new Promise<T>(async (resolve, reject) => {
+    const db = await openDatabase();
+    const transaction = db.transaction(storeName, 'readwrite');
+    transaction.addEventListener('error', () => {
+      console.error(`Error during transaction for store ${storeName}`);
+      console.error(transaction.error);
+      reject(transaction.error);
+    });
 
-  const store = transaction.objectStore(storeName);
-  const request = store.put(value);
-  request.addEventListener('error', () => {
-    console.error(`Error while writing to store ${storeName}`);
-    console.error(request.error);
+    const store = transaction.objectStore(storeName);
+    const request = store.put(value);
+    request.addEventListener('error', () => {
+      console.error(`Error while writing to store ${storeName}`);
+      console.error(request.error);
+      reject(request.error);
+    });
+    request.addEventListener('success', () => {
+      resolve(value);
+    });
   });
 }
