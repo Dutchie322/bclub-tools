@@ -17,7 +17,7 @@ export class DialogBundleService {
         DialogBundleService.Activity[activity[0]] = activity[1];
       }
     });
-    this.loadDictionary('AssetsDictionary', data => {
+    this.loadDictionary('Female3DCG', data => {
       DialogBundleService.Asset.push(...data.map(this.mapAsset));
     });
     this.loadDictionary('Dialog_Player', data => {

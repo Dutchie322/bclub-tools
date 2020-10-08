@@ -96,8 +96,7 @@ export function listenToServerEvents(handshake: string) {
     Character: data.Character.map(mapCharacter)
   }));
   createForwarder<IChatRoomSyncSingle, any>('ChatRoomSyncSingle', data => ({
-    Character: mapCharacter(data.Character),
-    SourceMemberNumber: data.SourceMemberNumber
+    Character: mapCharacter(data.Character)
   }));
   createForwarder<IChatRoomSearchResult[], any>('ChatRoomSearchResult', data => data.map(result => ({
     Name: result.Name,
