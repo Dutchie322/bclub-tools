@@ -96,8 +96,8 @@ export class ChatLineComponent {
   }
 
   private sanitizeMessage(message: string): string {
-    message = message.replace(/&lt;/, '<');
-    message = message.replace(/&gt;/, '>');
+    message = message.replace(/&lt;/g, '<');
+    message = message.replace(/&gt;/g, '>');
     return message;
   }
 }
