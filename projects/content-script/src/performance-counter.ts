@@ -1,6 +1,3 @@
-/// <reference path="../../../typings/Scripts/Drawing.d.ts" />
-/// <reference path="../../../typings/Scripts/Timer.d.ts" />
-
 export function frameCounter() {
   let lastKnownFrameRate = 0;
   let ProxyEnabled = true;
@@ -35,9 +32,9 @@ export function frameCounter() {
 
       return target.apply(thisArg, argumentsList);
     }
-  } as ProxyHandler<typeof TimerProcess>;
+  } as ProxyHandler<typeof window.TimerProcess>;
 
-  const proxy = new Proxy(TimerProcess, handler);
+  const proxy = new Proxy(window.TimerProcess, handler);
   window.TimerProcess = proxy;
 
   return () => {

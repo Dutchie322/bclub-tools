@@ -1,4 +1,0 @@
-declare function InventoryItemNeckAccessoriesCollarNameTagLivestockLoad(): void;
-declare function InventoryItemNeckAccessoriesCollarNameTagLivestockDraw(): void;
-declare function InventoryItemNeckAccessoriesCollarNameTagLivestockClick(): void;
-declare function InventoryItemNeckAccessoriesCollarNameTagLivestockSetType(NewType: any): void;
