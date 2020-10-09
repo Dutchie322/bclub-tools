@@ -10,7 +10,7 @@ class DeregistrationRegistry {
   public deregisterAll() {
     const scriptIds = Object.keys(this.callbacks);
     scriptIds.forEach(scriptId => {
-      window.dispatchEvent(new CustomEvent('BondagClub.Deregister', { detail: { scriptId } }));
+      window.dispatchEvent(new CustomEvent('BondageClubTools.Deregister', { detail: { scriptId } }));
       this.callbacks[scriptId]();
     });
     this.callbacks = {};

@@ -40,9 +40,9 @@ export function characterAppearance(handshake: string) {
 
       return returnValue;
     }
-  } as ProxyHandler<typeof window.CommonDrawAppearanceBuild>;
-  const proxy = new Proxy(window.CommonDrawAppearanceBuild, handler);
-  window.CommonDrawAppearanceBuild = proxy;
+  } as ProxyHandler<typeof CommonDrawAppearanceBuild>;
+  const proxy = new Proxy(CommonDrawAppearanceBuild, handler);
+  CommonDrawAppearanceBuild = proxy;
 
   return () => {
     proxyEnabled = false;

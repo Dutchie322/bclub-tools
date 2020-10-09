@@ -2,8 +2,8 @@ import { IChatRoomSearch } from 'models';
 
 export function pollOnlineFriends() {
   const timerHandle = setInterval(() => {
-    if (window.CurrentScreen !== 'Login') {
-      window.ServerSocket.emit('AccountQuery', {
+    if (CurrentScreen !== 'Login') {
+      ServerSocket.emit('AccountQuery', {
         Query: 'OnlineFriends'
       });
     }
@@ -11,19 +11,19 @@ export function pollOnlineFriends() {
 
   return () => {
     clearInterval(timerHandle);
-  }
+  };
 }
 
 export function chatRoomRefresh() {
   const timerHandle = setInterval(() => {
-    if (window.CurrentScreen === 'ChatSearch') {
+    if (CurrentScreen === 'ChatSearch') {
       const searchInput = document.getElementById('InputSearch') as HTMLInputElement;
-      window.ServerSocket.emit('ChatRoomSearch', {
+      ServerSocket.emit('ChatRoomSearch', {
         Query: searchInput ? searchInput.value.toUpperCase().trim() : '',
-        Space: window.ChatRoomSpace,
-        FullRooms: (window.Player.ChatSettings && window.Player.ChatSettings.SearchShowsFullRooms)
-                || (window.Player.OnlineSettings && window.Player.OnlineSettings.SearchShowsFullRooms),
-        Ignore: window.ChatSearchIgnoredRooms
+        Space: ChatRoomSpace,
+        FullRooms: (Player.ChatSettings && Player.ChatSettings.SearchShowsFullRooms)
+                || (Player.OnlineSettings && Player.OnlineSettings.SearchShowsFullRooms),
+        Ignore: ChatSearchIgnoredRooms
       } as IChatRoomSearch);
     }
   }, 10000);
@@ -35,18 +35,18 @@ export function chatRoomRefresh() {
 
 export function pollVariables(handshake: string) {
   function isInChat() {
-    switch (window.CurrentScreen) {
+    switch (CurrentScreen) {
       case 'ChatRoom':
       case 'ChatAdmin':
         return true;
       case 'Appearance':
-        return window.CharacterAppearanceReturnRoom === 'ChatRoom';
+        return CharacterAppearanceReturnRoom === 'ChatRoom';
       case 'InformationSheet':
       case 'Preference':
       case 'FriendList':
       case 'Title':
       case 'OnlineProfile':
-        return window.InformationSheetPreviousScreen === 'ChatRoom';
+        return InformationSheetPreviousScreen === 'ChatRoom';
     }
     return false;
   }
@@ -57,8 +57,8 @@ export function pollVariables(handshake: string) {
       type: 'client',
       event: 'VariablesUpdate',
       data: {
-        ChatRoomSpace: window.ChatRoomSpace,
-        CurrentScreen: window.CurrentScreen,
+        ChatRoomSpace,
+        CurrentScreen,
         InChat: isInChat()
       }
     }, '*');

@@ -2,8 +2,8 @@ import registry from './registry';
 
 type Unregister = () => void;
 
-export function generatePersistentScriptWithWait<V extends keyof Window, K extends any>(
-  variableName: V,
+export function generatePersistentScriptWithWait<K extends any>(
+  variableName: string,
   executor: (handshake: string, ...args: K[]) => void | Unregister,
   ...args: K[]
 ) {
@@ -43,7 +43,7 @@ export function generatePersistentScriptWithWait<V extends keyof Window, K exten
   window.addEventListener('message', listener, false);
 }
 
-function wrapWaitUntilWindowVariable<V extends keyof Window>(scriptId: string, variableName: V) {
+function wrapWaitUntilWindowVariable(scriptId: string, variableName: string) {
   new Promise((resolve, reject) => {
     const maxWaitTime = 3000;
     const startTime = new Date().getTime();
@@ -68,7 +68,7 @@ function wrapWaitUntilWindowVariable<V extends keyof Window>(scriptId: string, v
   .then((possibleUnregisterFn: unknown) => {
     if (typeof possibleUnregisterFn === 'function') {
       // console.log('[Bondage Club Tools] Found unregister function');
-      window.addEventListener('BondagClub.Deregister', (event: CustomEvent) => {
+      window.addEventListener('BondageClubTools.Deregister', (event: CustomEvent) => {
         if (event.detail.scriptId !== scriptId) {
           return;
         }

@@ -26,16 +26,16 @@ export function listenForUserSentEvents(handshake: string) {
       Target: data.Target,
       Type: data.Type,
       ChatRoom: {
-        Background: window.ChatRoomData.Background,
-        Description: window.ChatRoomData.Description,
-        Name: window.ChatRoomData.Name,
-        Character: window.ChatRoomData.Character.map(mapCharacter)
+        Background: ChatRoomData.Background,
+        Description: ChatRoomData.Description,
+        Name: ChatRoomData.Name,
+        Character: ChatRoomData.Character.map(mapCharacter)
       },
-      SessionId: window.Player.OnlineID,
-      Sender: window.Player.MemberNumber,
-      PlayerName: window.Player.Name,
-      MemberNumber: window.Player.MemberNumber,
-      TargetName: data.Target ? window.ChatRoomData.Character.find(c => c.MemberNumber === data.Target).Name : undefined,
+      SessionId: Player.OnlineID,
+      Sender: Player.MemberNumber,
+      PlayerName: Player.Name,
+      MemberNumber: Player.MemberNumber,
+      TargetName: data.Target ? ChatRoomData.Character.find(c => c.MemberNumber === data.Target).Name : undefined,
       Timestamp: new Date()
     } as IEnrichedChatRoomChat)
   } as {[event: string]: (data: any) => any };
@@ -67,8 +67,8 @@ export function listenForUserSentEvents(handshake: string) {
         return targetValue;
       }
     }
-  } as ProxyHandler<typeof window.ServerSocket>;
+  } as ProxyHandler<typeof ServerSocket>;
 
-  const proxy = new Proxy(window.ServerSocket, handler);
-  window.ServerSocket = proxy;
+  const proxy = new Proxy(ServerSocket, handler);
+  ServerSocket = proxy;
 }

@@ -32,10 +32,10 @@ export function frameCounter() {
 
       return target.apply(thisArg, argumentsList);
     }
-  } as ProxyHandler<typeof window.TimerProcess>;
+  } as ProxyHandler<typeof TimerProcess>;
 
-  const proxy = new Proxy(window.TimerProcess, handler);
-  window.TimerProcess = proxy;
+  const proxy = new Proxy(TimerProcess, handler);
+  TimerProcess = proxy;
 
   return () => {
     // console.log('[Bondage Club Tools] Removing frame counter');

@@ -5,8 +5,8 @@ export function checkForLoggedInState(handshake: string) {
     event: 'VariablesUpdate',
     data: {
       Player: {
-        MemberNumber: window.Player.MemberNumber,
-        Name: window.Player.Name
+        MemberNumber: Player.MemberNumber,
+        Name: Player.Name
       }
     }
   }, '*');

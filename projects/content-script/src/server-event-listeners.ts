@@ -22,7 +22,7 @@ import {
  */
 export function listenToServerEvents(handshake: string) {
   function createForwarder<TIncomingMessage, TOutgoingMessage>(event: string, mapData?: (data: TIncomingMessage) => TOutgoingMessage) {
-    window.ServerSocket.on(event, (data: TIncomingMessage) => {
+    ServerSocket.on(event, (data: TIncomingMessage) => {
       window.postMessage({
         handshake,
         type: 'server',
@@ -78,14 +78,14 @@ export function listenToServerEvents(handshake: string) {
     Sender: data.Sender,
     Type: data.Type,
     ChatRoom: {
-      Background: window.ChatRoomData.Background,
-      Description: window.ChatRoomData.Description,
-      Name: window.ChatRoomData.Name,
-      Character: window.ChatRoomData.Character.map(mapCharacter)
+      Background: ChatRoomData.Background,
+      Description: ChatRoomData.Description,
+      Name: ChatRoomData.Name,
+      Character: ChatRoomData.Character.map(mapCharacter)
     },
-    SessionId: window.Player.OnlineID,
-    PlayerName: window.Player.Name,
-    MemberNumber: window.Player.MemberNumber,
+    SessionId: Player.OnlineID,
+    PlayerName: Player.Name,
+    MemberNumber: Player.MemberNumber,
     Timestamp: new Date()
   }));
   createForwarder<IChatRoomSync, any>('ChatRoomSync', data => ({
@@ -121,7 +121,7 @@ export function listenToServerEvents(handshake: string) {
   createForwarder('ForceDisconnect');
 
   // Retrieve online friends on login
-  window.ServerSocket.on('LoginResponse', () => {
-    window.ServerSocket.emit('AccountQuery', { Query: 'OnlineFriends' });
+  ServerSocket.on('LoginResponse', () => {
+    ServerSocket.emit('AccountQuery', { Query: 'OnlineFriends' });
   });
 }
