@@ -50,10 +50,10 @@ export class PopupComponent {
   constructor(private chatLogsService: ChatLogsService) {
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       const tabId = tabs[0].id;
-      retrieve(tabId, 'chatRoomCharacter').then(characters => this.characters.data = characters);
-      retrieve(tabId, 'chatRoomSearchResult').then(chatRooms => this.chatRooms.data = chatRooms);
-      retrieve(tabId, 'onlineFriends').then(friends => this.onlineFriends.data = friends);
       retrieve(tabId, 'player').then(player => this.player = player);
+      retrieve(tabId, 'onlineFriends').then(friends => this.onlineFriends.data = friends);
+      retrieve(tabId, 'chatRoomCharacter').then(characters => this.characters.data = characters);
+      // retrieve(tabId, 'chatRoomSearchResult').then(chatRooms => this.chatRooms.data = chatRooms);
 
       onChanged(tabId, (changes, areaName) => {
         if (areaName !== 'local') {
