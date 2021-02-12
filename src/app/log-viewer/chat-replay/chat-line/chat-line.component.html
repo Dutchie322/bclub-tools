@@ -1,29 +1,46 @@
-<div class="line">
-  <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
-  <ng-container [ngSwitch]="chatLog.type">
-    <ng-container *ngSwitchCase="'Chat'">
+<ng-container [ngSwitch]="chatLog.type">
+  <ng-container *ngSwitchCase="'Chat'">
+    <div class="line">
+      <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
       <span class="chat">
         <span class="sender" [ngStyle]="{ color: getColor(chatLog.sender.color) }">{{ chatLog.sender.name }}</span>:
         <span class="content">{{ chatLog.content }}</span>
       </span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'Whisper'">
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'Whisper'">
+    <div class="line">
+      <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
       <span class="whisper">
         <span class="sender" [ngStyle]="{ color: getColor(chatLog.sender.color) }">{{ chatLog.sender.name }}{{ chatLog.target ? ' to ' + chatLog.target.name : '' }}</span>:
         <span class="content">{{ chatLog.content }}</span>
       </span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'Emote'">
-      <span class="emote" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }"><ng-container *ngIf="!isGeneralAction(chatLog.content)">*{{ chatLog.sender.name }} </ng-container>{{ chatLog.content }}*</span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'Action'">
-      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ renderContent(chatLog) }})</span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'Activity'">
-      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ renderContent(chatLog) }})</span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'ServerMessage'">
-      <span class="server-message">{{ renderContent(chatLog) }}</span>
-    </ng-container>
+    </div>
   </ng-container>
-</div>
+  <ng-container *ngSwitchCase="'Emote'">
+    <div class="line">
+      <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
+      <span class="emote" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">
+        <ng-container *ngIf="!isGeneralAction(chatLog.content)">*{{ chatLog.sender.name }}</ng-container>{{ chatLog.content[0] === "'" ? chatLog.content : ' ' + chatLog.content }}*
+      </span>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'Action'">
+    <div class="line">
+      <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
+      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ renderContent(chatLog) }})</span>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'Activity'">
+    <div class="line">
+      <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
+      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ renderContent(chatLog) }})</span>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'ServerMessage'">
+    <div class="line">
+      <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
+      <span class="server-message">{{ renderContent(chatLog) }}</span>
+    </div>
+  </ng-container>
+</ng-container>
