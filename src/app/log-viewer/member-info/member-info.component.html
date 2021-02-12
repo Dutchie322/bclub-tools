@@ -1,6 +1,8 @@
 <ng-container [formGroup]="memberForm" *ngIf="member$ | async; let member">
   <div gdGap="0 5px" gdColumns="500px 240px 1fr 1fr" gdRows="64px auto">
-    <img #appearanceImage gdRow="span 2" [src]="member.appearance || ''" [ngStyle]="getImageStyle(member.appearanceMetaData)" />
+    <div style="height: 1000px; overflow: hidden" gdRow="span 2">
+      <img #appearanceImage [src]="member.appearance || ''" [ngStyle]="getImageStyle(member.appearanceMetaData)" />
+    </div>
     <mat-toolbar gdColumn="span 3">
       <span class="member-name" [ngStyle]="{ color: member.labelColor || 'inherit' }">{{ member.memberName }}</span>
     </mat-toolbar>
