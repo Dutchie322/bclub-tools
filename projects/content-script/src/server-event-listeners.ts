@@ -49,6 +49,7 @@ export function listenToServerEvents(handshake: string) {
   }
 
   createForwarder<IAccountBeep, IAccountBeep>('AccountBeep', data => ({
+    BeepType: data.BeepType,
     ChatRoomName: data.ChatRoomName,
     ChatRoomSpace: data.ChatRoomSpace,
     MemberName: data.MemberName,

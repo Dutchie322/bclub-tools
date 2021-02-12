@@ -100,7 +100,9 @@ function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtim
 function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtime.MessageSender) {
   switch (message.event) {
     case 'AccountBeep':
-      handleAccountBeep(sender.tab.id, message);
+      if (!message.data.BeepType) {
+        handleAccountBeep(sender.tab.id, message);
+      }
       break;
     case 'AccountQueryResult':
       if (message.data.Query === 'OnlineFriends') {
