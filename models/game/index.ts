@@ -1,3 +1,4 @@
+export * from './functions';
 export * from './ChatRoomSpace';
 export * from './CurrentScreen';
 export * from './IAppearance';
