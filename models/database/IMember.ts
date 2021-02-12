@@ -11,6 +11,7 @@ export interface IMember {
   title?: string;
   dominant?: number;
   appearance?: string;
+  appearanceMetaData?: IMemberAppearanceMetaData;
   description?: string;
   labelColor?: string;
   lovership?: IMemberLovership[];
@@ -35,6 +36,14 @@ export const MemberTypeOrder = {
   Lover: 3,
   Owner: 4
 } as { [key in MemberType]: number; };
+
+export interface IMemberAppearanceMetaData {
+  canvasHeight: number;
+  heightModifier: number;
+  heightRatio: number;
+  heightRatioProportion: number;
+  isInverted: boolean;
+}
 
 export interface IMemberLovership {
   memberNumber: number;

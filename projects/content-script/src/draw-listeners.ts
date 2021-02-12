@@ -19,14 +19,20 @@ export function characterAppearance(handshake: string) {
             charactersToUpdate[character.MemberNumber] = setTimeout(() => {
               const canvas = character.Canvas as HTMLCanvasElement;
               const imageData = canvas.toDataURL('image/png');
+              const data = {
+                MemberNumber: character.MemberNumber,
+                CanvasHeight: character.Canvas.height,
+                HeightModifier: character.HeightModifier,
+                HeightRatio: character.HeightRatio,
+                HeightRatioProportion: character.HeightRatioProportion,
+                IsInverted: character.IsInverted(),
+                ImageData: imageData
+              };
               window.postMessage({
                 handshake,
                 type: 'client',
                 event: 'CommonDrawAppearanceBuild',
-                data: {
-                  MemberNumber: character.MemberNumber,
-                  ImageData: imageData
-                },
+                data,
               } as IClientMessage<any>, '*');
 
               delete charactersToUpdate[character.MemberNumber];

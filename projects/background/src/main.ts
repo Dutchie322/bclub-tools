@@ -206,6 +206,14 @@ async function handleCommonDrawAppearanceBuild(tabId: number, message: IClientMe
   const member = await retrieveMember(player.MemberNumber, message.data.MemberNumber);
   if (member) {
     member.appearance = message.data.ImageData;
+    member.appearanceMetaData = Object.assign({}, member.appearanceMetaData, {
+      canvasHeight: message.data.CanvasHeight,
+      heightModifier: message.data.HeightModifier,
+      heightRatio: message.data.HeightRatio,
+      heightRatioProportion: message.data.HeightRatioProportion,
+      isInverted: message.data.IsInverted
+    });
+
     await addOrUpdateObjectStore('members', member);
   }
 }
