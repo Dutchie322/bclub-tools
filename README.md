@@ -4,8 +4,9 @@ A web extension for the [Bondage Club](https://www.patreon.com/BondageProjects) 
 
 ## Features
 - Automatic logging of chat rooms, with a viewer to read the transcripts back.
-- Optionally sending a Windows notification when someone beeps you.
-- Optionally detecting when friends come online or go offline and sending a Windows notification when it happens.
+- Optionally sending a desktop notification when someone beeps you.
+- Optionally detecting when friends come online or go offline and sending a desktop notification when it happens.
+- Ability to send a desktop notification when you or a keyword is mentioned.
 - Up-to-date friends list in popup.
 - Quick overview of the characters in the currently joined chat room (name, ownership, dominant level).
 - Optionally show an FPS counter to help find performance issues within the game.
