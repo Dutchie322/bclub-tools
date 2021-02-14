@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { debounceTime, tap, map, switchMap, mergeMap } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
-import { IMember, addOrUpdateObjectStore, decompress, IMemberAppearanceMetaData } from 'models';
+import { IMember, addOrUpdateObjectStore, decompress } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
 import { NgStyle } from '@angular/common';
 
@@ -17,9 +17,12 @@ export class MemberInfoComponent implements OnDestroy {
   private formSubscription: Subscription;
   private playerCharacter: number;
   private memberNumber: number;
+  private member: IMember;
 
   public member$: Observable<IMember>;
 
+  public imageContainerStyle: NgStyle['ngStyle'];
+  public imageStyle: NgStyle['ngStyle'];
   public memberForm = new FormGroup({
     notes: new FormControl('')
   });
@@ -41,7 +44,8 @@ export class MemberInfoComponent implements OnDestroy {
         this.memberNumber = params.memberNumber;
       }),
       switchMap(params => memberService.retrieveMember(params.playerCharacter, params.memberNumber)),
-      tap(member => this.memberForm.patchValue({ notes: member.notes }, { emitEvent: false }))
+      tap(member => this.memberForm.patchValue({ notes: member.notes }, { emitEvent: false })),
+      tap(member => this.member = member)
     );
 
     this.formSubscription = this.memberForm.valueChanges.pipe(
@@ -62,24 +66,39 @@ export class MemberInfoComponent implements OnDestroy {
     this.formSubscription.unsubscribe();
   }
 
-  public getImageStyle(metaData: IMemberAppearanceMetaData) {
-    const style: NgStyle['ngStyle'] = {};
-    if (metaData.isInverted) {
-      style.transform = 'rotate(180deg)';
-    }
-
-    const offsetY = 1000 * (1 - metaData.heightRatio) * metaData.heightRatioProportion - metaData.heightModifier * metaData.heightRatio;
-    const startY = 700 - offsetY / metaData.heightRatio;
-    const sourceHeight = 1000 / metaData.heightRatio;
-    const sourceY = metaData.isInverted ? metaData.canvasHeight - (startY + sourceHeight) : startY;
-    style.position = 'relative';
-    style.top = `-${sourceY}px`;
-
-    return style;
-  }
-
   public absolute(x: number) {
     return Math.abs(x);
+  }
+
+  public calculateAppearanceImageStyles(imageElement: HTMLImageElement) {
+    const imageContainerStyle: NgStyle['ngStyle'] = {
+      height: '1000px'
+    };
+    const imageStyle: NgStyle['ngStyle'] = {
+      position: 'relative'
+    };
+
+    const metaData = this.member.appearanceMetaData;
+    if (!metaData) {
+      if (imageElement.height > 1000) {
+        imageContainerStyle.overflow = 'auto';
+      }
+    } else {
+      imageContainerStyle.overflow = 'hidden';
+
+      if (metaData.isInverted) {
+        imageStyle.transform = 'rotate(180deg)';
+      }
+
+      const offsetY = 1000 * (1 - metaData.heightRatio) * metaData.heightRatioProportion - metaData.heightModifier * metaData.heightRatio;
+      const startY = 700 - offsetY / metaData.heightRatio;
+      const sourceHeight = 1000 / metaData.heightRatio;
+      const sourceY = metaData.isInverted ? metaData.canvasHeight - (startY + sourceHeight) : startY;
+      imageStyle.top = `-${sourceY}px`;
+    }
+
+    this.imageContainerStyle = imageContainerStyle;
+    this.imageStyle = imageStyle;
   }
 
   public lovershipStageToName(stage: number) {
