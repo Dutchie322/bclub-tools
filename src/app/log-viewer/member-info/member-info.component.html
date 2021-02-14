@@ -63,6 +63,7 @@
           <div mat-line *ngIf="member.lastSeen; else noLastSeen">
             <div mat-line>{{ member.lastSeen | date:'mediumDate' }}</div>
             <div mat-line>{{ member.lastSeen | date:'mediumTime' }}</div>
+            <div mat-line>({{ timeToDays(member.lastSeen) }} days ago)</div>
           </div>
           <ng-template #noLastSeen>
             <div mat-line class="empty-value">Unknown</div>
@@ -74,6 +75,7 @@
           <div mat-line *ngIf="member.creation; else noCreation">
             <div mat-line>{{ member.creation | date:'mediumDate' }}</div>
             <div mat-line>{{ member.creation | date:'mediumTime' }}</div>
+            <div mat-line>({{ timeToDays(member.creation) }} days ago)</div>
           </div>
           <ng-template #noCreation>
             <div mat-line class="empty-value">Unknown</div>
