@@ -90,10 +90,15 @@ export class MemberInfoComponent implements OnDestroy {
         imageStyle.transform = 'rotate(180deg)';
       }
 
-      const offsetY = 1000 * (1 - metaData.heightRatio) * metaData.heightRatioProportion - metaData.heightModifier * metaData.heightRatio;
-      const startY = 700 - offsetY / metaData.heightRatio;
-      const sourceHeight = 1000 / metaData.heightRatio;
+      const offsetY = metaData.heightRatioProportion - metaData.heightModifier;
+      const startY = 700 - offsetY;
+      const sourceHeight = 1000;
       const sourceY = metaData.isInverted ? metaData.canvasHeight - (startY + sourceHeight) : startY;
+      // const offsetY = 1000 * (1 - metaData.heightRatio) * metaData.heightRatioProportion - metaData.heightModifier * metaData.heightRatio;
+      // const startY = 700 - offsetY / metaData.heightRatio;
+      // const sourceHeight = 1000 / metaData.heightRatio;
+      // const sourceY = metaData.isInverted ? metaData.canvasHeight - (startY + sourceHeight) : startY;
+      // sourceY += 63;
       imageStyle.top = `-${sourceY}px`;
     }
 
