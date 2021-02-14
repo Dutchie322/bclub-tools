@@ -28,6 +28,7 @@ export function listenToServerEvents(handshake: string) {
         type: 'server',
         event,
         data: mapData ? mapData(data) : undefined,
+        inFocus: document.hasFocus()
       } as IServerMessage<TOutgoingMessage>, '*');
     });
   }

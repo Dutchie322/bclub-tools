@@ -12,6 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { OptionsComponent } from './options/options.component';
 import { OptionsRoutingModule } from './options-routing.module';
+import { MatFormFieldModule, MatChipsModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -25,8 +26,10 @@ import { OptionsRoutingModule } from './options-routing.module';
 
     // Angular Material modules
     MatButtonModule,
-    MatCheckboxModule,
     MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatFormFieldModule,
     MatIconModule,
     MatListModule,
     MatSnackBarModule,

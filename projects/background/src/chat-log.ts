@@ -36,5 +36,5 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage | IEnrichedCha
     };
   }
 
-  await addOrUpdateObjectStore('chatRoomLogs', chatLog);
+  return await addOrUpdateObjectStore('chatRoomLogs', chatLog);
 }

@@ -1,12 +1,13 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { storeGlobal, ISettings, retrieveGlobal, executeForAllGameTabs } from 'models';
 import { DatabaseService } from 'src/app/shared/database.service';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { humanFileSize } from 'src/app/shared/utils/human-file-size';
+import { MatChipInputEvent } from '@angular/material';
 
 @Component({
   selector: 'app-options',
@@ -20,7 +21,11 @@ export class OptionsComponent implements OnDestroy {
     notifications: new FormGroup({
       beeps: new FormControl(false),
       friendOnline: new FormControl(false),
-      friendOffline: new FormControl(false)
+      friendOffline: new FormControl(false),
+      actions: new FormControl(false),
+      mentions: new FormControl(false),
+      whispers: new FormControl(false),
+      keywords: new FormControl([])
     }),
     tools: new FormGroup({
       chatRoomRefresh: new FormControl(true),
@@ -28,6 +33,14 @@ export class OptionsComponent implements OnDestroy {
     })
   });
   public chatLogsSize$: Observable<string>;
+
+  public get notificationControls(): FormGroup {
+    return this.settingsForm.get('notifications') as FormGroup;
+  }
+
+  public get notifyKeywordsControl(): FormControl {
+    return this.notificationControls.get('keywords') as FormControl;
+  }
 
   constructor(
     private chatLogsService: ChatLogsService,
@@ -45,7 +58,11 @@ export class OptionsComponent implements OnDestroy {
         notifications: {
           beeps: value.notifications.beeps,
           friendOnline: value.notifications.friendOnline,
-          friendOffline: value.notifications.friendOffline
+          friendOffline: value.notifications.friendOffline,
+          actions: value.notifications.actions,
+          mentions: value.notifications.mentions,
+          whispers: value.notifications.whispers,
+          keywords: value.notifications.keywords
         },
         tools: {
           chatRoomRefresh: value.tools.chatRoomRefresh,
@@ -64,6 +81,30 @@ export class OptionsComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.formSubscription.unsubscribe();
+  }
+
+  public addKeyword(event: MatChipInputEvent) {
+    const input = event.input;
+    const value = event.value;
+
+    if ((value || '').trim()) {
+      const keywords = this.notifyKeywordsControl.value as string[];
+      keywords.push(value);
+      this.notifyKeywordsControl.setValue(keywords);
+    }
+
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  public removeKeyword(keyword: string) {
+    const keywords = this.notifyKeywordsControl.value as string[];
+    const index = keywords.indexOf(keyword);
+    if (index >= 0) {
+      keywords.splice(index, 1);
+      this.notifyKeywordsControl.setValue(keywords);
+    }
   }
 
   public downloadDatabase() {

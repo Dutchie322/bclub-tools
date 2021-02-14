@@ -24,7 +24,7 @@ import {
   IAccountQueryOnlineFriendsResult,
   addOrUpdateObjectStore
 } from '../../../models';
-import { notifyAccountBeep, notifyFriendChange } from './notifications';
+import { notifyAccountBeep, notifyFriendChange, notifyIncomingMessage } from './notifications';
 import { writeMember, writeFriends, removeChatRoomData, retrieveMember } from './member';
 
 chrome.browserAction.onClicked.addListener(() => {
@@ -41,6 +41,10 @@ chrome.runtime.onInstalled.addListener(async () => {
       beeps: false,
       friendOnline: false,
       friendOffline: false,
+      actions: false,
+      mentions: false,
+      whispers: false,
+      keywords: [],
       ...(settings ? settings.notifications : {})
     },
     tools: {
@@ -110,7 +114,7 @@ function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtim
       }
       break;
     case 'ChatRoomMessage':
-      handleChatRoomMessage(message);
+      handleChatRoomMessage(sender.tab.id, message);
       break;
     case 'ChatRoomSearchResult':
       handleChatRoomSearchResult(sender.tab.id, message);
@@ -167,8 +171,11 @@ function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
   }
 }
 
-function handleChatRoomMessage(message: IServerMessage<IEnrichedChatRoomMessage>) {
-  writeChatLog(message.data);
+async function handleChatRoomMessage(tabId: number, message: IServerMessage<IEnrichedChatRoomMessage>) {
+  const chatLog = await writeChatLog(message.data);
+  if (!message.inFocus) {
+    notifyIncomingMessage(tabId, chatLog);
+  }
 }
 
 function handleChatRoomSearchResult(tabId: number, message: IServerMessage<IChatRoomSearchResult[]>) {
@@ -222,7 +229,7 @@ function handleDisconnect(tabId: number) {
   cleanUpData(tabId);
 }
 
-function handleVariablesUpdate(tabId: number, message: IServerMessage<IVariablesUpdate>) {
+function handleVariablesUpdate(tabId: number, message: IClientMessage<IVariablesUpdate>) {
   if (message.data.CurrentScreen === 'Login') {
     cleanUpData(tabId);
     return;

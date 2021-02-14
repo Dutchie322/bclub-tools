@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IChatLog } from 'models';
-import { DialogBundleService } from '../../../shared/dialog-bundle.service';
+import { IChatLog, renderContent } from 'models';
 
 @Component({
   selector: 'app-chat-line',
@@ -18,7 +17,7 @@ export class ChatLineComponent {
     this.cleanChatLog = this.copyChatLog(chatLog);
   }
 
-  constructor(private dialogBundleService: DialogBundleService) { }
+  public renderContent = renderContent;
 
   public getColor(color: string) {
     return color || 'gray';
@@ -37,45 +36,6 @@ export class ChatLineComponent {
 
   public isGeneralAction(message: string) {
     return message.charAt(0) === '*';
-  }
-
-  public renderContent(chatLog: IChatLog): string {
-    let content = chatLog.content;
-
-    if (chatLog.type === 'Action' || chatLog.type === 'ServerMessage') {
-      content = chatLog.type === 'ServerMessage' ? 'ServerMessage' + content : content;
-      content = this.dialogBundleService.findDialog(content);
-      if (chatLog.dictionary) {
-        for (const dictionary of chatLog.dictionary) {
-          let replacement = String(dictionary.Text);
-          if (dictionary.Tag === 'DestinationCharacter') {
-            replacement += this.dialogBundleService.findDialog('\'s');
-          } else if (dictionary.TextToLookUp) {
-            replacement = this.dialogBundleService.findDialog(dictionary.TextToLookUp);
-          } else if (dictionary.AssetName) {
-            const entry = chatLog.dictionary.find(kvp => !!kvp.AssetGroupName);
-            replacement = this.dialogBundleService.findAssetName(dictionary.AssetName, entry && entry.AssetGroupName);
-          } else if (dictionary.AssetGroupName) {
-            replacement = this.dialogBundleService.findAssetGroupName(dictionary.AssetGroupName);
-          }
-
-          content = content.replace(dictionary.Tag, replacement);
-        }
-      }
-    }
-
-    if (chatLog.type === 'Activity') {
-      content = this.dialogBundleService.findActivity(content);
-      if (chatLog.dictionary) {
-        for (const dictionary of chatLog.dictionary) {
-          if (dictionary.Text) {
-            content = content.replace(dictionary.Tag, String(dictionary.Text));
-          }
-        }
-      }
-    }
-
-    return content;
   }
 
   private copyChatLog(chatLog: IChatLog): IChatLog {

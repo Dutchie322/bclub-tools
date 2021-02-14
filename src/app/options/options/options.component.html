@@ -17,6 +17,36 @@
         Friend offline
       </mat-checkbox>
     </mat-list-item>
+    <mat-list-item>
+      <mat-checkbox formControlName="actions">
+        Actions done on you
+      </mat-checkbox>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-checkbox formControlName="mentions">
+        Somebody mentions you
+      </mat-checkbox>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-checkbox formControlName="whispers">
+        Received a whisper
+      </mat-checkbox>
+    </mat-list-item>
+    <mat-form-field style="padding-left: 16px">
+      <mat-label>Extra keywords to notify for</mat-label>
+      <mat-chip-list #chipList formControlName="keywords">
+        <mat-chip *ngFor="let keyword of notifyKeywordsControl.value"
+                  [removable]="true"
+                  (removed)="removeKeyword(keyword)">
+          {{ keyword }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="New keyword..."
+               [matChipInputFor]="chipList"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="addKeyword($event)">
+      </mat-chip-list>
+    </mat-form-field>
     <mat-divider></mat-divider>
   </mat-list>
   <mat-list formGroupName="tools">
