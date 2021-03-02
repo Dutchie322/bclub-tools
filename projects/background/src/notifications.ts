@@ -1,6 +1,6 @@
 /// <reference types="chrome"/>
 
-import { IAccountBeep, retrieveGlobal, IMember, IEnrichedChatRoomMessage, retrieve, IChatLog, renderContent } from '../../../models';
+import { IAccountBeep, retrieveGlobal, IMember, retrieve, IChatLog, renderContent } from '../../../models';
 import { retrieveMember } from './member';
 
 export async function notifyAccountBeep(beep: IAccountBeep, playerMemberNumber: number) {
@@ -13,9 +13,11 @@ export async function notifyAccountBeep(beep: IAccountBeep, playerMemberNumber: 
   const opt = {
     type: 'basic',
     title: `Beep from ${beep.MemberName} (${beep.MemberNumber} - ${member.type})`,
-    message: beep.ChatRoomName
-      ? `She's currently in chatroom '${beep.ChatRoomName}'`
-      : 'She isn\'t in a chatroom right now',
+    message: beep.Message
+      ? `Included message: ${beep.Message}`
+      : beep.ChatRoomName
+      ? `They're currently in chatroom '${beep.ChatRoomName}'`
+      : 'They aren\'t in a chatroom right now',
     iconUrl: 'assets/bclub-logo.png'
   };
   chrome.notifications.create('', opt);

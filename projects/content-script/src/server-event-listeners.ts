@@ -54,7 +54,8 @@ export function listenToServerEvents(handshake: string) {
     ChatRoomName: data.ChatRoomName,
     ChatRoomSpace: data.ChatRoomSpace,
     MemberName: data.MemberName,
-    MemberNumber: data.MemberNumber
+    MemberNumber: data.MemberNumber,
+    Message: data.Message
   }));
   createForwarder<IAccountQueryResult, any>('AccountQueryResult', data => {
     if (data.Query !== 'OnlineFriends') {
