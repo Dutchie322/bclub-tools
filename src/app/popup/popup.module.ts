@@ -12,10 +12,16 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { PopupComponent } from './popup/popup.component';
 import { PopupRoutingModule } from './popup-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { MatSnackBarModule } from '@angular/material';
+import { NewVersionNotificationComponent } from './new-version-notification/new-version-notification.component';
 
 @NgModule({
   declarations: [
-    PopupComponent
+    PopupComponent,
+    NewVersionNotificationComponent
+  ],
+  entryComponents: [
+    NewVersionNotificationComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +33,7 @@ import { SharedModule } from '../shared/shared.module';
     MatIconModule,
     MatMenuModule,
     MatListModule,
+    MatSnackBarModule,
     MatSortModule,
     MatTabsModule,
     MatTableModule,

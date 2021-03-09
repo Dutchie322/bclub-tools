@@ -1,5 +1,5 @@
 import { Component, TrackByFunction, ViewChild } from '@angular/core';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource, MatSnackBar } from '@angular/material';
 import {
   IStoredPlayer,
   IChatRoomSearchResult,
@@ -10,9 +10,14 @@ import {
   IReputation,
   IMember,
   MemberTypeOrder,
+  retrieveGlobal,
+  storeGlobal,
+  IMigration,
 } from 'models';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { IPlayerCharacter } from 'src/app/shared/models';
+import { NewVersionNotificationComponent } from '../new-version-notification/new-version-notification.component';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-popup',
@@ -47,7 +52,10 @@ export class PopupComponent {
     return this.player && this.player.MemberNumber > 0;
   }
 
-  constructor(private chatLogsService: ChatLogsService) {
+  constructor(
+    private chatLogsService: ChatLogsService,
+    private snackBar: MatSnackBar
+  ) {
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       const tabId = tabs[0].id;
       retrieve(tabId, 'player').then(player => this.player = player);
@@ -85,6 +93,26 @@ export class PopupComponent {
         }
         return true;
       });
+    });
+
+    this.checkForNewVersion();
+  }
+
+  private async checkForNewVersion() {
+    const migration = await retrieveGlobal('migration') || {} as IMigration;
+    const currentVersion = chrome.runtime.getManifest().version;
+    if (migration.readChangelogVersion === currentVersion) {
+      return;
+    }
+
+    const snackBarRef = this.snackBar.openFromComponent(NewVersionNotificationComponent, {
+      politeness: 'off'
+    });
+    snackBarRef.afterDismissed().pipe(
+      take(1)
+    ).subscribe(async () => {
+      migration.readChangelogVersion = currentVersion;
+      await storeGlobal('migration', migration);
     });
   }
 
