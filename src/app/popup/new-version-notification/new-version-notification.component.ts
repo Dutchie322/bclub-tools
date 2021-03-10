@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBarRef } from '@angular/material';
 
 @Component({
   selector: 'app-new-version-notification',
@@ -9,7 +10,7 @@ export class NewVersionNotificationComponent implements OnInit {
 
   public extensionVersion: string;
 
-  constructor() {
+  constructor(public snackBarRef: MatSnackBarRef<NewVersionNotificationComponent>) {
     this.extensionVersion = chrome.runtime.getManifest().version;
   }
 
