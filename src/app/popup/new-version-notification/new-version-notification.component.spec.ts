@@ -6,8 +6,6 @@ import { NewVersionNotificationComponent } from './new-version-notification.comp
 import { PopupModule } from '../popup.module';
 import { MatSnackBarRef } from '@angular/material';
 
-Object.assign(window.chrome, chrome);
-
 describe('NewVersionNotificationComponent', () => {
   let component: NewVersionNotificationComponent;
   let fixture: ComponentFixture<NewVersionNotificationComponent>;
@@ -16,6 +14,7 @@ describe('NewVersionNotificationComponent', () => {
     .mock(MatSnackBarRef));
 
   beforeEach(() => {
+    Object.assign(window, { chrome });
     chrome.runtime.getManifest.returns({
       version: 'test'
     });
