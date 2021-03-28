@@ -12,6 +12,7 @@
     "build:background:debug": "webpack-cli --config ./projects/background/webpack.config.js --context ./projects/background/ --mode=development",
     "build:content-script": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=production",
     "build:content-script:debug": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=development",
+    "tool:update-texts": "node ./tools/update-texts.js f4e4fe5e79902e71b94eb5f9c0d6e4f2465efb85",
     "package": "node ./release/create-package.js",
     "test": "ng test",
     "test:ci": "npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI",
