@@ -58,10 +58,15 @@ export function listenForUserSentEvents(handshake: string) {
       const targetValue = Reflect.get(target, propKey, receiver);
       if (typeof targetValue === 'function') {
         return function(...args: any[]) {
+          const returnValue = targetValue.apply(this, args);
           if (propKey === 'emit') {
-            forwardMessage(args[0], args[1]);
+            try {
+              forwardMessage(args[0], args[1]);
+            } catch (e) {
+              console.error('[Bondage Club Tools] Could not forward message:', e);
+            }
           }
-          return targetValue.apply(this, args);
+          return returnValue;
         };
       } else {
         return targetValue;
