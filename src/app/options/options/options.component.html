@@ -72,13 +72,21 @@
   <mat-list>
     <h2 matSubheader>Data</h2>
     <mat-list-item>
-      Total size of stored chat logs: {{ chatLogsSize$ | async }}
+      Total size of database: {{ databaseSize$ | async }}
     </mat-list-item>
     <mat-list-item>
-      <button mat-button mat-stroked-button color="primary" (click)="downloadDatabase()">Export database</button>
+      <button mat-button
+              mat-stroked-button
+              color="primary"
+              (click)="downloadDatabase()"
+              >Export database</button>
     </mat-list-item>
     <mat-list-item>
-      <button mat-button mat-stroked-button color="primary" (click)="uploadDatabase()">Import database</button>
+      <button mat-button
+              mat-stroked-button
+              color="primary"
+              (click)="uploadDatabase()"
+              >Import database</button>
     </mat-list-item>
     <mat-divider></mat-divider>
   </mat-list>
@@ -87,7 +95,11 @@
   <mat-list>
     <h2 matSubheader>Danger zone</h2>
     <mat-list-item>
-      <button mat-button mat-stroked-button color="warn" (click)="clearDatabase()">Delete database</button>
+      <button mat-button
+              mat-stroked-button
+              color="warn"
+              (click)="clearDatabase()"
+              >Delete database</button>
     </mat-list-item>
     <mat-divider></mat-divider>
   </mat-list>

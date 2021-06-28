@@ -37,8 +37,9 @@ export class DatabaseService {
           if (cursor) {
             const storedObject = cursor.value;
             delete storedObject.id;
-            const json = JSON.stringify(storedObject, null, 2);
-            size += json.length;
+
+            size += this.calculateSize(storedObject);
+
             subscriber.next(size);
             cursor.continue();
           } else {
@@ -52,6 +53,26 @@ export class DatabaseService {
         });
       });
     });
+  }
+
+  private calculateSize(value: any, key: any = ''): number {
+    let size = String(key).length;
+
+    if (Array.isArray(value)) {
+      size += value.reduce((prev, cur, i) => prev + this.calculateSize(cur, i), 0);
+    } else if (value instanceof Date && !isNaN(value.getTime())) {
+      size += value.toISOString().length;
+    } else if (typeof value === 'object' && value !== null) {
+      for (const property in value) {
+        if (value.hasOwnProperty(property)) {
+          size += this.calculateSize(value[property], property);
+        }
+      }
+    } else {
+      size += String(value).length;
+    }
+
+    return size;
   }
 
   public async transaction(storeNames: StoreNames | StoreNames[], mode?: IDBTransactionMode): Promise<IDBTransaction> {

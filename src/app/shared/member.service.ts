@@ -46,4 +46,8 @@ export class MemberService {
       });
     });
   }
+
+  public getTotalSize(): Observable<number> {
+    return this.databaseService.calculateTableSize('members');
+  }
 }

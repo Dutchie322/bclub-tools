@@ -4,6 +4,7 @@ export interface IChatLog {
   chatRoom: string;
   content: string;
   dictionary?: IChatLogDictionary[];
+  id?: number;
   sender: IChatSender;
   session: IChatSessionPerspective;
   target?: IWhisperTarget;
