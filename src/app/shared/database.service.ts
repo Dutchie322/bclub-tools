@@ -56,6 +56,10 @@ export class DatabaseService {
   }
 
   private calculateSize(value: any, key: any = ''): number {
+    if (value === null || value === undefined) {
+      return 0;
+    }
+
     let size = String(key).length;
 
     if (Array.isArray(value)) {
