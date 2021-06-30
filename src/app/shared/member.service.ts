@@ -36,7 +36,9 @@ export class MemberService {
         const request = transaction.objectStore('members').get([playerMemberNumber, memberNumber]);
 
         request.addEventListener('success', event => {
-          subscriber.next((event.target as IDBRequest<IMember>).result);
+          const member = (event.target as IDBRequest<IMember>).result;
+          this.sanitizeData(member);
+          subscriber.next(member);
           subscriber.complete();
         });
 
@@ -49,5 +51,11 @@ export class MemberService {
 
   public getTotalSize(): Observable<number> {
     return this.databaseService.calculateTableSize('members');
+  }
+
+  private sanitizeData(member: IMember) {
+    if (typeof member.creation === 'number') {
+      member.creation = new Date(member.creation);
+    }
   }
 }
