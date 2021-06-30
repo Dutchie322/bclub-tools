@@ -217,6 +217,15 @@ export class OptionsComponent implements OnDestroy {
           }
 
           const memberFolder = subfolders[member.playerMemberNumber].folder(String(member.memberNumber));
+          if (member.appearance) {
+            memberFolder.file('appearance.png', member.appearance.substr(22), {
+              base64: true,
+              date: member.lastSeen
+            });
+
+            delete member.appearance;
+          }
+
           const data = JSON.stringify(member, (_, value) => {
             if (typeof value === 'string' && value.startsWith('data:image/png;base64,')) {
               // Base64 encoded images are too big for JSON stringify.
@@ -228,12 +237,6 @@ export class OptionsComponent implements OnDestroy {
           memberFolder.file('data.json', data, {
             date: member.lastSeen
           });
-          if (member.appearance) {
-            memberFolder.file('appearance.png', member.appearance.substr(22), {
-              base64: true,
-              date: member.lastSeen
-            });
-          }
 
           cursor.continue();
         } else {
@@ -245,25 +248,55 @@ export class OptionsComponent implements OnDestroy {
 
   public uploadDatabase() {
     const input = document.createElement('input') as HTMLInputElement;
-    input.accept = 'application/json,.json';
+    input.accept = 'application/json,.json,application/zip,.zip';
     input.type = 'file';
-    input.addEventListener('change', () => {
+    input.addEventListener('change', async () => {
       const file = input.files[0];
-      if (file.name.match(/\.(json)$/)) {
+      if (!file.name.match(/\.(json|zip)$/)) {
+        chrome.extension.getBackgroundPage().alert('File not supported, .json or .zip files only');
+        return;
+      }
+
+      try {
+        const fileType = await this.detectFileType(file);
         const reader = new FileReader();
-        reader.onload = () => {
-          console.log(`Loaded file: ${humanFileSize((reader.result as string).length)}`);
-          this.importDatabase(reader.result as string)
-            .catch(error => {
-              console.error(error);
-            });
-        };
-        reader.readAsText(file);
-      } else {
-        alert('File not supported, .json files only');
+        if (fileType === 'json') {
+          reader.addEventListener('load', _ => {
+            this.importDatabaseFromJson(reader.result as string);
+          });
+          reader.readAsText(file);
+        } else if (fileType === 'zip') {
+          reader.addEventListener('load', _ => {
+            this.importDatabaseFromZip(reader.result as ArrayBuffer);
+          });
+          reader.readAsArrayBuffer(file);
+        }
+      } catch (e) {
+        console.error(e);
+        chrome.extension.getBackgroundPage().alert(e);
       }
     });
     input.click();
+  }
+
+  private async detectFileType(file: File) {
+    return new Promise<'json' | 'zip'>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', _ => {
+        const buffer = new Uint8Array(reader.result as ArrayBuffer);
+        const header = buffer.reduce((prev, cur) => prev + cur.toString(16).padStart(2, '0'), '');
+        console.log(`Loaded file with header ${header}`);
+
+        if (header === '504b0304') {
+          resolve('zip');
+        } else if (header.substr(0, 2) === '7b') {
+          resolve('json');
+        } else {
+          reject('Unsupported file format');
+        }
+      });
+      reader.readAsArrayBuffer(file.slice(0, 4));
+    });
   }
 
   public async clearDatabase() {
@@ -288,7 +321,7 @@ export class OptionsComponent implements OnDestroy {
     }
   }
 
-  private async importDatabase(jsonString: string) {
+  private async importDatabaseFromJson(jsonString: string) {
     return new Promise(async (resolve, reject) => {
       console.log('Importing database...');
       const objectStoreNames = await this.databaseService.objectStoreNames;
@@ -330,6 +363,112 @@ export class OptionsComponent implements OnDestroy {
         });
       });
     });
+  }
+
+  private async importDatabaseFromZip(buffer: ArrayBuffer) {
+    const archive = await JSZip.loadAsync(buffer);
+    const promises = [];
+    archive.folder('chatRoomLogs').folder(/^[\d]+\/$/).forEach(contextFolder => {
+      const context = contextFolder.name.substring('chatRoomLogs/'.length, contextFolder.name.length - 1);
+      console.log('Found context: ' + context);
+
+      archive.folder(contextFolder.name).forEach((relativePath, file) => {
+        if (!file.name.endsWith('.json')) {
+          console.error(`Skipping unexpected file ${file.name}`);
+          return;
+        }
+
+        console.log('chatRoomLogs: ' + relativePath + ' ' + file.name);
+        promises.push(file.async('string').then(jsonString => {
+          const data = JSON.parse(jsonString, (_, value) => {
+            // tslint:disable-next-line: max-line-length
+            if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3,6}|)Z$/.test(value)) {
+              return new Date(value);
+            }
+            return value;
+          }) as IChatLog[];
+
+          return new Promise(async (resolve, reject) => {
+            const transaction = await this.databaseService.transaction('chatRoomLogs', 'readwrite');
+            transaction.onerror = event => {
+              reject(event);
+            };
+
+            let count = 0;
+            for (const chatLog of data) {
+              const request = transaction.objectStore('chatRoomLogs').add(chatLog);
+              request.addEventListener('success', _ => {
+                count++;
+                if (count === data.length) {
+                  console.log('Done with ' + relativePath);
+                  resolve();
+                }
+              });
+            }
+          });
+        }));
+      });
+    });
+
+    archive.folder('members').folder(/^[\d]+\/$/).forEach(contextFolder => {
+      const context = contextFolder.name.substring('members/'.length, contextFolder.name.length - 1);
+      console.log('Found context: ' + context);
+
+      archive.folder(contextFolder.name).folder(/^[\d]+\/$/).forEach(memberFolder => {
+        const memberNumber = memberFolder.name.substring(contextFolder.name.length, memberFolder.name.length - 1);
+        console.log('Found member: ' + memberNumber);
+
+        promises.push(new Promise(async (resolve, reject) => {
+          const memberPromises = [] as Promise<IMember>[];
+
+          archive.folder(memberFolder.name).forEach((relativePath, file) => {
+            switch (relativePath) {
+              case 'data.json':
+                console.log('Found data for ' + memberFolder.name);
+                memberPromises.push(file.async('string').then(jsonString => {
+                  return JSON.parse(jsonString, (_, value) => {
+                    // tslint:disable-next-line: max-line-length
+                    if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3,6}|)Z$/.test(value)) {
+                      return new Date(value);
+                    }
+                    return value;
+                  }) as IMember;
+                }));
+                break;
+
+              case 'appearance.png':
+                console.log('Found appearance for ' + memberFolder.name);
+                memberPromises.push(file.async('base64').then(appearance => {
+                  return {
+                    appearance: 'data:image/png;base64,' + appearance
+                  } as IMember;
+                }));
+
+                break;
+
+              default:
+                console.error(`Skipping unexpected file ${file.name}`);
+                break;
+            }
+          });
+
+          const data = await Promise.all(memberPromises);
+          const member = data.reduce((acc, cur) => Object.assign(acc, cur), {} as IMember);
+
+          const transaction = await this.databaseService.transaction('members', 'readwrite');
+          transaction.onerror = event => {
+            reject(event);
+          };
+          const request = transaction.objectStore('members').add(member);
+          request.addEventListener('success', _ => {
+            console.log('Done with ', member);
+            resolve();
+          });
+        }));
+      });
+    });
+
+    return Promise.all(promises).then(_ => console.log('Done importing.'));
   }
 
   private showSavedNotice() {
