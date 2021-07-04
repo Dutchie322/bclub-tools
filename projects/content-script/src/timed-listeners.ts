@@ -21,8 +21,7 @@ export function chatRoomRefresh() {
       ServerSocket.emit('ChatRoomSearch', {
         Query: searchInput ? searchInput.value.toUpperCase().trim() : '',
         Space: ChatRoomSpace,
-        FullRooms: (Player.ChatSettings && Player.ChatSettings.SearchShowsFullRooms)
-                || (Player.OnlineSettings && Player.OnlineSettings.SearchShowsFullRooms),
+        FullRooms: Player.OnlineSettings && Player.OnlineSettings.SearchShowsFullRooms,
         Ignore: ChatSearchIgnoredRooms
       } as IChatRoomSearch);
     }
