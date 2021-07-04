@@ -12,7 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { OptionsComponent } from './options/options.component';
 import { OptionsRoutingModule } from './options-routing.module';
-import { MatFormFieldModule, MatChipsModule } from '@angular/material';
+import { MatFormFieldModule, MatChipsModule, MatProgressBarModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -32,6 +32,7 @@ import { MatFormFieldModule, MatChipsModule } from '@angular/material';
     MatFormFieldModule,
     MatIconModule,
     MatListModule,
+    MatProgressBarModule,
     MatSnackBarModule,
     MatSortModule,
     MatToolbarModule
