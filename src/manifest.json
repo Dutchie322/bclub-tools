@@ -47,7 +47,5 @@
     "http://www.bondageprojects.elementfx.com/*",
     "https://www.bondageprojects.elementfx.com/*"
   ],
-  "options_ui": {
-    "page": "index.html?page=/options"
-  }
+  "options_page": "index.html?page=/options"
 }

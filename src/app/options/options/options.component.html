@@ -88,12 +88,19 @@
                         [value]="exportProgress.percentage"
                         ></mat-progress-bar>
     </mat-list-item>
-    <mat-list-item>
+    <mat-list-item *ngIf="importProgress === undefined">
       <button mat-button
               mat-stroked-button
               color="primary"
               (click)="uploadDatabase()"
               >Import database</button>
+    </mat-list-item>
+    <mat-list-item *ngIf="importProgress !== undefined">
+      <p matLine>{{ importProgress.text }}...</p>
+      <mat-progress-bar matLine
+                        mode="determinate"
+                        [value]="importProgress.percentage"
+                        ></mat-progress-bar>
     </mat-list-item>
     <mat-divider></mat-divider>
   </mat-list>

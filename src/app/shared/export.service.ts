@@ -61,8 +61,11 @@ export class ExportService {
       return { total: 0 };
     }
 
-    return Promise.all(objectStoreNames.map(storeName => this.databaseService.read(storeName, objectStore => objectStore.count())))
-      .then(counts => ({ total: counts.reduce((prev, cur) => prev + cur, 0) }));
+    return Promise.all(objectStoreNames.map(storeName =>
+        this.databaseService.read(storeName, objectStore => objectStore.count())))
+      .then(counts => ({
+        total: counts.reduce((prev, cur) => prev + cur, 0)
+      }));
   }
 
   private async createArchive(update: UpdateCallback): Promise<Blob> {

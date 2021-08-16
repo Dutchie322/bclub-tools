@@ -31,7 +31,6 @@ const routes: Routes = [
     QueryPathRouterGuard
   ],
   imports: [
-    // Third party
     RouterModule.forRoot(routes, {
       useHash: false
     })
