@@ -1,5 +1,12 @@
+Enriches the experience for Bondage Club.
 Adds a popup which displays the current characters in the chat room, the current chat rooms and an overview of your online friends.
 
-Also includes chat and whisper logging which is stored locally, meaning that your chat logs never leave your computer. There is an interface to browse through past chat sessions as well.
+Includes chat and whisper logging which is stored locally, meaning that your chat logs never leave your computer. There is an interface to browse through past chat sessions as well.
 
-The extension can also be configured to show notifications when you receive a beep, or when a friend comes online or goes offline.
+An overview of people you've met in the chat rooms gives you the opportunity to keep notes on them or read back their profile.
+
+The extension can also be configured to show notifications when you receive a beep, or when a friend comes online or goes offline. Notifications can also be enabled for when your name is mentioned or when you receive a whisper.
+
+The overview of chat rooms will be refreshed automatically every 10 seconds.
+
+No information about your account, your chat logs nor your friends ever leaves your computer. Given the nature of the game, I believe that any sort of tracking, logging or analytics has no place in this extension. Feedback is always welcomed and can be given through GitHub.
