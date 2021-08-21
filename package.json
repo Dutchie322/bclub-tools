@@ -32,7 +32,7 @@
     "@angular/platform-browser": "~8.1.0",
     "@angular/platform-browser-dynamic": "~8.1.0",
     "@angular/router": "~8.1.0",
-    "jszip": "^3.6.0",
+    "jszip": "^3.7.0",
     "lodash-es": "^4.17.11",
     "lz-string": "^1.4.4",
     "papaparse": "^5.2.0",
