@@ -9,6 +9,7 @@ export const GLOBAL_STORAGE_KEYS = [
 export const STORAGE_KEYS = [
   'chatRoomCharacter',
   'chatRoomSearchResult',
+  'handshake',
   'onlineFriends',
   'player'
 ] as const;
@@ -24,6 +25,7 @@ export interface IGlobalStorageMap {
 export interface IStorageMap {
   'chatRoomCharacter': IChatRoomCharacter[];
   'chatRoomSearchResult': IChatRoomSearchResult[];
+  'handshake': string;
   'onlineFriends': IMember[];
   'player': IStoredPlayer;
 }

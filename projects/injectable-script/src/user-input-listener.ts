@@ -1,8 +1,10 @@
 import {
-  IClientMessage, IEnrichedChatRoomChat, IChatRoomChat, IChatRoomCharacter
+  IEnrichedChatRoomChat,
+  IChatRoomChat,
+  IChatRoomCharacter
 } from '../../../models';
 
-export function listenForUserSentEvents(handshake: string) {
+export function listenForUserSentEvents(postMessage: PostMessageCallback) {
   function mapCharacter(character: IChatRoomCharacter) {
     return {
       ID: character.ID,
@@ -40,17 +42,12 @@ export function listenForUserSentEvents(handshake: string) {
     } as IEnrichedChatRoomChat)
   } as {[event: string]: (data: any) => any };
 
-  function forwardMessage<TMessage>(event: string, data: any) {
+  function forwardMessage(event: string, data: any) {
     if (!eventsToForward[event]) {
       return;
     }
 
-    window.postMessage({
-      handshake,
-      type: 'client',
-      event,
-      data: eventsToForward[event](data),
-    } as IClientMessage<TMessage>, '*');
+    postMessage('client', event, eventsToForward[event](data));
   }
 
   const handler = {

@@ -4,18 +4,21 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "npm-run-all build:popup --parallel build:manifests build:background build:content-script",
-    "build-debug": "npm-run-all build-debug:popup --parallel build:manifests build-debug:background build-debug:content-script",
+    "build": "npm-run-all build:popup --parallel build:manifests build:background build:content-script build:injectable-script",
+    "build-debug": "npm-run-all build-debug:popup --parallel build:manifests build-debug:background build-debug:content-script build-debug:injectable-script",
+    "build-debug:no-angular": "npm-run-all --parallel build:manifests build-debug:background build-debug:content-script build-debug:injectable-script",
 
     "build:manifests": "node ./projects/manifest/create-manifests.js",
 
     "build:popup": "ng build --aot --prod --output-hashing=none --source-map=false",
     "build:background": "webpack-cli --config ./projects/background/webpack.config.js --context ./projects/background/ --mode=production",
     "build:content-script": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=production",
-
+    "build:injectable-script": "webpack-cli --config ./projects/injectable-script/webpack.config.js --context ./projects/injectable-script/ --mode=production",
+    
     "build-debug:popup": "ng build --aot",
     "build-debug:background": "webpack-cli --config ./projects/background/webpack.config.js --context ./projects/background/ --mode=development",
     "build-debug:content-script": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=development",
+    "build-debug:injectable-script": "webpack-cli --config ./projects/injectable-script/webpack.config.js --context ./projects/injectable-script/ --mode=development",
 
     "tool:update-texts": "node ./tools/update-texts.js b2dc2a2cbe8054a99cbadb5f3eaf4eb908e1099b",
     "package": "node ./release/create-package.js",

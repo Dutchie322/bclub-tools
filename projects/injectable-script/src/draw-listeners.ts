@@ -1,6 +1,6 @@
 import { IClientMessage } from 'models';
 
-export function characterAppearance(handshake: string) {
+export function characterAppearance(postMessage: PostMessageCallback) {
   const charactersToUpdate = {};
   let proxyEnabled = true;
 
@@ -28,12 +28,7 @@ export function characterAppearance(handshake: string) {
                 IsInverted: character.IsInverted(),
                 ImageData: imageData
               };
-              window.postMessage({
-                handshake,
-                type: 'client',
-                event: 'CommonDrawAppearanceBuild',
-                data,
-              } as IClientMessage<any>, '*');
+              postMessage('client', 'CommonDrawAppearanceBuild', data);
 
               delete charactersToUpdate[character.MemberNumber];
             }, 1000);

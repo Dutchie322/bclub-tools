@@ -14,5 +14,6 @@ declare global {
 
   var CharacterRefresh: (C: any, Push?: boolean) => void;
   var CommonDrawAppearanceBuild: (C: any, callbacks: object) => void;
+  var LoginValidCollar: () => void;
   var TimerProcess: (Timestamp: number) => void;
 }

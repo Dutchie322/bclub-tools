@@ -24,8 +24,16 @@ export function storeGlobal<K extends GlobalStorageKeys>(key: K, data: IGlobalSt
 }
 
 export function store<K extends StorageKeys>(tabId: number, key: K, data: IStorageMap[K]) {
-  chrome.storage.local.set({
-    [`${key}_${tabId}`]: data
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.set({
+      [`${key}_${tabId}`]: data
+    }, () => {
+      if (chrome.runtime.lastError) {
+        reject(chrome.runtime.lastError);
+      } else {
+        resolve();
+      }
+    });
   });
 }
 
@@ -42,11 +50,16 @@ export function onChanged(
       .forEach(key => tabChanges[key.substr(0, key.length - suffix.length)] = changes[key]);
 
     if (Object.keys(changes).length > 0) {
+      console.log('Detected storage changes:', changes);
       callback(tabChanges, areaName);
     }
   });
 }
 
-export function clearStorage(tabId: number) {
-  chrome.storage.local.remove(STORAGE_KEYS.map(key => `${key}_${tabId}`));
+export function clearStorage(tabId: number, isTabClosed = false) {
+  const keysToRemove = STORAGE_KEYS
+    .filter(key => isTabClosed || key !== 'handshake')
+    .map(key => `${key}_${tabId}`);
+  console.log('Clearing storage', keysToRemove);
+  chrome.storage.local.remove(keysToRemove);
 }

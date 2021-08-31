@@ -63,14 +63,48 @@ chrome.runtime.onInstalled.addListener(async () => {
   });
 });
 
-chrome.runtime.onMessage.addListener((message, sender) => {
-  if (!message || !message.event) {
+chrome.runtime.onConnectExternal.addListener(port => {
+  console.log('onConnectExternal', port);
+  console.assert(port.name === 'bondage-club-tools-injectable-script');
+
+  port.onMessage.addListener(message => {
+    console.log('Received onMessageExternal in background:', message);
+
+    if (!message || !message.type || !message.event || !port.sender) {
+      return;
+    }
+
+    // TODO Handle these messages separately.
+    switch (message.type) {
+      case 'client':
+        if (message.event === 'Connect') {
+          handleConnect(port.sender.tab.id, message, port);
+        } else {
+          handleClientMessage(message, port.sender);
+        }
+        break;
+      case 'server':
+        handleServerMessage(message, port.sender);
+        break;
+      default:
+        console.error('[Bondage Club Tools] Unhandled message:', message);
+    }
+  });
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse: (response: any) => void) => {
+  if (!message || !message.type || !message.event) {
     return;
   }
 
   switch (message.type) {
     case 'client':
-      handleClientMessage(message, sender);
+      if (message.event === 'Bootstrap') {
+        handleBootstrap(sender.tab.id, sendResponse);
+        return true;
+      } else {
+        handleClientMessage(message, sender);
+      }
       break;
     case 'server':
       handleServerMessage(message, sender);
@@ -83,7 +117,7 @@ chrome.runtime.onMessage.addListener((message, sender) => {
 
 chrome.tabs.onRemoved.addListener(tabId => cleanUpData(tabId, true));
 
-function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtime.MessageSender) {
+function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtime.MessageSender, port?: chrome.runtime.Port) {
   switch (message.event) {
     case 'ChatRoomChat':
       handleChatRoomChat(message);
@@ -163,6 +197,35 @@ async function handleAccountQueryOnlineFriendsResult(tabId: number, message: ISe
   }
 
   store(tabId, 'onlineFriends', friends);
+}
+
+async function handleBootstrap(tabId: number, sendResponse: (response: any) => void) {
+  const handshake = crypto.getRandomValues(new Uint32Array(5)).toString();
+  console.log(`Storing handshake ${handshake}, tab ${tabId}`);
+  await store(tabId, 'handshake', handshake);
+
+  sendResponse({
+    handshake
+  });
+}
+
+async function handleConnect(tabId: number, message: IClientMessage<any>, port: chrome.runtime.Port) {
+  const expectedHandshake = await retrieve(tabId, 'handshake');
+  console.log(`Connect expected handshake: ${expectedHandshake}`);
+  if (message.data.handshake !== expectedHandshake) {
+    console.warn(`Incorrect handshake received for tab ${tabId}, disconnecting`, message);
+    port.disconnect();
+    return;
+  }
+
+  const settings = await retrieveGlobal('settings');
+  console.log(`Received correct connect handshake, sending settings`, settings);
+  port.postMessage({
+    event: 'UpdateSettings',
+    data: {
+      settings
+    }
+  });
 }
 
 function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
@@ -262,7 +325,7 @@ async function cleanUpData(tabId: number, isTabClosed = false) {
   if (friends) {
     await Promise.all(friends.map(friend => removeChatRoomData(friend)));
   }
-  clearStorage(tabId);
+  clearStorage(tabId, isTabClosed);
 
   if (!isTabClosed) {
     chrome.browserAction.setPopup({

@@ -32,7 +32,7 @@ export function chatRoomRefresh() {
   };
 }
 
-export function pollVariables(handshake: string) {
+export function pollVariables(postMessage: PostMessageCallback) {
   function isInChat() {
     switch (CurrentScreen) {
       case 'ChatRoom':
@@ -51,15 +51,10 @@ export function pollVariables(handshake: string) {
   }
 
   setInterval(() => {
-    window.postMessage({
-      handshake,
-      type: 'client',
-      event: 'VariablesUpdate',
-      data: {
-        ChatRoomSpace,
-        CurrentScreen,
-        InChat: isInChat()
-      }
-    }, '*');
+    postMessage('client', 'VariablesUpdate', {
+      ChatRoomSpace,
+      CurrentScreen,
+      InChat: isInChat()
+    });
   }, 1000);
 }

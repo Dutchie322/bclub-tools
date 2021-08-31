@@ -1,7 +1,6 @@
 import {
   IChatRoomMessage,
   IAccountBeep,
-  IServerMessage,
   IChatRoomSearchResult,
   IChatRoomSync,
   IChatRoomSyncSingle,
@@ -15,21 +14,13 @@ import {
  * Listens for specific server events and forwards them to the background page for further
  * processing.
  *
- * Note: This function is stringified and injected into the page of the game. All code should
- * be in the body of the function. No imports are supported.
- *
- * @param handshake A generated string to confirm origin of messages.
+ * @param postMessage Used to send a message to the background script.
  */
-export function listenToServerEvents(handshake: string) {
-  function createForwarder<TIncomingMessage, TOutgoingMessage>(event: string, mapData?: (data: TIncomingMessage) => TOutgoingMessage) {
+export function listenToServerEvents(postMessage: PostMessageCallback) {
+  // tslint:disable-next-line: max-line-length
+  function createForwarder<TIncomingMessage, TOutgoingMessage extends object>(event: string, mapData?: (data: TIncomingMessage) => TOutgoingMessage) {
     ServerSocket.listeners(event).unshift((data: TIncomingMessage) => {
-      window.postMessage({
-        handshake,
-        type: 'server',
-        event,
-        data: mapData ? mapData(data) : undefined,
-        inFocus: document.hasFocus()
-      } as IServerMessage<TOutgoingMessage>, '*');
+      postMessage('server', event, mapData ? mapData(data) : undefined);
     });
   }
   function mapCharacter(character: IChatRoomCharacter) {
