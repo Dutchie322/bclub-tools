@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash-es';
 import { IChatRoomSearch } from 'models';
 
 export function pollOnlineFriends() {
@@ -32,29 +33,37 @@ export function chatRoomRefresh() {
   };
 }
 
-export function pollVariables(postMessage: PostMessageCallback) {
-  function isInChat() {
-    switch (CurrentScreen) {
-      case 'ChatRoom':
-      case 'ChatAdmin':
-        return true;
-      case 'Appearance':
-        return CharacterAppearanceReturnRoom === 'ChatRoom';
-      case 'InformationSheet':
-      case 'Preference':
-      case 'FriendList':
-      case 'Title':
-      case 'OnlineProfile':
-        return InformationSheetPreviousScreen === 'ChatRoom';
-    }
-    return false;
+function isInChat() {
+  switch (CurrentScreen) {
+    case 'ChatRoom':
+    case 'ChatAdmin':
+      return true;
+    case 'Appearance':
+      return CharacterAppearanceReturnRoom === 'ChatRoom';
+    case 'InformationSheet':
+    case 'Preference':
+    case 'FriendList':
+    case 'Title':
+    case 'OnlineProfile':
+      return InformationSheetPreviousScreen === 'ChatRoom';
   }
+  return false;
+}
 
+export function pollVariables(postMessage: PostMessageCallback) {
+  let last = {};
   setInterval(() => {
-    postMessage('client', 'VariablesUpdate', {
+    const current = {
       ChatRoomSpace,
       CurrentScreen,
       InChat: isInChat()
-    });
+    };
+
+    if (isEqual(current, last)) {
+      return;
+    }
+
+    postMessage('client', 'VariablesUpdate', current);
+    last = current;
   }, 1000);
 }
