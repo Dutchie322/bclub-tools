@@ -22,6 +22,7 @@ export function connect(extensionId: string, handshake: string) {
   });
 
   let isDisconnected = false;
+  let disconnectFn: () => void;
   function postMessage(type: 'client' | 'server', event: string, data: object) {
     if (isDisconnected) {
       throw new Error(`Can't send message to a disconnected port`);
@@ -45,11 +46,15 @@ export function connect(extensionId: string, handshake: string) {
   port.onDisconnect.addListener(() => {
     console.log('Port disconnected in injected script');
     isDisconnected = true;
+    if (disconnectFn) {
+      disconnectFn();
+    }
   });
   port.onMessage.addListener(message => {
     console.log('Received message in injected script:', message);
     if (message.event === 'UpdateSettings') {
-      start(postMessage, message.data.settings);
+      // TODO gracefully handle updating settings without injecting scripts again
+      disconnectFn = start(postMessage, message.data.settings);
     }
   });
 
@@ -65,17 +70,22 @@ export function connect(extensionId: string, handshake: string) {
 function start(postMessage: PostMessageCallback, settings: ISettings) {
   console.log('Started with settings', settings);
 
+  const stopFunctions = [];
   if (settings.tools.fpsCounter) {
-    frameCounter();
+    stopFunctions.push(frameCounter());
   }
   if (settings.tools.chatRoomRefresh) {
-    chatRoomRefresh();
+    stopFunctions.push(chatRoomRefresh());
   }
 
   checkForLoggedInState(postMessage);
   listenForUserSentEvents(postMessage);
   listenToServerEvents(postMessage);
-  pollOnlineFriends();
-  characterAppearance(postMessage);
-  pollVariables(postMessage);
+  stopFunctions.push(pollOnlineFriends());
+  stopFunctions.push(characterAppearance(postMessage));
+  stopFunctions.push(pollVariables(postMessage));
+
+  return () => {
+    stopFunctions.forEach(fn => fn());
+  };
 }

@@ -52,7 +52,7 @@ function isInChat() {
 
 export function pollVariables(postMessage: PostMessageCallback) {
   let last = {};
-  setInterval(() => {
+  const timer = setInterval(() => {
     const current = {
       ChatRoomSpace,
       CurrentScreen,
@@ -66,4 +66,8 @@ export function pollVariables(postMessage: PostMessageCallback) {
     postMessage('client', 'VariablesUpdate', current);
     last = current;
   }, 1000);
+
+  return () => {
+    clearInterval(timer);
+  };
 }
