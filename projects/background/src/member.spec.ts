@@ -1,5 +1,5 @@
 import { determineMemberType } from './member';
-import { MemberType } from 'models';
+import { MemberType } from '../../../models';
 
 describe('determineMemberType', () => {
   ([

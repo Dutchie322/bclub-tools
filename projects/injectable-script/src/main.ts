@@ -1,7 +1,3 @@
-import { Bootstrapper } from './Bootstrapper';
+import { connect } from './startup';
 
-const bootstrapper = new Bootstrapper();
-
-export function connect(extensionId: string, handshake: string) {
-  bootstrapper.connect(extensionId, handshake);
-}
+export { connect };
