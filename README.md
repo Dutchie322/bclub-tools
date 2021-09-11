@@ -21,7 +21,8 @@ This project uses the following technologies, so prior knowledge of these is req
 - [Angular](https://angular.io/)
 - [Angular Material](https://material.angular.io/)
 - [IndexedDB](https://developer.mozilla.org/en-US/docs/IndexedDB)
-- [WebExtension API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions) (largely the same as Chrome Extension API, but also compatible with Firefox)
+- [WebExtension API](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions)
+- [Chrome Extension API](https://developer.chrome.com/docs/extensions/reference/)
 
 ## Components
 
@@ -81,7 +82,10 @@ See also [this page](https://developer.chrome.com/extensions/getstarted).
 
 ### Firefox
 
-1. Open `about:debugging` in Firefox.
-2. Click `Load Temporary Add-on` and select any file in your extension's directory.
+1. Open Firefox
+2. Enter `about:debugging` in the URL bar
+3. Click "This Firefox"
+4. Click "Load Temporary Add-on"
+5. Open the extension's directory and select any file inside the extension, or select the packaged extension (.zip file).
 
 See also [this page](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Temporary_Installation_in_Firefox).
