@@ -11,12 +11,18 @@ export function isClubPage() {
 }
 
 export function connect(extensionId: string, handshake: string) {
-  console.log(`Attempting connect with extensionId ${extensionId}, handshake ${handshake}`);
   if (!isClubPage()) {
-      // Don't do anything if we didn't detect the game.
-      return;
+    // Don't do anything if we didn't detect the game.
+    return;
   }
 
+  if (typeof chrome === 'undefined') {
+    // TODO This is Firefox... build some sort of fallback with postMessage or dispatchEvent to a content script?
+    console.error('Browser not supported');
+    return;
+  }
+
+  console.log(`Attempting connect with extensionId ${extensionId}, handshake ${handshake}`);
   const port = chrome.runtime.connect(extensionId, {
     name: 'bondage-club-tools-injectable-script'
   });
