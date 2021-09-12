@@ -7,6 +7,7 @@ export interface IMember {
   lastSeen?: Date;
   chatRoomName?: string;
   chatRoomSpace?: string;
+  isPrivateRoom?: boolean | undefined;
   creation?: Date;
   title?: string;
   dominant?: number;

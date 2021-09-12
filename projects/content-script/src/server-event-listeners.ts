@@ -22,7 +22,7 @@ import {
  */
 export function listenToServerEvents(handshake: string) {
   function createForwarder<TIncomingMessage, TOutgoingMessage>(event: string, mapData?: (data: TIncomingMessage) => TOutgoingMessage) {
-    ServerSocket.on(event, (data: TIncomingMessage) => {
+    ServerSocket.listeners(event).unshift((data: TIncomingMessage) => {
       window.postMessage({
         handshake,
         type: 'server',
@@ -71,6 +71,7 @@ export function listenToServerEvents(handshake: string) {
         ChatRoomSpace: result.ChatRoomSpace,
         MemberName: result.MemberName,
         MemberNumber: result.MemberNumber,
+        Private: result.Private,
         Type: result.Type
       })) : []
     };

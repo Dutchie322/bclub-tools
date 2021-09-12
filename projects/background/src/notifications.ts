@@ -17,7 +17,7 @@ export async function notifyAccountBeep(beep: IAccountBeep, playerMemberNumber: 
       ? `Included message: ${beep.Message}`
       : beep.ChatRoomName
       ? `They're currently in chatroom '${beep.ChatRoomName}'`
-      : 'They aren\'t in a chatroom right now',
+      : '',
     iconUrl: 'assets/bclub-logo.png'
   };
   chrome.notifications.create('', opt);

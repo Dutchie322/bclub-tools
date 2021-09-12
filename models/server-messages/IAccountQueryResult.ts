@@ -1,3 +1,5 @@
+import { ChatRoomSpace } from 'models';
+
 export type IAccountQueryResult = IAccountQueryOnlineFriendsResult | IAccountQueryEmailResult;
 
 export interface IAccountQueryOnlineFriendsResult {
@@ -11,9 +13,10 @@ export interface IAccountQueryEmailResult {
 }
 
 export interface IAccountQueryResultOnlineFriend {
-  ChatRoomName: string;
-  ChatRoomSpace: string;
+  ChatRoomName: string | null;
+  ChatRoomSpace: ChatRoomSpace | null;
   MemberName: string;
   MemberNumber: number;
-  Type: 'Friend' | 'Submissive';
+  Private?: boolean;
+  Type: 'Friend' | 'Submissive' | 'Lover';
 }

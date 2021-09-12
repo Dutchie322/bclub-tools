@@ -35,7 +35,7 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
 
   if (isAccountQueryResultOnlineFriend(data)) {
     member = Object.assign(member, mapAccountQueryResultOnlineFriend(data), {
-      type: determineMemberType(member.type, data.Type, ['Friend', 'Submissive'])
+      type: determineMemberType(member.type, data.Type, ['Friend', 'Submissive', 'Lover'])
     });
   }
   if (isChatRoomCharacter(data)) {
@@ -49,7 +49,8 @@ function mapAccountQueryResultOnlineFriend(data: IAccountQueryResultOnlineFriend
   return {
     memberName: data.MemberName,
     chatRoomName: data.ChatRoomName,
-    chatRoomSpace: data.ChatRoomSpace
+    chatRoomSpace: data.ChatRoomSpace,
+    isPrivateRoom: data.Private
   };
 }
 
@@ -122,6 +123,7 @@ export async function removeChatRoomData(member: IMember) {
   const storedMember = await retrieveMember(member.playerMemberNumber, member.memberNumber);
   delete storedMember.chatRoomName;
   delete storedMember.chatRoomSpace;
+  delete storedMember.isPrivateRoom;
   await addOrUpdateObjectStore('members', storedMember);
 }
 

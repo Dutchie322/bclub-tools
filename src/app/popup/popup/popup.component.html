@@ -34,17 +34,16 @@
       <ng-container matColumnDef="chatRoomName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Chat Room</th>
         <td mat-cell *matCellDef="let friend">
-          <ng-container *ngIf="friend.chatRoomName; else noChatRoom">
-            <ng-container *ngIf="friend.chatRoomName === '-Private-'; else publicChatRoom">
-              <span class="unavailable-chat-room">Private</span>
-            </ng-container>
-            <ng-template #publicChatRoom>
-              {{ (friend.chatRoomSpace ? friend.chatRoomSpace + ' - ' : '') + friend.chatRoomName }}
-            </ng-template>
+          <ng-container *ngIf="friend.chatRoomSpace">
+            <span class="chat-room-space">{{ friend.chatRoomSpace }}</span>
+            -
           </ng-container>
-          <ng-template #noChatRoom>
-            <span class="unavailable-chat-room">Not in a chat room</span>
-          </ng-template>
+          <ng-container *ngIf="friend.isPrivateRoom">
+            <span class="unavailable-chat-room">Private</span>
+            <span *ngIf="friend.chatRoomName"> - </span>
+          </ng-container>
+          <span *ngIf="friend.chatRoomName" class="chat-room-name">{{ friend.chatRoomName }}</span>
+          <span *ngIf="!friend.chatRoomName && !friend.isPrivateRoom" class="unavailable-chat-room">Not in a chat room</span>
         </td>
       </ng-container>
       <ng-container matColumnDef="type">
