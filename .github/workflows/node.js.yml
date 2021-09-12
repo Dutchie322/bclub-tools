@@ -31,8 +31,8 @@ jobs:
       name: Build extension
     - run: yarn lint
       name: Lint code
-    - run: yarn test:ci
-      name: Run tests
+    #- run: yarn test:ci
+    #  name: Run tests
     - run: yarn package
       name: Package extension
     - uses: actions/upload-artifact@v2
