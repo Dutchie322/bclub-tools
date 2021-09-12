@@ -2,6 +2,8 @@
 
 A web extension for the [Bondage Club](https://www.patreon.com/BondageProjects) game.
 
+Available on the Chrome Web Store: https://chrome.google.com/webstore/detail/bondage-club-tools/pgigbkbcecbpgijnfhmpmkipgondpnpc
+
 ## Features
 - Automatic logging of chat rooms, with a viewer to read the transcripts back.
 - Optionally sending a desktop notification when someone beeps you.
