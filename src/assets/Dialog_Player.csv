@@ -102,6 +102,7 @@ MustFreeClitFirst,,,Must remove clit piercings first,,
 MustFreeButtFirst,,,Must empty butt first.,,
 OwnerBlockedRemotes,,,The use of remotes is forbidden by your owner,,
 CannotBeUsedOverGag,,,Cannot be used over the applied gags.,,
+BlockedByRoom,,,Blocked in this room.,,
 Cancel,,,Cancel,,
 Exit,,,Back to character,,
 Next,,,View next items,,
@@ -449,10 +450,10 @@ ServerShuffle,,,SourceCharacter shuffles the position of everyone in the room ra
 ServerPromoteAdmin,,,TargetCharacterName was promoted to administrator by SourceCharacter.,,
 ServerDemoteAdmin,,,TargetCharacterName was demoted from administration by SourceCharacter.,,
 ServerUpdateRoom,,,SourceCharacter updated the room. Name: ChatRoomName. Limit: ChatRoomLimit.  ChatRoomPrivacy.  ChatRoomLocked.,,
-OnlineBountySuitcaseStart,,,"SourceCharacter starts unlocking DestinationCharacterName suitcase! She will finish in 15 minutes."
+OnlineBountySuitcaseStart,,,"SourceCharacter starts unlocking DestinationCharacterName suitcase! She will finish in 5 minutes."
 OnlineBountySuitcaseStartOpened,,,"SourceCharacter starts stealing more data from DestinationCharacterName laptop! She will finish in 15 minutes."
-OnlineBountySuitcaseEndEarly,,,"SourceCharacter suitcase is safe... for now."
-OnlineBountySuitcaseEndEarlyOpened,,,"SourceCharacter data is safe... for now."
+OnlineBountySuitcaseEndEarly,,,"SourceCharacter's suitcase is safe... for now."
+OnlineBountySuitcaseEndEarlyOpened,,,"SourceCharacter's data is safe... for now."
 OnlineBountySuitcaseOngoing,,,"Her suitcase will be open in TIMEREMAINING minutes. Make sure she is secure until then!"
 OnlineBountySuitcaseOngoingOpened,,,"The data will be ready in TIMEREMAINING minutes. Make sure she is secure until then!"
 OnlineBountySuitcaseFinish,,,"You find confidential club secrets worth MONEYAMOUNT$ on the black market."
@@ -871,6 +872,7 @@ ItemMouthFuturisticMuzzleSetn0,,,SourceCharacter removes the nose cover from Des
 ItemMouthFuturisticMuzzleSets0,,,SourceCharacter removes the icon from DestinationCharacter muzzle.,,
 ItemMouthFuturisticMuzzleSets1,,,SourceCharacter chooses the icon on DestinationCharacter muzzle.,,
 ItemMouthFuturisticMuzzleSets2,,,SourceCharacter chooses the icon on DestinationCharacter muzzle.,,
+ItemMouthFuturisticMuzzleSets3,,,SourceCharacter chooses the icon on DestinationCharacter muzzle.,,
 ItemMouth2FuturisticMuzzleModuleNose,,,Mask,,
 ItemMouth2FuturisticMuzzleModuleHarness,,,Straps,,
 ItemMouth2FuturisticMuzzleModuleSymbol,,,Icon,,
@@ -1721,6 +1723,7 @@ SpankingToysTypeTapeRoll,,,Duct Tape Roll,,
 SpankingToysTypeSpatula,,,Spatula,,
 SpankingToysTypeBroom,,,Broom,,
 SpankingToysTypePhone1,,,Mobile Phone,,
+SpankingToysTypePhone2,,,Mobile Phone 2,,
 SpankingToysSetPlayer,,,SourceCharacter takes out a ItemUsed,,
 SpankingToysSetOthers,,,SourceCharacter gives TargetCharacter a ItemUsed,,
 SelectSuitType,,,Select suit type and wand attachment,,
