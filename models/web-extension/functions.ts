@@ -7,7 +7,11 @@ export function executeForAllGameTabs(action: (tab: chrome.tabs.Tab) => void) {
     'http://bondageprojects.elementfx.com/*',
     'https://bondageprojects.elementfx.com/*',
     'http://www.bondageprojects.elementfx.com/*',
-    'https://www.bondageprojects.elementfx.com/*'
+    'https://www.bondageprojects.elementfx.com/*',
+    'http://bondage-europe.com/*',
+    'https://bondage-europe.com/*',
+    'http://www.bondage-europe.com/*',
+    'https://www.bondage-europe.com/*'
   ].forEach(url => {
     chrome.tabs.query({
       url

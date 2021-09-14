@@ -26,7 +26,11 @@
         "http://bondageprojects.elementfx.com/*",
         "https://bondageprojects.elementfx.com/*",
         "http://www.bondageprojects.elementfx.com/*",
-        "https://www.bondageprojects.elementfx.com/*"
+        "https://www.bondageprojects.elementfx.com/*",
+        "http://bondage-europe.com/*",
+        "https://bondage-europe.com/*",
+        "http://www.bondage-europe.com/*",
+        "https://www.bondage-europe.com/*"
       ],
       "run_at": "document_idle",
       "js": ["content-script/main.js"]
@@ -45,7 +49,11 @@
     "http://bondageprojects.elementfx.com/*",
     "https://bondageprojects.elementfx.com/*",
     "http://www.bondageprojects.elementfx.com/*",
-    "https://www.bondageprojects.elementfx.com/*"
+    "https://www.bondageprojects.elementfx.com/*",
+    "http://bondage-europe.com/*",
+    "https://bondage-europe.com/*",
+    "http://www.bondage-europe.com/*",
+    "https://www.bondage-europe.com/*"
   ],
   "options_page": "index.html?page=/options"
 }
