@@ -204,8 +204,10 @@ async function handleBootstrap(tabId: number, sendResponse: (response: any) => v
   console.log(`Storing handshake ${handshake}, tab ${tabId}`);
   await store(tabId, 'handshake', handshake);
 
+  const isFirefox = chrome.runtime.getURL('').startsWith('moz-extension://');
   sendResponse({
-    handshake
+    handshake,
+    canConnectFromPage: !isFirefox
   });
 }
 

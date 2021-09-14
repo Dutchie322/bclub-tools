@@ -17,10 +17,14 @@ import {
  * @param postMessage Used to send a message to the background script.
  */
 export function listenToServerEvents(postMessage: PostMessageCallback) {
-  // tslint:disable-next-line: max-line-length
-  function createForwarder<TIncomingMessage, TOutgoingMessage extends object>(event: string, mapData?: (data: TIncomingMessage) => TOutgoingMessage) {
+  function createForwarder<TIncomingMessage, TOutgoingMessage extends object>(
+      event: string, mapData?: (data: TIncomingMessage) => TOutgoingMessage) {
     ServerSocket.listeners(event).unshift((data: TIncomingMessage) => {
-      postMessage('server', event, mapData ? mapData(data) : undefined);
+      try {
+        postMessage('server', event, mapData ? mapData(data) : undefined);
+      } catch (error) {
+        console.error('Error sending message to extension', error);
+      }
     });
   }
   function mapCharacter(character: IChatRoomCharacter) {
