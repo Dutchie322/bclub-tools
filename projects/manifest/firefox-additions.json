@@ -1,4 +1,7 @@
 {
+  "background": {
+    "persistent": true
+  },
   "browser_specific_settings": {
     "gecko": {
       "id": "{69662ce5-5fcc-4d0a-ad93-b8b663bd47ac}",
