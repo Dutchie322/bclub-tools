@@ -1,0 +1,12 @@
+{
+  "addons": {
+    "{69662ce5-5fcc-4d0a-ad93-b8b663bd47ac}": {
+      "updates": [
+        {
+          "version": "0.4.0",
+          "update_link": "https://github.com/Dutchie322/bclub-tools/releases/download/v0.4.0/bondage_club_tools-0.4.0-fx.xpi"
+        }
+      ]
+    }
+  }
+}

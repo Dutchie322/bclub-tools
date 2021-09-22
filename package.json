@@ -4,14 +4,19 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "npm run build:popup && npm run build:background && npm run build:content-script",
-    "build:debug": "npm run build:popup:debug && npm run build:background:debug && npm run build:content-script:debug",
+    "build": "npm-run-all build:popup --parallel build:manifests build:background build:content-script",
+    "build-debug": "npm-run-all build-debug:popup --parallel build:manifests build-debug:background build-debug:content-script",
+
+    "build:manifests": "node ./projects/manifest/create-manifests.js",
+
     "build:popup": "ng build --aot --prod --output-hashing=none --source-map=false",
-    "build:popup:debug": "ng build --aot",
     "build:background": "webpack-cli --config ./projects/background/webpack.config.js --context ./projects/background/ --mode=production",
-    "build:background:debug": "webpack-cli --config ./projects/background/webpack.config.js --context ./projects/background/ --mode=development",
     "build:content-script": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=production",
-    "build:content-script:debug": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=development",
+
+    "build-debug:popup": "ng build --aot",
+    "build-debug:background": "webpack-cli --config ./projects/background/webpack.config.js --context ./projects/background/ --mode=development",
+    "build-debug:content-script": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=development",
+
     "tool:update-texts": "node ./tools/update-texts.js b2dc2a2cbe8054a99cbadb5f3eaf4eb908e1099b",
     "package": "node ./release/create-package.js",
     "test": "ng test",
@@ -61,6 +66,7 @@
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
     "ng-mocks": "^11.9.0",
+    "npm-run-all": "^4.1.5",
     "protractor": "~5.4.0",
     "sinon-chrome": "^3.0.1",
     "socket.io-client": "^4.2.0",

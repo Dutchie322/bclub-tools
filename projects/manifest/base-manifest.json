@@ -37,5 +37,9 @@
     "*://*.bondageprojects.elementfx.com/*",
     "*://*.bondage-europe.com/*"
   ],
-  "options_page": "index.html?page=/options"
+  "options_ui": {
+    "browser_style": false,
+    "open_in_tab": true,
+    "page": "index.html?page=/options"
+  }
 }
