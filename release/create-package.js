@@ -1,48 +1,72 @@
-var fs = require('fs');
-var archiver = require('archiver');
- 
-// create a file to stream archive data to.
-var output = fs.createWriteStream(__dirname + '/../dist/bclub-tools.zip');
-var archive = archiver('zip', {
-  zlib: { level: 9 } // Sets the compression level.
+const fs = require('fs');
+const path = require('path');
+const JSZip = require('jszip');
+
+['chrome', 'firefox'].forEach(browser => {
+  const package = createBasePackage();
+  package.file('manifest.json', fs.readFileSync(`${__dirname}/../dist/manifests/manifest-${browser}.json`));
+  finalizePackage(package, browser);
 });
- 
-// listen for all archive data to be written
-// 'close' event is fired only when a file descriptor is involved
-output.on('close', function() {
-  console.log(archive.pointer() + ' total bytes');
-  console.log('archiver has been finalized and the output file descriptor has closed.');
-});
- 
-// This event is fired when the data source is drained no matter what was the data source.
-// It is not part of this library but rather from the NodeJS Stream API.
-// @see: https://nodejs.org/api/stream.html#stream_event_end
-output.on('end', function() {
-  console.log('Data has been drained');
-});
- 
-// good practice to catch warnings (ie stat failures and other non-blocking errors)
-archive.on('warning', function(err) {
-  if (err.code === 'ENOENT') {
-    // log warning
-    console.warn(err);
-  } else {
-    // throw error
-    throw err;
+
+function createBasePackage() {
+  const package = new JSZip();
+  addAllFilesToArchive(package, __dirname + '/../dist/bclub-tools/');
+  return package;
+}
+
+function finalizePackage(package, nameSuffix) {
+  package.generateNodeStream({
+    type: 'nodebuffer',
+    streamFiles: true,
+    compression: 'DEFLATE',
+    compressionOptions: {
+      level: 9
+    }
+  })
+    .pipe(fs.createWriteStream(`${__dirname}/../dist/bclub-tools-${nameSuffix}.zip`))
+    .on('error', err => {
+      console.error(err);
+      throw err;
+    })
+    .on('finish', () => {
+      console.log(`${nameSuffix} package created.`);
+    });
+}
+
+// Thanks to https://github.com/Stuk/jszip/issues/386#issuecomment-508217874
+function addAllFilesToArchive(zip, dir) {
+  const allPaths = getFilePathsRecursiveSync(dir);
+
+  for (const filePath of allPaths) {
+    const addPath = path.relative(dir, filePath);
+
+    let data = fs.readFileSync(filePath);
+    zip.file(addPath, data);
   }
-});
- 
-// good practice to catch this error explicitly
-archive.on('error', function(err) {
-  throw err;
-});
- 
-// pipe archive data to the file
-archive.pipe(output);
+}
 
-// append files from a sub-directory, putting its contents at the root of archive
-archive.directory(__dirname + '/../dist/bclub-tools/', false);
+// returns a flat array of absolute paths of all files recursively contained in the dir
+function getFilePathsRecursiveSync(dir) {
+  let results = [];
+  list = fs.readdirSync(dir);
+  let pending = list.length;
+  if (!pending) {
+    return results;
+  }
 
-// finalize the archive (ie we are done appending files but streams have to finish yet)
-// 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
-archive.finalize();
+  for (let file of list) {
+    file = path.resolve(dir, file);
+    const stat = fs.statSync(file);
+    if (stat && stat.isDirectory()) {
+      res = getFilePathsRecursiveSync(file);
+      results = results.concat(res);
+    } else {
+      results.push(file);
+    }
+    if (!--pending) {
+      return results;
+    }
+  }
+
+  return results;
+}

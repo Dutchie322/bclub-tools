@@ -1,26 +1,43 @@
 const fs = require('fs');
 
+// Make sure output directories exist.
+ensureDirectoryExists(__dirname + '/../../dist/bclub-tools');
+ensureDirectoryExists(__dirname + '/../../dist/manifests');
+
 const baseManifest = readJsonFile('base-manifest.json');
 const chromeManifestAdditions = readJsonFile('chrome-additions.json');
 const firefoxManifestAdditions = readJsonFile('firefox-additions.json');
 
-const chromeManifest = JSON.stringify(mergeDeep(baseManifest, chromeManifestAdditions), undefined, 2);
-const firefoxManifest = JSON.stringify(mergeDeep(baseManifest, firefoxManifestAdditions), undefined, 2);
+const chromeManifest = mergeDeep(baseManifest, chromeManifestAdditions);
+const firefoxManifest = mergeDeep(baseManifest, firefoxManifestAdditions);
 
-fs.writeFileSync(__dirname + '/../../dist/bclub-tools/manifest.json', chromeManifest, {
-  encoding: 'utf8',
-  flag: 'w'
-});
-fs.writeFileSync(__dirname + '/../../dist/bclub-tools/manifest-fx.json', firefoxManifest, {
-  encoding: 'utf8',
-  flag: 'w'
-});
+// Output Chrome manifest to dist directory for easy debugging.
+writeJsonFile('bclub-tools/manifest.json', chromeManifest);
 
-function readJsonFile(file) {
-  return JSON.parse(fs.readFileSync(__dirname + '/' + file, {
+// Write all versions of the manifests to a different directory to add them to store packages as needed later.
+writeJsonFile('manifests/manifest-chrome.json', chromeManifest);
+writeJsonFile('manifests/manifest-firefox.json', firefoxManifest);
+
+function ensureDirectoryExists(directory) {
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory, {
+      recursive: true
+    });
+  }
+}
+
+function readJsonFile(fileName) {
+  return JSON.parse(fs.readFileSync(__dirname + '/' + fileName, {
     encoding: 'utf8',
     flag: 'r'
   }));
+}
+
+function writeJsonFile(fileName, object) {
+  fs.writeFileSync(__dirname + '/../../dist/' + fileName, JSON.stringify(object, undefined, 2), {
+    encoding: 'utf8',
+    flag: 'w'
+  });
 }
 
 function isObject(item) {
