@@ -1,7 +1,7 @@
 {
   "name": "Bondage Club Tools",
   "description" : "Enriches the experience for Bondage Club.",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "manifest_version": 2,
   "icons": {
     "128": "assets/bclub-logo.png"
@@ -19,18 +19,9 @@
   "content_scripts": [
     {
       "matches": [
-        "http://bondageprojects.com/*",
-        "https://bondageprojects.com/*",
-        "http://www.bondageprojects.com/*",
-        "https://www.bondageprojects.com/*",
-        "http://bondageprojects.elementfx.com/*",
-        "https://bondageprojects.elementfx.com/*",
-        "http://www.bondageprojects.elementfx.com/*",
-        "https://www.bondageprojects.elementfx.com/*",
-        "http://bondage-europe.com/*",
-        "https://bondage-europe.com/*",
-        "http://www.bondage-europe.com/*",
-        "https://www.bondage-europe.com/*"
+        "*://*.bondageprojects.com/*",
+        "*://*.bondageprojects.elementfx.com/*",
+        "*://*.bondage-europe.com/*"
       ],
       "run_at": "document_idle",
       "js": ["content-script/main.js"]
@@ -42,18 +33,9 @@
     "notifications",
     "storage",
     "unlimitedStorage",
-    "http://bondageprojects.com/*",
-    "https://bondageprojects.com/*",
-    "http://www.bondageprojects.com/*",
-    "https://www.bondageprojects.com/*",
-    "http://bondageprojects.elementfx.com/*",
-    "https://bondageprojects.elementfx.com/*",
-    "http://www.bondageprojects.elementfx.com/*",
-    "https://www.bondageprojects.elementfx.com/*",
-    "http://bondage-europe.com/*",
-    "https://bondage-europe.com/*",
-    "http://www.bondage-europe.com/*",
-    "https://www.bondage-europe.com/*"
+    "*://*.bondageprojects.com/*",
+    "*://*.bondageprojects.elementfx.com/*",
+    "*://*.bondage-europe.com/*"
   ],
   "options_page": "index.html?page=/options"
 }

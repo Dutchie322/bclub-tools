@@ -1,17 +1,8 @@
 export function executeForAllGameTabs(action: (tab: chrome.tabs.Tab) => void) {
   [
-    'http://bondageprojects.com/*',
-    'https://bondageprojects.com/*',
-    'http://www.bondageprojects.com/*',
-    'https://www.bondageprojects.com/*',
-    'http://bondageprojects.elementfx.com/*',
-    'https://bondageprojects.elementfx.com/*',
-    'http://www.bondageprojects.elementfx.com/*',
-    'https://www.bondageprojects.elementfx.com/*',
-    'http://bondage-europe.com/*',
-    'https://bondage-europe.com/*',
-    'http://www.bondage-europe.com/*',
-    'https://www.bondage-europe.com/*'
+    '*://*.bondageprojects.com/*',
+    '*://*.bondageprojects.elementfx.com/*',
+    '*://*.bondage-europe.com/*'
   ].forEach(url => {
     chrome.tabs.query({
       url
