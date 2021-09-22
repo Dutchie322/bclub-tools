@@ -41,5 +41,6 @@ jobs:
     - uses: actions/upload-artifact@v2
       name: Upload artifacts
       with:
-        name: bclub-tools
-        path: dist/bclub-tools
+        name: bclub-tools-all
+        path: dist
+        if-no-files-found: error
