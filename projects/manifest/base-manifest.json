@@ -40,5 +40,6 @@
     "browser_style": false,
     "open_in_tab": true,
     "page": "index.html?page=/options"
-  }
+  },
+  "web_accessible_resources": ["injectable-script/main.js"]
 }

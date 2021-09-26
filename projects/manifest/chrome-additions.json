@@ -1,5 +1,12 @@
 {
   "background": {
     "persistent": false
+  },
+  "externally_connectable": {
+    "matches": [
+      "*://*.bondageprojects.com/*",
+      "*://*.bondageprojects.elementfx.com/*",
+      "*://*.bondage-europe.com/*"
+    ]
   }
 }
