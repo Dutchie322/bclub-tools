@@ -1,0 +1,44 @@
+{
+  "name": "Bondage Club Tools",
+  "description" : "Enriches the experience for Bondage Club.",
+  "version": "0.4.1",
+  "manifest_version": 2,
+  "icons": {
+    "128": "assets/bclub-logo.png"
+  },
+  "background": {
+    "scripts": ["background/main.js"]
+  },
+  "browser_action": {
+    "default_title": "Bondage Club Tools",
+    "default_icon": {
+      "128": "assets/bclub-logo.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.bondageprojects.com/*",
+        "*://*.bondageprojects.elementfx.com/*",
+        "*://*.bondage-europe.com/*"
+      ],
+      "run_at": "document_idle",
+      "js": ["content-script/main.js"]
+    }
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "permissions": [
+    "activeTab",
+    "notifications",
+    "storage",
+    "unlimitedStorage",
+    "*://*.bondageprojects.com/*",
+    "*://*.bondageprojects.elementfx.com/*",
+    "*://*.bondage-europe.com/*"
+  ],
+  "options_ui": {
+    "browser_style": false,
+    "open_in_tab": true,
+    "page": "index.html?page=/options"
+  }
+}

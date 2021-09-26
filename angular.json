@@ -24,7 +24,6 @@
             "tsConfig": "tsconfig.app.json",
             "aot": false,
             "assets": [
-              "src/manifest.json",
               "src/assets"
             ],
             "styles": [
