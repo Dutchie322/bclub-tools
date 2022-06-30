@@ -8,6 +8,7 @@ import { retrieveGlobal, log } from '../../../models';
 import { checkForLoggedInState } from './check-for-logged-in-state';
 import { characterAppearance } from './draw-listeners';
 import { pollOnlineFriends, pollVariables } from './timed-listeners';
+import { increaseWardrobeSize } from './wardrobe-size';
 
 log('Injecting scripts...');
 
@@ -16,6 +17,7 @@ retrieveGlobal('settings').then(settings => {
     generatePersistentScriptWithWait('ServerSocket', frameCounter);
   }
   generateOneTimeScript(checkForLoggedInState);
+  generateOneTimeScript(increaseWardrobeSize, settings.tools.wardrobeSize);
   generatePersistentScriptWithWait('ServerSocket', listenForUserSentEvents, settings.tools.chatRoomRefreshInterval);
   generatePersistentScriptWithWait('ServerSocket', listenToServerEvents);
   generatePersistentScriptWithWait('ServerSocket', pollOnlineFriends);

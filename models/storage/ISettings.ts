@@ -20,4 +20,5 @@ export interface IToolsSettings {
   chatRoomRefresh: boolean;
   chatRoomRefreshInterval: number;
   fpsCounter: boolean;
+  wardrobeSize: number;
 }

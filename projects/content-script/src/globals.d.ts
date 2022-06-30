@@ -12,6 +12,7 @@ declare global {
   var MainCanvas: CanvasRenderingContext2D;
   var Player: IPlayer;
   var ServerSocket: Socket;
+  var WardrobeSize: number;
 
   var CharacterRefresh: (C: any, Push?: boolean) => void;
   var CommonDrawAppearanceBuild: (C: any, callbacks: object) => void;

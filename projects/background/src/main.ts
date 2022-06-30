@@ -55,6 +55,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     tools: {
       chatRoomRefreshInterval: 0,
       fpsCounter: false,
+      wardrobeSize: 0,
       ...(settings ? settings.tools : {})
     }
   } as ISettings);

@@ -27,6 +27,12 @@ export class OptionsComponent implements OnDestroy {
     300,
     600
   ];
+  public wardrobeSizes = [
+    0,
+    48,
+    72,
+    96
+  ];
 
   private formSubscription: Subscription;
 
@@ -42,7 +48,8 @@ export class OptionsComponent implements OnDestroy {
     }),
     tools: new FormGroup({
       chatRoomRefreshInterval: new FormControl(0),
-      fpsCounter: new FormControl(false)
+      fpsCounter: new FormControl(false),
+      wardrobeSize: new FormControl(0)
     })
   });
   public databaseSize$: Observable<string>;
@@ -86,7 +93,8 @@ export class OptionsComponent implements OnDestroy {
         },
         tools: {
           chatRoomRefreshInterval: value.tools.chatRoomRefreshInterval,
-          fpsCounter: value.tools.fpsCounter
+          fpsCounter: value.tools.fpsCounter,
+          wardrobeSize: value.tools.wardrobeSize
         }
       } as ISettings)),
       tap(settings => storeGlobal('settings', settings)),
