@@ -56,9 +56,16 @@
       You need to reload the game after changing these settings.
     </p>
     <mat-list-item>
-      <mat-checkbox formControlName="chatRoomRefresh">
-        Automatically refresh chat room search
-      </mat-checkbox>
+      <mat-label>Automatically refresh chat room search every:</mat-label>
+    </mat-list-item>
+    <mat-list-item>
+      <div class="chat-room-selection">
+        <mat-select formControlName="chatRoomRefreshInterval">
+          <mat-option *ngFor="let interval of chatRoomRefreshIntervals" [value]="interval">
+            {{interval === 0 ? 'Off' : formatInterval(interval)}}
+          </mat-option>
+        </mat-select>
+      </div>
     </mat-list-item>
     <mat-list-item>
       <mat-checkbox formControlName="fpsCounter">

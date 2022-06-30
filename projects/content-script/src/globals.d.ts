@@ -5,6 +5,7 @@ declare global {
   var ChatRoomData: IChatRoom;
   var ChatRoomSpace: ChatRoomSpace;
   var ChatSearchIgnoredRooms: string[];
+  var ChatSearchResultOffset: number;
   var CurrentScreen: CurrentScreen;
   var CharacterAppearanceReturnRoom: CurrentScreen;
   var InformationSheetPreviousScreen: CurrentScreen;

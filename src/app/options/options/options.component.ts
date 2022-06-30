@@ -17,6 +17,17 @@ import { ImportService, IImportProgressState } from 'src/app/shared/import.servi
   styleUrls: ['./options.component.scss']
 })
 export class OptionsComponent implements OnDestroy {
+  public chatRoomRefreshIntervals = [
+    0,
+    10,
+    15,
+    30,
+    60,
+    120,
+    300,
+    600
+  ];
+
   private formSubscription: Subscription;
 
   public settingsForm = new FormGroup({
@@ -30,7 +41,7 @@ export class OptionsComponent implements OnDestroy {
       keywords: new FormControl([])
     }),
     tools: new FormGroup({
-      chatRoomRefresh: new FormControl(true),
+      chatRoomRefreshInterval: new FormControl(0),
       fpsCounter: new FormControl(false)
     })
   });
@@ -74,7 +85,7 @@ export class OptionsComponent implements OnDestroy {
           keywords: value.notifications.keywords
         },
         tools: {
-          chatRoomRefresh: value.tools.chatRoomRefresh,
+          chatRoomRefreshInterval: value.tools.chatRoomRefreshInterval,
           fpsCounter: value.tools.fpsCounter
         }
       } as ISettings)),
@@ -121,6 +132,21 @@ export class OptionsComponent implements OnDestroy {
       keywords.splice(index, 1);
       this.notifyKeywordsControl.setValue(keywords);
     }
+  }
+
+  public formatInterval(value: number) {
+    const minutes = Math.floor(value / 60);
+    const seconds = value % 60;
+    let label = '';
+
+    if (minutes > 0) {
+      label += `${minutes} minutes `;
+    }
+    if (seconds > 0) {
+      label += `${seconds} seconds`;
+    }
+
+    return label.trim();
   }
 
   public downloadDatabase() {

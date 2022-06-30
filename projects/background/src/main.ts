@@ -36,6 +36,11 @@ chrome.browserAction.onClicked.addListener(() => {
 chrome.runtime.onInstalled.addListener(async () => {
   // Ensure default settings
   const settings = await retrieveGlobal('settings');
+
+  if (settings && settings.tools && settings.tools.chatRoomRefresh) {
+    delete settings.tools.chatRoomRefresh;
+  }
+
   await storeGlobal('settings', {
     notifications: {
       beeps: false,
@@ -48,7 +53,7 @@ chrome.runtime.onInstalled.addListener(async () => {
       ...(settings ? settings.notifications : {})
     },
     tools: {
-      chatRoomRefresh: true,
+      chatRoomRefreshInterval: 0,
       fpsCounter: false,
       ...(settings ? settings.tools : {})
     }

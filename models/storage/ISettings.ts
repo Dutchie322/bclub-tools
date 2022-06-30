@@ -14,6 +14,10 @@ export interface INotificationSettings {
 }
 
 export interface IToolsSettings {
+  /**
+   * @deprecated No longer used, replaced by chatRoomRefreshInterval
+   */
   chatRoomRefresh: boolean;
+  chatRoomRefreshInterval: number;
   fpsCounter: boolean;
 }

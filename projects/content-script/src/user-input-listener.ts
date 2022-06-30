@@ -1,8 +1,43 @@
 import {
-  IClientMessage, IEnrichedChatRoomChat, IChatRoomChat, IChatRoomCharacter
+  IChatRoomCharacter,
+  IChatRoomChat,
+  IChatRoomSearch,
+  IClientMessage,
+  IEnrichedChatRoomChat
 } from '../../../models';
 
-export function listenForUserSentEvents(handshake: string) {
+export function listenForUserSentEvents(handshake: string, searchInterval: number) {
+  let lastExecutedSearch: IChatRoomSearch;
+  let activeTimer: any;
+
+  function configureNextRefresh(interval: number) {
+    if (interval <= 0) {
+      return;
+    }
+
+    if (activeTimer) {
+      // A new search was done, cancel previous timer.
+      clearTimeout(activeTimer);
+
+      activeTimer = undefined;
+    }
+
+    activeTimer = setTimeout(() => {
+      if (CurrentScreen !== 'ChatSearch') {
+        // If we're no longer on the search screen, stop refreshing.
+        return;
+      }
+
+      if (ChatSearchResultOffset === 0) {
+        // Only refresh chat rooms if we're on the first page.
+        ServerSocket.emit('ChatRoomSearch', lastExecutedSearch);
+      } else {
+        // Otherwise, we'll try again in the next cycle.
+        configureNextRefresh(interval);
+      }
+    }, interval * 1000);
+  }
+
   function mapCharacter(character: IChatRoomCharacter) {
     return {
       ID: character.ID,
@@ -19,39 +54,42 @@ export function listenForUserSentEvents(handshake: string) {
       Ownership: character.Ownership,
     };
   }
-  const eventsToForward = {
-    ChatRoomChat: (data: IChatRoomChat) => ({
-      Content: data.Content,
-      Dictionary: data.Dictionary,
-      Target: data.Target,
-      Type: data.Type,
-      ChatRoom: {
-        Background: ChatRoomData.Background,
-        Description: ChatRoomData.Description,
-        Name: ChatRoomData.Name,
-        Character: ChatRoomData.Character.map(mapCharacter)
-      },
-      SessionId: Player.OnlineID,
-      Sender: Player.MemberNumber,
-      PlayerName: Player.Name,
-      MemberNumber: Player.MemberNumber,
-      TargetName: data.Target ? ChatRoomData.Character.find(c => c.MemberNumber === data.Target).Name : undefined,
-      Timestamp: new Date()
-    } as IEnrichedChatRoomChat)
-  } as {[event: string]: (data: any) => any };
+  const eventsToListenTo = {
+    ChatRoomChat: (event: string, incomingData: IChatRoomChat) => {
+      const data = {
+        Content: incomingData.Content,
+        Dictionary: incomingData.Dictionary,
+        Target: incomingData.Target,
+        Type: incomingData.Type,
+        ChatRoom: {
+          Background: ChatRoomData.Background,
+          Description: ChatRoomData.Description,
+          Name: ChatRoomData.Name,
+          Character: ChatRoomData.Character.map(mapCharacter)
+        },
+        SessionId: Player.OnlineID,
+        Sender: Player.MemberNumber,
+        PlayerName: Player.Name,
+        MemberNumber: Player.MemberNumber,
+        TargetName: incomingData.Target
+          ? ChatRoomData.Character.find(c => c.MemberNumber === incomingData.Target).Name
+          : undefined,
+        Timestamp: new Date()
+      } as IEnrichedChatRoomChat;
 
-  function forwardMessage<TMessage>(event: string, data: any) {
-    if (!eventsToForward[event]) {
-      return;
+      window.postMessage({
+        handshake,
+        type: 'client',
+        event,
+        data,
+      } as IClientMessage<IEnrichedChatRoomChat>, '*');
+    },
+    ChatRoomSearch: (_: string, incomingData: IChatRoomSearch) => {
+      lastExecutedSearch = incomingData;
+
+      configureNextRefresh(searchInterval);
     }
-
-    window.postMessage({
-      handshake,
-      type: 'client',
-      event,
-      data: eventsToForward[event](data),
-    } as IClientMessage<TMessage>, '*');
-  }
+  };
 
   const handler = {
     get(target, propKey, receiver) {
@@ -61,9 +99,13 @@ export function listenForUserSentEvents(handshake: string) {
           const returnValue = targetValue.apply(this, args);
           if (propKey === 'emit') {
             try {
-              forwardMessage(args[0], args[1]);
+              if (!eventsToListenTo[args[0]]) {
+                return;
+              }
+
+              eventsToListenTo[args[0]].apply(this, args);
             } catch (e) {
-              console.error('[Bondage Club Tools] Could not forward message:', e);
+              console.error('[Bondage Club Tools] Error occurred while processing message:', args, 'Error:', e);
             }
           }
           return returnValue;
