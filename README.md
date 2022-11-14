@@ -5,7 +5,7 @@ A web extension for the [Bondage Club](https://www.patreon.com/BondageProjects) 
 Available on the Chrome Web Store: https://chrome.google.com/webstore/detail/bondage-club-tools/pgigbkbcecbpgijnfhmpmkipgondpnpc
 
 ## Deprecation Notice
-❗**I will not update the extension to Manifest V3. It is too much hassle to support the extension in its current form for both Chromium and Firefox browsers with Manifest V3. This means that after January 2023, when Manifest V2 is no longer supported by the Chrome Web Store, I will remove the extension from there as well. I'm not sure if I want to look into alternative forms for this extension, as maintaining it has become a burden I don't want to have anymore. I will probably delete the repository as well, since newer extensions and scripts have popped up in recent months that can largely do the same thing.**
+❗**I will not update the extension to Manifest V3. It is too much hassle to support the extension in its current form for both Chromium and Firefox browsers with Manifest V3. This means that after January 2023, when Manifest V2 is no longer supported by the Chrome Web Store, I will remove the extension from there as well. I'm not sure if I want to look into alternative forms for this extension, but I have some ideas. I will try those out in a separate branch. I will probably also trim the functionality, keeping only the logging functions, and rename the extension to something less generic.**
 
 ## Features
 - Automatic logging of chat rooms, with a viewer to read the transcripts back.
