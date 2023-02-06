@@ -4,8 +4,16 @@ A web extension for the [Bondage Club](https://www.patreon.com/BondageProjects) 
 
 Available on the Chrome Web Store: https://chrome.google.com/webstore/detail/bondage-club-tools/pgigbkbcecbpgijnfhmpmkipgondpnpc
 
-## Deprecation Notice
-❗**I will not update the extension to Manifest V3. It is too much hassle to support the extension in its current form for both Chromium and Firefox browsers with Manifest V3. This means that after January 2023, when Manifest V2 is no longer supported by the Chrome Web Store, I will remove the extension from there as well. I'm not sure if I want to look into alternative forms for this extension, but I have some ideas. I will try those out in a separate branch. I will probably also trim the functionality, keeping only the logging functions, and rename the extension to something less generic.**
+## Future development
+I am aware that this extension hasn't had much love in the last... year at least. This is because in its current form it's a pain to maintain. Everything is outdated and updating it all will cost me days, precious time I'd rather spend building useful functionality.
+
+I don't want to abandon this project just yet, as I got some positive feedback from people still using the logging functionality to this day. As such, the logging is something I want to shift the focus to, and I've already started removing side functions that do not add much value.
+
+Moving forward, I want to integrate the extension more into the club itself and reduce complexity when it comes to development. From a couple of tests I've concluded that I sadly cannot keep offering the same level of functionality without it being publishing as a full-fledged extension in the Chrome Web Store (thankfully Firefox allows installing and updating outside of their add-on store). So I'll have to update to Manifest V3 one way or another, but things might be a little easier now that Firefox supports it as well. Either way, to be continued.
+
+Before I release the next maintenance release, I want to address the following things:
+- Support for pronouns in transcript.
+- Fixing the `ElementContent called on a missing element: FriendList` that's popping up in console every few seconds. I'm considering removing the friend online/offline notifications and friendslist in the popup to solve this.
 
 ## Features
 - Automatic logging of chat rooms, with a viewer to read the transcripts back.
@@ -14,7 +22,6 @@ Available on the Chrome Web Store: https://chrome.google.com/webstore/detail/bon
 - Ability to send a desktop notification when you or a keyword is mentioned.
 - Up-to-date friends list in popup.
 - Quick overview of the characters in the currently joined chat room (name, ownership, dominant level).
-- Optionally show an FPS counter to help find performance issues within the game.
 - Keeps track of people met in the game, when they were last online and allows one to keep notes on them.
 
 # Development
@@ -63,7 +70,7 @@ This can be found in the `projects/background` directory.
 ## Requirements
 
 To develop locally you'll need:
-- [NodeJS LTS](https://nodejs.org/en/), if using Windows, be sure to install to Windows PATH.
+- [NodeJS LTS](https://nodejs.org/en/), max version 16 due to outdated dependencies. I recommend using [NVM](https://github.com/nvm-sh/nvm) (or [for Windows](https://github.com/coreybutler/nvm-windows)) for this.
 - Yarn, can be installed using `npm install -g yarn` after installing NodeJS.
 - For coding I recommend [Visual Studio Code](https://code.visualstudio.com/).
 
