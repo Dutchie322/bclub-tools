@@ -26,9 +26,9 @@ const files = [
 
 for (let file of files) {
   const options = {
-    hostname: 'raw.githubusercontent.com',
+    hostname: 'gitgud.io',
     port: 443,
-    path: `/Ben987/Bondage-College/${revision}/BondageClub/${file}`,
+    path: `/BondageProjects/Bondage-College/-/raw/${revision}/BondageClub/${file}`,
     method: 'GET'
   };
 
