@@ -4,17 +4,12 @@ import { ChatRoomSpace, CurrentScreen, IChatRoom, IPlayer } from '../../../model
 declare global {
   var ChatRoomData: IChatRoom;
   var ChatRoomSpace: ChatRoomSpace;
-  var ChatSearchIgnoredRooms: string[];
   var ChatSearchResultOffset: number;
   var CurrentScreen: CurrentScreen;
   var CharacterAppearanceReturnRoom: CurrentScreen;
   var InformationSheetPreviousScreen: CurrentScreen;
-  var MainCanvas: CanvasRenderingContext2D;
   var Player: IPlayer;
   var ServerSocket: Socket;
-  var WardrobeSize: number;
 
-  var CharacterRefresh: (C: any, Push?: boolean) => void;
   var CommonDrawAppearanceBuild: (C: any, callbacks: object) => void;
-  var TimerProcess: (Timestamp: number) => void;
 }

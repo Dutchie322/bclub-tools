@@ -67,23 +67,6 @@
         </mat-select>
       </div>
     </mat-list-item>
-    <mat-list-item>
-      <mat-checkbox formControlName="fpsCounter">
-        FPS counter (experimental)
-      </mat-checkbox>
-    </mat-list-item>
-    <mat-list-item>
-      <mat-label>Set wardrobe size to:</mat-label>
-    </mat-list-item>
-    <mat-list-item>
-      <div class="wardrobe-size-selection">
-        <mat-select formControlName="wardrobeSize">
-          <mat-option *ngFor="let size of wardrobeSizes" [value]="size">
-            {{size === 0 ? 'Default' : size}}
-          </mat-option>
-        </mat-select>
-      </div>
-    </mat-list-item>
     <mat-divider></mat-divider>
   </mat-list>
 </ng-container>

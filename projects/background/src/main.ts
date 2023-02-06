@@ -37,8 +37,16 @@ chrome.runtime.onInstalled.addListener(async () => {
   // Ensure default settings
   const settings = await retrieveGlobal('settings');
 
-  if (settings && settings.tools && settings.tools.chatRoomRefresh) {
-    delete settings.tools.chatRoomRefresh;
+  if (settings && settings.tools) {
+    if (settings.tools.chatRoomRefresh) {
+      delete settings.tools.chatRoomRefresh;
+    }
+    if (settings.tools.fpsCounter) {
+      delete settings.tools.fpsCounter;
+    }
+    if (settings.tools.wardrobeSize) {
+      delete settings.tools.wardrobeSize;
+    }
   }
 
   await storeGlobal('settings', {
@@ -54,8 +62,6 @@ chrome.runtime.onInstalled.addListener(async () => {
     },
     tools: {
       chatRoomRefreshInterval: 0,
-      fpsCounter: false,
-      wardrobeSize: 0,
       ...(settings ? settings.tools : {})
     }
   } as ISettings);

@@ -19,6 +19,12 @@ export interface IToolsSettings {
    */
   chatRoomRefresh: boolean;
   chatRoomRefreshInterval: number;
+  /**
+   * @deprecated Functionality removed
+   */
   fpsCounter: boolean;
+  /**
+   * @deprecated Functionality removed
+   */
   wardrobeSize: number;
 }
