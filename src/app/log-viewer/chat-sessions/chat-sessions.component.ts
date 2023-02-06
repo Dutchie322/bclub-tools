@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ChatLogsService } from '../../shared/chat-logs.service';
 import { IChatSession } from '../../shared/models';
-import { IMember, MemberTypeOrder, MemberTypes, MemberType } from 'models';
+import { IMember } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
 import { MatPaginator } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -44,9 +44,6 @@ export class ChatSessionsComponent implements OnDestroy {
   public set membersSort(sort: MatSort) {
     this.members.sort = sort;
     this.members.sortingDataAccessor = (data, sortHeaderId) => {
-      if (sortHeaderId === 'type') {
-        return MemberTypeOrder[data[sortHeaderId]];
-      }
       if (sortHeaderId === 'memberName') {
         return data[sortHeaderId].toLocaleUpperCase();
       }
@@ -60,14 +57,11 @@ export class ChatSessionsComponent implements OnDestroy {
   public chatSessionsColumns = ['chatRoom', 'start'];
 
   public members = new MatTableDataSource<IMember>();
-  public membersColumns = ['memberName', 'memberNumber', 'type', 'lastSeen'];
+  public membersColumns = ['memberName', 'memberNumber', 'lastSeen'];
   public memberSearchForm = new FormGroup({
     memberName: new FormControl(''),
-    memberNumber: new FormControl(''),
-    type: new FormControl([])
+    memberNumber: new FormControl('')
   });
-
-  public memberTypes = MemberTypes;
 
   constructor(
     route: ActivatedRoute,
@@ -90,9 +84,6 @@ export class ChatSessionsComponent implements OnDestroy {
       }
       if (filter.memberNumber) {
         match = match && data.memberNumber.toString().indexOf(filter.memberNumber) !== -1;
-      }
-      if (filter.type && filter.type.length) {
-        match = match && (filter.type as MemberType[]).includes(data.type);
       }
       return match;
     };

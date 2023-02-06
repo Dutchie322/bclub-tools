@@ -12,7 +12,7 @@ export async function notifyAccountBeep(beep: IAccountBeep, playerMemberNumber: 
   const member = await retrieveMember(playerMemberNumber, beep.MemberNumber);
   const opt = {
     type: 'basic',
-    title: `Beep from ${beep.MemberName} (${beep.MemberNumber} - ${member.type})`,
+    title: `Beep from ${beep.MemberName} (${beep.MemberNumber})`,
     message: beep.Message
       ? `Included message: ${beep.Message}`
       : beep.ChatRoomName
@@ -31,8 +31,8 @@ export async function notifyFriendChange(change: 'online' | 'offline', friend: I
   }
   const opt = {
     type: 'basic',
-    title: `${friend.memberName} (${friend.memberNumber}) is now ${change}`,
-    message: friend.type,
+    title: friend.memberName,
+    message: `${friend.memberName} (${friend.memberNumber}) is now ${change}`,
     iconUrl: 'assets/bclub-logo.png'
   };
   chrome.notifications.create('', opt);

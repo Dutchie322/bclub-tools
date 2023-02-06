@@ -9,7 +9,6 @@ import {
   IOwnership,
   IReputation,
   IMember,
-  MemberTypeOrder,
   retrieveGlobal,
   storeGlobal,
   IMigration,
@@ -28,9 +27,6 @@ export class PopupComponent {
   @ViewChild('onlineFriendsSort', { static: true }) set onlineFriendsSort(sort: MatSort) {
     this.onlineFriends.sort = sort;
     this.onlineFriends.sortingDataAccessor = (data, sortHeaderId) => {
-      if (sortHeaderId === 'type') {
-        return MemberTypeOrder[data[sortHeaderId]];
-      }
       if (sortHeaderId === 'memberName') {
         return data[sortHeaderId].toLocaleUpperCase();
       }
@@ -39,14 +35,13 @@ export class PopupComponent {
   }
 
   public characters = new MatTableDataSource<IChatRoomCharacter>();
-  public chatRooms = new MatTableDataSource<IChatRoomSearchResult>();
   public onlineFriends = new MatTableDataSource<IMember>();
   public player: IStoredPlayer;
   public alternativeCharacters: IPlayerCharacter[];
 
   public characterColumns = ['name', 'owner', 'permission', 'reputation'];
   public chatRoomColumns = ['name', 'creator', 'members', 'description'];
-  public onlineFriendColumns = ['memberName', 'chatRoomName', 'type'];
+  public onlineFriendColumns = ['memberName', 'chatRoomName'];
 
   get loggedIn() {
     return this.player && this.player.MemberNumber > 0;
@@ -61,7 +56,6 @@ export class PopupComponent {
       retrieve(tabId, 'player').then(player => this.player = player);
       retrieve(tabId, 'onlineFriends').then(friends => this.onlineFriends.data = friends);
       retrieve(tabId, 'chatRoomCharacter').then(characters => this.characters.data = characters);
-      // retrieve(tabId, 'chatRoomSearchResult').then(chatRooms => this.chatRooms.data = chatRooms);
 
       onChanged(tabId, (changes, areaName) => {
         if (areaName !== 'local') {
@@ -70,10 +64,6 @@ export class PopupComponent {
 
         if (changes.chatRoomCharacter) {
           this.characters.data = changes.chatRoomCharacter.newValue;
-        }
-
-        if (changes.chatRoomSearchResult) {
-          this.chatRooms.data = changes.chatRoomSearchResult.newValue;
         }
 
         if (changes.onlineFriends) {

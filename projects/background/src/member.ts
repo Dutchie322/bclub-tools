@@ -4,8 +4,6 @@ import {
   IMember,
   addOrUpdateObjectStore,
   openDatabase,
-  MemberType,
-  MemberTypeOrder,
   IPlayerWithRelations,
   decompress,
 } from '../../../models';
@@ -16,9 +14,6 @@ interface PlayerContext {
 }
 
 export async function writeMember(context: PlayerContext, data: IAccountQueryResultOnlineFriend | IChatRoomCharacter) {
-  function isAccountQueryResultOnlineFriend(input: any): input is IAccountQueryResultOnlineFriend {
-    return (input as IAccountQueryResultOnlineFriend).ChatRoomName !== undefined;
-  }
   function isChatRoomCharacter(input: any): input is IChatRoomCharacter {
     return (input as IChatRoomCharacter).ID !== undefined;
   }
@@ -29,29 +24,16 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
     playerMemberNumber: context.MemberNumber,
     playerMemberName: context.Name,
     memberNumber: data.MemberNumber,
-    type: determineMemberType(member && member.type, 'Member'),
     lastSeen: new Date()
   });
 
-  if (isAccountQueryResultOnlineFriend(data)) {
-    member = Object.assign(member, mapAccountQueryResultOnlineFriend(data), {
-      type: determineMemberType(member.type, data.Type, ['Friend', 'Submissive', 'Lover'])
-    });
-  }
+  delete member.type;
+
   if (isChatRoomCharacter(data)) {
     member = Object.assign(member, mapChatRoomCharacter(data));
   }
 
   return await addOrUpdateObjectStore('members', member);
-}
-
-function mapAccountQueryResultOnlineFriend(data: IAccountQueryResultOnlineFriend) {
-  return {
-    memberName: data.MemberName,
-    chatRoomName: data.ChatRoomName,
-    chatRoomSpace: data.ChatRoomSpace,
-    isPrivateRoom: data.Private
-  };
 }
 
 function mapChatRoomCharacter(data: IChatRoomCharacter) {
@@ -80,15 +62,13 @@ function mapChatRoomCharacter(data: IChatRoomCharacter) {
 }
 
 export async function writeFriends(player: IPlayerWithRelations) {
-  // TODO update type after removing friend/lover/owner
   if (player.FriendList) {
     await Promise.all(player.FriendList.map(async friend => {
       let member = await retrieveMember(player.MemberNumber, friend);
       member = Object.assign({}, member, {
         playerMemberNumber: player.MemberNumber,
         playerMemberName: player.Name,
-        memberNumber: friend,
-        type: determineMemberType(member && member.type, 'Friend')
+        memberNumber: friend
       });
       await addOrUpdateObjectStore('members', member);
     }));
@@ -100,8 +80,7 @@ export async function writeFriends(player: IPlayerWithRelations) {
         playerMemberNumber: player.MemberNumber,
         playerMemberName: player.Name,
         memberNumber: lover.MemberNumber,
-        memberName: lover.Name,
-        type: determineMemberType(member && member.type, 'Lover')
+        memberName: lover.Name
       });
       await addOrUpdateObjectStore('members', member);
     }));
@@ -112,8 +91,7 @@ export async function writeFriends(player: IPlayerWithRelations) {
       playerMemberNumber: player.MemberNumber,
       playerMemberName: player.Name,
       memberNumber: player.Ownership.MemberNumber,
-      memberName: player.Ownership.Name,
-      type: determineMemberType(member && member.type, 'Owner')
+      memberName: player.Ownership.Name
     });
     await addOrUpdateObjectStore('members', member);
   }
@@ -141,17 +119,4 @@ export async function retrieveMember(playerMemberNumber: number, memberNumber: n
       resolve((event.target as IDBRequest<IMember>).result);
     });
   });
-}
-
-export function determineMemberType(currentType: MemberType | '', newType: MemberType, allowChangeTo?: MemberType[]): MemberType {
-  if (!currentType) {
-    return newType;
-  }
-  if (MemberTypeOrder[newType] > MemberTypeOrder[currentType]) {
-    return newType;
-  }
-  if (allowChangeTo && allowChangeTo.includes(currentType) && allowChangeTo.includes(newType)) {
-    return newType;
-  }
-  return currentType;
 }

@@ -1,7 +1,10 @@
 export interface IMember {
   playerMemberNumber: number;
   playerMemberName: string;
-  type: MemberType;
+  /**
+   * @deprecated Functionality removed
+   */
+  type: string;
   memberNumber: number;
   memberName?: string;
   lastSeen?: Date;
@@ -19,24 +22,6 @@ export interface IMember {
   ownership?: IMemberOwnership;
   notes?: string;
 }
-
-export const MemberTypes = [
-  'Member',
-  'Friend',
-  'Submissive',
-  'Lover',
-  'Owner'
-] as const;
-
-export type MemberType = typeof MemberTypes[number];
-
-export const MemberTypeOrder = {
-  Member: 0,
-  Friend: 1,
-  Submissive: 2,
-  Lover: 3,
-  Owner: 4
-} as { [key in MemberType]: number; };
 
 export interface IMemberAppearanceMetaData {
   canvasHeight: number;
