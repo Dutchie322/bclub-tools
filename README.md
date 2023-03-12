@@ -13,7 +13,7 @@ Moving forward, I want to integrate the extension more into the club itself and 
 
 Before I release the next maintenance release, I want to address the following things:
 - Support for pronouns in transcript.
-- Fixing the `ElementContent called on a missing element: FriendList` that's popping up in console every few seconds. I'm considering removing the friend online/offline notifications and friendslist in the popup to solve this.
+- Doing something about the character appearances that take up too much space and causing loads of problems...
 
 ## Features
 - Automatic logging of chat rooms, with a viewer to read the transcripts back.
