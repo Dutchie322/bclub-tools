@@ -4,11 +4,29 @@ export interface ISettings {
 }
 
 export interface INotificationSettings {
+  /**
+   * @deprecated Provided by the game itself nowadays
+   */
   beeps: boolean;
+  /**
+   * @deprecated Requires spamming the browser console with an error constantly
+   */
   friendOnline: boolean;
+  /**
+   * @deprecated Requires spamming the browser console with an error constantly
+   */
   friendOffline: boolean;
+  /**
+   * @deprecated Provided by the game itself nowadays
+   */
   actions: boolean;
+  /**
+   * @deprecated Provided by the game itself nowadays
+   */
   mentions: boolean;
+  /**
+   * @deprecated Provided by the game itself nowadays
+   */
   whispers: boolean;
   keywords: string[];
 }

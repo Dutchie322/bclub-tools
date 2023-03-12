@@ -1,42 +1,6 @@
 /// <reference types="chrome"/>
 
-import { IAccountBeep, retrieveGlobal, IMember, retrieve, IChatLog, renderContent } from '../../../models';
-import { retrieveMember } from './member';
-
-export async function notifyAccountBeep(beep: IAccountBeep, playerMemberNumber: number) {
-  const settings = await retrieveGlobal('settings');
-  if (!settings.notifications.beeps) {
-    return;
-  }
-
-  const member = await retrieveMember(playerMemberNumber, beep.MemberNumber);
-  const opt = {
-    type: 'basic',
-    title: `Beep from ${beep.MemberName} (${beep.MemberNumber})`,
-    message: beep.Message
-      ? `Included message: ${beep.Message}`
-      : beep.ChatRoomName
-      ? `They're currently in chatroom '${beep.ChatRoomName}'`
-      : '',
-    iconUrl: 'assets/bclub-logo.png'
-  };
-  chrome.notifications.create('', opt);
-}
-
-export async function notifyFriendChange(change: 'online' | 'offline', friend: IMember) {
-  const settings = await retrieveGlobal('settings');
-  if ((change === 'online' && !settings.notifications.friendOnline)
-    || (change === 'offline' && !settings.notifications.friendOffline)) {
-    return;
-  }
-  const opt = {
-    type: 'basic',
-    title: friend.memberName,
-    message: `${friend.memberName} (${friend.memberNumber}) is now ${change}`,
-    iconUrl: 'assets/bclub-logo.png'
-  };
-  chrome.notifications.create('', opt);
-}
+import { retrieveGlobal, retrieve, IChatLog, renderContent } from '../../../models';
 
 export async function notifyIncomingMessage(tabId: number, chatLog: IChatLog) {
   const player = await retrieve(tabId, 'player');
@@ -48,43 +12,31 @@ export async function notifyIncomingMessage(tabId: number, chatLog: IChatLog) {
   }
 
   const content = renderContent(chatLog);
-  if (chatLog.type === 'Whisper') {
-    if (settings.notifications.whispers) {
-      const opt = {
-        type: 'basic',
-        title: `Whisper from ${chatLog.sender.name}`,
-        message: content,
-        iconUrl: 'assets/bclub-logo.png'
-      };
-      chrome.notifications.create('', opt);
-    }
-  } else if (wasMentioned(content, [player.Name, ...settings.notifications.keywords])) {
+  if (wasMentioned(content, settings.notifications.keywords)) {
     switch (chatLog.type) {
       case 'Action':
       case 'Activity':
-      case 'ServerMessage':
-        if (settings.notifications.actions) {
-          const opt = {
-            type: 'basic',
-            title: `Mentioned by ${chatLog.sender.name}`,
-            message: content,
-            iconUrl: 'assets/bclub-logo.png'
-          };
-          chrome.notifications.create('', opt);
-        }
+      case 'ServerMessage': {
+        const opt = {
+          type: 'basic',
+          title: `Mentioned by ${chatLog.sender.name}`,
+          message: content,
+          iconUrl: 'assets/bclub-logo.png'
+        };
+        chrome.notifications.create('', opt);
         break;
+      }
       case 'Emote':
-      case 'Chat':
-        if (settings.notifications.mentions) {
-          const opt = {
-            type: 'basic',
-            title: `Mentioned by ${chatLog.sender.name}`,
-            message: content,
-            iconUrl: 'assets/bclub-logo.png'
-          };
-          chrome.notifications.create('', opt);
-        }
+      case 'Chat': {
+        const opt = {
+          type: 'basic',
+          title: `Mentioned by ${chatLog.sender.name}`,
+          message: content,
+          iconUrl: 'assets/bclub-logo.png'
+        };
+        chrome.notifications.create('', opt);
         break;
+      }
     }
   }
 }

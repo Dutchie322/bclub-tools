@@ -32,12 +32,6 @@ export class OptionsComponent implements OnDestroy {
 
   public settingsForm = new FormGroup({
     notifications: new FormGroup({
-      beeps: new FormControl(false),
-      friendOnline: new FormControl(false),
-      friendOffline: new FormControl(false),
-      actions: new FormControl(false),
-      mentions: new FormControl(false),
-      whispers: new FormControl(false),
       keywords: new FormControl([])
     }),
     tools: new FormGroup({
@@ -75,12 +69,6 @@ export class OptionsComponent implements OnDestroy {
     this.formSubscription = this.settingsForm.valueChanges.pipe(
       map(value => ({
         notifications: {
-          beeps: value.notifications.beeps,
-          friendOnline: value.notifications.friendOnline,
-          friendOffline: value.notifications.friendOffline,
-          actions: value.notifications.actions,
-          mentions: value.notifications.mentions,
-          whispers: value.notifications.whispers,
           keywords: value.notifications.keywords
         },
         tools: {

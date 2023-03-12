@@ -24,7 +24,7 @@ import {
   IAccountQueryOnlineFriendsResult,
   addOrUpdateObjectStore
 } from '../../../models';
-import { notifyAccountBeep, notifyFriendChange, notifyIncomingMessage } from './notifications';
+import { notifyIncomingMessage } from './notifications';
 import { writeMember, writeFriends, removeChatRoomData, retrieveMember } from './member';
 
 chrome.browserAction.onClicked.addListener(() => {
@@ -37,26 +37,42 @@ chrome.runtime.onInstalled.addListener(async () => {
   // Ensure default settings
   const settings = await retrieveGlobal('settings');
 
-  if (settings && settings.tools) {
-    if (settings.tools.chatRoomRefresh) {
-      delete settings.tools.chatRoomRefresh;
+  if (settings) {
+    if (settings.tools) {
+      if (settings.tools.chatRoomRefresh) {
+        delete settings.tools.chatRoomRefresh;
+      }
+      if (settings.tools.fpsCounter) {
+        delete settings.tools.fpsCounter;
+      }
+      if (settings.tools.wardrobeSize) {
+        delete settings.tools.wardrobeSize;
+      }
     }
-    if (settings.tools.fpsCounter) {
-      delete settings.tools.fpsCounter;
-    }
-    if (settings.tools.wardrobeSize) {
-      delete settings.tools.wardrobeSize;
+    if (settings.notifications) {
+      if (settings.notifications.beeps) {
+        delete settings.notifications.beeps;
+      }
+      if (settings.notifications.friendOnline) {
+        delete settings.notifications.friendOnline;
+      }
+      if (settings.notifications.friendOffline) {
+        delete settings.notifications.friendOffline;
+      }
+      if (settings.notifications.actions) {
+        delete settings.notifications.actions;
+      }
+      if (settings.notifications.mentions) {
+        delete settings.notifications.mentions;
+      }
+      if (settings.notifications.whispers) {
+        delete settings.notifications.whispers;
+      }
     }
   }
 
   await storeGlobal('settings', {
     notifications: {
-      beeps: false,
-      friendOnline: false,
-      friendOffline: false,
-      actions: false,
-      mentions: false,
-      whispers: false,
       keywords: [],
       ...(settings ? settings.notifications : {})
     },
@@ -153,26 +169,12 @@ function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtim
 
 async function handleAccountBeep(tabId: number, message: IServerMessage<IAccountBeep>) {
   const player = await retrieve(tabId, 'player');
-  notifyAccountBeep(message.data, player.MemberNumber);
+  // TODO Store beep message if there is any
 }
 
 async function handleAccountQueryOnlineFriendsResult(tabId: number, message: IServerMessage<IAccountQueryOnlineFriendsResult>) {
   const player = await retrieve(tabId, 'player');
   const friends = await Promise.all(message.data.Result.map(friend => writeMember(player, friend)));
-
-  const previous = await retrieve(tabId, 'onlineFriends');
-  if (typeof previous !== 'undefined') {
-    const current = friends;
-
-    const cameOnline = current.filter(f => !previous.find(p => p.memberNumber === f.memberNumber));
-    const wentOffline = previous.filter(p => !current.find(f => f.memberNumber === p.memberNumber));
-
-    cameOnline.forEach(f => notifyFriendChange('online', f));
-    await Promise.all(wentOffline.map(async friend => {
-      await removeChatRoomData(friend);
-      notifyFriendChange('offline', friend);
-    }));
-  }
 
   store(tabId, 'onlineFriends', friends);
 }

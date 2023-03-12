@@ -1,17 +1,3 @@
-export function pollOnlineFriends() {
-  const timerHandle = setInterval(() => {
-    if (CurrentScreen !== 'Login') {
-      ServerSocket.emit('AccountQuery', {
-        Query: 'OnlineFriends'
-      });
-    }
-  }, 10000);
-
-  return () => {
-    clearInterval(timerHandle);
-  };
-}
-
 export function pollVariables(handshake: string) {
   function isInChat() {
     switch (CurrentScreen) {

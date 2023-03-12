@@ -6,12 +6,10 @@ export function characterAppearance(handshake: string) {
 
   const handler = {
     apply(target, thisArg, argumentsList) {
-      const returnValue = target.apply(thisArg, argumentsList);
-
       if (proxyEnabled) {
         try {
           const character = argumentsList[0];
-          if (character.MemberNumber) {
+          if (character && character.MemberNumber) {
             if (charactersToUpdate[character.MemberNumber]) {
               clearTimeout(charactersToUpdate[character.MemberNumber]);
             }
@@ -39,12 +37,12 @@ export function characterAppearance(handshake: string) {
             }, 1000);
           }
         } catch (error) {
-          console.error(error);
+          console.warn('[Bondage Club Tools] Could not store character appearance. This is only a problem for the extension, game functionality is not affected.', error);
           proxyEnabled = false;
         }
       }
 
-      return returnValue;
+      return target.apply(thisArg, argumentsList);
     }
   } as ProxyHandler<typeof CommonDrawAppearanceBuild>;
   const proxy = new Proxy(CommonDrawAppearanceBuild, handler);
