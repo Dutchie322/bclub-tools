@@ -42,6 +42,9 @@ export async function notifyIncomingMessage(tabId: number, chatLog: IChatLog) {
 }
 
 function wasMentioned(content: string, keywords: string[]) {
+  if (!keywords || keywords.length === 0) {
+    return false;
+  }
   const regex = new RegExp(`\\b(?:${keywords.map(escapeRegExp).join('|')})\\b`, 'iu');
   return regex.test(content);
 }

@@ -123,9 +123,4 @@ export function listenToServerEvents(handshake: string) {
   }));
   createForwarder('disconnect');
   createForwarder('ForceDisconnect');
-
-  // Retrieve online friends on login
-  ServerSocket.on('LoginResponse', () => {
-    ServerSocket.emit('AccountQuery', { Query: 'OnlineFriends' });
-  });
 }
