@@ -199,7 +199,7 @@ export class OptionsComponent implements OnDestroy {
           console.log('Appearances cleared.');
           return;
         }
-        
+
         const member = cursor.value as IMember;
         delete member.appearance;
         delete member.appearanceMetaData;

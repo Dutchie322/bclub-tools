@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import * as JSZip from 'jszip';
 import { Observable } from 'rxjs';
 
-type ExportOptions = {
+interface ExportOptions {
   exportAppearances: false
 };
 
