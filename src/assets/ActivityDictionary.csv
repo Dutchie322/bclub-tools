@@ -267,6 +267,7 @@ Label-ChatOther-ItemMouth-PenetrateSlow,Slow Penetration
 Label-ChatOther-ItemMouth-PoliteKiss,Kiss on Cheek
 Label-ChatOther-ItemMouth-RollItem,Roll over Mouth
 Label-ChatOther-ItemMouth-RubItem,Rub on Mouth
+Label-ChatOther-ItemMouth-SipItem,Take a sip
 Label-ChatOther-ItemMouth-TickleItem,Tickle Mouth
 Label-ChatOther-ItemMouth-ReversePenetrateAss,Take in Ass
 Label-ChatOther-ItemMouth-ReversePenetratePussy,Take in Pussy
@@ -553,6 +554,7 @@ Label-ChatSelf-ItemMouth-MoanGagWhimper,Whimper Pleadingly
 Label-ChatSelf-ItemMouth-Nibble,Nibble Lips
 Label-ChatSelf-ItemMouth-RollItem,Roll over Mouth
 Label-ChatSelf-ItemMouth-RubItem,Rub on Mouth
+Label-ChatSelf-ItemMouth-SipItem,Take a sip
 Label-ChatSelf-ItemMouth-TickleItem,Tickle Mouth
 Label-ChatSelf-ItemNeck-Caress,Caress Neck
 Label-ChatSelf-ItemNeck-Choke,Choke Self
@@ -822,6 +824,7 @@ ChatOther-ItemMouth-ReverseSuckItem,SourceCharacter sucks on TargetCharacter's U
 ChatOther-ItemMouth-PoliteKiss,SourceCharacter gives a friendly kiss on TargetCharacter's cheek.
 ChatOther-ItemMouth-RollItem,SourceCharacter rolls a UsedAsset over TargetCharacter's mouth.
 ChatOther-ItemMouth-RubItem,SourceCharacter rubs TargetCharacter's mouth with PronounPossessive UsedAsset.
+ChatOther-ItemMouth-SipItem,SourceCharacter gives TargetCharacter a sip from PronounPossessive UsedAsset.
 ChatOther-ItemMouth-TickleItem,SourceCharacter tickles TargetCharacter's mouth with PronounPossessive UsedAsset.
 ChatOther-ItemNeck-Bite,SourceCharacter bites TargetCharacter's neck.
 ChatOther-ItemNeck-Caress,SourceCharacter caresses TargetCharacter's neck.
@@ -1102,6 +1105,7 @@ ChatSelf-ItemMouth-MoanGagWhimper,SourceCharacter whimpers pleadingly into Prono
 ChatSelf-ItemMouth-Nibble,SourceCharacter nibbles PronounPossessive lips.
 ChatSelf-ItemMouth-RollItem,SourceCharacter rolls a UsedAsset over PronounPossessive own mouth.
 ChatSelf-ItemMouth-RubItem,SourceCharacter rubs PronounPossessive own mouth with PronounPossessive UsedAsset.
+ChatSelf-ItemMouth-SipItem,SourceCharacter takes a sip from PronounPossessive UsedAsset.
 ChatSelf-ItemMouth-TickleItem,SourceCharacter tickles PronounPossessive own mouth with PronounPossessive UsedAsset.
 ChatSelf-ItemNeck-Caress,SourceCharacter caresses PronounPossessive neck.
 ChatSelf-ItemNeck-Choke,SourceCharacter chokes herself.

@@ -63,10 +63,11 @@ Cloth,CropTop,Crop Top
 Cloth,Laurel,Laurel Top
 Cloth,SeethroughTop,See-through Top
 Cloth,Jacket,Jacket
-Cloth,MaleTankTop1,Male Cloth Tank-Top 
+Cloth,MaleTankTop1,Male Cloth Tank-Top
 Cloth,ButtonShirt,Button Shirt
 Cloth,SlaveRags,Slave Rags
 Cloth,Hoodie,Cropped Hoodie
+Cloth,CheerleaderTop,Cheerleader Top
 ClothAccessory,,Cloth Accessory
 ClothAccessory,StudentOutfit3Scarf,Student Scarf
 ClothAccessory,StudentOutfit3Bow1,Student Bow 1
@@ -86,6 +87,8 @@ ClothAccessory,Glitter,Glitter
 ClothAccessory,CatsuitCollar,Catsuit Collar
 ClothAccessory,Poncho,Poncho
 ClothAccessory,JewelrySet,Piercing Set
+ClothAccessory,KissmarkDummy,Smoochy Lipstick
+ClothAccessory,Kissmark,Lipstick Marks
 Necklace,,Necklace
 Necklace,Necklace1,Fancy Necklace
 Necklace,Necklace2,Beaded Necklace
@@ -155,6 +158,7 @@ ClothLower,AsymmetricSkirt,Asymmetric Skirt
 ClothLower,ElegantSkirt,Elegant Skirt
 ClothLower,RuffledSkirt,Ruffled Skirt
 ClothLower,CrossSkirt,Cross Skirt
+ClothLower,CheerleaderSkirt,Cheerleader Skirt
 SuitLower,,Suit Lower
 SuitLower,Catsuit,Catsuit
 SuitLower,SeamlessCatsuit, Seamless Catsuit
@@ -502,6 +506,7 @@ Gloves,LatexElbowGloves,Latex Elbow Gloves
 Gloves,FishnetGloves, Fishnet Gloves
 Gloves,HaremGlove,Harem Gloves
 Gloves,BikerGloves,Biker Gloves
+Gloves,CheerleaderPomPoms,Pom Poms
 LeftHand,,Left Hand
 LeftHand,Rings,Rings
 RightHand,,Right Hand
@@ -548,6 +553,8 @@ Mask,FacePaint, Face Paint
 Mask,PetNose,Pet Nose
 Mask,Glitter,Glitter
 Mask,HeadHarness,Head Harness
+Mask,FestivalFoxMask,Festival Fox Mask
+Mask,Kissmark,Lipstick Marks
 Jewelry,,Jewelry
 Jewelry,JewelrySet,Piercing Set
 TailStraps,,Tail Strap
@@ -793,8 +800,8 @@ Pussy,PussyDark2,Dark 2
 Pussy,PussyDark3,Dark 3
 Pussy,Penis,Penis
 Pronouns,,Pronouns
-Pronouns,SheHer,She/Her 
-Pronouns,HeHim,He/Him 
+Pronouns,SheHer,She/Her
+Pronouns,HeHim,He/Him
 Blush,,Blush
 Blush,Blush,Blush
 Fluids,,Fluids
@@ -804,10 +811,6 @@ Emoticon,Emoticon,Emoticon
 Eyebrows,,Eyebrows
 Eyebrows,Eyebrows1,Eyebrows 1
 Eyebrows,Eyebrows2,Eyebrows 2
-Eyebrows,Eyebrows3,Eyebrows 3
-Eyebrows,Eyebrows4,Eyebrows 4
-Eyebrows,Eyebrows5,Eyebrows 5
-Eyebrows,Eyebrows6,Eyebrows 6
 Eyebrows,Eyebrows7,Eyebrows 7
 Eyebrows,Eyebrows8,Eyebrows 8
 Hands,,Hands
@@ -826,8 +829,10 @@ ItemFeet,DuctTape,Duct Tape
 ItemFeet,LeatherAnkleCuffs,Leather Ankle Cuffs
 ItemFeet,FloorShackles,Floor Shackles
 ItemFeet,SteelAnkleCuffs,Steel Ankle Cuffs
+ItemFeet,EscortAnkleCuffs,Escort Ankle Cuffs
 ItemFeet,FuturisticAnkleCuffs,Futuristic Ankle Cuffs
 ItemFeet,OrnateAnkleCuffs,Ornate Ankle Cuffs
+ItemFeet,HighStyleSteelAnkleCuffs,HighStyle Steel Ankle Cuffs
 ItemFeet,SpreaderMetal, Metal Leg Spreader
 ItemFeet,BallChain,Ball And Chain
 ItemFeet,AnkleShackles, Ankle Shackles
@@ -1075,6 +1080,7 @@ ItemArms,CeilingShackles,Ceiling Shackles
 ItemArms,SteelCuffs,Steel Cuffs
 ItemArms,FuturisticCuffs,Futuristic Cuffs
 ItemArms,OrnateCuffs,Ornate Cuffs
+ItemArms,HighStyleSteelCuffs,HighStyle Steel Cuffs
 ItemArms,MittenChain1,Mittens Chain
 ItemArms,FourLimbsShackles,Four Limbs Shackles
 ItemArms,Manacles,Manacles
@@ -1143,6 +1149,7 @@ ItemHands,PolishedMittens,Polished Steel Mittens
 ItemHands,DuctTape,Duct Tape
 ItemHands,HoofMittens, Hoof Mittens
 ItemHands,SmoothLeatherMittens1,Short Smooth Leather Mittens
+ItemHands,CheerleaderPomPoms,Pom Pom Mitts
 ItemHandheld,,Hands
 ItemHandheld,Crop,Crop
 ItemHandheld,Flogger,Flogger
@@ -1196,6 +1203,7 @@ ItemHandheld,GlassEmpty,Empty Glass
 ItemHandheld,GlassFilled,Filled Glass
 ItemHandheld,PotionBottle,Potion Bottle
 ItemHandheld,MedicalInjector,Medical Injector
+ItemHandheld,Mug,Mug
 ItemNeck,,Neck
 ItemNeck,LeatherCollar,Leather Collar
 ItemNeck,LeatherCollarBell,Bell Collar
@@ -1223,6 +1231,7 @@ ItemNeck,LeatherCorsetCollar,Leather Corset Collar Gag
 ItemNeck,LatexPostureCollar,Latex Posture Collar Gag
 ItemNeck,HighSecurityCollar,High Security Collar
 ItemNeck,OrnateCollar,Ornate Collar
+ItemNeck,HighStyleSteelCollar,HighStyle Steel Collar
 ItemNeck,SlenderSteelCollar,Slender Steel Collar
 ItemNeck,ShinySteelCollar,Shiny Steel Collar
 ItemNeck,HeartLinkChoker, Heart-Link Choker
@@ -1454,6 +1463,7 @@ ItemMouth3,Slime,Slime
 ItemMouth3,Stitches,Stitches
 ItemMouth3,FurScarf,Fur Scarf
 ItemMouth3,LatexRespirator,Latex Respirator
+ItemMouth3,Kissmark,Lipstick Marks
 ItemHead,,Eyes
 ItemHead,ClothBlindfold,Cloth Blindfold
 ItemHead,ScarfBlindfold,Scarf Blindfold
@@ -1534,6 +1544,7 @@ ItemHood,OpenMouthPlugHood,Latex Open Mouth Plug Hood
 ItemHood,DroneMask,Smooth Latex Mask
 ItemHood,CustomLatexHood,Custom Latex Hood
 ItemHood,HarnessCatMask,Cat Mask Harness
+ItemHood,FestivalFoxMask,Festival Fox Mask
 ItemEars,,Ears
 ItemEars,LightDutyEarPlugs,Light Duty Ear Plugs
 ItemEars,HeavyDutyEarPlugs,Heavy Duty Ear Plugs
@@ -1629,6 +1640,7 @@ ItemDevices,WoodenRack,Wooden Rack
 ItemDevices,WoodenHorse,Wooden Horse
 ItemDevices,LuckyWheel,Lucky Wheel
 ItemDevices,WheelFortune,Wheel of Fortune
+ItemDevices,FoldingScreen,Folding Screen
 ItemAddon,,Body
 ItemAddon,Covers,Blanket
 ItemAddon,BedRopes,Bed Ropes
