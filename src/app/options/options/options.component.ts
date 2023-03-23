@@ -3,7 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MatChipInputEvent, MatSnackBar } from '@angular/material';
 import { Subscription, Observable, combineLatest, ReplaySubject } from 'rxjs';
 import { tap, map, throttleTime, switchMap } from 'rxjs/operators';
-import { storeGlobal, ISettings, retrieveGlobal, executeForAllGameTabs } from 'models';
+import { storeGlobal, ISettings, retrieveGlobal, executeForAllGameTabs, IMember } from 'models';
 import { DatabaseService } from 'src/app/shared/database.service';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { humanFileSize } from 'src/app/shared/utils/human-file-size';
@@ -30,6 +30,9 @@ export class OptionsComponent implements OnDestroy {
 
   private formSubscription: Subscription;
 
+  public dataForm = new FormGroup({
+    exportAppearances: new FormControl(false)
+  });
   public settingsForm = new FormGroup({
     notifications: new FormGroup({
       keywords: new FormControl([])
@@ -136,7 +139,9 @@ export class OptionsComponent implements OnDestroy {
   }
 
   public downloadDatabase() {
-    this.exportService.exportDatabase().subscribe(
+    this.exportService.exportDatabase({
+      exportAppearances: this.dataForm.get('exportAppearances').value
+    }).subscribe(
       update => {
         if (update instanceof Blob) {
           const link = document.createElement('a');
@@ -178,6 +183,33 @@ export class OptionsComponent implements OnDestroy {
       );
     });
     input.click();
+  }
+
+  public async clearAppearances() {
+    if (confirm('Are you sure you want to delete all appearances?')) {
+      console.log('Clearing appearances...');
+      const transaction = await this.databaseService.transaction('members', 'readwrite');
+      transaction.onerror = event => {
+        console.error(event);
+      };
+      const cursorRequest = transaction.objectStore('members').openCursor();
+      cursorRequest.addEventListener('success', event => {
+        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+        if (!cursor) {
+          console.log('Appearances cleared.');
+          return;
+        }
+        
+        const member = cursor.value as IMember;
+        delete member.appearance;
+        delete member.appearanceMetaData;
+        cursor.update(member);
+        cursor.continue();
+      });
+      cursorRequest.addEventListener('error', event => {
+        console.error(event);
+      });
+    }
   }
 
   public async clearDatabase() {

@@ -40,7 +40,7 @@
     <mat-divider></mat-divider>
   </mat-list>
 </ng-container>
-<ng-container>
+<ng-container [formGroup]="dataForm">
   <mat-list>
     <h2 matSubheader>Data</h2>
     <mat-list-item>
@@ -52,6 +52,10 @@
               color="primary"
               (click)="downloadDatabase()"
               >Export database</button>
+      <label>
+        <input type="checkbox" formControlName="exportAppearances">
+        Include appearances (can be a lot of data, slows down export)
+      </label>
     </mat-list-item>
     <mat-list-item *ngIf="exportProgress !== undefined">
       <p matLine>{{ exportProgress.text }}...</p>
@@ -80,6 +84,19 @@
 <ng-container>
   <mat-list>
     <h2 matSubheader>Danger zone</h2>
+    <mat-list-item>
+      <mat-label>Appearances take up a lot of space, you can remove them while leaving other data intact here:</mat-label>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button
+              mat-stroked-button
+              color="warn"
+              (click)="clearAppearances()"
+              >Delete appearances</button>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-label>If you wish to wipe all data and start clean, you can do so here:</mat-label>
+    </mat-list-item>
     <mat-list-item>
       <button mat-button
               mat-stroked-button

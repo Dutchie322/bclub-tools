@@ -4,6 +4,10 @@ import { Injectable } from '@angular/core';
 import * as JSZip from 'jszip';
 import { Observable } from 'rxjs';
 
+type ExportOptions = {
+  exportAppearances: false
+};
+
 type UpdateCallback = (text: string, progress?: boolean | number) => void;
 export interface IExportProgressState {
   progress: number;
@@ -19,7 +23,7 @@ export class ExportService {
 
   constructor(private databaseService: DatabaseService) {}
 
-  public exportDatabase(): Observable<IExportProgressState | Blob> {
+  public exportDatabase(options: ExportOptions): Observable<IExportProgressState | Blob> {
     return new Observable(subscriber => {
       const state = {
         progress: 0,
@@ -51,7 +55,7 @@ export class ExportService {
 
       update('Preparing export');
       this.countTotals().then(result => Object.assign(state, result));
-      this.createArchive(update).then(complete).catch(error);
+      this.createArchive(options, update).then(complete).catch(error);
     });
   }
 
@@ -68,7 +72,7 @@ export class ExportService {
       }));
   }
 
-  private async createArchive(update: UpdateCallback): Promise<Blob> {
+  private async createArchive(options: ExportOptions, update: UpdateCallback): Promise<Blob> {
     const archive = new JSZip();
 
     const objectStoreNames = await this.databaseService.objectStoreNames;
@@ -93,7 +97,7 @@ export class ExportService {
 
         case 'members':
           update('Gathering people');
-          await this.exportMembers(update, transaction, folder);
+          await this.exportMembers(options, update, transaction, folder);
           break;
       }
     }
@@ -168,8 +172,8 @@ export class ExportService {
     return result;
   }
 
-  private async exportMembers(update: UpdateCallback, transaction: IDBTransaction, folder: JSZip) {
-    return new Promise(resolve => {
+  private async exportMembers(options: ExportOptions, update: UpdateCallback, transaction: IDBTransaction, folder: JSZip) {
+    return new Promise<void>(resolve => {
       const subfolders = {} as { [key: number]: JSZip };
 
       transaction.objectStore('members').openCursor().onsuccess = event => {
@@ -185,10 +189,14 @@ export class ExportService {
 
           const memberFolder = subfolders[member.playerMemberNumber].folder(String(member.memberNumber));
           if (member.appearance) {
-            memberFolder.file('appearance.png', member.appearance.substr(22), {
-              base64: true,
-              date: member.lastSeen
-            });
+            if (options.exportAppearances) {
+              memberFolder.file('appearance.png', member.appearance.substring(22), {
+                base64: true,
+                date: member.lastSeen
+              });
+            } else {
+              delete member.appearanceMetaData;
+            }
 
             delete member.appearance;
           }
