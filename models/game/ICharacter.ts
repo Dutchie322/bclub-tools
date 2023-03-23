@@ -7,6 +7,7 @@ import { IReputation } from './IReputation';
 export interface IChatRoomCharacter {
   ID: number;
   Name: string;
+  Nickname: string;
   AssetFamily: 'Female3DCG';
   Title: string;
   Appearance: IAppearance[];

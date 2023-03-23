@@ -4,10 +4,15 @@
       <img #appearanceImage [src]="member.appearance || ''" [ngStyle]="imageStyle" (load)="calculateAppearanceImageStyles($event.target)" />
     </div>
     <mat-toolbar gdColumn="span 3">
-      <span class="member-name" [ngStyle]="{ color: member.labelColor || 'inherit' }">{{ member.memberName }}</span>
+      <span class="member-name" [ngStyle]="{ color: member.labelColor || 'inherit' }">{{ member.nickname || member.memberName }}</span>
     </mat-toolbar>
     <div>
       <mat-list>
+        <mat-list-item>
+          <mat-icon mat-list-icon>transgender</mat-icon>
+          <div mat-line>Pronouns</div>
+          <div mat-line>{{ pronouns(member) }}</div>
+        </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>favorite</mat-icon>
           <div mat-line>Lovers</div>
@@ -80,6 +85,11 @@
           <mat-icon mat-list-icon>format_list_numbered</mat-icon>
           <div mat-line>Member Number</div>
           <div mat-line>{{ member.memberNumber }}</div>
+        </mat-list-item>
+        <mat-list-item *ngIf="member.nickname">
+          <mat-icon mat-list-icon>person</mat-icon>
+          <div mat-line>Account name</div>
+          <div mat-line>{{ member.memberName }}</div>
         </mat-list-item>
       </mat-list>
     </div>

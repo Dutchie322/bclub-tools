@@ -14,7 +14,7 @@ export interface IChatRoomMessageDictionary {
   MemberNumber?: number;
 }
 
-export type ChatRoomMessageType = 'Chat' | 'Whisper' | 'Action' | 'Activity' | 'Emote' | 'ServerMessage' | 'Hidden';
+export type ChatRoomMessageType = 'Chat' | 'Whisper' | 'Action' | 'Activity' | 'Emote' | 'ServerMessage' | 'Hidden' | 'Status';
 
 export interface IEnrichedChatRoomMessage extends IChatRoomMessage {
   ChatRoom: IChatRoom;

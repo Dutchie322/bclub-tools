@@ -4,6 +4,7 @@ export interface IAppearance {
   Color?: string;
   Difficulty?: number;
   Property?: IAppearanceProperty;
+  Craft?: any;
 }
 
 export interface IAppearanceProperty {

@@ -124,6 +124,18 @@ export class MemberInfoComponent implements OnDestroy {
     return stage;
   }
 
+  public pronouns(member: IMember) {
+    const value = member.pronouns;
+    switch (value) {
+      case 'SheHer':
+        return 'She/Her';
+      case 'HeHim':
+        return 'He/Him';
+      default:
+        return value;
+    }
+  }
+
   public timeToDays(start: Date) {
     return Math.floor((new Date().getTime() - start.getTime()) / 86400000).toString();
   }

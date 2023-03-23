@@ -11,7 +11,6 @@ import {
   clearStorage,
   retrieve,
   IChatRoomSync,
-  IChatRoomSearchResult,
   IClientMessage,
   IEnrichedChatRoomChat,
   retrieveGlobal,
@@ -22,7 +21,8 @@ import {
   IStoredPlayer,
   IPlayerWithRelations,
   IAccountQueryOnlineFriendsResult,
-  addOrUpdateObjectStore
+  addOrUpdateObjectStore,
+  IChatRoomSyncCharacter
 } from '../../../models';
 import { notifyIncomingMessage } from './notifications';
 import { writeMember, writeFriends, removeChatRoomData, retrieveMember } from './member';
@@ -144,11 +144,17 @@ function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtim
     case 'ChatRoomMessage':
       handleChatRoomMessage(sender.tab.id, message);
       break;
-    case 'ChatRoomSearchResult':
-      handleChatRoomSearchResult(sender.tab.id, message);
-      break;
     case 'ChatRoomSync':
       handleChatRoomSync(sender.tab.id, message);
+      break;
+    case 'ChatRoomSyncCharacter':
+      handleChatRoomSyncSingle(sender.tab.id, message);
+      break;
+    case 'ChatRoomSyncMemberJoin':
+      handleChatRoomSyncSingle(sender.tab.id, message);
+      break;
+    case 'ChatRoomSyncMemberLeave':
+      handleChatRoomSyncMemberLeave(sender.tab.id, message);
       break;
     case 'ChatRoomSyncSingle':
       handleChatRoomSyncSingle(sender.tab.id, message);
@@ -186,14 +192,15 @@ function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
 }
 
 async function handleChatRoomMessage(tabId: number, message: IServerMessage<IEnrichedChatRoomMessage>) {
+  if (message.data.Type === 'Hidden' || message.data.Type === 'Status') {
+    // Ignore message types that don't contain useful info.
+    return;
+  }
+
   const chatLog = await writeChatLog(message.data);
   if (!message.inFocus) {
     notifyIncomingMessage(tabId, chatLog);
   }
-}
-
-function handleChatRoomSearchResult(tabId: number, message: IServerMessage<IChatRoomSearchResult[]>) {
-  store(tabId, 'chatRoomSearchResult', message.data);
 }
 
 async function handleChatRoomSync(tabId: number, message: IServerMessage<IChatRoomSync>) {
@@ -203,7 +210,7 @@ async function handleChatRoomSync(tabId: number, message: IServerMessage<IChatRo
   message.data.Character.forEach(character => writeMember(player, character));
 }
 
-async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<IChatRoomSyncSingle>) {
+async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<IChatRoomSyncSingle | IChatRoomSyncCharacter>) {
   const characters = await retrieve(tabId, 'chatRoomCharacter');
   const i = characters.findIndex(char => char.MemberNumber === message.data.Character.MemberNumber);
   characters[i] = message.data.Character;
@@ -211,6 +218,13 @@ async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<I
 
   const player = await retrieve(tabId, 'player');
   writeMember(player, message.data.Character);
+}
+
+async function handleChatRoomSyncMemberLeave(tabId: number, message: IServerMessage<{ SourceMemberNumber: number }>) {
+  const characters = await retrieve(tabId, 'chatRoomCharacter');
+  const i = characters.findIndex(char => char.MemberNumber === message.data.SourceMemberNumber);
+  characters.splice(i, 1);
+  store(tabId, 'chatRoomCharacter', characters);
 }
 
 function handleLoginResponse(tabId: number, message: IServerMessage<IPlayerWithRelations>) {

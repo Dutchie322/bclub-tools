@@ -2,7 +2,6 @@ import { Component, TrackByFunction, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource, MatSnackBar } from '@angular/material';
 import {
   IStoredPlayer,
-  IChatRoomSearchResult,
   retrieve,
   IChatRoomCharacter,
   onChanged,
@@ -39,7 +38,7 @@ export class PopupComponent {
   public player: IStoredPlayer;
   public alternativeCharacters: IPlayerCharacter[];
 
-  public characterColumns = ['name', 'owner', 'permission', 'reputation'];
+  public characterColumns = ['name', 'pronouns', 'owner', 'reputation'];
   public chatRoomColumns = ['name', 'creator', 'members', 'description'];
   public onlineFriendColumns = ['memberName', 'chatRoomName'];
 
@@ -128,6 +127,22 @@ export class PopupComponent {
     }
   }
 
+  public characterName(character: IChatRoomCharacter) {
+    return character.Nickname ? character.Nickname : character.Name;
+  }
+
+  public characterPronouns(character: IChatRoomCharacter) {
+    const value = character.Appearance.find(a => a.Group === 'Pronouns').Name;
+    switch (value) {
+      case 'SheHer':
+        return 'She/Her';
+      case 'HeHim':
+        return 'He/Him';
+      default:
+        return value;
+    }
+  }
+
   public dominantReputationToText(reputation: IReputation[]) {
     let dominant = 0;
     const rep = (reputation || []).find(r => r.Type === 'Dominant');
@@ -181,6 +196,5 @@ export class PopupComponent {
   }
 
   public trackByCharacter: TrackByFunction<IChatRoomCharacter> = (_, character) => character.MemberNumber;
-  public trackByChatRoom: TrackByFunction<IChatRoomSearchResult> = (_, chatRoom) => chatRoom.Name;
   public trackByFriend: TrackByFunction<IMember> = (_, friend) => friend.memberNumber;
 }

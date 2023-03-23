@@ -39,6 +39,7 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
 function mapChatRoomCharacter(data: IChatRoomCharacter) {
   return {
     memberName: data.Name,
+    nickname: data.Nickname,
     creation: new Date(data.Creation),
     title: data.Title,
     dominant: data.Reputation && data.Reputation.find(r => r.Type === 'Dominant')
@@ -57,7 +58,8 @@ function mapChatRoomCharacter(data: IChatRoomCharacter) {
       name: data.Ownership.Name,
       start: data.Ownership.Start ? new Date(data.Ownership.Start) : undefined,
       stage: data.Ownership.Stage
-    } : undefined
+    } : undefined,
+    pronouns: data.Appearance ? data.Appearance.find(a => a.Group === 'Pronouns').Name : undefined
   };
 }
 

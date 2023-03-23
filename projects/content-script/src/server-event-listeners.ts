@@ -2,13 +2,14 @@ import {
   IChatRoomMessage,
   IAccountBeep,
   IServerMessage,
-  IChatRoomSearchResult,
   IChatRoomSync,
   IChatRoomSyncSingle,
   IAccountQueryResult,
   IChatRoomCharacter,
   ILoginResponse,
   IPlayerWithRelations,
+  IChatRoomSyncCharacter,
+  IAppearance,
 } from '../../../models';
 
 /**
@@ -32,10 +33,21 @@ export function listenToServerEvents(handshake: string) {
       } as IServerMessage<TOutgoingMessage>, '*');
     });
   }
+  function mapAppearance(appearance: IAppearance) {
+    return {
+      Group: appearance.Group,
+      Name: appearance.Name,
+      Color: appearance.Color,
+      Difficulty: appearance.Difficulty,
+      Property: appearance.Property,
+      Craft: appearance.Craft
+    };
+  }
   function mapCharacter(character: IChatRoomCharacter) {
     return {
       ID: character.ID,
       Name: character.Name,
+      Nickname: character.Nickname ? character.Nickname : undefined,
       Title: character.Title,
       Reputation: character.Reputation,
       Creation: character.Creation,
@@ -46,6 +58,7 @@ export function listenToServerEvents(handshake: string) {
       LabelColor: character.LabelColor,
       ItemPermission: character.ItemPermission,
       Ownership: character.Ownership,
+      Appearance: character.Appearance ? character.Appearance.map(mapAppearance) : []
     };
   }
 
@@ -99,21 +112,18 @@ export function listenToServerEvents(handshake: string) {
     SourceMemberNumber: data.SourceMemberNumber,
     Character: data.Character.map(mapCharacter)
   }));
+  createForwarder<IChatRoomSyncCharacter, any>('ChatRoomSyncCharacter', data => ({
+    Character: mapCharacter(data.Character)
+  }));
+  createForwarder<any, any>('ChatRoomSyncMemberJoin', data => ({
+    Character: mapCharacter(data.Character)
+  }));
+  createForwarder<any, any>('ChatRoomSyncMemberLeave', data => ({
+    SourceMemberNumber: data.SourceMemberNumber
+  }));
   createForwarder<IChatRoomSyncSingle, any>('ChatRoomSyncSingle', data => ({
     Character: mapCharacter(data.Character)
   }));
-  createForwarder<IChatRoomSearchResult[], any>('ChatRoomSearchResult', data => data.map(result => ({
-    Name: result.Name,
-    Creator: result.Creator,
-    MemberCount: result.MemberCount,
-    MemberLimit: result.MemberLimit,
-    Description: result.Description,
-    Friends: result.Friends.map(friend => ({
-      MemberName: friend.MemberName,
-      MemberNumber: friend.MemberNumber,
-      Type: friend.Type
-    }))
-  })));
   createForwarder<ILoginResponse, IPlayerWithRelations>('LoginResponse', data => ({
     MemberNumber: data.MemberNumber,
     Name: data.Name,

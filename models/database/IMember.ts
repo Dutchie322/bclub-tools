@@ -20,6 +20,7 @@ export interface IMember {
   labelColor?: string;
   lovership?: IMemberLovership[];
   ownership?: IMemberOwnership;
+  pronouns?: string;
   notes?: string;
 }
 

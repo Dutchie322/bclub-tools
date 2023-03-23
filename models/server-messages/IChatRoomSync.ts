@@ -12,3 +12,13 @@ export interface IChatRoomSync {
   Private: boolean;
   Character: IChatRoomCharacter[];
 }
+
+export interface IChatRoomSyncSingle {
+  Character: IChatRoomCharacter;
+  SourceMemberNumber: number;
+}
+
+export interface IChatRoomSyncCharacter {
+  Character: IChatRoomCharacter;
+  SourceMemberNumber: number;
+}
