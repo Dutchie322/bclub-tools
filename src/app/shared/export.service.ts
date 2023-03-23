@@ -5,8 +5,8 @@ import * as JSZip from 'jszip';
 import { Observable } from 'rxjs';
 
 interface ExportOptions {
-  exportAppearances: false
-};
+  exportAppearances: false;
+}
 
 type UpdateCallback = (text: string, progress?: boolean | number) => void;
 export interface IExportProgressState {

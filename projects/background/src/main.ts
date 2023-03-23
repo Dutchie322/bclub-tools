@@ -151,7 +151,7 @@ function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtim
       handleChatRoomSyncSingle(sender.tab.id, message);
       break;
     case 'ChatRoomSyncMemberJoin':
-      handleChatRoomSyncSingle(sender.tab.id, message);
+      handleChatRoomSyncMemberJoin(sender.tab.id, message);
       break;
     case 'ChatRoomSyncMemberLeave':
       handleChatRoomSyncMemberLeave(sender.tab.id, message);
@@ -218,6 +218,12 @@ async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<I
 
   const player = await retrieve(tabId, 'player');
   writeMember(player, message.data.Character);
+}
+
+async function handleChatRoomSyncMemberJoin(tabId: number, message: IServerMessage<IChatRoomSyncCharacter>) {
+  const characters = await retrieve(tabId, 'chatRoomCharacter');
+  characters.push(message.data.Character);
+  store(tabId, 'chatRoomCharacter', characters);
 }
 
 async function handleChatRoomSyncMemberLeave(tabId: number, message: IServerMessage<{ SourceMemberNumber: number }>) {
