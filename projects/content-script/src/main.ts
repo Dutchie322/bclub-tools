@@ -6,7 +6,6 @@ import { listenForUserSentEvents } from './user-input-listener';
 import { retrieveGlobal, log } from '../../../models';
 import { checkForLoggedInState } from './check-for-logged-in-state';
 import { characterAppearance } from './draw-listeners';
-import { pollVariables } from './timed-listeners';
 
 log('Injecting scripts...');
 
@@ -15,6 +14,5 @@ retrieveGlobal('settings').then(settings => {
   generatePersistentScriptWithWait('ServerSocket', listenForUserSentEvents, settings.tools.chatRoomRefreshInterval);
   generatePersistentScriptWithWait('ServerSocket', listenToServerEvents);
   generatePersistentScript(characterAppearance);
-  generatePersistentScript(pollVariables);
   log('Done injecting scripts.');
 });

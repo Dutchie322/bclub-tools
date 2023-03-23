@@ -116,6 +116,9 @@ function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtim
     case 'ChatRoomChat':
       handleChatRoomChat(message);
       break;
+    case 'ChatRoomLeave':
+      handleChatRoomLeave(sender.tab.id);
+      break;
     case 'CommonDrawAppearanceBuild':
       handleCommonDrawAppearanceBuild(sender.tab.id, message);
       break;
@@ -233,6 +236,10 @@ async function handleChatRoomSyncMemberLeave(tabId: number, message: IServerMess
   store(tabId, 'chatRoomCharacter', characters);
 }
 
+function handleChatRoomLeave(tabId: number) {
+  store(tabId, 'chatRoomCharacter', []);
+}
+
 function handleLoginResponse(tabId: number, message: IServerMessage<IPlayerWithRelations>) {
   setPlayerLoggedIn(tabId, {
     MemberNumber: message.data.MemberNumber,
@@ -267,10 +274,6 @@ function handleVariablesUpdate(tabId: number, message: IClientMessage<IVariables
   if (message.data.CurrentScreen === 'Login') {
     cleanUpData(tabId);
     return;
-  }
-
-  if (typeof message.data.InChat !== 'undefined' && !message.data.InChat) {
-    store(tabId, 'chatRoomCharacter', []);
   }
 
   if (message.data.Player && message.data.Player.MemberNumber > 0) {

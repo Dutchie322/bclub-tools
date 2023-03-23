@@ -84,6 +84,13 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
         data,
       } as IClientMessage<IEnrichedChatRoomChat>, '*');
     },
+    ChatRoomLeave: (event: string, __: any) => {
+      window.postMessage({
+        handshake,
+        type: 'client',
+        event
+      } as IClientMessage<void>, '*');
+    },
     ChatRoomSearch: (_: string, incomingData: IChatRoomSearch) => {
       lastExecutedSearch = incomingData;
 

@@ -4,6 +4,7 @@ export function checkForLoggedInState(handshake: string) {
     type: 'client',
     event: 'VariablesUpdate',
     data: {
+      CurrentScreen,
       Player: {
         MemberNumber: Player ? Player.MemberNumber : null,
         Name: Player ? Player.Name : null
