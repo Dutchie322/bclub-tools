@@ -13,16 +13,13 @@ Moving forward, I want to integrate the extension more into the club itself and 
 
 Before I release the next maintenance release, I want to address the following things:
 - Support for pronouns in transcript.
-- Doing something about the character appearances that take up too much space and causing loads of problems...
 
 ## Features
 - Automatic logging of chat rooms, with a viewer to read the transcripts back.
-- Optionally sending a desktop notification when someone beeps you.
-- Optionally detecting when friends come online or go offline and sending a desktop notification when it happens.
-- Ability to send a desktop notification when you or a keyword is mentioned.
+- Ability to send a desktop notification when a custom keyword is mentioned.
 - Up-to-date friends list in popup.
 - Quick overview of the characters in the currently joined chat room (name, ownership, dominant level).
-- Keeps track of people met in the game, when they were last online and allows one to keep notes on them.
+- Keeps track of people met in the game, when they were last online and allows you to keep notes with their profile.
 
 # Development
 
