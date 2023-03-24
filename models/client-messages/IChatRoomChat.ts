@@ -2,16 +2,9 @@ import { IChatRoom } from '../game';
 
 export interface IChatRoomChat {
   Content: string;
-  Dictionary?: IChatRoomChatDictionary[];
+  Dictionary?: ChatMessageDictionary;
   Target?: number;
   Type: ChatRoomChatType;
-}
-
-export interface IChatRoomChatDictionary {
-  Tag: string;
-  Text?: string | number;
-  TextToLookUp?: string;
-  MemberNumber?: number;
 }
 
 export type ChatRoomChatType = 'Chat' | 'Emote' | 'Whisper';

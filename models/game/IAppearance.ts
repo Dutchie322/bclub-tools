@@ -1,5 +1,6 @@
 export interface IAppearance {
-  Group: string;
+  Asset?: { Group: { Name: string }; Name: string; };
+  Group?: string;
   Name: string;
   Color?: string;
   Difficulty?: number;

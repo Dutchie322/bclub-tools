@@ -2,12 +2,12 @@
 /// <reference path="./Typedef.d.ts" />
 
 import { parse as parseCsv } from 'papaparse';
-import { IChatLog, IMember, retrieveMember } from '../database';
+import { IChatLog, IMember, retrieveMember, IChatMessageCharacter, IChatMessageCharacters } from '../database';
 import { IAsset, IDialog } from '../internal';
 
 interface ChatLogMetaData {
-  SourceCharacter?: IMember;
-  TargetCharacter?: IMember;
+  SourceCharacter?: IChatMessageCharacter;
+  TargetCharacter?: IChatMessageCharacter;
   FocusGroup?: { Name: string, Description: string };
 }
 
@@ -41,15 +41,14 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
   let substitutions: ChatLogSubstitution[] = [];
   for (const entry of chatLog.dictionary) {
     if (hasSourceCharacter(entry)) {
-      metadata.SourceCharacter = await retrieveAndCacheMember(chatLog.session.memberNumber, entry.SourceCharacter);
+      metadata.SourceCharacter = await getChatMessageCharacter(chatLog, 'SourceCharacter', entry.SourceCharacter);
     } else if (hasTargetCharacter(entry)) {
-      metadata.TargetCharacter = await retrieveAndCacheMember(chatLog.session.memberNumber, entry.TargetCharacter);
+      metadata.TargetCharacter = await getChatMessageCharacter(chatLog, 'TargetCharacter', entry.TargetCharacter);
     } else if (hasCharacterReference(entry)) {
-      const member = await retrieveAndCacheMember(chatLog.session.memberNumber, entry.MemberNumber);
       if (entry.Tag === 'SourceCharacter') {
-        metadata.SourceCharacter = member;
+        metadata.SourceCharacter = await getChatMessageCharacter(chatLog, 'SourceCharacter', entry.MemberNumber);
       } else {
-        metadata.TargetCharacter = member;
+        metadata.TargetCharacter = await getChatMessageCharacter(chatLog, 'TargetCharacter', entry.MemberNumber);
       }
     } else if (hasAssetReference(entry)) {
       substitutions.push([entry.Tag, findAssetName(entry.AssetName, entry.GroupName).toLowerCase()]);
@@ -71,35 +70,32 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
   }
 
   if (metadata.SourceCharacter) {
-    substitutions.push(['SourceCharacter', metadata.SourceCharacter.nickname || metadata.SourceCharacter.memberName]);
+    substitutions.push(['SourceCharacter', metadata.SourceCharacter.Name]);
     substitutions.push(...createPronounSubstitutions(metadata.SourceCharacter, 'Pronoun'));
   }
 
   if (metadata.TargetCharacter) {
-    const isSelf = chatLog.session.memberNumber === metadata.TargetCharacter.memberNumber;
-    const pronounPossessive = memberPronoun(metadata.TargetCharacter, 'Possessive');
-    const pronounSelf = memberPronoun(metadata.TargetCharacter, 'Self');
-    const name = memberName(metadata.TargetCharacter);
+    const name = metadata.TargetCharacter.Name;
     const destinationCharacterName = `${name}${findDialog('\'s')}`;
-    const destinationCharacter = isSelf ? pronounPossessive : destinationCharacterName;
-    const targetCharacter = isSelf ? pronounSelf : name;
-    const targetCharacterName = name;
 
     substitutions.push(
-      ['DestinationCharacter', destinationCharacter],
+      ['DestinationCharacter', destinationCharacterName],
       ['DestinationCharacterName', destinationCharacterName],
-      ['TargetCharacter', targetCharacter],
-      ['TargetCharacterName', targetCharacterName],
+      ['TargetCharacter', name],
+      ['TargetCharacterName', name],
     );
     substitutions.push(...createPronounSubstitutions(metadata.TargetCharacter, 'TargetPronoun'));
   }
 
   if (metadata.FocusGroup) {
-    // todo mimic functionality of DialogActualNameForGroup (male/female)
-    if (['ItemVulva', 'ItemVulvaPiercings'].includes(metadata.FocusGroup.Name)) {
-      console.warn('Todo logic');
+    let description = metadata.FocusGroup.Description;
+    if (metadata.TargetCharacter.HasPenis && ['ItemVulva', 'ItemVulvaPiercings'].includes(metadata.FocusGroup.Name)) {
+      description = (metadata.FocusGroup.Name === 'ItemVulva'
+        ? findDialog('ItemPenis')
+        : findDialog('ItemGlans')
+      ).toLocaleLowerCase();
     }
-    substitutions.push(['FocusAssetGroup', metadata.FocusGroup.Description]);
+    substitutions.push(['FocusAssetGroup', description]);
   }
 
   substitutions = substitutions.sort((a, b) => b[0].length - a[0].length);
@@ -112,6 +108,22 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
   return content;
 }
 
+async function getChatMessageCharacter(chatLog: IChatLog, key: keyof IChatMessageCharacters, memberNumber: number): Promise<IChatMessageCharacter> {
+  if (chatLog.characters && chatLog.characters[key]) {
+    return chatLog.characters[key];
+  }
+
+  const member = await retrieveAndCacheMember(chatLog.session.memberNumber, memberNumber);
+  return {
+    Name: memberName(member),
+    MemberNumber: member.memberNumber,
+    // Use fallbacks for older data
+    Pronouns: member.pronouns || 'TheyThem',
+    HasPenis: false,
+    HasVagina: true
+  };
+}
+
 function retrieveAndCacheMember(contextMemberNumber: number, memberNumber: number) {
   if (!MemberCache[memberNumber]) {
     MemberCache[memberNumber] = retrieveMember(contextMemberNumber, memberNumber);
@@ -120,15 +132,15 @@ function retrieveAndCacheMember(contextMemberNumber: number, memberNumber: numbe
   return MemberCache[memberNumber];
 }
 
-function hasSourceCharacter(value: ChatMessageDictionaryEntry): value is SourceCharacterDictionaryEntry {
+export function hasSourceCharacter(value: ChatMessageDictionaryEntry): value is SourceCharacterDictionaryEntry {
   return isDictionary(value) && typeof (value as any).SourceCharacter !== 'undefined';
 }
 
-function hasTargetCharacter(value: ChatMessageDictionaryEntry): value is TargetCharacterDictionaryEntry {
+export function hasTargetCharacter(value: ChatMessageDictionaryEntry): value is TargetCharacterDictionaryEntry {
   return isDictionary(value) && typeof (value as any).TargetCharacter !== 'undefined';
 }
 
-function hasCharacterReference(value: ChatMessageDictionaryEntry): value is CharacterReferenceDictionaryEntry {
+export function hasCharacterReference(value: ChatMessageDictionaryEntry): value is CharacterReferenceDictionaryEntry {
   return isDictionary(value) &&
     ((value as any).Tag === 'SourceCharacter' ||
       (value as any).Tag === 'TargetCharacter' ||
@@ -171,7 +183,7 @@ function isDictionary(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === 'object' && !Array.isArray(value);
 }
 
-function createPronounSubstitutions(member: IMember, dialogKey: string) {
+function createPronounSubstitutions(member: IChatMessageCharacter, dialogKey: string) {
   const substitutions = [];
   for (const pronounType of ['Possessive', 'Self', 'Subject', 'Object']) {
     substitutions.push([dialogKey + pronounType, memberPronoun(member, pronounType)]);
@@ -183,8 +195,8 @@ function memberName(member: IMember) {
   return member.nickname || member.memberName;
 }
 
-function memberPronoun(member: IMember, dialogKey: string) {
-  const pronounName = member.pronouns || 'TheyThem';
+function memberPronoun(member: IChatMessageCharacter, dialogKey: string) {
+  const pronounName = member.Pronouns || 'TheyThem';
   return findDialog(`Pronoun${dialogKey}${pronounName}`);
 }
 

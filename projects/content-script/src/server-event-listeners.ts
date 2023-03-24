@@ -35,8 +35,8 @@ export function listenToServerEvents(handshake: string) {
   }
   function mapAppearance(appearance: IAppearance) {
     return {
-      Group: appearance.Group,
-      Name: appearance.Name,
+      Group: appearance.Group || appearance.Asset.Group.Name,
+      Name: appearance.Name || appearance.Asset.Name,
       Color: appearance.Color,
       Difficulty: appearance.Difficulty,
       Property: appearance.Property,

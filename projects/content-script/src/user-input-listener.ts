@@ -3,7 +3,8 @@ import {
   IChatRoomChat,
   IChatRoomSearch,
   IClientMessage,
-  IEnrichedChatRoomChat
+  IEnrichedChatRoomChat,
+  IAppearance
 } from '../../../models';
 
 export function listenForUserSentEvents(handshake: string, searchInterval: number) {
@@ -38,6 +39,16 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
     }, interval * 1000);
   }
 
+  function mapAppearance(appearance: IAppearance) {
+    return {
+      Group: appearance.Group || appearance.Asset.Group.Name,
+      Name: appearance.Name || appearance.Asset.Name,
+      Color: appearance.Color,
+      Difficulty: appearance.Difficulty,
+      Property: appearance.Property,
+      Craft: appearance.Craft
+    };
+  }
   function mapCharacter(character: IChatRoomCharacter) {
     return {
       ID: character.ID,
@@ -52,6 +63,7 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
       LabelColor: character.LabelColor,
       ItemPermission: character.ItemPermission,
       Ownership: character.Ownership,
+      Appearance: character.Appearance ? character.Appearance.map(mapAppearance) : []
     };
   }
   const eventsToListenTo = {
