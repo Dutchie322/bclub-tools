@@ -28,19 +28,19 @@
   <ng-container *ngSwitchCase="'Action'">
     <div class="line">
       <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
-      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ renderContent(chatLog) }})</span>
+      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ renderContent(chatLog) | async }})</span>
     </div>
   </ng-container>
   <ng-container *ngSwitchCase="'Activity'">
     <div class="line">
       <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
-      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ renderContent(chatLog) }})</span>
+      <span class="action" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">({{ renderContent(chatLog) | async }})</span>
     </div>
   </ng-container>
   <ng-container *ngSwitchCase="'ServerMessage'">
     <div class="line">
       <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
-      <span class="server-message">{{ renderContent(chatLog) }}</span>
+      <span class="server-message">{{ renderContent(chatLog) | async }}</span>
     </div>
   </ng-container>
 </ng-container>

@@ -22,10 +22,11 @@ import {
   IPlayerWithRelations,
   IAccountQueryOnlineFriendsResult,
   addOrUpdateObjectStore,
-  IChatRoomSyncCharacter
+  IChatRoomSyncCharacter,
+  retrieveMember
 } from '../../../models';
 import { notifyIncomingMessage } from './notifications';
-import { writeMember, writeFriends, removeChatRoomData, retrieveMember } from './member';
+import { writeMember, writeFriends, removeChatRoomData } from './member';
 
 chrome.browserAction.onClicked.addListener(() => {
   chrome.tabs.create({

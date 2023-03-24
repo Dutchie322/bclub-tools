@@ -7,6 +7,7 @@ import { IChatLog, renderContent } from 'models';
   styleUrls: ['./chat-line.component.scss']
 })
 export class ChatLineComponent {
+  private renderedContent: Promise<string>;
   private cleanChatLog: IChatLog;
 
   @Input()
@@ -17,7 +18,13 @@ export class ChatLineComponent {
     this.cleanChatLog = this.copyChatLog(chatLog);
   }
 
-  public renderContent = renderContent;
+  public renderContent(chatLog: IChatLog) {
+    if (!this.renderedContent) {
+      this.renderedContent = renderContent(chatLog);
+    }
+
+    return this.renderedContent;
+  }
 
   public getColor(color: string) {
     return color || 'gray';
@@ -30,8 +37,10 @@ export class ChatLineComponent {
     const r = color.substring(1, 3);
     const g = color.substring(3, 5);
     const b = color.substring(5, 7);
-    // tslint:disable-next-line: max-line-length
-    return '#' + (255 - Math.floor((255 - parseInt(r, 16)) * 0.1)).toString(16) + (255 - Math.floor((255 - parseInt(g, 16)) * 0.1)).toString(16) + (255 - Math.floor((255 - parseInt(b, 16)) * 0.1)).toString(16);
+    return '#' +
+      (255 - Math.floor((255 - parseInt(r, 16)) * 0.1)).toString(16) +
+      (255 - Math.floor((255 - parseInt(g, 16)) * 0.1)).toString(16) +
+      (255 - Math.floor((255 - parseInt(b, 16)) * 0.1)).toString(16);
   }
 
   public isGeneralAction(message: string) {

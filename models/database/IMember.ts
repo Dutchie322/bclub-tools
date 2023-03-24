@@ -7,6 +7,7 @@ export interface IMember {
   type: string;
   memberNumber: number;
   memberName?: string;
+  nickname?: string;
   lastSeen?: Date;
   chatRoomName?: string;
   chatRoomSpace?: string;

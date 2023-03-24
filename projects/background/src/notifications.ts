@@ -11,7 +11,7 @@ export async function notifyIncomingMessage(tabId: number, chatLog: IChatLog) {
     return;
   }
 
-  const content = renderContent(chatLog);
+  const content = await renderContent(chatLog);
   if (wasMentioned(content, settings.notifications.keywords)) {
     switch (chatLog.type) {
       case 'Action':
