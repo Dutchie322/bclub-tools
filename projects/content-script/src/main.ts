@@ -7,12 +7,56 @@ import { retrieveGlobal, log } from '../../../models';
 import { checkForLoggedInState } from './check-for-logged-in-state';
 import { characterAppearance } from './draw-listeners';
 
-log('Injecting scripts...');
+function delay(milliseconds: number) {
+  return new Promise((resolve => {
+    setTimeout(resolve, milliseconds);
+  }));
+}
 
-retrieveGlobal('settings').then(settings => {
-  generateOneTimeScript(checkForLoggedInState);
-  generatePersistentScriptWithWait('ServerSocket', listenForUserSentEvents, settings.tools.chatRoomRefreshInterval);
-  generatePersistentScriptWithWait('ServerSocket', listenToServerEvents);
-  generatePersistentScript(characterAppearance);
-  log('Done injecting scripts.');
+function checkForGame() {
+  if (!document.getElementById('MainCanvas')) {
+    return false;
+  }
+  const scriptTags = document.getElementsByTagName('script');
+  for (let i = 0; i < scriptTags.length; i++) {
+    if (scriptTags.item(i).src.endsWith('Screens/Online/ChatRoom/ChatRoom.js')) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+async function waitForGameToLoad() {
+  let count = 0;
+  const limit = 10;
+  while (count < limit) {
+    if (checkForGame()) {
+      return true;
+    }
+
+    count++;
+    await delay(1000);
+  }
+
+  return false;
+}
+
+async function main() {
+  // Check if we're on a page with the game, else we do nothing.
+  if (await waitForGameToLoad()) {
+    log('Injecting scripts...');
+
+    retrieveGlobal('settings').then(settings => {
+      generateOneTimeScript(checkForLoggedInState);
+      generatePersistentScriptWithWait('ServerSocket', listenForUserSentEvents, settings.tools.chatRoomRefreshInterval);
+      generatePersistentScriptWithWait('ServerSocket', listenToServerEvents);
+      generatePersistentScript(characterAppearance);
+      log('Done injecting scripts.');
+    });
+  }
+}
+
+main().catch(err => {
+  console.error('[Bondage Club Tools] Error while starting.', err);
 });
