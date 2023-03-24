@@ -108,7 +108,10 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
   return content;
 }
 
-async function getChatMessageCharacter(chatLog: IChatLog, key: keyof IChatMessageCharacters, memberNumber: number): Promise<IChatMessageCharacter> {
+async function getChatMessageCharacter(
+    chatLog: IChatLog,
+    key: keyof IChatMessageCharacters,
+    memberNumber: number): Promise<IChatMessageCharacter> {
   if (chatLog.characters && chatLog.characters[key]) {
     return chatLog.characters[key];
   }
