@@ -53,7 +53,7 @@ export class PopupComponent {
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       const tabId = tabs[0].id;
       retrieve(tabId, 'player').then(player => this.player = player);
-      retrieve(tabId, 'onlineFriends').then(friends => this.onlineFriends.data = friends);
+      retrieve(tabId, 'onlineFriends').then(friends => this.onlineFriends.data = friends || []);
       retrieve(tabId, 'chatRoomCharacter').then(characters => this.characters.data = characters);
 
       onChanged(tabId, (changes, areaName) => {
