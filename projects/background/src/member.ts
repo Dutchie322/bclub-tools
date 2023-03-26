@@ -14,6 +14,9 @@ interface PlayerContext {
 }
 
 export async function writeMember(context: PlayerContext, data: IAccountQueryResultOnlineFriend | IChatRoomCharacter) {
+  function isAccountQueryResultOnlineFriend(input: any): input is IAccountQueryResultOnlineFriend {
+    return (input as IAccountQueryResultOnlineFriend).ChatRoomName !== undefined;
+  }
   function isChatRoomCharacter(input: any): input is IChatRoomCharacter {
     return (input as IChatRoomCharacter).ID !== undefined;
   }
@@ -29,11 +32,23 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
 
   delete member.type;
 
+  if (isAccountQueryResultOnlineFriend(data)) {
+    member = Object.assign(member, mapAccountQueryResultOnlineFriend(data));
+  }
   if (isChatRoomCharacter(data)) {
     member = Object.assign(member, mapChatRoomCharacter(data));
   }
 
   return await addOrUpdateObjectStore('members', member);
+}
+
+function mapAccountQueryResultOnlineFriend(data: IAccountQueryResultOnlineFriend) {
+  return {
+    memberName: data.MemberName,
+    chatRoomName: data.ChatRoomName,
+    chatRoomSpace: data.ChatRoomSpace,
+    isPrivateRoom: data.Private
+  };
 }
 
 function mapChatRoomCharacter(data: IChatRoomCharacter) {

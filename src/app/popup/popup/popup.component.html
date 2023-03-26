@@ -61,10 +61,6 @@
       <ng-container matColumnDef="chatRoomName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Chat Room</th>
         <td mat-cell *matCellDef="let friend">
-          <ng-container *ngIf="friend.chatRoomSpace">
-            <span class="chat-room-space">{{ friend.chatRoomSpace }}</span>
-            -
-          </ng-container>
           <ng-container *ngIf="friend.isPrivateRoom">
             <span class="unavailable-chat-room">Private</span>
             <span *ngIf="friend.chatRoomName"> - </span>
@@ -73,9 +69,16 @@
           <span *ngIf="!friend.chatRoomName && !friend.isPrivateRoom" class="unavailable-chat-room">Not in a chat room</span>
         </td>
       </ng-container>
-      <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
-        <td mat-cell *matCellDef="let friend">{{ friend.type }}</td>
+      <ng-container matColumnDef="chatRoomSpace">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Chat Room Space</th>
+        <td mat-cell *matCellDef="let friend">
+          <ng-container *ngIf="friend.chatRoomSpace === null || friend.chatRoomSpace === undefined; else chatRoomSpaceAvailable">
+            <span class="unavailable-chat-room">None</span>
+          </ng-container>
+          <ng-template #chatRoomSpaceAvailable>
+            {{ formatChatRoomSpace(friend.chatRoomSpace) }}
+          </ng-template>
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="onlineFriendColumns; sticky: true"></tr>

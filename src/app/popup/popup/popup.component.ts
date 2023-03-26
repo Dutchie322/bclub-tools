@@ -40,7 +40,7 @@ export class PopupComponent {
 
   public characterColumns = ['name', 'pronouns', 'owner', 'reputation'];
   public chatRoomColumns = ['name', 'creator', 'members', 'description'];
-  public onlineFriendColumns = ['memberName', 'chatRoomName'];
+  public onlineFriendColumns = ['memberName', 'chatRoomName', 'chatRoomSpace'];
 
   get loggedIn() {
     return this.player && this.player.MemberNumber > 0;
@@ -192,6 +192,19 @@ export class PopupComponent {
         return 'Owner only';
       default:
         return permission;
+    }
+  }
+
+  public formatChatRoomSpace(space: string) {
+    switch (space) {
+      case '':
+        return 'Classic';
+      case 'M':
+        return 'Men\'s Lounge';
+      case 'X':
+        return 'Expanded';
+      default:
+        return space;
     }
   }
 
