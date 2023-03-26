@@ -12,6 +12,7 @@
           <mat-icon mat-list-icon>transgender</mat-icon>
           <div mat-line>Pronouns</div>
           <div mat-line>{{ pronouns(member) }}</div>
+          <div mat-line *ngIf="!member.pronouns" class="empty-value">Unknown</div>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>favorite</mat-icon>
