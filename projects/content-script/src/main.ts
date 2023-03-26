@@ -6,6 +6,8 @@ import { listenForUserSentEvents } from './user-input-listener';
 import { retrieveGlobal, log } from '../../../models';
 import { checkForLoggedInState } from './check-for-logged-in-state';
 import { characterAppearance } from './draw-listeners';
+import { requestOnlineFriends } from './update-friends';
+import { generateFireAndForgetScript } from './script-generators/fire-and-forget';
 
 function delay(milliseconds: number) {
   return new Promise((resolve => {
@@ -53,6 +55,12 @@ async function main() {
       generatePersistentScriptWithWait('ServerSocket', listenToServerEvents);
       generatePersistentScript(characterAppearance);
       log('Done injecting scripts.');
+    });
+
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request && request.type === 'popup' && request.event === 'UpdateFriends') {
+        generateFireAndForgetScript(requestOnlineFriends);
+      }
     });
   }
 }

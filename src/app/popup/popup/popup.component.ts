@@ -73,6 +73,11 @@ export class PopupComponent {
           this.player = changes.player.newValue;
         }
       });
+
+      chrome.tabs.sendMessage(tabId, {
+        type: 'popup',
+        event: 'UpdateFriends'
+      });
     });
 
     this.chatLogsService.findPlayerCharacters().then(members => {
