@@ -173,7 +173,8 @@ function hasAssetGroupName(value: ChatMessageDictionaryEntry): value is AssetGro
 }
 
 function hasText(value: ChatMessageDictionaryEntry): value is TextDictionaryEntry {
-  return isDictionary(value) && typeof (value as any).Text === 'string';
+  return isDictionary(value) &&
+    (typeof (value as any).Text === 'string' || typeof (value as any).Text === 'number');
 }
 
 function hasTextLookup(value: ChatMessageDictionaryEntry): value is TextLookupDictionaryEntry {
