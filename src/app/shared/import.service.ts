@@ -293,14 +293,14 @@ export class ImportService {
           const data = await Promise.all(memberPromises);
           const member = data.reduce((acc, cur) => Object.assign(acc, cur), {} as IMember);
 
-          update(`Importing member ${member.memberNumber} for ${memberNumber}`);
+          update(`Importing member ${member.memberNumber} for ${context}`);
           const transaction = await this.databaseService.transaction('members', 'readwrite');
           transaction.onerror = event => {
             reject(event);
           };
           const request = transaction.objectStore('members').add(member);
           request.addEventListener('success', _ => {
-            update(`Imported member ${member.memberNumber} for ${memberNumber}`, true);
+            update(`Imported member ${member.memberNumber} for ${context}`, true);
             resolve();
           });
         }));
