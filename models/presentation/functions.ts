@@ -63,7 +63,13 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
         Description: findAssetGroupDescription(entry.AssetGroupName)
       };
     } else if (hasText(entry)) {
-      substitutions.push([entry.Tag, String(entry.Text)]);
+      let tag = entry.Tag;
+      if (tag.startsWith('MISSING PLAYER DIALOG: ')) {
+        // Why?
+        tag = tag.substring('MISSING PLAYER DIALOG: '.length);
+      }
+
+      substitutions.push([tag, String(entry.Text)]);
     } else if (hasTextLookup(entry)) {
       substitutions.push([entry.Tag, findDialog(entry.TextToLookUp).toLocaleLowerCase()]);
     }
