@@ -196,11 +196,6 @@ function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
 }
 
 async function handleChatRoomMessage(tabId: number, message: IServerMessage<IEnrichedChatRoomMessage>) {
-  if (message.data.Type === 'Hidden' || message.data.Type === 'Status') {
-    // Ignore message types that don't contain useful info.
-    return;
-  }
-
   const chatLog = await writeChatLog(message.data);
   if (!message.inFocus) {
     notifyIncomingMessage(tabId, chatLog);

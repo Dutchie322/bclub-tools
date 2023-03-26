@@ -68,6 +68,15 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
   }
   const eventsToListenTo = {
     ChatRoomChat: (event: string, incomingData: IChatRoomChat) => {
+      if (!ChatRoomData || incomingData.Type === 'Hidden') {
+        // A chat room message without chat room data is useless to us. However, this seems to happen when other
+        // extensions are installed, so we will actively ignore these. Also to avoid (potentially, because we only
+        // store whispers from ChatRoomChat events) filling up our database with internal messages from other
+        // extensions, we will also ignore messages with type Hidden as this seems to be used by several extensions
+        // out there.
+        return;
+      }
+
       const data = {
         Content: incomingData.Content,
         Dictionary: incomingData.Dictionary,

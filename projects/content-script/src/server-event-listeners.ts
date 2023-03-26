@@ -22,13 +22,19 @@ import {
  * @param handshake A generated string to confirm origin of messages.
  */
 export function listenToServerEvents(handshake: string) {
-  function createForwarder<TIncomingMessage, TOutgoingMessage>(event: string, mapData?: (data: TIncomingMessage) => TOutgoingMessage) {
-    ServerSocket.listeners(event).unshift((data: TIncomingMessage) => {
+  function createForwarder<TIncomingMessage, TOutgoingMessage>(event: string, mapData?: (data: TIncomingMessage) => TOutgoingMessage | false) {
+    ServerSocket.listeners(event).unshift((incomingData: TIncomingMessage) => {
+      const data = mapData ? mapData(incomingData) : undefined;
+      if (data === false) {
+        // Don't send data to background script in case mapper return false
+        return;
+      }
+
       window.postMessage({
         handshake,
         type: 'server',
         event,
-        data: mapData ? mapData(data) : undefined,
+        data,
         inFocus: document.hasFocus()
       } as IServerMessage<TOutgoingMessage>, '*');
     });
@@ -72,9 +78,7 @@ export function listenToServerEvents(handshake: string) {
   }));
   createForwarder<IAccountQueryResult, any>('AccountQueryResult', data => {
     if (data.Query !== 'OnlineFriends') {
-      return {
-        Query: data.Query
-      };
+      return false;
     }
 
     return {
@@ -89,22 +93,29 @@ export function listenToServerEvents(handshake: string) {
       })) : []
     };
   });
-  createForwarder<IChatRoomMessage, any>('ChatRoomMessage', data => ({
-    Content: data.Content,
-    Dictionary: data.Dictionary,
-    Sender: data.Sender,
-    Type: data.Type,
-    ChatRoom: {
-      Background: ChatRoomData.Background,
-      Description: ChatRoomData.Description,
-      Name: ChatRoomData.Name,
-      Character: ChatRoomData.Character.map(mapCharacter)
-    },
-    SessionId: Player.OnlineID,
-    PlayerName: Player.Name,
-    MemberNumber: Player.MemberNumber,
-    Timestamp: new Date()
-  }));
+  createForwarder<IChatRoomMessage, any>('ChatRoomMessage', data => {
+    if (data.Type === 'Hidden' || data.Type === 'Status') {
+      // Ignore message types that don't contain useful info.
+      return false;
+    }
+
+    return {
+      Content: data.Content,
+      Dictionary: data.Dictionary,
+      Sender: data.Sender,
+      Type: data.Type,
+      ChatRoom: {
+        Background: ChatRoomData.Background,
+        Description: ChatRoomData.Description,
+        Name: ChatRoomData.Name,
+        Character: ChatRoomData.Character.map(mapCharacter)
+      },
+      SessionId: Player.OnlineID,
+      PlayerName: Player.Name,
+      MemberNumber: Player.MemberNumber,
+      Timestamp: new Date()
+    }
+  });
   createForwarder<IChatRoomSync, any>('ChatRoomSync', data => ({
     Name: data.Name,
     Description: data.Description,
