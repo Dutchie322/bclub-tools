@@ -23,10 +23,12 @@ import {
   IAccountQueryOnlineFriendsResult,
   addOrUpdateObjectStore,
   IChatRoomSyncCharacter,
-  retrieveMember
+  retrieveMember,
+  IClientAccountBeep
 } from '../../../models';
 import { notifyIncomingMessage } from './notifications';
 import { writeMember, writeFriends, removeChatRoomData } from './member';
+import { writeBeepMessage } from './beep-message';
 
 chrome.browserAction.onClicked.addListener(() => {
   chrome.tabs.create({
@@ -112,19 +114,22 @@ chrome.runtime.onMessage.addListener((message, sender) => {
 
 chrome.tabs.onRemoved.addListener(tabId => cleanUpData(tabId, true));
 
-function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtime.MessageSender) {
+async function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtime.MessageSender) {
   switch (message.event) {
+    case 'AccountBeep':
+      await handleClientAccountBeep(sender.tab.id, message);
+      break;
     case 'ChatRoomChat':
-      handleChatRoomChat(message);
+      await handleChatRoomChat(message);
       break;
     case 'ChatRoomLeave':
       handleChatRoomLeave(sender.tab.id);
       break;
     case 'CommonDrawAppearanceBuild':
-      handleCommonDrawAppearanceBuild(sender.tab.id, message);
+      await handleCommonDrawAppearanceBuild(sender.tab.id, message);
       break;
     case 'VariablesUpdate':
-      handleVariablesUpdate(sender.tab.id, message);
+      await handleVariablesUpdate(sender.tab.id, message);
       break;
     default:
       console.error('[Bondage Club Tools] Unhandled client message:');
@@ -133,42 +138,42 @@ function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtim
   }
 }
 
-function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtime.MessageSender) {
+async function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtime.MessageSender) {
   switch (message.event) {
     case 'AccountBeep':
       if (!message.data.BeepType) {
-        handleAccountBeep(sender.tab.id, message);
+        await handleAccountBeep(sender.tab.id, message);
       }
       break;
     case 'AccountQueryResult':
       if (message.data.Query === 'OnlineFriends') {
-        handleAccountQueryOnlineFriendsResult(sender.tab.id, message);
+        await handleAccountQueryOnlineFriendsResult(sender.tab.id, message);
       }
       break;
     case 'ChatRoomMessage':
-      handleChatRoomMessage(sender.tab.id, message);
+      await handleChatRoomMessage(sender.tab.id, message);
       break;
     case 'ChatRoomSync':
-      handleChatRoomSync(sender.tab.id, message);
+      await handleChatRoomSync(sender.tab.id, message);
       break;
     case 'ChatRoomSyncCharacter':
-      handleChatRoomSyncSingle(sender.tab.id, message);
+      await handleChatRoomSyncSingle(sender.tab.id, message);
       break;
     case 'ChatRoomSyncMemberJoin':
-      handleChatRoomSyncMemberJoin(sender.tab.id, message);
+      await handleChatRoomSyncMemberJoin(sender.tab.id, message);
       break;
     case 'ChatRoomSyncMemberLeave':
-      handleChatRoomSyncMemberLeave(sender.tab.id, message);
+      await handleChatRoomSyncMemberLeave(sender.tab.id, message);
       break;
     case 'ChatRoomSyncSingle':
-      handleChatRoomSyncSingle(sender.tab.id, message);
+      await handleChatRoomSyncSingle(sender.tab.id, message);
       break;
     case 'LoginResponse':
-      handleLoginResponse(sender.tab.id, message);
+      await handleLoginResponse(sender.tab.id, message);
       break;
     case 'disconnect':
     case 'ForceDisconnect':
-      handleDisconnect(sender.tab.id);
+      await handleDisconnect(sender.tab.id);
       break;
     default:
       console.error('[Bondage Club Tools] Unhandled server message:');
@@ -177,9 +182,14 @@ function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtim
   }
 }
 
+async function handleClientAccountBeep(tabId: number, message: IClientMessage<IClientAccountBeep>) {
+  const player = await retrieve(tabId, 'player');
+  await writeBeepMessage(player.MemberNumber, message.data, 'Outgoing');
+}
+
 async function handleAccountBeep(tabId: number, message: IServerMessage<IAccountBeep>) {
   const player = await retrieve(tabId, 'player');
-  // TODO Store beep message if there is any
+  await writeBeepMessage(player.MemberNumber, message.data, 'Incoming');
 }
 
 async function handleAccountQueryOnlineFriendsResult(tabId: number, message: IServerMessage<IAccountQueryOnlineFriendsResult>) {
@@ -189,17 +199,21 @@ async function handleAccountQueryOnlineFriendsResult(tabId: number, message: ISe
   store(tabId, 'onlineFriends', friends);
 }
 
-function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
-  if (message.data.Type === 'Whisper') {
-    writeChatLog(message.data);
+async function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
+  if (message.data.Type !== 'Whisper') {
+    return;
   }
+
+  await writeChatLog(message.data);
 }
 
 async function handleChatRoomMessage(tabId: number, message: IServerMessage<IEnrichedChatRoomMessage>) {
   const chatLog = await writeChatLog(message.data);
-  if (!message.inFocus) {
-    notifyIncomingMessage(tabId, chatLog);
+  if (message.inFocus) {
+    return;
   }
+
+  await notifyIncomingMessage(tabId, chatLog);
 }
 
 async function handleChatRoomSync(tabId: number, message: IServerMessage<IChatRoomSync>) {
@@ -236,13 +250,13 @@ function handleChatRoomLeave(tabId: number) {
   store(tabId, 'chatRoomCharacter', []);
 }
 
-function handleLoginResponse(tabId: number, message: IServerMessage<IPlayerWithRelations>) {
+async function handleLoginResponse(tabId: number, message: IServerMessage<IPlayerWithRelations>) {
   setPlayerLoggedIn(tabId, {
     MemberNumber: message.data.MemberNumber,
     Name: message.data.Name
   });
 
-  writeFriends(message.data);
+  await writeFriends(message.data);
 }
 
 async function handleCommonDrawAppearanceBuild(tabId: number, message: IClientMessage<any>) {
@@ -262,13 +276,13 @@ async function handleCommonDrawAppearanceBuild(tabId: number, message: IClientMe
   }
 }
 
-function handleDisconnect(tabId: number) {
-  cleanUpData(tabId);
+async function handleDisconnect(tabId: number) {
+  await cleanUpData(tabId);
 }
 
-function handleVariablesUpdate(tabId: number, message: IClientMessage<IVariablesUpdate>) {
+async function handleVariablesUpdate(tabId: number, message: IClientMessage<IVariablesUpdate>) {
   if (message.data.CurrentScreen === 'Login') {
-    cleanUpData(tabId);
+    await cleanUpData(tabId);
     return;
   }
 

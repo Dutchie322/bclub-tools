@@ -24,9 +24,16 @@ import {
 export function listenToServerEvents(handshake: string) {
   function createForwarder<TIncomingMessage, TOutgoingMessage>(event: string, mapData?: (data: TIncomingMessage) => TOutgoingMessage | false) {
     ServerSocket.listeners(event).unshift((incomingData: TIncomingMessage) => {
-      const data = mapData ? mapData(incomingData) : undefined;
+      let data: false | TOutgoingMessage = false;
+      try {
+        data = mapData ? mapData(incomingData) : undefined;
+      } catch (e) {
+        console.warn(`[Bondage Club Tools] Could not store data, skipping message ${event}. Game is unaffected.`, data, e);
+        return;
+      }
+
       if (data === false) {
-        // Don't send data to background script in case mapper return false
+        // Don't send data to background script in case mapper returns false
         return;
       }
 
@@ -68,14 +75,33 @@ export function listenToServerEvents(handshake: string) {
     };
   }
 
-  createForwarder<IAccountBeep, IAccountBeep>('AccountBeep', data => ({
-    BeepType: data.BeepType,
-    ChatRoomName: data.ChatRoomName,
-    ChatRoomSpace: data.ChatRoomSpace,
-    MemberName: data.MemberName,
-    MemberNumber: data.MemberNumber,
-    Message: data.Message
-  }));
+  createForwarder<IAccountBeep, IAccountBeep>('AccountBeep', data => {
+    if (data.BeepType || typeof data.Message !== 'string') {
+      // Ignore leashes, telemetry from extensions and empty messages
+      return false;
+    }
+
+    let message = data.Message;
+    if (message.includes("\uf124")) {
+      // Remove FBC metadata
+      message = message.split("\uf124")[0];
+    }
+    message = message.trim();
+    if (!message) {
+      // Sanity check
+      return false;
+    }
+
+    return {
+      BeepType: data.BeepType,
+      ChatRoomName: data.ChatRoomName,
+      ChatRoomSpace: data.ChatRoomSpace,
+      MemberName: data.MemberName,
+      MemberNumber: data.MemberNumber,
+      Message: message,
+      Private: data.Private
+    };
+  });
   createForwarder<IAccountQueryResult, any>('AccountQueryResult', data => {
     if (data.Query !== 'OnlineFriends') {
       return false;

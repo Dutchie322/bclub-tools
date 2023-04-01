@@ -4,5 +4,6 @@ export interface IAccountBeep {
   ChatRoomSpace: string | null;
   MemberName: string;
   MemberNumber: number;
-  Message: string;
+  Message?: string;
+  Private: boolean | null;
 }

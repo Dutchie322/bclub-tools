@@ -4,7 +4,8 @@ import {
   IChatRoomSearch,
   IClientMessage,
   IEnrichedChatRoomChat,
-  IAppearance
+  IAppearance,
+  IClientAccountBeep
 } from '../../../models';
 
 export function listenForUserSentEvents(handshake: string, searchInterval: number) {
@@ -67,6 +68,36 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
     };
   }
   const eventsToListenTo = {
+    AccountBeep: (event: string, incomingData: IClientAccountBeep) => {
+      if (incomingData.BeepType || typeof incomingData.Message !== 'string') {
+        // Ignore leashes and telemetry
+        return;
+      }
+
+      let message = incomingData.Message;
+      if (message.includes("\uf124")) {
+        // Remove FBC metadata
+        message = message.split("\uf124")[0];
+      }
+      message = message.trim();
+      if (!message) {
+        // Sanity check
+        return false;
+      }
+
+      const data = {
+        MemberName: incomingData.MemberName || Player.FriendNames.get(incomingData.MemberNumber),
+        MemberNumber: incomingData.MemberNumber,
+        Message: message
+      };
+
+      window.postMessage({
+        handshake,
+        type: 'client',
+        event,
+        data,
+      } as IClientMessage<IClientAccountBeep>, '*');
+    },
     ChatRoomChat: (event: string, incomingData: IChatRoomChat) => {
       if (!ChatRoomData || incomingData.Type === 'Hidden') {
         // A chat room message without chat room data is useless to us. However, this seems to happen when other

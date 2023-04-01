@@ -8,6 +8,7 @@ export interface IPlayer {
   MemberNumber: number;
   Name: string;
   FriendList: number[];
+  FriendNames: Map<number, string>;
   Lovership: ILovership[];
   Ownership?: IOwnership;
   OnlineID: string;

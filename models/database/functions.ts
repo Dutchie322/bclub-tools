@@ -1,8 +1,17 @@
-export type StoreNames = 'chatRoomLogs' | 'members';
+export type StoreNames = 'chatRoomLogs' | 'members' | 'beepMessages';
+
+/**
+ * Database changelog
+ *
+ * Version 5 (included in v0.6.0):
+ * - Removed type_idx from members
+ * - Fixed timestamp_idx and type_idx removal from chatRoomLogs
+ * - Added beepMessages object store
+ */
 
 export function openDatabase() {
   return new Promise<IDBDatabase>((resolve, reject) => {
-    const openRequest = indexedDB.open('bclub-tools', 4);
+    const openRequest = indexedDB.open('bclub-tools', 5);
 
     openRequest.addEventListener('blocked', () => {
       alert('Could not open database, make sure all tabs are closed and reload.');
@@ -31,6 +40,7 @@ export function openDatabase() {
 }
 
 function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
+  // chatRoomLogs
   let chatRoomLogsStore: IDBObjectStore;
   if (!db.objectStoreNames.contains('chatRoomLogs')) {
     chatRoomLogsStore = db.createObjectStore('chatRoomLogs', {
@@ -42,15 +52,17 @@ function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
     chatRoomLogsStore.createIndex('sessionId_idx', 'session.id');
     chatRoomLogsStore.createIndex('sessionMemberNumber_idx', 'session.memberNumber');
     chatRoomLogsStore.createIndex('member_session_chatRoom_idx', ['chatRoom', 'session.id', 'session.memberNumber'], { unique: false });
+  } else {
+    chatRoomLogsStore = transaction.objectStore('chatRoomLogs');
     if (chatRoomLogsStore.indexNames.contains('timestamp_idx')) {
       chatRoomLogsStore.deleteIndex('timestamp_idx');
     }
     if (chatRoomLogsStore.indexNames.contains('type_idx')) {
       chatRoomLogsStore.deleteIndex('type_idx');
     }
-  } else {
-    chatRoomLogsStore = transaction.objectStore('chatRoomLogs');
   }
+
+  // members
   let memberStore: IDBObjectStore;
   if (!db.objectStoreNames.contains('members')) {
     memberStore = db.createObjectStore('members', {
@@ -58,7 +70,21 @@ function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
       keyPath: ['playerMemberNumber', 'memberNumber']
     });
     memberStore.createIndex('memberName_idx', ['playerMemberNumber', 'memberName'], { unique: false });
-    memberStore.createIndex('type_idx', ['playerMemberNumber', 'type'], { unique: false });
+  } else {
+    memberStore = transaction.objectStore('members');
+    if (memberStore.indexNames.contains('type_idx')) {
+      memberStore.deleteIndex('type_idx');
+    }
+  }
+
+  // beepMessages
+  let beepMessagesStore: IDBObjectStore;
+  if (!db.objectStoreNames.contains('beepMessages')) {
+    beepMessagesStore = db.createObjectStore('beepMessages', {
+      autoIncrement: true,
+      keyPath: 'id'
+    });
+    beepMessagesStore.createIndex('context_member_idx', ['contextMemberNumber', 'memberNumber'], { unique: false });
   }
 }
 
