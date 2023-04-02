@@ -164,7 +164,7 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
 
               eventsToListenTo[args[0]].apply(this, args);
             } catch (e) {
-              console.warn('[Bondage Club Tools] Extension could not handle message, game is not affected:', args, 'Error:', e);
+              console.warn('[Bondage Club Tools] Could not handle message, game is not affected:', args, 'Error:', e);
             }
           }
           return returnValue;

@@ -28,7 +28,7 @@ export function listenToServerEvents(handshake: string) {
       try {
         data = mapData ? mapData(incomingData) : undefined;
       } catch (e) {
-        console.warn(`[Bondage Club Tools] Could not store data, skipping message ${event}. Game is unaffected.`, data, e);
+        console.warn(`[Bondage Club Tools] Could not store data, skipping message ${event}. Game is unaffected.`, data, 'Error:', e);
         return;
       }
 

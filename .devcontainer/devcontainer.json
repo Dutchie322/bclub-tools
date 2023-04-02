@@ -9,7 +9,8 @@
 			"extensions": [
 				"Angular.ng-template",
 				"cyrilletuzi.angular-schematics",
-				"EditorConfig.EditorConfig"
+				"EditorConfig.EditorConfig",
+				"eamodio.gitlens"
 			]
 		}
 	}
