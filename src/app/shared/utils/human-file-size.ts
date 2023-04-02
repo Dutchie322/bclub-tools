@@ -1,5 +1,5 @@
 // Large thank to https://stackoverflow.com/a/14919494/7866709
-export function humanFileSize(bytes: number, si: boolean = true) {
+export function humanFileSize(bytes: number, si = true) {
   const thresh = si ? 1000 : 1024;
   if (Math.abs(bytes) < thresh) {
     return bytes + ' B';

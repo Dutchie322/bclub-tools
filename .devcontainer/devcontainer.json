@@ -10,7 +10,8 @@
 				"Angular.ng-template",
 				"cyrilletuzi.angular-schematics",
 				"EditorConfig.EditorConfig",
-				"eamodio.gitlens"
+				"eamodio.gitlens",
+				"dbaeumer.vscode-eslint"
 			]
 		}
 	}

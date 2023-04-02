@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -34,7 +33,6 @@ import { MemberInfoComponent } from './member-info/member-info.component';
   imports: [
     // Angular modules
     CommonModule,
-    FlexLayoutModule,
     ReactiveFormsModule,
 
     // Material modules

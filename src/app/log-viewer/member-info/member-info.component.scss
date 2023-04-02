@@ -1,3 +1,18 @@
+.character-sheet {
+  display: grid;
+  grid-template-columns: 500px 240px 1fr 1fr;
+  gap: 0px 5px;
+  grid-template-rows: 64px auto;
+}
+
+.character-appearance {
+  grid-row: span 2 / auto;
+}
+
+.character-name {
+  grid-column: span 3 / auto;
+}
+
 .description {
   font-size: 16px;
   font-family: Arial;

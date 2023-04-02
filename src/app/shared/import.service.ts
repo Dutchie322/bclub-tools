@@ -6,7 +6,6 @@ import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 const ValidStoresForJsonImport = ['members', 'chatRoomLogs'] as StoreNames[];
-const ValidStoresForZipImport = ['members', 'chatRoomLogs'] as StoreNames[];
 
 type UpdateCallback = (text: string, progress?: boolean) => void;
 export interface IImportProgressState {
@@ -47,7 +46,7 @@ export class ImportService {
       }
 
       const reader = new FileReader();
-      reader.addEventListener('load', _ => {
+      reader.addEventListener('load', () => {
         const buffer = new Uint8Array(reader.result as ArrayBuffer);
         const header = buffer.reduce((prev, cur) => prev + cur.toString(16).padStart(2, '0'), '');
         console.log(`Loaded file with header ${header}`);
@@ -68,7 +67,7 @@ export class ImportService {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       if (fileType === 'json') {
-        reader.addEventListener('load', _ => {
+        reader.addEventListener('load', () => {
           const importObject = JSON.parse(reader.result as string, (__, value) => {
             if (typeof value === 'string' && ImportService.DateTimeRegex.test(value)) {
               return new Date(value);
@@ -79,7 +78,7 @@ export class ImportService {
         });
         reader.readAsText(file);
       } else if (fileType === 'zip') {
-        reader.addEventListener('load', _ => {
+        reader.addEventListener('load', () => {
           const archive = JSZip.loadAsync(reader.result as ArrayBuffer);
           resolve(archive);
         });
@@ -125,7 +124,7 @@ export class ImportService {
     return new Observable(subscriber => {
       const state = this.countSize(fileType, contents);
 
-      function update(text: string, progress: boolean = false) {
+      function update(text: string, progress = false) {
         if (progress) {
           state.progress++;
           state.percentage = state.progress / state.total * 100;
@@ -164,9 +163,10 @@ export class ImportService {
   }
 
   private async importDatabaseFromJson(update: UpdateCallback, importObject: JsonExport) {
-    return new Promise<void>(async (resolve, reject) => {
-      update('Importing database...');
-      const transaction = await this.databaseService.transaction(ValidStoresForJsonImport, 'readwrite');
+    update('Importing database...');
+    const transaction = await this.databaseService.transaction(ValidStoresForJsonImport, 'readwrite');
+
+    return new Promise<void>((resolve, reject) => {
       transaction.onerror = event => {
         reject(event);
       };
@@ -216,7 +216,7 @@ export class ImportService {
           return;
         }
 
-        promises.push(file.async('string').then(jsonString => {
+        promises.push(file.async('string').then(async jsonString => {
           update(`Reading ${relativePath}`);
           const data = JSON.parse(jsonString, (_, value) => {
             if (typeof value === 'string' && ImportService.DateTimeRegex.test(value)) {
@@ -225,9 +225,10 @@ export class ImportService {
             return value;
           }) as IChatLog[];
 
-          return new Promise<void>(async (resolve, reject) => {
-            update(`Importing ${relativePath}`);
-            const transaction = await this.databaseService.transaction('chatRoomLogs', 'readwrite');
+          update(`Importing ${relativePath}`);
+          const transaction = await this.databaseService.transaction('chatRoomLogs', 'readwrite');
+
+          return new Promise<void>((resolve, reject) => {
             transaction.onerror = event => {
               reject(event);
             };
@@ -235,7 +236,7 @@ export class ImportService {
             let count = 0;
             for (const chatLog of data) {
               const request = transaction.objectStore('chatRoomLogs').add(chatLog);
-              request.addEventListener('success', _ => {
+              request.addEventListener('success', () => {
                 count++;
                 if (count === data.length) {
                   update('Imported ' + relativePath, true);
@@ -252,54 +253,55 @@ export class ImportService {
       const context = contextFolder.name.substring('members/'.length, contextFolder.name.length - 1);
       update(`Start importing members for ${context}`);
 
-      archive.folder(contextFolder.name).folder(/^[\d]+\/$/).forEach(memberFolder => {
+      archive.folder(contextFolder.name).folder(/^[\d]+\/$/).forEach(async memberFolder => {
         const memberNumber = memberFolder.name.substring(contextFolder.name.length, memberFolder.name.length - 1);
         update(`Reading archive for ${memberNumber}`);
 
-        promises.push(new Promise<void>(async (resolve, reject) => {
-          const memberPromises = [] as Promise<IMember>[];
+        const memberPromises = [] as Promise<IMember>[];
 
-          archive.folder(memberFolder.name).forEach((relativePath, file) => {
-            switch (relativePath) {
-              case 'data.json':
-                update(`Reading data for ${memberFolder.name}`);
-                memberPromises.push(file.async('string').then(jsonString => {
-                  return JSON.parse(jsonString, (_, value) => {
-                    // tslint:disable-next-line: max-line-length
-                    if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3,6}|)Z$/.test(value)) {
-                      return new Date(value);
-                    }
-                    return value;
-                  }) as IMember;
-                }));
-                break;
+        archive.folder(memberFolder.name).forEach((relativePath, file) => {
+          switch (relativePath) {
+            case 'data.json':
+              update(`Reading data for ${memberFolder.name}`);
+              memberPromises.push(file.async('string').then(jsonString => {
+                return JSON.parse(jsonString, (_, value) => {
+                  // tslint:disable-next-line: max-line-length
+                  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3,6}|)Z$/.test(value)) {
+                    return new Date(value);
+                  }
+                  return value;
+                }) as IMember;
+              }));
+              break;
 
-              case 'appearance.png':
-                update(`Reading appearance for ${memberFolder.name}`);
-                memberPromises.push(file.async('base64').then(appearance => {
-                  return {
-                    appearance: 'data:image/png;base64,' + appearance
-                  } as IMember;
-                }));
+            case 'appearance.png':
+              update(`Reading appearance for ${memberFolder.name}`);
+              memberPromises.push(file.async('base64').then(appearance => {
+                return {
+                  appearance: 'data:image/png;base64,' + appearance
+                } as IMember;
+              }));
 
-                break;
+              break;
 
-              default:
-                console.warn(`Skipping unexpected file ${file.name}`);
-                break;
-            }
-          });
+            default:
+              console.warn(`Skipping unexpected file ${file.name}`);
+              break;
+          }
+        });
 
-          const data = await Promise.all(memberPromises);
-          const member = data.reduce((acc, cur) => Object.assign(acc, cur), {} as IMember);
+        const data = await Promise.all(memberPromises);
+        const member = data.reduce((acc, cur) => Object.assign(acc, cur), {} as IMember);
 
-          update(`Importing member ${member.memberNumber} for ${context}`);
-          const transaction = await this.databaseService.transaction('members', 'readwrite');
+        update(`Importing member ${member.memberNumber} for ${context}`);
+        const transaction = await this.databaseService.transaction('members', 'readwrite');
+
+        promises.push(new Promise<void>((resolve, reject) => {
           transaction.onerror = event => {
             reject(event);
           };
           const request = transaction.objectStore('members').add(member);
-          request.addEventListener('success', _ => {
+          request.addEventListener('success', () => {
             update(`Imported member ${member.memberNumber} for ${context}`, true);
             resolve();
           });
@@ -307,6 +309,6 @@ export class ImportService {
       });
     });
 
-    return Promise.all(promises).then(_ => update('Done importing.'));
+    return Promise.all(promises).then(() => update('Done importing.'));
   }
 }

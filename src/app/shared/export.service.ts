@@ -144,9 +144,9 @@ export class ExportService {
           update('Generating chat log files');
 
           for (const memberNumber in subfolders) {
-            if (subfolders.hasOwnProperty(memberNumber)) {
+            if (Object.prototype.hasOwnProperty.call(subfolders, memberNumber)) {
               for (const file in subfolders[memberNumber].files) {
-                if (subfolders[memberNumber].files.hasOwnProperty(file)) {
+                if (Object.prototype.hasOwnProperty.call(subfolders[memberNumber].files, file)) {
                   const data = subfolders[memberNumber].files[file];
                   const fileName = `${this.timestampToSortableFileName(data[0].timestamp)} - ${data[0].chatRoom}.json`;
                   subfolders[memberNumber].folder.file(fileName, JSON.stringify(data, undefined, 2), {

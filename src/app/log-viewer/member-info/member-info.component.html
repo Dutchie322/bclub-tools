@@ -1,9 +1,9 @@
 <ng-container [formGroup]="memberForm" *ngIf="member$ | async; let member">
-  <div gdGap="0 5px" gdColumns="500px 240px 1fr 1fr" gdRows="64px auto">
-    <div [ngStyle]="imageContainerStyle" gdRow="span 2">
+  <div class="character-sheet">
+    <div class="character-appearance" [ngStyle]="imageContainerStyle">
       <img #appearanceImage [src]="member.appearance || ''" [ngStyle]="imageStyle" (load)="calculateAppearanceImageStyles($event.target)" />
     </div>
-    <mat-toolbar gdColumn="span 3">
+    <mat-toolbar class="character-name">
       <span class="member-name" [ngStyle]="{ color: member.labelColor || 'inherit' }">{{ member.nickname || member.memberName }}</span>
     </mat-toolbar>
     <div>
