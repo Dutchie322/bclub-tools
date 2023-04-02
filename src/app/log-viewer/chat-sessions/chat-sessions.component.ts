@@ -17,7 +17,7 @@ import { map, tap, takeUntil } from 'rxjs/operators';
   styleUrls: ['./chat-sessions.component.scss']
 })
 export class ChatSessionsComponent implements OnDestroy {
-  private destroySubject = new Subject();
+  private destroySubject = new Subject<void>();
 
   @ViewChild('chatSessionsPaginator', { static: true })
   public set chatSessionsPaginator(paginator: MatPaginator) {

@@ -17,24 +17,22 @@ export async function notifyIncomingMessage(tabId: number, chatLog: IChatLog) {
       case 'Action':
       case 'Activity':
       case 'ServerMessage': {
-        const opt = {
+        chrome.notifications.create('', {
           type: 'basic',
           title: `Mentioned by ${chatLog.sender.name}`,
           message: content,
           iconUrl: 'assets/bclub-logo.png'
-        };
-        chrome.notifications.create('', opt);
+        });
         break;
       }
       case 'Emote':
       case 'Chat': {
-        const opt = {
+        chrome.notifications.create('', {
           type: 'basic',
           title: `Mentioned by ${chatLog.sender.name}`,
           message: content,
           iconUrl: 'assets/bclub-logo.png'
-        };
-        chrome.notifications.create('', opt);
+        });
         break;
       }
     }
