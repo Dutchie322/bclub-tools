@@ -2,20 +2,23 @@
 <ng-container [formGroup]="settingsForm">
   <mat-list formGroupName="notifications">
     <h2 matSubheader>Notifications</h2>
-    <mat-form-field style="padding-left: 16px">
+    <mat-form-field style="padding-left: 16px; width: 500px">
       <mat-label>Extra keywords to notify for</mat-label>
-      <mat-chip-list #chipList formControlName="keywords">
-        <mat-chip *ngFor="let keyword of notifyKeywordsControl.value"
+      <mat-chip-grid #chipList formControlName="keywords">
+        <mat-chip-row *ngFor="let keyword of notifyKeywordsControl.value"
                   [removable]="true"
                   (removed)="removeKeyword(keyword)">
           {{ keyword }}
-          <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
+          <button matChipRemove [attr.aria-label]="'remove ' + keyword">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
         <input placeholder="New keyword..."
                [matChipInputFor]="chipList"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                [matChipInputAddOnBlur]="true"
                (matChipInputTokenEnd)="addKeyword($event)">
-      </mat-chip-list>
+      </mat-chip-grid>
     </mat-form-field>
     <mat-divider></mat-divider>
   </mat-list>

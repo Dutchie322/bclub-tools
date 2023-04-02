@@ -1,3 +1,4 @@
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnDestroy } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -18,6 +19,7 @@ import { ImportService, IImportProgressState } from 'src/app/shared/import.servi
   styleUrls: ['./options.component.scss']
 })
 export class OptionsComponent implements OnDestroy {
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
   public chatRoomRefreshIntervals = [
     0,
     10,
