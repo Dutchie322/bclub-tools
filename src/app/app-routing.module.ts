@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
-import { QueryPathRouterGuard } from './query-path-router.guard';
 
 const routes: Routes = [
   {
@@ -19,8 +18,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: AppComponent,
-    canActivate: [QueryPathRouterGuard]
+    component: AppComponent
   }
 ];
 
@@ -28,12 +26,13 @@ const routes: Routes = [
   declarations: [
   ],
   providers: [
-    QueryPathRouterGuard
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    }
   ],
   imports: [
-    RouterModule.forRoot(routes, {
-      useHash: false
-    })
+    RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
 })

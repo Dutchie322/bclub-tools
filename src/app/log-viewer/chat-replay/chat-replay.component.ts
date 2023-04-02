@@ -39,14 +39,14 @@ export class ChatReplayComponent {
       tap(() => this.loadingSubject.next(true)),
       switchMap(([showWhispers, params]) =>
         this.chatLogsService.findChatReplay(params.memberNumber, params.sessionId, params.chatRoom).pipe(
-          reduce<IChatLog>((acc, value) => {
+          reduce((acc, value) => {
             if (value.type === 'Whisper' && !showWhispers) {
               return acc;
             }
 
             acc.push(value);
             return acc;
-          }, [])
+          }, [] as IChatLog[])
         )
       ),
       tap(() => this.loadingSubject.next(false))

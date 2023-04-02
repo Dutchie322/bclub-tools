@@ -111,7 +111,7 @@ export class PopupComponent {
   }
 
   public openLogViewer(memberNumber?: number) {
-    let url = '/index.html?page=/log-viewer';
+    let url = '/index.html#/log-viewer';
     if (memberNumber) {
       url += '/' + memberNumber;
     } else if (this.loggedIn) {
@@ -127,7 +127,7 @@ export class PopupComponent {
       chrome.runtime.openOptionsPage();
     } else {
       chrome.tabs.create({
-        url: '/index.html?page=/options'
+        url: '/index.html#/options'
       });
     }
   }
