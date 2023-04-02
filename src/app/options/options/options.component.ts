@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Subscription, Observable, combineLatest, ReplaySubject } from 'rxjs';
 import { tap, map, throttleTime, switchMap } from 'rxjs/operators';
 import { storeGlobal, ISettings, retrieveGlobal, executeForAllGameTabs, IMember } from 'models';

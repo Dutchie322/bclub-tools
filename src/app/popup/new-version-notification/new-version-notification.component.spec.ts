@@ -4,7 +4,7 @@ import * as chrome from 'sinon-chrome';
 
 import { NewVersionNotificationComponent } from './new-version-notification.component';
 import { PopupModule } from '../popup.module';
-import { MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatLegacySnackBarRef as MatSnackBarRef } from '@angular/material/legacy-snack-bar';
 
 describe('NewVersionNotificationComponent', () => {
   let component: NewVersionNotificationComponent;
