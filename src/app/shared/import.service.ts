@@ -265,7 +265,6 @@ export class ImportService {
               update(`Reading data for ${memberFolder.name}`);
               memberPromises.push(file.async('string').then(jsonString => {
                 return JSON.parse(jsonString, (_, value) => {
-                  // tslint:disable-next-line: max-line-length
                   if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3,6}|)Z$/.test(value)) {
                     return new Date(value);
                   }

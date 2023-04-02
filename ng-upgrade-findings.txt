@@ -3,5 +3,4 @@
 - Search fields are invisible in character/people overview
 - Extra keywords input field is misaligned in options view
 - Buttons look weird and are missing colours in options view
-- Toast is missing background
 - Show whispers toggle doesn't show state

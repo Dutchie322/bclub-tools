@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
 import { MatSortModule } from '@angular/material/sort';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { PopupComponent } from './popup/popup.component';
 import { PopupRoutingModule } from './popup-routing.module';
 import { SharedModule } from '../shared/shared.module';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NewVersionNotificationComponent } from './new-version-notification/new-version-notification.component';
 
 @NgModule({

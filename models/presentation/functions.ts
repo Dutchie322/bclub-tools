@@ -1,4 +1,4 @@
-// tslint:disable-next-line
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="./Typedef.d.ts" />
 
 import { parse as parseCsv } from 'papaparse';

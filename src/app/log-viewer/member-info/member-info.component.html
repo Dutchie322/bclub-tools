@@ -1,106 +1,124 @@
 <ng-container [formGroup]="memberForm" *ngIf="member$ | async; let member">
-  <div class="character-sheet">
-    <div class="character-appearance" [ngStyle]="imageContainerStyle">
+  <div class="character-sheet" [ngClass]="{'with-appearance': !!member.appearance, 'without-appearance': !member.appearance}">
+    <div *ngIf="member.appearance" class="character-appearance" [ngStyle]="imageContainerStyle">
       <img #appearanceImage [src]="member.appearance || ''" [ngStyle]="imageStyle" (load)="calculateAppearanceImageStyles($event.target)" />
     </div>
     <mat-toolbar class="character-name">
-      <span class="member-name" [ngStyle]="{ color: member.labelColor || 'inherit' }">{{ member.nickname || member.memberName }}</span>
+      <h1 [ngStyle]="{ color: member.labelColor || 'inherit' }">{{ member.nickname || member.memberName }}</h1>
     </mat-toolbar>
-    <div>
+    <div class="character-data">
       <mat-list>
         <mat-list-item>
-          <mat-icon mat-list-icon>transgender</mat-icon>
-          <div mat-line>Pronouns</div>
-          <div mat-line>{{ pronouns(member) }}</div>
-          <div mat-line *ngIf="!member.pronouns" class="empty-value">Unknown</div>
+          <mat-icon matListItemIcon>transgender</mat-icon>
+          <h3 matListItemTitle>Pronouns</h3>
+          <span matListItemLine *ngIf="member.pronouns">{{ pronouns(member) }}</span>
+          <span matListItemLine *ngIf="!member.pronouns" class="empty-value">Unknown</span>
         </mat-list-item>
         <mat-list-item>
-          <mat-icon mat-list-icon>favorite</mat-icon>
-          <div mat-line>Lovers</div>
-          <div mat-line class="relationship" *ngFor="let lover of member.lovership">
-            <ng-container *ngIf="lover.memberNumber; else npcLover">
-              {{ lover.name }} ({{ lover.memberNumber }})
-              <div mat-line class="relationship-stage">
-                {{ lovershipStageToName(lover.stage) }} for {{ timeToDays(lover.start) }} days (since {{ lover.start | date }})
-              </div>
-            </ng-container>
-            <ng-template #npcLover>
-              {{ lover.name | slice:4 }}
-            </ng-template>
-          </div>
-          <div mat-line *ngIf="!member.lovership || member.lovership.length === 0" class="empty-value">None</div>
+          <mat-icon matListItemIcon>textsms</mat-icon>
+          <h3 matListItemTitle>Title</h3>
+          <span matListItemLine>{{ member.title }}</span>
         </mat-list-item>
         <mat-list-item>
-          <mat-icon mat-list-icon>supervisor_account</mat-icon>
-          <div mat-line>Owner</div>
-          <div mat-line class="relationship" *ngIf="member.ownership; else noOwner">
-            <ng-container *ngIf="member.ownership.memberNumber; else npcOwner">
-              {{ member.ownership.name }} ({{ member.ownership.memberNumber }})
-              <div mat-line class="relationship-stage">
-                {{ ownershipStageToName(member.ownership.stage) }} for {{ timeToDays(member.ownership.start) }} days (since {{ member.ownership.start | date }})
-              </div>
-            </ng-container>
-            <ng-template #npcOwner>
-              {{ member.ownership.name | slice:4 }}
-            </ng-template>
-          </div>
-          <ng-template #noOwner>
-            <div mat-line class="empty-value">None</div>
-          </ng-template>
+          <mat-icon matListItemIcon>psychology</mat-icon>
+          <h3 matListItemTitle>{{ member.dominant < 0 ? 'Submissive' : 'Dominant' }}</h3>
+          <span matListItemLine>{{ member.dominant ? absolute(member.dominant) + '%' : 'Neutral' }}</span>
         </mat-list-item>
         <mat-list-item>
-          <mat-icon mat-list-icon>textsms</mat-icon>
-          <div mat-line>Title</div>
-          <div mat-line>{{ member.title }}</div>
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon mat-list-icon>psychology</mat-icon>
-          <div mat-line>{{ member.dominant < 0 ? 'Submissive' : 'Dominant' }}</div>
-          <div mat-line>{{ member.dominant ? absolute(member.dominant) + '%' : 'Neutral' }}</div>
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon mat-list-icon>access_time</mat-icon>
-          <div mat-line>Last Seen</div>
-          <div mat-line *ngIf="member.lastSeen; else noLastSeen">
-            <div mat-line>{{ member.lastSeen | date:'mediumDate' }}</div>
-            <div mat-line>{{ member.lastSeen | date:'mediumTime' }}</div>
-            <div mat-line>({{ timeToDays(member.lastSeen) }} days ago)</div>
-          </div>
+          <mat-icon matListItemIcon>access_time</mat-icon>
+          <h3 matListItemTitle>Last Seen</h3>
+          <ng-container *ngIf="member.lastSeen; else noLastSeen" ngProjectAs="[matListItemLine]">
+            <span matListItemLine>{{ member.lastSeen | date:'MMM d, y, h:mm a' }}</span>
+            <span matListItemLine>({{ timeToDays(member.lastSeen) }} days ago)</span>
+          </ng-container>
           <ng-template #noLastSeen>
-            <div mat-line class="empty-value">Unknown</div>
+            <span matListItemLine class="empty-value">Unknown</span>
           </ng-template>
         </mat-list-item>
         <mat-list-item>
-          <mat-icon mat-list-icon>person_add</mat-icon>
-          <div mat-line>Join Date</div>
-          <div mat-line *ngIf="member.creation; else noCreation">
-            <div mat-line>{{ member.creation | date:'mediumDate' }}</div>
-            <div mat-line>{{ member.creation | date:'mediumTime' }}</div>
-            <div mat-line>({{ timeToDays(member.creation) }} days ago)</div>
-          </div>
+          <mat-icon matListItemIcon>person_add</mat-icon>
+          <h3 matListItemTitle>Join Date</h3>
+          <ng-container *ngIf="member.creation; else noCreation" ngProjectAs="[matListItemLine]">
+            <span matListItemLine>{{ member.creation | date:'MMM d, y, h:mm a' }}</span>
+            <span matListItemLine>({{ timeToDays(member.creation) }} days ago)</span>
+          </ng-container>
           <ng-template #noCreation>
-            <div mat-line class="empty-value">Unknown</div>
+            <span matListItemLine class="empty-value">Unknown</span>
           </ng-template>
         </mat-list-item>
         <mat-list-item>
-          <mat-icon mat-list-icon>format_list_numbered</mat-icon>
-          <div mat-line>Member Number</div>
-          <div mat-line>{{ member.memberNumber }}</div>
+          <mat-icon matListItemIcon>format_list_numbered</mat-icon>
+          <h3 matListItemTitle>Member Number</h3>
+          <span matListItemLine>{{ member.memberNumber }}</span>
         </mat-list-item>
         <mat-list-item *ngIf="member.nickname">
-          <mat-icon mat-list-icon>person</mat-icon>
-          <div mat-line>Account name</div>
-          <div mat-line>{{ member.memberName }}</div>
+          <mat-icon matListItemIcon>person</mat-icon>
+          <h3 matListItemTitle>Account name</h3>
+          <span matListItemLine>{{ member.memberName }}</span>
         </mat-list-item>
       </mat-list>
     </div>
-    <div>
-      <h2>Description</h2>
-      <div class="description">{{ decompress(member.description) }}</div>
+    <div class="main">
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>description</mat-icon>
+            Description
+          </ng-template>
+          <div class="description">{{ decompress(member.description) }}</div>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>edit_note</mat-icon>
+            Notes
+          </ng-template>
+          <textarea formControlName="notes" class="notes"></textarea>
+        </mat-tab>
+      </mat-tab-group>
     </div>
-    <div>
-      <h2>Notes</h2>
-      <textarea formControlName="notes" class="notes"></textarea>
+    <div class="relationships">
+      <mat-list>
+        <mat-list-item>
+          <mat-icon matListItemIcon>supervisor_account</mat-icon>
+          <h3 matListItemTitle>Owner</h3>
+        </mat-list-item>
+        <mat-list-item class="relationship">
+          <ng-container *ngIf="member.ownership; else noOwner" ngProjectAs="[matListItemLine]">
+            <ng-container *ngIf="member.ownership.memberNumber; else npcOwner">
+              <span matListItemLine><b>{{ member.ownership.name }} ({{ member.ownership.memberNumber }})</b></span>
+              <span matListItemLine>{{ ownershipStageToName(member.ownership.stage) }} for {{ timeToDays(member.ownership.start) }} days</span>
+              <span matListItemLine>(since {{ member.ownership.start | date }})</span>
+            </ng-container>
+            <ng-template #npcOwner>
+              <span matListItemLine>{{ member.ownership.name | slice:4 }}</span>
+            </ng-template>
+          </ng-container>
+          <ng-template #noOwner>
+            <span matListItemLine class="empty-value">None</span>
+          </ng-template>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListItemIcon>favorite</mat-icon>
+          <h3 matListItemTitle>Lovers</h3>
+        </mat-list-item>
+        <span *ngIf="!member.lovership || member.lovership.length === 0; else loversList" matListItemLine class="empty-value">None</span>
+        <ng-template #loversList>
+          <ng-container *ngFor="let lover of member.lovership" ngProjectAs="mat-list-item">
+            <ng-container *ngIf="lover.memberNumber; else npcLover">
+              <mat-list-item class="relationship">
+                <span matListItemLine><b>{{ lover.name }} ({{ lover.memberNumber }})</b></span>
+                <span matListItemLine>{{ lovershipStageToName(lover.stage) }} for {{ timeToDays(lover.start) }} days</span>
+                <span matListItemLine>(since {{ lover.start | date }})</span>
+              </mat-list-item>
+            </ng-container>
+            <ng-template #npcLover>
+              <mat-list-item class="relationship">
+                <span matListItemLine>{{ lover.name | slice:4 }}</span>
+              </mat-list-item>
+            </ng-template>
+          </ng-container>
+        </ng-template>
+      </mat-list>
     </div>
   </div>
 </ng-container>

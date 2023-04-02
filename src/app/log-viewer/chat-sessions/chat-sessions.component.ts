@@ -1,12 +1,12 @@
 import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ChatLogsService } from '../../shared/chat-logs.service';
 import { IChatSession } from '../../shared/models';
 import { IMember } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
+import { MatPaginator } from '@angular/material/paginator';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { map, tap, takeUntil } from 'rxjs/operators';
