@@ -5,6 +5,10 @@
         {
           "version": "0.4.0",
           "update_link": "https://github.com/Dutchie322/bclub-tools/releases/download/v0.4.0/bondage_club_tools-0.4.0-fx.xpi"
+        },
+        {
+          "version": "0.5.0",
+          "update_link": "https://github.com/Dutchie322/bclub-tools/releases/download/v0.5.0/bclub-tools-firefox.xpi"
         }
       ]
     }
