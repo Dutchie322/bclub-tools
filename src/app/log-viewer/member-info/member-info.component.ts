@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, tap, map, switchMap, mergeMap } from 'rxjs/operators';
@@ -23,8 +23,8 @@ export class MemberInfoComponent implements OnDestroy {
 
   public imageContainerStyle: NgStyle['ngStyle'];
   public imageStyle: NgStyle['ngStyle'];
-  public memberForm = new FormGroup({
-    notes: new FormControl('')
+  public memberForm = new UntypedFormGroup({
+    notes: new UntypedFormControl('')
   });
 
   public decompress = decompress;

@@ -7,7 +7,7 @@ import { IChatSession } from '../../shared/models';
 import { IMember } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
 import { MatPaginator } from '@angular/material/paginator';
-import { FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { map, tap, takeUntil } from 'rxjs/operators';
 
@@ -58,9 +58,9 @@ export class ChatSessionsComponent implements OnDestroy {
 
   public members = new MatTableDataSource<IMember>();
   public membersColumns = ['memberName', 'memberNumber', 'lastSeen'];
-  public memberSearchForm = new FormGroup({
-    memberName: new FormControl(''),
-    memberNumber: new FormControl('')
+  public memberSearchForm = new UntypedFormGroup({
+    memberName: new UntypedFormControl(''),
+    memberNumber: new UntypedFormControl('')
   });
 
   constructor(

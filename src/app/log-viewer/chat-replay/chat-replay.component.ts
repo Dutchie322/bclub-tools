@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 import { map, reduce, switchMap, startWith, tap } from 'rxjs/operators';
@@ -16,7 +16,7 @@ export class ChatReplayComponent {
   private loadingSubject = new BehaviorSubject<boolean>(true);
 
   public loading$: Observable<boolean>;
-  public showWhispers = new FormControl(true);
+  public showWhispers = new UntypedFormControl(true);
   public chatReplay$: Observable<IChatLog[]>;
 
   constructor(

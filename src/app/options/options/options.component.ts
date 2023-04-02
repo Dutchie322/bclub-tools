@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, Observable, combineLatest, ReplaySubject } from 'rxjs';
@@ -31,15 +31,15 @@ export class OptionsComponent implements OnDestroy {
 
   private formSubscription: Subscription;
 
-  public dataForm = new FormGroup({
-    exportAppearances: new FormControl(false)
+  public dataForm = new UntypedFormGroup({
+    exportAppearances: new UntypedFormControl(false)
   });
-  public settingsForm = new FormGroup({
-    notifications: new FormGroup({
-      keywords: new FormControl([])
+  public settingsForm = new UntypedFormGroup({
+    notifications: new UntypedFormGroup({
+      keywords: new UntypedFormControl([])
     }),
-    tools: new FormGroup({
-      chatRoomRefreshInterval: new FormControl(0)
+    tools: new UntypedFormGroup({
+      chatRoomRefreshInterval: new UntypedFormControl(0)
     })
   });
   public databaseSize$: Observable<string>;
@@ -48,12 +48,12 @@ export class OptionsComponent implements OnDestroy {
 
   private refreshDatabaseSize$ = new ReplaySubject<void>(1);
 
-  public get notificationControls(): FormGroup {
-    return this.settingsForm.get('notifications') as FormGroup;
+  public get notificationControls(): UntypedFormGroup {
+    return this.settingsForm.get('notifications') as UntypedFormGroup;
   }
 
-  public get notifyKeywordsControl(): FormControl {
-    return this.notificationControls.get('keywords') as FormControl;
+  public get notifyKeywordsControl(): UntypedFormControl {
+    return this.notificationControls.get('keywords') as UntypedFormControl;
   }
 
   constructor(
