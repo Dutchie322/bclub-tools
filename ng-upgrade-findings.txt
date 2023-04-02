@@ -1,3 +1,2 @@
-- Debug build generates filenames which are too long, breaking lazy module loading
 - Options page does not open when an extension page is already open (because of location hash)
 - Player popup is empty (probably also because of location hash)
