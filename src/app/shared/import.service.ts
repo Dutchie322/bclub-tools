@@ -164,7 +164,7 @@ export class ImportService {
   }
 
   private async importDatabaseFromJson(update: UpdateCallback, importObject: JsonExport) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       update('Importing database...');
       const transaction = await this.databaseService.transaction(ValidStoresForJsonImport, 'readwrite');
       transaction.onerror = event => {
@@ -225,7 +225,7 @@ export class ImportService {
             return value;
           }) as IChatLog[];
 
-          return new Promise(async (resolve, reject) => {
+          return new Promise<void>(async (resolve, reject) => {
             update(`Importing ${relativePath}`);
             const transaction = await this.databaseService.transaction('chatRoomLogs', 'readwrite');
             transaction.onerror = event => {
@@ -256,7 +256,7 @@ export class ImportService {
         const memberNumber = memberFolder.name.substring(contextFolder.name.length, memberFolder.name.length - 1);
         update(`Reading archive for ${memberNumber}`);
 
-        promises.push(new Promise(async (resolve, reject) => {
+        promises.push(new Promise<void>(async (resolve, reject) => {
           const memberPromises = [] as Promise<IMember>[];
 
           archive.folder(memberFolder.name).forEach((relativePath, file) => {
