@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatSnackBarRef } from '@angular/material';
+import { MatSnackBarRef } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-new-version-notification',

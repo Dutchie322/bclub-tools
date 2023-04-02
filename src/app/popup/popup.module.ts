@@ -12,7 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { PopupComponent } from './popup/popup.component';
 import { PopupRoutingModule } from './popup-routing.module';
 import { SharedModule } from '../shared/shared.module';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NewVersionNotificationComponent } from './new-version-notification/new-version-notification.component';
 
 @NgModule({

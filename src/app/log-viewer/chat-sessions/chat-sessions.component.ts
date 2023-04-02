@@ -6,7 +6,7 @@ import { ChatLogsService } from '../../shared/chat-logs.service';
 import { IChatSession } from '../../shared/models';
 import { IMember } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { map, tap, takeUntil } from 'rxjs/operators';
