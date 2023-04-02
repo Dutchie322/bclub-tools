@@ -20,9 +20,6 @@ import { NewVersionNotificationComponent } from './new-version-notification/new-
     PopupComponent,
     NewVersionNotificationComponent
   ],
-  entryComponents: [
-    NewVersionNotificationComponent
-  ],
   imports: [
     CommonModule,
     SharedModule,

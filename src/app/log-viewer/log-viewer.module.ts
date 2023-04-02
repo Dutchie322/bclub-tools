@@ -31,9 +31,6 @@ import { MemberInfoComponent } from './member-info/member-info.component';
     PlayerCharactersComponent,
     MemberInfoComponent
   ],
-  entryComponents: [
-    ChatLineComponent
-  ],
   imports: [
     // Angular modules
     CommonModule,
