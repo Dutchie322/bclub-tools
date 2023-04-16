@@ -17,7 +17,7 @@
         <mat-list-item>
           <mat-icon matListItemIcon>textsms</mat-icon>
           <h3 matListItemTitle>Title</h3>
-          <span matListItemLine>{{ member.title }}</span>
+          <span matListItemLine>{{ title(member) | async }}</span>
         </mat-list-item>
         <mat-list-item>
           <mat-icon matListItemIcon>psychology</mat-icon>

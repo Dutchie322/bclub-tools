@@ -46,7 +46,8 @@ function downloadFile(file, destination) {
 const assets = [
   'Assets/Female3DCG/Female3DCG.csv',
   'Screens/Character/Preference/ActivityDictionary.csv',
-  'Screens/Character/Player/Dialog_Player.csv'
+  'Screens/Character/Player/Dialog_Player.csv',
+  'Screens/Character/InformationSheet/Text_InformationSheet.csv'
 ];
 
 const scripts = [

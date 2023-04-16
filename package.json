@@ -13,7 +13,7 @@
     "build-debug:popup": "ng build --aot",
     "build-debug:background": "webpack-cli --config ./projects/background/webpack.config.js --context ./projects/background/ --mode=development",
     "build-debug:content-script": "webpack-cli --config ./projects/content-script/webpack.config.js --context ./projects/content-script/ --mode=development",
-    "tool:update-externals": "node ./tools/update-externals.js 0d6afacd64e53bd4ec0e8f7698eb47e1352938cb",
+    "tool:update-externals": "node ./tools/update-externals.js 313c34760354be34b45d5835044a946943103010",
     "package": "node ./release/create-package.js",
     "test": "ng test",
     "test:ci": "npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI",

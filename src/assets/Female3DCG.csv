@@ -159,6 +159,7 @@ ClothLower,ElegantSkirt,Elegant Skirt
 ClothLower,RuffledSkirt,Ruffled Skirt
 ClothLower,CrossSkirt,Cross Skirt
 ClothLower,CheerleaderSkirt,Cheerleader Skirt
+ClothLower,CrossSkirtLight,Cross Skirt (light)
 SuitLower,,Suit Lower
 SuitLower,Catsuit,Catsuit
 SuitLower,SeamlessCatsuit, Seamless Catsuit
@@ -282,6 +283,8 @@ Panties,Thong,Thong 2
 Panties,StringThong,String Thong
 Panties,MicroThong,Micro Thong
 Panties,BoxerShorts,Boxer Shorts
+Panties,Briefs,Briefs
+Panties,Jockstrap,Jockstrap
 Socks,,Socks
 Socks,Socks0,Ankle
 Socks,Socks1,Short
@@ -354,6 +357,7 @@ LeftAnklet,Ribbon1,Ribbon Bow
 Garters,,Garters
 Garters,GarterBelt,Leather Garter Belts
 Garters,GarterBelt2,Leather Garter Belt
+Garters,GarterBelt3,Lace and Satin Garter Belt
 Garters,Tentacles,Tentacles
 Garters,DropBag,Drop Bag
 Shoes,,Shoes
@@ -417,6 +421,7 @@ Hat,PoppyCrown,Poppy Crown
 Hat,LatexHabit,Latex Habit
 Hat,BallCapBack,Baseball Cap Back
 Hat,BallCapFront,Baseball Cap Front
+Hat,SwimCap,Swim Cap
 HairAccessory3,,Hair Accessory
 HairAccessory3,Ribbons1,Hair Ribbon 1
 HairAccessory3,Ribbons2,Hair Ribbon 2
@@ -555,6 +560,7 @@ Mask,Glitter,Glitter
 Mask,HeadHarness,Head Harness
 Mask,FestivalFoxMask,Festival Fox Mask
 Mask,Kissmark,Lipstick Marks
+Mask,SwimCap,Swim Cap
 Jewelry,,Jewelry
 Jewelry,JewelrySet,Piercing Set
 TailStraps,,Tail Strap
@@ -895,7 +901,8 @@ ItemVulva,BasicCockring,Basic Cock Ring
 ItemVulva,PlasticChastityCage1,Plastic Chastity Cage 1
 ItemVulva,VibeEggPenisBase,Vibrating Egg
 ItemVulva,PlasticChastityCage2,Plastic Chastity Cage 2
-ItemVulva,TechnoChastityCage,Techno Chastity Cage 1
+ItemVulva,TechnoChastityCage,Techno Chastity Cage
+ItemVulva,FlatChastityCage,Flat Chastity Cage
 ItemVulvaPiercings,,Clitoris
 ItemVulvaPiercings,StraightClitPiercing,Straight Clitoris Piercing
 ItemVulvaPiercings,RoundClitPiercing,Round Clitoris Piercing
@@ -1160,6 +1167,7 @@ ItemHandheld,WhipPaddle,Whip Paddle
 ItemHandheld,Whip,Whip
 ItemHandheld,CattleProd,Cattle Prod
 ItemHandheld,TennisRacket,Tennis Racket
+ItemHandheld,ForSaleSign,For Sale Sign
 ItemHandheld,RainbowWand,Rainbow Wand
 ItemHandheld,Gavel,Gavel
 ItemHandheld,Feather,Feather
@@ -1464,6 +1472,7 @@ ItemMouth3,Stitches,Stitches
 ItemMouth3,FurScarf,Fur Scarf
 ItemMouth3,LatexRespirator,Latex Respirator
 ItemMouth3,Kissmark,Lipstick Marks
+ItemMouth3,PaddedFaceMask,Padded Face Mask
 ItemHead,,Eyes
 ItemHead,ClothBlindfold,Cloth Blindfold
 ItemHead,ScarfBlindfold,Scarf Blindfold
@@ -1545,6 +1554,9 @@ ItemHood,DroneMask,Smooth Latex Mask
 ItemHood,CustomLatexHood,Custom Latex Hood
 ItemHood,HarnessCatMask,Cat Mask Harness
 ItemHood,FestivalFoxMask,Festival Fox Mask
+ItemHood,InflatableGagMask,Inflatable Gag Mask
+ItemHood,LatexDogMask,Latex Dog Mask
+ItemHood,LatexBunny,Latex Bunny
 ItemEars,,Ears
 ItemEars,LightDutyEarPlugs,Light Duty Ear Plugs
 ItemEars,HeavyDutyEarPlugs,Heavy Duty Ear Plugs

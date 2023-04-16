@@ -13,14 +13,16 @@ interface ChatLogMetaData {
 
 type ChatLogSubstitution = [string, string];
 
-let loading: Promise<any[]>;
+let loadingChatLogDictionaries: Promise<void[]>;
+let loadingMemberInfoDictionaries: Promise<void[]>;
 const ActivityNameCache: Record<string, string>[] = [];
 const AssetNameCache: IAsset[] = [];
 const DialogCache: IDialog[] = [];
+const InformationSheetTextCache: Record<string, string>[] = [];
 const MemberCache: Record<number, Promise<IMember>> = {};
 
 export async function renderContent(chatLog: IChatLog): Promise<string> {
-  await loadAndCacheDictionaries();
+  await loadAndCacheDictionariesForChatLog();
   let content = chatLog.content;
   if (chatLog.type === 'Action' || chatLog.type === 'ServerMessage') {
     content = chatLog.type === 'ServerMessage' ? 'ServerMessage' + content : content;
@@ -127,7 +129,7 @@ async function getChatMessageCharacter(
     Name: memberName(member),
     MemberNumber: member.memberNumber,
     // Use fallbacks for older data
-    Pronouns: member.pronouns || 'TheyThem',
+    Pronouns: member.pronouns || 'SheHer',
     HasPenis: false,
     HasVagina: true
   };
@@ -206,7 +208,7 @@ function memberName(member: IMember) {
 }
 
 function memberPronoun(member: IChatMessageCharacter, dialogKey: string) {
-  const pronounName = member.Pronouns || 'TheyThem';
+  const pronounName = member.Pronouns || 'SheHer';
   return findDialog(`Pronoun${dialogKey}${pronounName}`);
 }
 
@@ -238,9 +240,15 @@ export function findDialog(content: string): string {
   return (dialog && dialog.Result.trim()) || content;
 }
 
-async function loadAndCacheDictionaries() {
-  if (!loading) {
-    loading = Promise.all([
+export async function findTitle(titleCode: string): Promise<string> {
+  await loadAndCacheDictionariesForMemberInfo();
+
+  return InformationSheetTextCache[`Title${titleCode}`];
+}
+
+function loadAndCacheDictionariesForChatLog() {
+  if (!loadingChatLogDictionaries) {
+    loadingChatLogDictionaries = Promise.all([
       loadDictionary('ActivityDictionary', data => {
         for (const activity of data) {
           ActivityNameCache[activity[0]] = activity[1];
@@ -255,7 +263,21 @@ async function loadAndCacheDictionaries() {
     ]);
   }
 
-  return loading;
+  return loadingChatLogDictionaries;
+}
+
+function loadAndCacheDictionariesForMemberInfo() {
+  if (!loadingMemberInfoDictionaries) {
+    loadingMemberInfoDictionaries = Promise.all([
+      loadDictionary('Text_InformationSheet', data => {
+        for (const text of data) {
+          InformationSheetTextCache[text[0]] = text[1];
+        }
+      })
+    ]);
+  }
+
+  return loadingMemberInfoDictionaries;
 }
 
 async function loadDictionary(fileName: string, processData: (data: any[]) => void) {

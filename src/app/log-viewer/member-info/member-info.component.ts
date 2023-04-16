@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, tap, map, switchMap, mergeMap } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
-import { IMember, addOrUpdateObjectStore, decompress } from 'models';
+import { IMember, addOrUpdateObjectStore, decompress, findTitle } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
 import { NgStyle } from '@angular/common';
 
@@ -18,6 +18,7 @@ export class MemberInfoComponent implements OnDestroy {
   private playerCharacter: number;
   private memberNumber: number;
   private member: IMember;
+  private titlePromise: Promise<string>;
 
   public member$: Observable<IMember>;
 
@@ -134,6 +135,14 @@ export class MemberInfoComponent implements OnDestroy {
       default:
         return value;
     }
+  }
+
+  public title(member: IMember) {
+    if (!this.titlePromise) {
+      this.titlePromise = findTitle(member.title || 'None');
+    }
+
+    return this.titlePromise;
   }
 
   public timeToDays(start: Date) {
