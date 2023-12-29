@@ -4,3 +4,5 @@
 - Extra keywords input field is misaligned in options view
 - Buttons look weird and are missing colours in options view
 - Show whispers toggle doesn't show state
+- Some sort of error in angular or angular-material:
+  - 313.js:1 Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self' 'nonce-notSecureButWhatever'". Either the 'unsafe-inline' keyword, a hash ('sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='), or a nonce ('nonce-...') is required to enable inline execution.

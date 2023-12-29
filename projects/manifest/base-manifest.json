@@ -26,7 +26,7 @@
       "js": ["content-script/main.js"]
     }
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "default-src 'self'; style-src 'self' 'nonce-notSecureButWhatever'; script-src 'self'; img-src 'self' data:",
   "permissions": [
     "activeTab",
     "notifications",
