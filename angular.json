@@ -20,7 +20,9 @@
             "outputPath": "dist/log-viewer",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/assets"
@@ -94,8 +96,10 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
@@ -154,6 +158,16 @@
             "tsConfig": "projects/popup/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets/fonts/",
+                "output": "/assets/fonts/"
+              },
+              {
+                "glob": "bclub-logo.png",
+                "input": "src/assets/",
+                "output": "/assets/"
+              },
               "projects/popup/src/assets"
             ],
             "styles": [
@@ -221,6 +235,16 @@
             "tsConfig": "projects/popup/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets/fonts/",
+                "output": "/assets/fonts/"
+              },
+              {
+                "glob": "bclub-logo.png",
+                "input": "src/assets/",
+                "output": "/assets/"
+              },
               "projects/popup/src/assets"
             ],
             "styles": [
@@ -264,6 +288,16 @@
             "tsConfig": "projects/options/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets/fonts/",
+                "output": "/assets/fonts/"
+              },
+              {
+                "glob": "bclub-logo.png",
+                "input": "src/assets/",
+                "output": "/assets/"
+              },
               "projects/options/src/assets"
             ],
             "styles": [
@@ -331,6 +365,16 @@
             "tsConfig": "projects/options/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets/fonts/",
+                "output": "/assets/fonts/"
+              },
+              {
+                "glob": "bclub-logo.png",
+                "input": "src/assets/",
+                "output": "/assets/"
+              },
               "projects/options/src/assets"
             ],
             "styles": [

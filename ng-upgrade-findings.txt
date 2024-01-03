@@ -1,2 +1,3 @@
 - Snack bar with latest changes doesn't close when clicking "Dismiss"
+- Filter input fields in table headers are too high (todo layout rework)
 - Missing member data after import?
