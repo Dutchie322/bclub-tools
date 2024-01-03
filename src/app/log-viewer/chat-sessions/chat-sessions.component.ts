@@ -77,13 +77,15 @@ export class ChatSessionsComponent implements OnDestroy {
     )
     .subscribe();
 
-    this.members.filterPredicate = (data, filter: any) => {
+    this.members.filterPredicate = (data, filter) => {
+      // filter is actually of type "any" because it's the value from the memberSearchForm
+      const anyFilter = filter as unknown as Record<string, string>;
       let match = true;
-      if (filter.memberName) {
-        match = match && data.memberName.toLocaleUpperCase().indexOf(filter.memberName.toLocaleUpperCase()) !== -1;
+      if (anyFilter.memberName) {
+        match = match && data.memberName.toLocaleUpperCase().indexOf(anyFilter.memberName.toLocaleUpperCase()) !== -1;
       }
-      if (filter.memberNumber) {
-        match = match && data.memberNumber.toString().indexOf(filter.memberNumber) !== -1;
+      if (anyFilter.memberNumber) {
+        match = match && data.memberNumber.toString().indexOf(anyFilter.memberNumber) !== -1;
       }
       return match;
     };
