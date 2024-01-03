@@ -53,7 +53,7 @@ export class DatabaseService {
     });
   }
 
-  private calculateSize(value: any, key: any = ''): number {
+  private calculateSize(value: unknown, key: unknown = ''): number {
     if (value === null || value === undefined) {
       return 0;
     }

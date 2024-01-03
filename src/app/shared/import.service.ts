@@ -178,7 +178,7 @@ export class ImportService {
           return;
         }
 
-        importObject[storeName].forEach((toAdd: any) => {
+        importObject[storeName].forEach((toAdd: Record<string, unknown>) => {
           if (toAdd.id) {
             delete toAdd.id;
           }

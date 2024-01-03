@@ -37,7 +37,7 @@ export class ExportService {
         subscriber.complete();
       }
 
-      function error(err: any) {
+      function error(err: unknown) {
         subscriber.error(err);
       }
 
