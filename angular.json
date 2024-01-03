@@ -159,11 +159,6 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               {
-                "glob": "**/*",
-                "input": "src/assets/fonts/",
-                "output": "/assets/fonts/"
-              },
-              {
                 "glob": "bclub-logo.png",
                 "input": "src/assets/",
                 "output": "/assets/"
@@ -236,11 +231,6 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               {
-                "glob": "**/*",
-                "input": "src/assets/fonts/",
-                "output": "/assets/fonts/"
-              },
-              {
                 "glob": "bclub-logo.png",
                 "input": "src/assets/",
                 "output": "/assets/"
@@ -288,11 +278,6 @@
             "tsConfig": "projects/options/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "src/assets/fonts/",
-                "output": "/assets/fonts/"
-              },
               {
                 "glob": "bclub-logo.png",
                 "input": "src/assets/",
@@ -365,11 +350,6 @@
             "tsConfig": "projects/options/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "src/assets/fonts/",
-                "output": "/assets/fonts/"
-              },
               {
                 "glob": "bclub-logo.png",
                 "input": "src/assets/",

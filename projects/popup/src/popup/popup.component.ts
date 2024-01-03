@@ -26,7 +26,7 @@ import { IPlayerCharacter } from 'src/app/shared/models';
 import { NewVersionNotificationComponent } from '../new-version-notification/new-version-notification.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { switchMap } from 'rxjs';
+import { switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-popup',
@@ -121,30 +121,31 @@ export class PopupComponent /*implements AfterViewInit*/ {
     });
   }
 
-  //public ngAfterViewInit(): void {
-    // TODO Disabled until dismiss button can be made working again
-    // this.checkForNewVersion().then(console.log, console.error);
-  //
+  // TODO Disabled until I can figure why the Dismiss button won't work...
+  // public ngAfterViewInit(): void {
+  //   this.checkForNewVersion().then(console.log, console.error);
+  // }
 
-  private async checkForNewVersion() {
-    const migration = await retrieveGlobal('migration') || {} as IMigration;
-    const currentVersion = chrome.runtime.getManifest().version;
-    if (migration.readChangelogVersion === currentVersion) {
-      return;
-    }
+  // private async checkForNewVersion() {
+  //   const migration = await retrieveGlobal('migration') || {} as IMigration;
+  //   const currentVersion = chrome.runtime.getManifest().version;
+  //   if (migration.readChangelogVersion === currentVersion) {
+  //     return;
+  //   }
 
-    const snackBarRef = this.snackBar.openFromComponent(NewVersionNotificationComponent, {
-      politeness: 'off'
-    });
-    snackBarRef.onAction()
-      .pipe(
-        switchMap(() => {
-          migration.readChangelogVersion = currentVersion;
-          return storeGlobal('migration', migration);
-        })
-      )
-      .subscribe();
-  }
+  //   const snackBarRef = this.snackBar.openFromComponent(NewVersionNotificationComponent, {
+  //     politeness: 'off'
+  //   });
+  //   snackBarRef.afterDismissed()
+  //     .pipe(
+  //       take(1),
+  //       switchMap(() => {
+  //         migration.readChangelogVersion = currentVersion;
+  //         return storeGlobal('migration', migration);
+  //       })
+  //     )
+  //     .subscribe();
+  // }
 
   public createCharacterLink(character: IChatRoomCharacter) {
     return chrome.runtime.getURL(`/log-viewer/index.html#/${this.player.MemberNumber}/member/${character.MemberNumber}`);

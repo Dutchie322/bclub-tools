@@ -1,5 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, NgZone, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UntypedFormGroup, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -119,9 +119,10 @@ export class OptionsComponent implements OnDestroy {
 
     this.databaseSize$ = this.refreshDatabaseSize$.pipe(
       switchMap(() =>
-        combineLatest([this.chatLogsService.getTotalSize(), this.memberService.getTotalSize()]).pipe(
+        combineLatest({ chatLogs: this.chatLogsService.getTotalSize(), members: this.memberService.getTotalSize()}).pipe(
+          tap(values => console.log(values)),
           throttleTime(500),
-          map(values => values.reduce((prev, cur) => prev + cur, 0)),
+          map(values => values.chatLogs + values.members),
           map(value => humanFileSize(value))
         )
       )
@@ -134,7 +135,7 @@ export class OptionsComponent implements OnDestroy {
   }
 
   public addKeyword(event: MatChipInputEvent) {
-    const input = event.input;
+    const input = event.chipInput.inputElement;
     const value = event.value;
 
     if ((value || '').trim()) {
@@ -175,8 +176,8 @@ export class OptionsComponent implements OnDestroy {
   public downloadDatabase() {
     this.exportService.exportDatabase({
       exportAppearances: this.dataForm.get('exportAppearances').value
-    }).subscribe(
-      update => {
+    }).subscribe({
+      next: update => {
         if (update instanceof Blob) {
           const link = document.createElement('a');
           link.href = URL.createObjectURL(update);
@@ -186,13 +187,13 @@ export class OptionsComponent implements OnDestroy {
           this.exportProgress = update;
         }
       },
-      error => {
+      error: error => {
         console.error(error);
         alert(error);
         this.exportProgress = undefined;
       },
-      () => this.exportProgress = undefined
-    );
+      complete: () => this.exportProgress = undefined
+    });
   }
 
   public uploadDatabase() {
@@ -201,20 +202,21 @@ export class OptionsComponent implements OnDestroy {
     input.type = 'file';
     input.addEventListener('change', async () => {
       const file = input.files[0];
-      this.importService.importDatabase(file).subscribe(
-        update => {
+      this.importService.importDatabase(file).subscribe({
+        next: update => {
           this.importProgress = update;
         },
-        error => {
+        error: error => {
           console.error(error);
           alert(error);
           this.importProgress = undefined;
         },
-        () => {
+        complete: () => {
+          console.log('upload complete', NgZone.isInAngularZone())
           this.importProgress = undefined;
           this.refreshDatabaseSize$.next();
         }
-      );
+      });
     });
     input.click();
   }
