@@ -3,14 +3,13 @@ import { MockBuilder, MockRender } from 'ng-mocks';
 import * as chrome from 'sinon-chrome';
 
 import { NewVersionNotificationComponent } from './new-version-notification.component';
-import { PopupModule } from '../popup.module';
 import { MatSnackBarRef } from '@angular/material/snack-bar';
 
 describe('NewVersionNotificationComponent', () => {
   let component: NewVersionNotificationComponent;
   let fixture: ComponentFixture<NewVersionNotificationComponent>;
 
-  beforeEach(() => MockBuilder(NewVersionNotificationComponent, PopupModule)
+  beforeEach(() => MockBuilder(NewVersionNotificationComponent)
     .mock(MatSnackBarRef));
 
   beforeEach(() => {

@@ -1,8 +1,19 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnDestroy } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { UntypedFormGroup, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSortModule } from '@angular/material/sort';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Subscription, Observable, combineLatest, ReplaySubject } from 'rxjs';
 import { tap, map, throttleTime, switchMap } from 'rxjs/operators';
 import { storeGlobal, ISettings, retrieveGlobal, executeForAllGameTabs, IMember } from 'models';
@@ -14,7 +25,27 @@ import { ExportService, IExportProgressState } from 'src/app/shared/export.servi
 import { ImportService, IImportProgressState } from 'src/app/shared/import.service';
 
 @Component({
+  standalone: true,
   selector: 'app-options',
+  imports: [
+    // Angular modules
+    CommonModule,
+    ReactiveFormsModule,
+
+    // Angular Material modules
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatListModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatToolbarModule
+  ],
   templateUrl: './options.component.html',
   styleUrls: ['./options.component.scss']
 })

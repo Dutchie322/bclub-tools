@@ -1,2 +1,2 @@
-- Options page does not open when an extension page is already open (because of location hash)
 - Snack bar with latest changes doesn't close when clicking "Dismiss"
+- Missing member data after import?

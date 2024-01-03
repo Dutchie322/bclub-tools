@@ -20,7 +20,6 @@ import { LogViewerRoutingModule } from './log-viewer-routing.module';
 import { ChatSessionsComponent } from './chat-sessions/chat-sessions.component';
 import { ChatReplayComponent } from './chat-replay/chat-replay.component';
 import { ChatLineComponent } from './chat-replay/chat-line/chat-line.component';
-import { SharedModule } from '../shared/shared.module';
 import { MemberInfoComponent } from './member-info/member-info.component';
 
 @NgModule({
@@ -52,7 +51,6 @@ import { MemberInfoComponent } from './member-info/member-info.component';
     MatToolbarModule,
 
     // Own modules
-    SharedModule,
     LogViewerRoutingModule
   ]
 })

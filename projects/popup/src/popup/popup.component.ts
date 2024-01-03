@@ -156,7 +156,7 @@ export class PopupComponent {
       chrome.runtime.openOptionsPage();
     } else {
       chrome.tabs.create({
-        url: '/index.html#/options'
+        url: '/options/index.html'
       });
     }
   }

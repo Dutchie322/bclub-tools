@@ -5,12 +5,9 @@ import { AppComponent } from './app.component';
 
 const routes: Routes = [
   {
+    // TODO Remove lazy loading, not needed anymore
     path: 'log-viewer',
     loadChildren: () => import('./log-viewer/log-viewer.module').then(mod => mod.LogViewerModule)
-  },
-  {
-    path: 'options',
-    loadChildren: () => import('./options/options.module').then(mod => mod.OptionsModule)
   },
   {
     path: '**',
