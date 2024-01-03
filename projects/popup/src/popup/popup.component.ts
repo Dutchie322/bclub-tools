@@ -1,4 +1,4 @@
-import { Component, TrackByFunction, ViewChild } from '@angular/core';
+import { Component, NgZone, TrackByFunction, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,12 +24,16 @@ import {
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { IPlayerCharacter } from 'src/app/shared/models';
 import { NewVersionNotificationComponent } from '../new-version-notification/new-version-notification.component';
-import { take } from 'rxjs/operators';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-popup',
   standalone: true,
   imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
 
     // Material design
@@ -42,12 +46,11 @@ import { take } from 'rxjs/operators';
     MatTabsModule,
     MatTableModule,
     MatToolbarModule,
-    NewVersionNotificationComponent
   ],
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss']
 })
-export class PopupComponent {
+export class PopupComponent /*implements AfterViewInit*/ {
   @ViewChild('onlineFriendsSort', { static: true }) set onlineFriendsSort(sort: MatSort) {
     this.onlineFriends.sort = sort;
     this.onlineFriends.sortingDataAccessor = (data, sortHeaderId) => {
@@ -73,7 +76,8 @@ export class PopupComponent {
 
   constructor(
     private chatLogsService: ChatLogsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private ngZone: NgZone
   ) {
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       const tabId = tabs[0].id;
@@ -86,17 +90,19 @@ export class PopupComponent {
           return;
         }
 
-        if (changes.chatRoomCharacter) {
-          this.characters.data = changes.chatRoomCharacter.newValue;
-        }
+        this.ngZone.run(() => {
+          if (changes.chatRoomCharacter) {
+            this.characters.data = changes.chatRoomCharacter.newValue;
+          }
 
-        if (changes.onlineFriends) {
-          this.onlineFriends.data = changes.onlineFriends.newValue;
-        }
+          if (changes.onlineFriends) {
+            this.onlineFriends.data = changes.onlineFriends.newValue;
+          }
 
-        if (changes.player) {
-          this.player = changes.player.newValue;
-        }
+          if (changes.player) {
+            this.player = changes.player.newValue;
+          }
+        });
       });
 
       chrome.tabs.sendMessage(tabId, {
@@ -113,9 +119,12 @@ export class PopupComponent {
         return true;
       });
     });
-
-    this.checkForNewVersion();
   }
+
+  //public ngAfterViewInit(): void {
+    // TODO Disabled until dismiss button can be made working again
+    // this.checkForNewVersion().then(console.log, console.error);
+  //
 
   private async checkForNewVersion() {
     const migration = await retrieveGlobal('migration') || {} as IMigration;
@@ -127,12 +136,14 @@ export class PopupComponent {
     const snackBarRef = this.snackBar.openFromComponent(NewVersionNotificationComponent, {
       politeness: 'off'
     });
-    snackBarRef.afterDismissed().pipe(
-      take(1)
-    ).subscribe(async () => {
-      migration.readChangelogVersion = currentVersion;
-      await storeGlobal('migration', migration);
-    });
+    snackBarRef.onAction()
+      .pipe(
+        switchMap(() => {
+          migration.readChangelogVersion = currentVersion;
+          return storeGlobal('migration', migration);
+        })
+      )
+      .subscribe();
   }
 
   public createCharacterLink(character: IChatRoomCharacter) {

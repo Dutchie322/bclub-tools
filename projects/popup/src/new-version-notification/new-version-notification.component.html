@@ -1,14 +1,15 @@
 <div class="snackbar-container">
-  <span class="biggest-change">
+  <span matSnackBarLabel>
     <b>New release:</b> Updated for genders and pronouns, remove appearance data options, and more.
   </span>
-  <span class="filler"></span>
-  <span class="actions">
+  <span matSnackBarActions>
     <button mat-raised-button
+            matSnackBarAction
             color="accent"
             (click)="showChangelog()">Full changelog</button>
     <button mat-raised-button
+            matSnackBarAction
             color="primary"
-            (click)="snackBarRef.dismiss()">Dismiss</button>
+            (click)="dismiss()">Dismiss</button>
   </span>
 </div>

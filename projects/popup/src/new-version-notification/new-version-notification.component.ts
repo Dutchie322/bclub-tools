@@ -1,23 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 
 @Component({
   standalone: true,
   selector: 'app-new-version-notification',
-  imports: [
-    MatButtonModule,
-    MatSnackBarModule
-  ],
+  imports: [MatButtonModule, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction],
   templateUrl: './new-version-notification.component.html',
   styleUrls: ['./new-version-notification.component.scss']
 })
 export class NewVersionNotificationComponent {
+  public snackBarRef = inject(MatSnackBarRef);
+  public extensionVersion = chrome.runtime.getManifest().version;
 
-  public extensionVersion: string;
-
-  constructor(public snackBarRef: MatSnackBarRef<NewVersionNotificationComponent>) {
-    this.extensionVersion = chrome.runtime.getManifest().version;
+  public dismiss() {
+    this.snackBarRef.dismissWithAction();
   }
 
   public showChangelog() {
