@@ -1,3 +1,2 @@
 - Options page does not open when an extension page is already open (because of location hash)
-- Player popup is empty (probably also because of location hash)
-- Refused to apply inline style because it violates the following Content Security Policy directive: "style-src 'self' 'nonce-notSecureButWhatever'". Either the 'unsafe-inline' keyword, a hash ('sha256-LXXKlEfDT4mpgGKuaTSsTLqEAceZqHnioSQudzPLbEY='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless the 'unsafe-hashes' keyword is present.
+- Snack bar with latest changes doesn't close when clicking "Dismiss"

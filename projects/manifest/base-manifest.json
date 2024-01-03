@@ -4,7 +4,7 @@
   "version": "0.6.0",
   "manifest_version": 2,
   "icons": {
-    "128": "assets/bclub-logo.png"
+    "128": "log-viewer/assets/bclub-logo.png"
   },
   "background": {
     "scripts": ["background/main.js"]
@@ -12,7 +12,7 @@
   "browser_action": {
     "default_title": "Bondage Club Tools",
     "default_icon": {
-      "128": "assets/bclub-logo.png"
+      "128": "log-viewer/assets/bclub-logo.png"
     }
   },
   "content_scripts": [
@@ -26,7 +26,7 @@
       "js": ["content-script/main.js"]
     }
   ],
-  "content_security_policy": "default-src 'self'; style-src 'self' 'nonce-notSecureButWhatever'; script-src 'self'; img-src 'self' data:",
+  "content_security_policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-p3yB1/TaXxQvCGP8VLeC6YhL4t0EZvvXYoQc78HfITk='; img-src 'self' data:",
   "permissions": [
     "activeTab",
     "notifications",
@@ -39,6 +39,6 @@
   "options_ui": {
     "browser_style": false,
     "open_in_tab": true,
-    "page": "index.html#/options"
+    "page": "log-viewer/index.html#/options"
   }
 }

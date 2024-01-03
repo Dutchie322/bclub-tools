@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
-import { MatSnackBarRef } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
 
 @Component({
+  standalone: true,
   selector: 'app-new-version-notification',
+  imports: [
+    MatButtonModule,
+    MatSnackBarModule
+  ],
   templateUrl: './new-version-notification.component.html',
   styleUrls: ['./new-version-notification.component.scss']
 })

@@ -1,5 +1,6 @@
+// Needed for ng build, else it will not recognise the game types.
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="./Typedef.d.ts" />
+/// <reference path="../game/Typedef.d.ts" />
 
 import { parse as parseCsv } from 'papaparse';
 import { IChatLog, IMember, retrieveMember, IChatMessageCharacter, IChatMessageCharacters } from '../database';
@@ -67,8 +68,9 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
     } else if (hasText(entry)) {
       let tag = entry.Tag;
       if (tag.startsWith('MISSING PLAYER DIALOG: ')) {
-        // Why?
         tag = tag.substring('MISSING PLAYER DIALOG: '.length);
+      } else if (tag.startsWith('MISSING ACTIVITY DESCRIPTION FOR KEYWORD ')) {
+        tag = tag.substring('MISSING ACTIVITY DESCRIPTION FOR KEYWORD '.length);
       }
 
       substitutions.push([tag, String(entry.Text)]);
@@ -144,51 +146,51 @@ function retrieveAndCacheMember(contextMemberNumber: number, memberNumber: numbe
 }
 
 export function hasSourceCharacter(value: ChatMessageDictionaryEntry): value is SourceCharacterDictionaryEntry {
-  return isDictionary(value) && typeof (value as any).SourceCharacter !== 'undefined';
+  return isDictionary(value) && typeof (value as Record<string, unknown>).SourceCharacter !== 'undefined';
 }
 
 export function hasTargetCharacter(value: ChatMessageDictionaryEntry): value is TargetCharacterDictionaryEntry {
-  return isDictionary(value) && typeof (value as any).TargetCharacter !== 'undefined';
+  return isDictionary(value) && typeof (value as Record<string, unknown>).TargetCharacter !== 'undefined';
 }
 
 export function hasCharacterReference(value: ChatMessageDictionaryEntry): value is CharacterReferenceDictionaryEntry {
   return isDictionary(value) &&
-    ((value as any).Tag === 'SourceCharacter' ||
-      (value as any).Tag === 'TargetCharacter' ||
-      (value as any).Tag === 'TargetCharacterName' ||
-      (value as any).Tag === 'DestinationCharacter' ||
-      (value as any).Tag === 'DestinationCharacterName') &&
-    typeof (value as any).MemberNumber !== 'undefined';
+    ((value as Record<string, unknown>).Tag === 'SourceCharacter' ||
+      (value as Record<string, unknown>).Tag === 'TargetCharacter' ||
+      (value as Record<string, unknown>).Tag === 'TargetCharacterName' ||
+      (value as Record<string, unknown>).Tag === 'DestinationCharacter' ||
+      (value as Record<string, unknown>).Tag === 'DestinationCharacterName') &&
+    typeof (value as Record<string, unknown>).MemberNumber !== 'undefined';
 }
 
 function hasAssetReference(value: ChatMessageDictionaryEntry): value is AssetReferenceDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as any).Tag === 'string' &&
-    typeof (value as any).GroupName === 'string' &&
-    typeof (value as any).AssetName === 'string';
+    typeof (value as Record<string, unknown>).Tag === 'string' &&
+    typeof (value as Record<string, unknown>).GroupName === 'string' &&
+    typeof (value as Record<string, unknown>).AssetName === 'string';
 }
 
 function hasFocusGroup(value: ChatMessageDictionaryEntry): value is FocusGroupDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as any).FocusGroupName === 'string' &&
-    (!(value as any).Tag || (value as any).Tag === 'FocusAssetGroup');
+    typeof (value as Record<string, unknown>).FocusGroupName === 'string' &&
+    (!(value as Record<string, unknown>).Tag || (value as Record<string, unknown>).Tag === 'FocusAssetGroup');
 }
 
 function hasAssetGroupName(value: ChatMessageDictionaryEntry): value is AssetGroupNameDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as any).Tag === 'string' &&
-    typeof (value as any).AssetGroupName === 'string';
+    typeof (value as Record<string, unknown>).Tag === 'string' &&
+    typeof (value as Record<string, unknown>).AssetGroupName === 'string';
 }
 
 function hasText(value: ChatMessageDictionaryEntry): value is TextDictionaryEntry {
   return isDictionary(value) &&
-    (typeof (value as any).Text === 'string' || typeof (value as any).Text === 'number');
+    (typeof (value as Record<string, unknown>).Text === 'string' || typeof (value as Record<string, unknown>).Text === 'number');
 }
 
 function hasTextLookup(value: ChatMessageDictionaryEntry): value is TextLookupDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as any).Tag === 'string' &&
-    typeof (value as any).TextToLookUp === 'string';
+    typeof (value as Record<string, unknown>).Tag === 'string' &&
+    typeof (value as Record<string, unknown>).TextToLookUp === 'string';
 }
 
 function isDictionary(value: unknown): value is Record<string, unknown> {
@@ -280,12 +282,12 @@ function loadAndCacheDictionariesForMemberInfo() {
   return loadingMemberInfoDictionaries;
 }
 
-async function loadDictionary(fileName: string, processData: (data: any[]) => void) {
-  const url = chrome.runtime.getURL(`assets/${fileName}.csv`);
+async function loadDictionary(fileName: string, processData: (data: unknown[]) => void) {
+  const url = chrome.runtime.getURL(`log-viewer/assets/${fileName}.csv`);
   const response = await fetch(url);
   const value = await response.text();
   parseCsv(value, {
-    complete: (results: any) => {
+    complete: (results) => {
       processData(results.data);
     }
   });

@@ -16,6 +16,6 @@ module.exports = {
   },
   output: {
     filename: 'main.js',
-    path: path.resolve( __dirname, '..', '..', 'dist', 'bclub-tools', 'background')
+    path: path.resolve( __dirname, '..', '..', 'dist', 'background')
   }
 };

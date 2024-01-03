@@ -32,7 +32,7 @@ import { writeBeepMessage } from './beep-message';
 
 chrome.browserAction.onClicked.addListener(() => {
   chrome.tabs.create({
-    url: '/index.html#/log-viewer'
+    url: '/log-viewer/index.html#/log-viewer'
   });
 });
 
@@ -296,7 +296,7 @@ function setPlayerLoggedIn(tabId: number, player: IStoredPlayer) {
 
   chrome.browserAction.setPopup({
     tabId,
-    popup: 'index.html'
+    popup: 'popup/index.html'
   });
   chrome.browserAction.setTitle({
     tabId,

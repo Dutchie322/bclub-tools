@@ -13,10 +13,6 @@ const routes: Routes = [
     loadChildren: () => import('./options/options.module').then(mod => mod.OptionsModule)
   },
   {
-    path: 'popup',
-    loadChildren: () => import('./popup/popup.module').then(mod => mod.PopupModule)
-  },
-  {
     path: '**',
     component: AppComponent
   }

@@ -1,7 +1,14 @@
 import { Component, TrackByFunction, ViewChild } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import {
   IStoredPlayer,
   retrieve,
@@ -21,6 +28,22 @@ import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-popup',
+  standalone: true,
+  imports: [
+    CommonModule,
+
+    // Material design
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatListModule,
+    MatSnackBarModule,
+    MatSortModule,
+    MatTabsModule,
+    MatTableModule,
+    MatToolbarModule,
+    NewVersionNotificationComponent
+  ],
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss']
 })
@@ -112,8 +135,12 @@ export class PopupComponent {
     });
   }
 
+  public createCharacterLink(character: IChatRoomCharacter) {
+    return chrome.runtime.getURL(`/log-viewer/index.html#/log-viewer/${this.player.MemberNumber}/member/${character.MemberNumber}`);
+  }
+
   public openLogViewer(memberNumber?: number) {
-    let url = '/index.html#/log-viewer';
+    let url = '/log-viewer/index.html#/log-viewer';
     if (memberNumber) {
       url += '/' + memberNumber;
     } else if (this.loggedIn) {
