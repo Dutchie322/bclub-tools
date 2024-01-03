@@ -136,15 +136,15 @@ export class PopupComponent {
   }
 
   public createCharacterLink(character: IChatRoomCharacter) {
-    return chrome.runtime.getURL(`/log-viewer/index.html#/log-viewer/${this.player.MemberNumber}/member/${character.MemberNumber}`);
+    return chrome.runtime.getURL(`/log-viewer/index.html#/${this.player.MemberNumber}/member/${character.MemberNumber}`);
   }
 
   public openLogViewer(memberNumber?: number) {
-    let url = '/log-viewer/index.html#/log-viewer';
+    let url = '/log-viewer/index.html';
     if (memberNumber) {
-      url += '/' + memberNumber;
+      url += '#/' + memberNumber;
     } else if (this.loggedIn) {
-      url += '/' + this.player.MemberNumber;
+      url += '#/' + this.player.MemberNumber;
     }
     chrome.tabs.create({
       url

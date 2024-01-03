@@ -4,7 +4,7 @@
     <ng-container matColumnDef="chatRoom">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Chat Room</th>
       <td mat-cell *matCellDef="let session">
-        <a [routerLink]="['/log-viewer', memberNumber, session.sessionId, session.chatRoom]">
+        <a [routerLink]="[session.sessionId, session.chatRoom]">
           {{ session.chatRoom }}
         </a>
       </td>
@@ -32,7 +32,7 @@
         </mat-form-field>
       </th>
       <td mat-cell *matCellDef="let member">
-        <a [routerLink]="['/log-viewer', memberNumber, 'member', member.memberNumber]">
+        <a [routerLink]="['member', member.memberNumber]">
           {{ member.nickname || member.memberName }}
         </a>
       </td>

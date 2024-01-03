@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ChatLogsService } from '../../shared/chat-logs.service';
-import { IPlayerCharacter } from '../../shared/models';
+import { ChatLogsService } from '../shared/chat-logs.service';
+import { IPlayerCharacter } from '../shared/models';
 
 @Component({
   selector: 'app-player-characters',

@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 import { map, reduce, switchMap, startWith, tap } from 'rxjs/operators';
 
-import { ChatLogsService } from '../../shared/chat-logs.service';
+import { ChatLogsService } from '../shared/chat-logs.service';
 import { IChatLog } from 'models';
 
 @Component({

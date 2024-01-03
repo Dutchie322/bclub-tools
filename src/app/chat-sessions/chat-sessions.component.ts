@@ -2,8 +2,8 @@ import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
-import { ChatLogsService } from '../../shared/chat-logs.service';
-import { IChatSession } from '../../shared/models';
+import { ChatLogsService } from '../shared/chat-logs.service';
+import { IChatSession } from '../shared/models';
 import { IMember } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -51,8 +51,6 @@ export class ChatSessionsComponent implements OnDestroy {
     };
   }
 
-  public memberNumber: number;
-
   public chatSessions = new MatTableDataSource<IChatSession>();
   public chatSessionsColumns = ['chatRoom', 'start'];
 
@@ -70,7 +68,6 @@ export class ChatSessionsComponent implements OnDestroy {
   ) {
     route.paramMap.pipe(
       map(params => +params.get('memberNumber')),
-      tap(memberNumber => this.memberNumber = memberNumber),
       tap(async memberNumber => this.chatSessions.data = await chatLogsService.findChatRoomsForMemberNumber(memberNumber)),
       tap(async memberNumber => this.members.data = await memberService.findMembersWithName(memberNumber)),
       takeUntil(this.destroySubject)

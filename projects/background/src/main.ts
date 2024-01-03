@@ -32,7 +32,7 @@ import { writeBeepMessage } from './beep-message';
 
 chrome.browserAction.onClicked.addListener(() => {
   chrome.tabs.create({
-    url: '/log-viewer/index.html#/log-viewer'
+    url: '/log-viewer/index.html'
   });
 });
 

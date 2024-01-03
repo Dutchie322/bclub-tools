@@ -29,20 +29,31 @@ This project uses the following technologies, so prior knowledge of these is req
 
 The extension is divided into three main components:
 
-- App
+- Log Viewer (also known as App)
+- Options page
+- Popup (which is shown when you click on the button in the toolbar)
 - Content script
 - Background script
 
-### App
+### Log Viewer
 
-The app contains the following parts of the extension:
-- Log viewer
-- Options page
-- Popup (which is shown when you click on the button in the toolbar)
-
-This is an Angular app with some fancy routing to separate the different components listed above. It uses Angular Material for easy to use interface building blocks.
+The most important part of the extension, which provides a way to browse logs and look up information about a person.
 
 This can be found in the `src/app` directory.
+
+### Options page
+
+A single page where a few options can be set, as well as data can be managed (export, import, clean up).
+
+This component can be found in the `projects/options` directory.
+
+### Popup
+
+When the currently active tab in the browser is a logged in game session, this will show people in the current room and online friends.
+
+If there is no active game tab, it will open the log viewer directly on the character selection screen.
+
+This component can be found in the `projects/popup` directory.
 
 ### Content script
 
@@ -59,8 +70,8 @@ This can be found in the `projects/background` directory.
 ## Requirements
 
 To develop locally you'll need:
-- [NodeJS LTS](https://nodejs.org/en/), max version 16 due to outdated dependencies. You can use [NVM](https://github.com/nvm-sh/nvm) (or [for Windows](https://github.com/coreybutler/nvm-windows)) to run specific NodeJS versions on your system (or use a dev container).
-- Yarn, can be installed using `npm install -g yarn` after installing NodeJS.
+- [NodeJS LTS](https://nodejs.org/en/), version 20. You can use [NVM](https://github.com/nvm-sh/nvm) (or [for Windows](https://github.com/coreybutler/nvm-windows)) to run specific NodeJS versions on your system (or use a dev container).
+- Yarn, can be installed using `npm install -g yarn` after installing NodeJS. Note: this project uses Yarn Classic (v1.x).
 - For coding I recommend [Visual Studio Code](https://code.visualstudio.com/).
 
 I use a [Visual Studio Code Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) to setup my environment quickly, there's a configuration inside the .devcontainer folder.
