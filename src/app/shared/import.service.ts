@@ -1,7 +1,7 @@
 import { IMember, IChatLog, StoreNames } from 'models';
 import { DatabaseService } from './database.service';
 import { Injectable } from '@angular/core';
-import * as JSZip from 'jszip';
+import { Unzipped, unzip } from 'fflate';
 import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
@@ -27,6 +27,7 @@ interface JsonExport {
 })
 export class ImportService {
   private static readonly DateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3,6}|)Z$/;
+  private static readonly Decoder = new TextDecoder('utf8');
 
   constructor(private databaseService: DatabaseService) {}
 
@@ -53,7 +54,7 @@ export class ImportService {
 
         if (header === '504b0304') {
           resolve('zip');
-        } else if (header.substr(0, 2) === '7b') {
+        } else if (header.substring(0, 2) === '7b') {
           resolve('json');
         } else {
           reject('Unsupported file format');
@@ -63,7 +64,7 @@ export class ImportService {
     });
   }
 
-  private readFile(fileType: ImportFileType, file: File): Promise<JsonExport | JSZip> {
+  private readFile(fileType: ImportFileType, file: File): Promise<JsonExport | Unzipped> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       if (fileType === 'json') {
@@ -79,8 +80,15 @@ export class ImportService {
         reader.readAsText(file);
       } else if (fileType === 'zip') {
         reader.addEventListener('load', () => {
-          const archive = JSZip.loadAsync(reader.result as ArrayBuffer);
-          resolve(archive);
+          unzip(new Uint8Array(reader.result as ArrayBuffer), (err, unzipped) => {
+            if (err) {
+              reject(err);
+
+              return;
+            }
+
+            resolve(unzipped);
+          });
         });
         reader.readAsArrayBuffer(file);
       } else {
@@ -89,7 +97,7 @@ export class ImportService {
     });
   }
 
-  private countSize(fileType: ImportFileType, contents: JsonExport | JSZip): IImportProgressState {
+  private countSize(fileType: ImportFileType, contents: JsonExport | Unzipped): IImportProgressState {
     const state = {
       progress: 0,
       total: 0,
@@ -97,11 +105,11 @@ export class ImportService {
       text: ''
     } as IImportProgressState;
 
-    function isJson(input: JsonExport | JSZip): input is JsonExport {
+    function isJson(input: JsonExport | Unzipped): input is JsonExport {
       return fileType === 'json';
     }
 
-    function isZip(input: JsonExport | JSZip): input is JSZip {
+    function isZip(input: JsonExport | Unzipped): input is Unzipped {
       return fileType === 'zip';
     }
 
@@ -109,18 +117,26 @@ export class ImportService {
       state.total += contents.chatRoomLogs.length;
       state.total += contents.members.length;
     } else if (isZip(contents)) {
-      contents.folder('chatRoomLogs').folder(/^[\d]+\/$/).forEach(folder => {
-        state.total += contents.folder(folder.name).file(/\.json$/).length;
+      const files = Object.keys(contents);
+      files.forEach(name => {
+        if (name.match(/^chatRoomLogs\/[\d]+\/.+\.json$/)) {
+          state.total++;
+        } else if (name.match(/^members\/[\d]+\/[\d]+\/.+$/)) {
+          state.total++;
+        }
       });
-      contents.folder('members').folder(/^[\d]+\/$/).forEach(contextFolder => {
-        state.total += contents.folder(contextFolder.name).folder(/^[\d]+\/$/).length;
-      });
+      // contents['chatRoomLogs'].folder(/^[\d]+\/$/).forEach(folder => {
+      //   state.total += contents.folder(folder.name).file(/\.json$/).length;
+      // });
+      // contents['members'].folder(/^[\d]+\/$/).forEach(contextFolder => {
+      //   state.total += contents.folder(contextFolder.name).folder(/^[\d]+\/$/).length;
+      // });
     }
 
     return state;
   }
 
-  private importFromFile(fileType: ImportFileType, contents: JsonExport | JSZip): Observable<IImportProgressState> {
+  private importFromFile(fileType: ImportFileType, contents: JsonExport | Unzipped): Observable<IImportProgressState> {
     return new Observable(subscriber => {
       const state = this.countSize(fileType, contents);
 
@@ -144,11 +160,11 @@ export class ImportService {
         throw error;
       }
 
-      function isJson(input: JsonExport | JSZip): input is JsonExport {
+      function isJson(input: JsonExport | Unzipped): input is JsonExport {
         return fileType === 'json';
       }
 
-      function isZip(input: JsonExport | JSZip): input is JSZip {
+      function isZip(input: JsonExport | Unzipped): input is Unzipped {
         return fileType === 'zip';
       }
 
@@ -204,110 +220,135 @@ export class ImportService {
     });
   }
 
-  private async importDatabaseFromZip(update: UpdateCallback, archive: JSZip) {
-    const promises = [];
-    archive.folder('chatRoomLogs').folder(/^[\d]+\/$/).forEach(contextFolder => {
-      const context = contextFolder.name.substring('chatRoomLogs/'.length, contextFolder.name.length - 1);
-      update(`Reading chat logs for ${context}`);
+  private async importDatabaseFromZip(update: UpdateCallback, archive: Unzipped) {
+    const filePaths = Object.keys(archive);
+    for (let i = 0; i < filePaths.length; i++) {
+      const filePath = filePaths[i];
+      console.log(`Found ${filePath}...`, archive[filePath]);
 
-      archive.folder(contextFolder.name).forEach((relativePath, file) => {
-        if (!file.name.endsWith('.json')) {
-          console.warn(`Skipping unexpected file ${file.name}`);
-          return;
+      if (filePath.startsWith('beepMessages/')) {
+        console.log('Not implemented', filePath);
+        continue;
+      } else if (filePath.startsWith('chatRoomLogs/')) {
+        const parts = filePath.split('/', 3);
+        if (parts.length !== 3 || parts[2] === '') {
+          continue;
         }
 
-        promises.push(file.async('string').then(async jsonString => {
-          update(`Reading ${relativePath}`);
-          const data = JSON.parse(jsonString, (_, value) => {
-            if (typeof value === 'string' && ImportService.DateTimeRegex.test(value)) {
-              return new Date(value);
-            }
-            return value;
-          }) as IChatLog[];
+        console.log('Valid chatRoomLogs', parts);
+        await this.importChatLog(update, parts[2], filePath, archive[filePath]);
+      } else if (filePath.startsWith('members/')) {
+        const parts = filePath.split('/', 4);
+        if (parts.length !== 4 || parts[3] === '') {
+          continue;
+        }
 
-          update(`Importing ${relativePath}`);
-          const transaction = await this.databaseService.transaction('chatRoomLogs', 'readwrite');
+        console.log('Valid members', parts);
+        await this.importMember(update, parseInt(parts[1], 10), parseInt(parts[2], 10), parts[3], filePath, archive[filePath]);
+      }
+    }
 
-          return new Promise<void>((resolve, reject) => {
-            transaction.onerror = event => {
-              reject(event);
-            };
+    update('Done importing.');
+  }
 
-            let count = 0;
-            for (const chatLog of data) {
-              const request = transaction.objectStore('chatRoomLogs').add(chatLog);
-              request.addEventListener('success', () => {
-                count++;
-                if (count === data.length) {
-                  update('Imported ' + relativePath, true);
-                  resolve();
-                }
-              });
-            }
-          });
-        }));
-      });
-    });
+  private async importChatLog(update: UpdateCallback, fileName: string, filePath: string, entry: Uint8Array) {
+    if (!fileName.endsWith('.json')) {
+      console.warn(`Skipping unexpected file ${filePath}`);
+      return;
+    }
 
-    archive.folder('members').folder(/^[\d]+\/$/).forEach(contextFolder => {
-      const context = contextFolder.name.substring('members/'.length, contextFolder.name.length - 1);
-      update(`Start importing members for ${context}`);
+    update(`Reading data ${filePath}`);
+    const data = JSON.parse(ImportService.Decoder.decode(entry), (_, value) => {
+      if (typeof value === 'string' && ImportService.DateTimeRegex.test(value)) {
+        return new Date(value);
+      }
+      return value;
+    }) as IChatLog[];
 
-      archive.folder(contextFolder.name).folder(/^[\d]+\/$/).forEach(async memberFolder => {
-        const memberNumber = memberFolder.name.substring(contextFolder.name.length, memberFolder.name.length - 1);
-        update(`Reading archive for ${memberNumber}`);
+    const transaction = await this.databaseService.transaction('chatRoomLogs', 'readwrite');
 
-        const memberPromises = [] as Promise<IMember>[];
+    return new Promise<void>((resolve, reject) => {
+      transaction.onerror = event => {
+        reject(event);
+      };
 
-        archive.folder(memberFolder.name).forEach((relativePath, file) => {
-          switch (relativePath) {
-            case 'data.json':
-              update(`Reading data for ${memberFolder.name}`);
-              memberPromises.push(file.async('string').then(jsonString => {
-                return JSON.parse(jsonString, (_, value) => {
-                  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3,6}|)Z$/.test(value)) {
-                    return new Date(value);
-                  }
-                  return value;
-                }) as IMember;
-              }));
-              break;
-
-            case 'appearance.png':
-              update(`Reading appearance for ${memberFolder.name}`);
-              memberPromises.push(file.async('base64').then(appearance => {
-                return {
-                  appearance: 'data:image/png;base64,' + appearance
-                } as IMember;
-              }));
-
-              break;
-
-            default:
-              console.warn(`Skipping unexpected file ${file.name}`);
-              break;
+      let count = 0;
+      for (const chatLog of data) {
+        const request = transaction.objectStore('chatRoomLogs').add(chatLog);
+        request.addEventListener('success', () => {
+          count++;
+          if (count === data.length) {
+            update(`Imported ${fileName}`, true);
+            resolve();
           }
         });
+      }
+    });
+  }
 
-        const data = await Promise.all(memberPromises);
-        const member = data.reduce((acc, cur) => Object.assign(acc, cur), {} as IMember);
+  private async importMember(update: UpdateCallback, context: number, memberNumber: number, fileName: string, filePath: string, entry: Uint8Array) {
+    let data: IMember;
+    switch (fileName) {
+      case 'data.json':
+        update(`Reading data ${filePath}`);
+        data = JSON.parse(ImportService.Decoder.decode(entry), (_, value) => {
+          if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3,6}|)Z$/.test(value)) {
+            return new Date(value);
+          }
+          return value;
+        }) as IMember;
 
-        update(`Importing member ${member.memberNumber} for ${context}`);
-        const transaction = await this.databaseService.transaction('members', 'readwrite');
+        break;
 
-        promises.push(new Promise<void>((resolve, reject) => {
-          transaction.onerror = event => {
-            reject(event);
-          };
-          const request = transaction.objectStore('members').add(member);
+      case 'appearance.png':
+        update(`Reading appearance ${filePath}`);
+        data = {
+          playerMemberNumber: context,
+          memberNumber,
+          appearance: 'data:image/png;base64,' + this.toBase64(entry)
+        } as IMember;
+
+        break;
+
+      default:
+        console.warn(`Skipping unexpected file ${fileName}`);
+        return;
+    }
+
+    update(`Importing member`);
+    const transaction = await this.databaseService.transaction('members', 'readwrite');
+
+    return new Promise<void>((resolve, reject) => {
+      transaction.onerror = event => {
+        reject(event);
+      };
+      const request = transaction.objectStore('members').get([context, memberNumber]);
+      request.addEventListener('success', event => {
+        const storedMember = (event.target as IDBRequest<IMember>).result;
+        if (!storedMember) {
+          const request = transaction.objectStore('members').add(data);
           request.addEventListener('success', () => {
-            update(`Imported member ${member.memberNumber} for ${context}`, true);
+            update(`Imported member`, true);
             resolve();
           });
-        }));
+        } else {
+          data = Object.assign(data, storedMember);
+          const request = transaction.objectStore('members').put(data);
+          request.addEventListener('success', () => {
+            update(`Updated member`, true);
+            resolve();
+          });
+        }
       });
     });
+  }
 
-    return Promise.all(promises).then(() => update('Done importing.'));
+  private toBase64(bytes: Uint8Array): string {
+    let binary = '';
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
   }
 }
