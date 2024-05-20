@@ -1,5 +1,5 @@
 - Filter input fields in table headers are too high (todo layout rework)
 - Missing member data after import?
 - Manifest v3 upgrade:
-  - Friend update in popup still TODO
-  - Popup doesn't open after reload of extension (probably data out of sync)
+  - Find a way to cancel chat room search auto refresh after reload of extension (low prio)
+  - Popup doesn't work after logging in?

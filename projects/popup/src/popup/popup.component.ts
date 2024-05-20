@@ -26,6 +26,7 @@ import { IPlayerCharacter } from 'src/app/shared/models';
 // import { NewVersionNotificationComponent } from '../new-version-notification/new-version-notification.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { requestOnlineFriends } from 'projects/content-script/src/update-friends';
 // import { switchMap, take } from 'rxjs';
 
 @Component({
@@ -105,9 +106,15 @@ export class PopupComponent /*implements AfterViewInit*/ {
         });
       });
 
-      chrome.tabs.sendMessage(tabId, {
-        type: 'popup',
-        event: 'UpdateFriends'
+      chrome.scripting.executeScript({
+        func: requestOnlineFriends,
+        target: {
+          tabId: tabId
+        },
+        world: 'MAIN'
+      }, results => {
+        console.log(`Injection results for ${requestOnlineFriends.name}:`);
+        console.log(results);
       });
     });
 

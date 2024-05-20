@@ -1,8 +1,6 @@
 /// <reference types="@types/chrome"/>
 
 import { log } from '../../../models';
-import { requestOnlineFriends } from './update-friends';
-import { generateFireAndForgetScript } from './script-generators/fire-and-forget';
 
 function delay(milliseconds: number) {
   return new Promise((resolve => {
@@ -44,7 +42,7 @@ async function main() {
   if (await waitForGameToLoad()) {
     log('Injecting scripts...');
 
-    let handshake;
+    let handshake: string;
 
     const listener = ({ data }) => {
       if (!data || !data.handshake || !data.type) {
@@ -71,12 +69,6 @@ async function main() {
     }, response => {
       console.log('Received response:', response);
       handshake = response.handshake;
-    });
-
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request && request.type === 'popup' && request.event === 'UpdateFriends') {
-        generateFireAndForgetScript(requestOnlineFriends);
-      }
     });
   }
 }
