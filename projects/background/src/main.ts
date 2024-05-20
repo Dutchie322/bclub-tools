@@ -30,7 +30,7 @@ import { notifyIncomingMessage } from './notifications';
 import { writeMember, writeFriends, removeChatRoomData } from './member';
 import { writeBeepMessage } from './beep-message';
 
-chrome.browserAction.onClicked.addListener(() => {
+chrome.action.onClicked.addListener(() => {
   chrome.tabs.create({
     url: '/log-viewer/index.html'
   });
@@ -87,9 +87,10 @@ chrome.runtime.onInstalled.addListener(async () => {
 
   // Inject content scripts in applicable tabs
   executeForAllGameTabs(tab => {
-    chrome.tabs.executeScript(tab.id, {
-      runAt: 'document_idle',
-      file: 'content-script/main.js'
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      // runAt: 'document_idle',
+      files: ['content-script/main.js']
     });
   });
 });
@@ -294,11 +295,11 @@ async function handleVariablesUpdate(tabId: number, message: IClientMessage<IVar
 function setPlayerLoggedIn(tabId: number, player: IStoredPlayer) {
   store(tabId, 'player', player);
 
-  chrome.browserAction.setPopup({
+  chrome.action.setPopup({
     tabId,
     popup: 'popup/index.html'
   });
-  chrome.browserAction.setTitle({
+  chrome.action.setTitle({
     tabId,
     title: `${chrome.runtime.getManifest().name}: ${player.Name}`
   });
@@ -312,11 +313,11 @@ async function cleanUpData(tabId: number, isTabClosed = false) {
   clearStorage(tabId);
 
   if (!isTabClosed) {
-    chrome.browserAction.setPopup({
+    chrome.action.setPopup({
       tabId,
       popup: ''
     });
-    chrome.browserAction.setTitle({
+    chrome.action.setTitle({
       tabId,
       title: chrome.runtime.getManifest().name
     });
