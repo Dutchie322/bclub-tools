@@ -1,11 +1,6 @@
 /// <reference types="@types/chrome"/>
 
-import { generateOneTimeScript, generatePersistentScriptWithWait, generatePersistentScript } from './script-generators';
-import { listenToServerEvents } from './server-event-listeners';
-import { listenForUserSentEvents } from './user-input-listener';
-import { retrieveGlobal, log } from '../../../models';
-import { checkForLoggedInState } from './check-for-logged-in-state';
-import { characterAppearance } from './draw-listeners';
+import { log } from '../../../models';
 import { requestOnlineFriends } from './update-friends';
 import { generateFireAndForgetScript } from './script-generators/fire-and-forget';
 
@@ -49,12 +44,33 @@ async function main() {
   if (await waitForGameToLoad()) {
     log('Injecting scripts...');
 
-    retrieveGlobal('settings').then(settings => {
-      generateOneTimeScript(checkForLoggedInState);
-      generatePersistentScriptWithWait('ServerSocket', listenForUserSentEvents, settings.tools.chatRoomRefreshInterval);
-      generatePersistentScriptWithWait('ServerSocket', listenToServerEvents);
-      generatePersistentScript(characterAppearance);
-      log('Done injecting scripts.');
+    let handshake;
+
+    const listener = ({ data }) => {
+      if (!data || !data.handshake || !data.type) {
+        return;
+      }
+
+      if (data.handshake !== handshake) {
+        console.log('Incorrect handshake');
+        return;
+      }
+
+      console.log('Received plausible message, forwarding...', data);
+      try {
+        chrome.runtime.sendMessage(data);
+      } catch (e) {
+        window.removeEventListener('message', listener);
+      }
+    }
+    window.addEventListener('message', listener);
+
+    chrome.runtime.sendMessage({
+      type: 'content-script',
+      event: 'GameLoaded'
+    }, response => {
+      console.log('Received response:', response);
+      handshake = response.handshake;
     });
 
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

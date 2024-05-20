@@ -174,6 +174,7 @@ export class OptionsComponent implements OnDestroy {
 
   public async downloadDatabase() {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const handle = await (<any>window).showSaveFilePicker({
         id: 'bctools-export',
         startIn: 'downloads',

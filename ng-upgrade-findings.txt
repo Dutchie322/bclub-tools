@@ -1,2 +1,5 @@
 - Filter input fields in table headers are too high (todo layout rework)
 - Missing member data after import?
+- Icon font doesn't work anymore
+- Manifest v3 upgrade:
+  - Friend update in popup still TODO

@@ -96,6 +96,9 @@ See also [this page](https://developer.chrome.com/extensions/getstarted).
 
 ### Firefox
 
+> [!WARNING]
+> Currently unsupported (read: not working) as I focus on migrating the extension to Manifest V3 for Chrome.
+
 1. Open Firefox
 2. Enter `about:debugging` in the URL bar
 3. Click "This Firefox"

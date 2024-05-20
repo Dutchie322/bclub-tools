@@ -26,6 +26,10 @@ import {
   retrieveMember,
   IClientAccountBeep
 } from '../../../models';
+import { checkForLoggedInState } from '../../content-script/src/check-for-logged-in-state';
+import { listenForUserSentEvents } from '../../content-script/src/user-input-listener';
+import { listenToServerEvents } from '../../content-script/src/server-event-listeners';
+import { characterAppearance } from '../../content-script/src/draw-listeners';
 import { notifyIncomingMessage } from './notifications';
 import { writeMember, writeFriends, removeChatRoomData } from './member';
 import { writeBeepMessage } from './beep-message';
@@ -89,31 +93,76 @@ chrome.runtime.onInstalled.addListener(async () => {
   executeForAllGameTabs(tab => {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      // runAt: 'document_idle',
       files: ['content-script/main.js']
     });
   });
 });
 
-chrome.runtime.onMessage.addListener((message, sender) => {
-  if (!message || !message.event) {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (!message || !message.type || !message.event) {
     return;
   }
 
+  console.log('Received:', message);
+
   switch (message.type) {
+    case 'content-script':
+      handleContentScriptMessage(message, sender).then(sendResponse);
+      break;
     case 'client':
-      handleClientMessage(message, sender);
+      handleClientMessage(message, sender).then(sendResponse);
       break;
     case 'server':
-      handleServerMessage(message, sender);
+      handleServerMessage(message, sender).then(sendResponse);
       break;
     default:
       console.error('[Bondage Club Tools] Unhandled message:');
       console.log(message);
   }
+
+  return true;
 });
 
 chrome.tabs.onRemoved.addListener(tabId => cleanUpData(tabId, true));
+
+async function handleContentScriptMessage(message: any, sender: chrome.runtime.MessageSender) {
+  const handshake = self.crypto.randomUUID();
+  console.log('Generated handshake', handshake);
+  await store(sender.tab.id, 'handshake', handshake);
+
+  switch (message.event) {
+    case 'GameLoaded':
+      await injectScripts(handshake, sender.tab.id);
+      break;
+  }
+
+  return {
+    handshake
+  };
+}
+
+async function injectScripts(handshake: string, tabId: number) {
+  function injectScript<Args extends any[], Result>(func: (...args: Args) => Result, args: Args) {
+    chrome.scripting.executeScript({
+      func,
+      args,
+      target: {
+        tabId: tabId
+      },
+      world: 'MAIN'
+    }, results => {
+      console.log(`Injection results for ${func.name}:`);
+      console.log(results);
+    });
+  }
+
+  const settings = await retrieveGlobal('settings');
+
+  injectScript(checkForLoggedInState, [ handshake ]);
+  injectScript(listenForUserSentEvents, [ handshake, settings.tools.chatRoomRefreshInterval ]);
+  injectScript(listenToServerEvents, [ handshake ]);
+  injectScript(characterAppearance, [ handshake ]);
+}
 
 async function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtime.MessageSender) {
   switch (message.event) {
@@ -124,7 +173,7 @@ async function handleClientMessage(message: IClientMessage<any>, sender: chrome.
       await handleChatRoomChat(message);
       break;
     case 'ChatRoomLeave':
-      handleChatRoomLeave(sender.tab.id);
+      await handleChatRoomLeave(sender.tab.id);
       break;
     case 'CommonDrawAppearanceBuild':
       await handleCommonDrawAppearanceBuild(sender.tab.id, message);
@@ -197,7 +246,7 @@ async function handleAccountQueryOnlineFriendsResult(tabId: number, message: ISe
   const player = await retrieve(tabId, 'player');
   const friends = await Promise.all(message.data.Result.map(friend => writeMember(player, friend)));
 
-  store(tabId, 'onlineFriends', friends);
+  await store(tabId, 'onlineFriends', friends);
 }
 
 async function handleChatRoomChat(message: IClientMessage<IEnrichedChatRoomChat>) {
@@ -218,7 +267,7 @@ async function handleChatRoomMessage(tabId: number, message: IServerMessage<IEnr
 }
 
 async function handleChatRoomSync(tabId: number, message: IServerMessage<IChatRoomSync>) {
-  store(tabId, 'chatRoomCharacter', message.data.Character);
+  await store(tabId, 'chatRoomCharacter', message.data.Character);
 
   const player = await retrieve(tabId, 'player');
   message.data.Character.forEach(character => writeMember(player, character));
@@ -228,7 +277,7 @@ async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<I
   const characters = await retrieve(tabId, 'chatRoomCharacter');
   const i = characters.findIndex(char => char.MemberNumber === message.data.Character.MemberNumber);
   characters[i] = message.data.Character;
-  store(tabId, 'chatRoomCharacter', characters);
+  await store(tabId, 'chatRoomCharacter', characters);
 
   const player = await retrieve(tabId, 'player');
   writeMember(player, message.data.Character);
@@ -237,22 +286,22 @@ async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<I
 async function handleChatRoomSyncMemberJoin(tabId: number, message: IServerMessage<IChatRoomSyncCharacter>) {
   const characters = await retrieve(tabId, 'chatRoomCharacter');
   characters.push(message.data.Character);
-  store(tabId, 'chatRoomCharacter', characters);
+  await store(tabId, 'chatRoomCharacter', characters);
 }
 
 async function handleChatRoomSyncMemberLeave(tabId: number, message: IServerMessage<{ SourceMemberNumber: number }>) {
   const characters = await retrieve(tabId, 'chatRoomCharacter');
   const i = characters.findIndex(char => char.MemberNumber === message.data.SourceMemberNumber);
   characters.splice(i, 1);
-  store(tabId, 'chatRoomCharacter', characters);
+  await store(tabId, 'chatRoomCharacter', characters);
 }
 
-function handleChatRoomLeave(tabId: number) {
-  store(tabId, 'chatRoomCharacter', []);
+async function handleChatRoomLeave(tabId: number) {
+  await store(tabId, 'chatRoomCharacter', []);
 }
 
 async function handleLoginResponse(tabId: number, message: IServerMessage<IPlayerWithRelations>) {
-  setPlayerLoggedIn(tabId, {
+  await setPlayerLoggedIn(tabId, {
     MemberNumber: message.data.MemberNumber,
     Name: message.data.Name
   });
@@ -288,12 +337,12 @@ async function handleVariablesUpdate(tabId: number, message: IClientMessage<IVar
   }
 
   if (message.data.Player && message.data.Player.MemberNumber > 0) {
-    setPlayerLoggedIn(tabId, message.data.Player);
+    await setPlayerLoggedIn(tabId, message.data.Player);
   }
 }
 
-function setPlayerLoggedIn(tabId: number, player: IStoredPlayer) {
-  store(tabId, 'player', player);
+async function setPlayerLoggedIn(tabId: number, player: IStoredPlayer) {
+  await store(tabId, 'player', player);
 
   chrome.action.setPopup({
     tabId,
@@ -310,7 +359,7 @@ async function cleanUpData(tabId: number, isTabClosed = false) {
   if (friends) {
     await Promise.all(friends.map(friend => removeChatRoomData(friend)));
   }
-  clearStorage(tabId);
+  await clearStorage(tabId);
 
   if (!isTabClosed) {
     chrome.action.setPopup({
