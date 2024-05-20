@@ -26,6 +26,7 @@ import {
   retrieveMember,
   IClientAccountBeep
 } from '../../../models';
+import { checkForGame } from '../../content-script/src/check-for-game';
 import { checkForLoggedInState } from '../../content-script/src/check-for-logged-in-state';
 import { listenForUserSentEvents } from '../../content-script/src/user-input-listener';
 import { listenToServerEvents } from '../../content-script/src/server-event-listeners';
@@ -126,19 +127,30 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 chrome.tabs.onRemoved.addListener(tabId => cleanUpData(tabId, true));
 
 async function handleContentScriptMessage(message: any, sender: chrome.runtime.MessageSender) {
-  const handshake = self.crypto.randomUUID();
-  console.log('Generated handshake', handshake);
-  await store(sender.tab.id, 'handshake', handshake);
+  let handshake: string;
 
   switch (message.event) {
+    case 'GameStart':
+      handshake = self.crypto.randomUUID();
+      await store(sender.tab.id, 'handshake', handshake);
+
+      chrome.scripting.executeScript({
+        func: checkForGame,
+        args: [ handshake ],
+        target: {
+          tabId: sender.tab.id
+        },
+        world: 'MAIN'
+      });
+
+      return {
+        handshake
+      };
     case 'GameLoaded':
+      handshake = await retrieve(sender.tab.id, 'handshake');
       await injectScripts(handshake, sender.tab.id);
       break;
   }
-
-  return {
-    handshake
-  };
 }
 
 async function injectScripts(handshake: string, tabId: number) {

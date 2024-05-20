@@ -2,4 +2,3 @@
 - Missing member data after import?
 - Manifest v3 upgrade:
   - Find a way to cancel chat room search auto refresh after reload of extension (low prio)
-  - Popup doesn't work after logging in?
