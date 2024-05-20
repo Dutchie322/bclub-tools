@@ -120,7 +120,6 @@ export class OptionsComponent implements OnDestroy {
     this.databaseSize$ = this.refreshDatabaseSize$.pipe(
       switchMap(() =>
         combineLatest({ chatLogs: this.chatLogsService.getTotalSize(), members: this.memberService.getTotalSize()}).pipe(
-          tap(values => console.log(values)),
           debounceTime(100),
           map(values => values.chatLogs + values.members),
           map(value => humanFileSize(value))

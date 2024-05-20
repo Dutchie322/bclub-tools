@@ -17,16 +17,16 @@ import {
   IOwnership,
   IReputation,
   IMember,
-  retrieveGlobal,
-  storeGlobal,
-  IMigration,
+  // retrieveGlobal,
+  // storeGlobal,
+  // IMigration,
 } from 'models';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { IPlayerCharacter } from 'src/app/shared/models';
-import { NewVersionNotificationComponent } from '../new-version-notification/new-version-notification.component';
+// import { NewVersionNotificationComponent } from '../new-version-notification/new-version-notification.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { switchMap, take } from 'rxjs';
+// import { switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-popup',
