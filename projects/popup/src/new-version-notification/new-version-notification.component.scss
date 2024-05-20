@@ -1,0 +1,7 @@
+.snackbar-container {
+  display: flex;
+}
+
+[matSnackBarActions] button:first-child {
+  margin-right: 10px;
+}

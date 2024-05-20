@@ -1,3 +1,5 @@
+/// <reference path="../game/Messages.d.ts"/>
+
 import { IChatRoom } from '../game';
 
 export interface IChatRoomChat {

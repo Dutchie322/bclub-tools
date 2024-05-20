@@ -17,7 +17,7 @@ var config = {
   },
   output: {
     filename: 'main.js',
-    path: path.resolve( __dirname, '..', '..', 'dist', 'bclub-tools', 'content-script')
+    path: path.resolve( __dirname, '..', '..', 'dist', 'content-script')
   }
 };
 

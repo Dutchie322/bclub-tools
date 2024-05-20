@@ -1,26 +1,33 @@
 import { NgModule } from '@angular/core';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-
 import { AppComponent } from './app.component';
-import { QueryPathRouterGuard } from './query-path-router.guard';
+
+import { PlayerCharactersComponent } from './player-characters/player-characters.component';
+import { ChatSessionsComponent } from './chat-sessions/chat-sessions.component';
+import { ChatReplayComponent } from './chat-replay/chat-replay.component';
+import { MemberInfoComponent } from './member-info/member-info.component';
 
 const routes: Routes = [
   {
-    path: 'log-viewer',
-    loadChildren: () => import('./log-viewer/log-viewer.module').then(mod => mod.LogViewerModule)
+    path: '',
+    component: PlayerCharactersComponent
   },
   {
-    path: 'options',
-    loadChildren: () => import('./options/options.module').then(mod => mod.OptionsModule)
+    path: ':memberNumber',
+    component: ChatSessionsComponent
   },
   {
-    path: 'popup',
-    loadChildren: () => import('./popup/popup.module').then(mod => mod.PopupModule)
+    path: ':playerCharacter/member/:memberNumber',
+    component: MemberInfoComponent
+  },
+  {
+    path: ':memberNumber/:sessionId/:chatRoom',
+    component: ChatReplayComponent
   },
   {
     path: '**',
-    component: AppComponent,
-    canActivate: [QueryPathRouterGuard]
+    component: AppComponent
   }
 ];
 
@@ -28,12 +35,13 @@ const routes: Routes = [
   declarations: [
   ],
   providers: [
-    QueryPathRouterGuard
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    }
   ],
   imports: [
-    RouterModule.forRoot(routes, {
-      useHash: false
-    })
+    RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
 })

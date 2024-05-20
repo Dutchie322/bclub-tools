@@ -95,10 +95,11 @@ function addDatabaseEventHandlers(db: IDBDatabase) {
   });
 }
 
-export function addOrUpdateObjectStore<T>(storeName: StoreNames, value: T): Promise<T> {
-  return new Promise<T>(async (resolve, reject) => {
-    const db = await openDatabase();
-    const transaction = db.transaction(storeName, 'readwrite');
+export async function addOrUpdateObjectStore<T>(storeName: StoreNames, value: T): Promise<T> {
+  const db = await openDatabase();
+  const transaction = db.transaction(storeName, 'readwrite');
+
+  return new Promise<T>((resolve, reject) => {
     transaction.addEventListener('error', () => {
       console.error(`Error during transaction for store ${storeName}`);
       console.error(transaction.error);

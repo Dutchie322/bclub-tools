@@ -1,8 +1,0 @@
-<mat-toolbar>Characters</mat-toolbar>
-<mat-list>
-  <mat-list-item *ngFor="let character of playerCharacters">
-    <a [routerLink]="['/log-viewer', character.memberNumber]">
-      {{ character.name }} ({{ character.memberNumber }})
-    </a>
-  </mat-list-item>
-</mat-list>

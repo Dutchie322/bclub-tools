@@ -15,8 +15,6 @@ export class DatabaseService {
     });
   }
 
-  constructor() {}
-
   private async connect(): Promise<IDBDatabase> {
     if (!this.db) {
       this.db = await openDatabase();
@@ -55,7 +53,7 @@ export class DatabaseService {
     });
   }
 
-  private calculateSize(value: any, key: any = ''): number {
+  private calculateSize(value: unknown, key: unknown = ''): number {
     if (value === null || value === undefined) {
       return 0;
     }
@@ -68,7 +66,7 @@ export class DatabaseService {
       size += value.toISOString().length;
     } else if (typeof value === 'object' && value !== null) {
       for (const property in value) {
-        if (value.hasOwnProperty(property)) {
+        if (Object.prototype.hasOwnProperty.call(value, property)) {
           size += this.calculateSize(value[property], property);
         }
       }

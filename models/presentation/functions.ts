@@ -1,9 +1,10 @@
-// tslint:disable-next-line
-/// <reference path="./Typedef.d.ts" />
+// Needed for ng build, else it will not recognise the game types.
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="../game/Typedef.d.ts" />
 
 import { parse as parseCsv } from 'papaparse';
 import { IChatLog, IMember, retrieveMember, IChatMessageCharacter, IChatMessageCharacters } from '../database';
-import { IAsset, IDialog } from '../internal';
+import { IAsset } from '../internal';
 
 interface ChatLogMetaData {
   SourceCharacter?: IChatMessageCharacter;
@@ -13,18 +14,20 @@ interface ChatLogMetaData {
 
 type ChatLogSubstitution = [string, string];
 
-let loading: Promise<any[]>;
+let loadingChatLogDictionaries: Promise<void[]>;
+let loadingMemberInfoDictionaries: Promise<void[]>;
 const ActivityNameCache: Record<string, string>[] = [];
 const AssetNameCache: IAsset[] = [];
-const DialogCache: IDialog[] = [];
+const InformationSheetTextCache: Record<string, string>[] = [];
+const InterfaceTextCache: Record<string, string>[] = [];
 const MemberCache: Record<number, Promise<IMember>> = {};
 
 export async function renderContent(chatLog: IChatLog): Promise<string> {
-  await loadAndCacheDictionaries();
+  await loadAndCacheDictionariesForChatLog();
   let content = chatLog.content;
   if (chatLog.type === 'Action' || chatLog.type === 'ServerMessage') {
     content = chatLog.type === 'ServerMessage' ? 'ServerMessage' + content : content;
-    content = findDialog(content);
+    content = findInterfaceText(content);
   }
 
   if (chatLog.type === 'Activity') {
@@ -65,13 +68,14 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
     } else if (hasText(entry)) {
       let tag = entry.Tag;
       if (tag.startsWith('MISSING PLAYER DIALOG: ')) {
-        // Why?
         tag = tag.substring('MISSING PLAYER DIALOG: '.length);
+      } else if (tag.startsWith('MISSING ACTIVITY DESCRIPTION FOR KEYWORD ')) {
+        tag = tag.substring('MISSING ACTIVITY DESCRIPTION FOR KEYWORD '.length);
       }
 
       substitutions.push([tag, String(entry.Text)]);
     } else if (hasTextLookup(entry)) {
-      substitutions.push([entry.Tag, findDialog(entry.TextToLookUp).toLocaleLowerCase()]);
+      substitutions.push([entry.Tag, findInterfaceText(entry.TextToLookUp).toLocaleLowerCase()]);
     }
   }
 
@@ -82,7 +86,7 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
 
   if (metadata.TargetCharacter) {
     const name = metadata.TargetCharacter.Name;
-    const destinationCharacterName = `${name}${findDialog('\'s')}`;
+    const destinationCharacterName = `${name}${findInterfaceText('\'s')}`;
 
     substitutions.push(
       ['DestinationCharacter', destinationCharacterName],
@@ -97,8 +101,8 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
     let description = metadata.FocusGroup.Description;
     if (metadata.TargetCharacter.HasPenis && ['ItemVulva', 'ItemVulvaPiercings'].includes(metadata.FocusGroup.Name)) {
       description = (metadata.FocusGroup.Name === 'ItemVulva'
-        ? findDialog('ItemPenis')
-        : findDialog('ItemGlans')
+        ? findInterfaceText('ItemPenis')
+        : findInterfaceText('ItemGlans')
       ).toLocaleLowerCase();
     }
     substitutions.push(['FocusAssetGroup', description]);
@@ -127,7 +131,7 @@ async function getChatMessageCharacter(
     Name: memberName(member),
     MemberNumber: member.memberNumber,
     // Use fallbacks for older data
-    Pronouns: member.pronouns || 'TheyThem',
+    Pronouns: member.pronouns || 'SheHer',
     HasPenis: false,
     HasVagina: true
   };
@@ -142,51 +146,51 @@ function retrieveAndCacheMember(contextMemberNumber: number, memberNumber: numbe
 }
 
 export function hasSourceCharacter(value: ChatMessageDictionaryEntry): value is SourceCharacterDictionaryEntry {
-  return isDictionary(value) && typeof (value as any).SourceCharacter !== 'undefined';
+  return isDictionary(value) && typeof (value as Record<string, unknown>).SourceCharacter !== 'undefined';
 }
 
 export function hasTargetCharacter(value: ChatMessageDictionaryEntry): value is TargetCharacterDictionaryEntry {
-  return isDictionary(value) && typeof (value as any).TargetCharacter !== 'undefined';
+  return isDictionary(value) && typeof (value as Record<string, unknown>).TargetCharacter !== 'undefined';
 }
 
 export function hasCharacterReference(value: ChatMessageDictionaryEntry): value is CharacterReferenceDictionaryEntry {
   return isDictionary(value) &&
-    ((value as any).Tag === 'SourceCharacter' ||
-      (value as any).Tag === 'TargetCharacter' ||
-      (value as any).Tag === 'TargetCharacterName' ||
-      (value as any).Tag === 'DestinationCharacter' ||
-      (value as any).Tag === 'DestinationCharacterName') &&
-    typeof (value as any).MemberNumber !== 'undefined';
+    ((value as Record<string, unknown>).Tag === 'SourceCharacter' ||
+      (value as Record<string, unknown>).Tag === 'TargetCharacter' ||
+      (value as Record<string, unknown>).Tag === 'TargetCharacterName' ||
+      (value as Record<string, unknown>).Tag === 'DestinationCharacter' ||
+      (value as Record<string, unknown>).Tag === 'DestinationCharacterName') &&
+    typeof (value as Record<string, unknown>).MemberNumber !== 'undefined';
 }
 
 function hasAssetReference(value: ChatMessageDictionaryEntry): value is AssetReferenceDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as any).Tag === 'string' &&
-    typeof (value as any).GroupName === 'string' &&
-    typeof (value as any).AssetName === 'string';
+    typeof (value as Record<string, unknown>).Tag === 'string' &&
+    typeof (value as Record<string, unknown>).GroupName === 'string' &&
+    typeof (value as Record<string, unknown>).AssetName === 'string';
 }
 
 function hasFocusGroup(value: ChatMessageDictionaryEntry): value is FocusGroupDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as any).FocusGroupName === 'string' &&
-    (!(value as any).Tag || (value as any).Tag === 'FocusAssetGroup');
+    typeof (value as Record<string, unknown>).FocusGroupName === 'string' &&
+    (!(value as Record<string, unknown>).Tag || (value as Record<string, unknown>).Tag === 'FocusAssetGroup');
 }
 
 function hasAssetGroupName(value: ChatMessageDictionaryEntry): value is AssetGroupNameDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as any).Tag === 'string' &&
-    typeof (value as any).AssetGroupName === 'string';
+    typeof (value as Record<string, unknown>).Tag === 'string' &&
+    typeof (value as Record<string, unknown>).AssetGroupName === 'string';
 }
 
 function hasText(value: ChatMessageDictionaryEntry): value is TextDictionaryEntry {
   return isDictionary(value) &&
-    (typeof (value as any).Text === 'string' || typeof (value as any).Text === 'number');
+    (typeof (value as Record<string, unknown>).Text === 'string' || typeof (value as Record<string, unknown>).Text === 'number');
 }
 
 function hasTextLookup(value: ChatMessageDictionaryEntry): value is TextLookupDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as any).Tag === 'string' &&
-    typeof (value as any).TextToLookUp === 'string';
+    typeof (value as Record<string, unknown>).Tag === 'string' &&
+    typeof (value as Record<string, unknown>).TextToLookUp === 'string';
 }
 
 function isDictionary(value: unknown): value is Record<string, unknown> {
@@ -206,8 +210,8 @@ function memberName(member: IMember) {
 }
 
 function memberPronoun(member: IChatMessageCharacter, dialogKey: string) {
-  const pronounName = member.Pronouns || 'TheyThem';
-  return findDialog(`Pronoun${dialogKey}${pronounName}`);
+  const pronounName = member.Pronouns || 'SheHer';
+  return findInterfaceText(`Pronoun${dialogKey}${pronounName}`);
 }
 
 export function findActivity(content: string): string {
@@ -233,37 +237,63 @@ export function findAssetName(item: string, group?: string): string {
   return filtered[0] ? filtered[0].Description : item;
 }
 
-export function findDialog(content: string): string {
-  const dialog = DialogCache.find(line => line.Stage === content);
-  return (dialog && dialog.Result.trim()) || content;
+export function findInterfaceText(content: string): string {
+  return InterfaceTextCache[content]?.trim() || content;
 }
 
-async function loadAndCacheDictionaries() {
-  if (!loading) {
-    loading = Promise.all([
+export async function findTitle(titleCode: string): Promise<string> {
+  await loadAndCacheDictionariesForMemberInfo();
+
+  return InformationSheetTextCache[`Title${titleCode}`];
+}
+
+function loadAndCacheDictionariesForChatLog() {
+  if (!loadingChatLogDictionaries) {
+    loadingChatLogDictionaries = Promise.all([
       loadDictionary('ActivityDictionary', data => {
         for (const activity of data) {
           ActivityNameCache[activity[0]] = activity[1];
         }
       }),
+      loadDictionary('AssetStrings', data => {
+        for (const assetString of data) {
+          InterfaceTextCache[assetString[0]] = assetString[1];
+        }
+      }),
       loadDictionary('Female3DCG', data => {
         AssetNameCache.push(...data.map(mapAsset));
       }),
-      loadDictionary('Dialog_Player', data => {
-        DialogCache.push(...data.map(mapDialog));
+      loadDictionary('Interface', data => {
+        for (const interfaceText of data) {
+          InterfaceTextCache[interfaceText[0]] = interfaceText[1];
+        }
       })
     ]);
   }
 
-  return loading;
+  return loadingChatLogDictionaries;
 }
 
-async function loadDictionary(fileName: string, processData: (data: any[]) => void) {
-  const url = chrome.runtime.getURL(`assets/${fileName}.csv`);
+function loadAndCacheDictionariesForMemberInfo() {
+  if (!loadingMemberInfoDictionaries) {
+    loadingMemberInfoDictionaries = Promise.all([
+      loadDictionary('Text_InformationSheet', data => {
+        for (const text of data) {
+          InformationSheetTextCache[text[0]] = text[1];
+        }
+      })
+    ]);
+  }
+
+  return loadingMemberInfoDictionaries;
+}
+
+async function loadDictionary(fileName: string, processData: (data: unknown[]) => void) {
+  const url = chrome.runtime.getURL(`log-viewer/assets/${fileName}.csv`);
   const response = await fetch(url);
   const value = await response.text();
   parseCsv(value, {
-    complete: (results: any) => {
+    complete: (results) => {
       processData(results.data);
     }
   });
@@ -275,17 +305,4 @@ function mapAsset(asset: string[]): IAsset {
     ItemName: (asset[1] && asset[1].trim()) || undefined,
     Description: asset[2] && asset[2].trim(),
   };
-}
-
-function mapDialog(dialog: string[]) {
-  return {
-    Stage: dialog[0],
-    // NextStage: dialog[1],
-    // Option: dialog[2],
-    Result: dialog[3],
-    // Function: dialog[4],
-    // Prerequisite: dialog[5],
-    // Group: dialog[6],
-    // Trait: dialog[7],
-  } as IDialog;
 }

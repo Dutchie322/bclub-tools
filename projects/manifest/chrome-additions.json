@@ -1,5 +1,29 @@
 {
+  "manifest_version": 3,
+  "action": {
+    "default_title": "Bondage Club Tools",
+    "default_icon": {
+      "128": "log-viewer/assets/bclub-logo.png"
+    }
+  },
   "background": {
-    "persistent": false
-  }
+    "service_worker": "background/main.js",
+    "type": "module"
+  },
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;",
+    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';"
+  },
+  "permissions": [
+    "activeTab",
+    "notifications",
+    "scripting",
+    "storage",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "*://*.bondageprojects.com/*",
+    "*://*.bondageprojects.elementfx.com/*",
+    "*://*.bondage-europe.com/*"
+  ]
 }

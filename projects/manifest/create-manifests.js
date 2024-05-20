@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 // Make sure output directories exist.
-ensureDirectoryExists(__dirname + '/../../dist/bclub-tools');
+//ensureDirectoryExists(__dirname + '/../../dist/bclub-tools');
 ensureDirectoryExists(__dirname + '/../../dist/manifests');
 
 const baseManifest = readJsonFile('base-manifest.json');
@@ -12,7 +12,7 @@ const chromeManifest = mergeDeep(baseManifest, chromeManifestAdditions);
 const firefoxManifest = mergeDeep(baseManifest, firefoxManifestAdditions);
 
 // Output Chrome manifest to dist directory for easy debugging.
-writeJsonFile('bclub-tools/manifest.json', chromeManifest);
+writeJsonFile('manifest.json', chromeManifest);
 
 // Write all versions of the manifests to a different directory to add them to store packages as needed later.
 writeJsonFile('manifests/manifest-chrome.json', chromeManifest);

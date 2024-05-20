@@ -44,13 +44,16 @@ function downloadFile(file, destination) {
 }
 
 const assets = [
+  'Assets/Female3DCG/AssetStrings.csv',
   'Assets/Female3DCG/Female3DCG.csv',
   'Screens/Character/Preference/ActivityDictionary.csv',
-  'Screens/Character/Player/Dialog_Player.csv'
+  'Screens/Character/InformationSheet/Text_InformationSheet.csv',
+  'Screens/Interface.csv'
 ];
 
 const scripts = [
-  'Scripts/Typedef.d.ts'
+  'Scripts/Typedef.d.ts',
+  'Scripts/Messages.d.ts'
 ];
 
 for (const file of assets) {

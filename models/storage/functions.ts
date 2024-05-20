@@ -1,32 +1,26 @@
 import { IStorageMap, StorageKeys, STORAGE_KEYS, GlobalStorageKeys, IGlobalStorageMap } from './IStorageMap';
 
-export function retrieveGlobal<K extends GlobalStorageKeys>(key: K): Promise<IGlobalStorageMap[K] | undefined> {
-  return new Promise(resolve => {
-    chrome.storage.local.get([key], data => resolve(data[key]));
-  });
+export async function retrieveGlobal<K extends GlobalStorageKeys>(key: K): Promise<IGlobalStorageMap[K] | undefined> {
+  return (await chrome.storage.local.get([key]))[key];
 }
 
-export function retrieve<K extends StorageKeys>(tabId: number, key: K): Promise<IStorageMap[K] | undefined> {
-  return new Promise(resolve => {
-    const storageKey = `${key}_${tabId}`;
-    chrome.storage.local.get([storageKey], data => resolve(data[storageKey]));
-  });
+export async function retrieve<K extends StorageKeys>(tabId: number, key: K): Promise<IStorageMap[K] | undefined> {
+  const storageKey = `${key}_${tabId}`;
+  return (await chrome.storage.local.get([storageKey]))[storageKey];
 }
 
-export function storeGlobal<K extends GlobalStorageKeys>(key: K, data: IGlobalStorageMap[K]) {
-  return new Promise<IGlobalStorageMap[K]>(resolve => {
-    chrome.storage.local.set({
-      [key]: data
-    }, () => {
-      resolve(data);
-    });
+export async function storeGlobal<K extends GlobalStorageKeys>(key: K, data: IGlobalStorageMap[K]) {
+  await chrome.storage.local.set({
+    [key]: data
   });
+  return data;
 }
 
-export function store<K extends StorageKeys>(tabId: number, key: K, data: IStorageMap[K]) {
-  chrome.storage.local.set({
+export async function store<K extends StorageKeys>(tabId: number, key: K, data: IStorageMap[K]) {
+  await chrome.storage.local.set({
     [`${key}_${tabId}`]: data
   });
+  return data;
 }
 
 type TabStorageChange = { [K in StorageKeys]?: chrome.storage.StorageChange };
@@ -47,6 +41,6 @@ export function onChanged(
   });
 }
 
-export function clearStorage(tabId: number) {
-  chrome.storage.local.remove(STORAGE_KEYS.map(key => `${key}_${tabId}`));
+export async function clearStorage(tabId: number) {
+  await chrome.storage.local.remove(STORAGE_KEYS.map(key => `${key}_${tabId}`));
 }

@@ -1,11 +1,13 @@
 import { IChatLog, IMember } from 'models';
 import { DatabaseService } from './database.service';
 import { Injectable } from '@angular/core';
-import * as JSZip from 'jszip';
+import { Zip, ZipDeflate, strToU8 } from 'fflate';
 import { Observable } from 'rxjs';
+import { decode } from './utils/base64';
 
 interface ExportOptions {
   exportAppearances: false;
+  handle: FileSystemFileHandle;
 }
 
 type UpdateCallback = (text: string, progress?: boolean | number) => void;
@@ -32,12 +34,11 @@ export class ExportService {
         text: ''
       } as IExportProgressState;
 
-      function complete(archive: Blob) {
-        subscriber.next(archive);
+      function complete() {
         subscriber.complete();
       }
 
-      function error(err: any) {
+      function error(err: unknown) {
         subscriber.error(err);
       }
 
@@ -72,13 +73,30 @@ export class ExportService {
       }));
   }
 
-  private async createArchive(options: ExportOptions, update: UpdateCallback): Promise<Blob> {
-    const archive = new JSZip();
+  private async createArchive(options: ExportOptions, update: UpdateCallback): Promise<Zip> {
+    const writeable = await options.handle.createWritable({
+      keepExistingData: false
+    });
+
+    const archive = new Zip((err, data, final) => {
+      if (err) {
+        console.warn(err);
+        return;
+      }
+
+      console.log(data, final);
+
+      writeable.write(data);
+      if (final) {
+        writeable.close();
+      }
+    });
 
     const objectStoreNames = await this.databaseService.objectStoreNames;
     if (objectStoreNames.length === 0) {
       update('Generating archive');
-      return archive.generateAsync({ type: 'blob' });
+      archive.end();
+      return;
     }
 
     const transaction = await this.databaseService.transaction(objectStoreNames, 'readonly');
@@ -87,34 +105,40 @@ export class ExportService {
     };
 
     for (const storeName of objectStoreNames) {
-      const folder = archive.folder(storeName);
-
       switch (storeName) {
         case 'chatRoomLogs':
           update('Gathering chat logs');
-          await this.exportChatLogs(update, transaction, folder);
+          await this.exportChatLogs(update, transaction, archive);
           break;
 
         case 'members':
           update('Gathering people');
-          await this.exportMembers(options, update, transaction, folder);
+          await this.exportMembers(options, update, transaction, archive);
           break;
       }
     }
 
     update('Generating archive');
-    return archive.generateAsync({
-      type: 'blob',
-      compression: 'DEFLATE',
-      compressionOptions: {
-        level: 1
-      }
-    }, metadata => update(`Generating archive, processing file ${metadata.currentFile}`, metadata.percent));
+    archive.end();
+    // return archive.generateAsync({
+    //   type: 'blob',
+    //   compression: 'DEFLATE',
+    //   compressionOptions: {
+    //     level: 1
+    //   }
+    // }, metadata => update(`Generating archive, processing file ${metadata.currentFile}`, metadata.percent));
+    return archive;
   }
 
-  private async exportChatLogs(update: UpdateCallback, transaction: IDBTransaction, folder: JSZip): Promise<void> {
+  private async exportChatLogs(update: UpdateCallback, transaction: IDBTransaction, archive: Zip): Promise<void> {
     return new Promise(resolve => {
-      const subfolders = {} as { [key: number]: { folder: JSZip, files: { [name: string]: IChatLog[] } } };
+      const subfolders = {} as {
+        [key: number]: {
+          files: {
+            [name: string]: IChatLog[]
+          }
+        }
+      };
 
       transaction.objectStore('chatRoomLogs').openCursor().addEventListener('success', event => {
         const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
@@ -126,7 +150,6 @@ export class ExportService {
 
           if (!subfolders[chatLog.session.memberNumber]) {
             subfolders[chatLog.session.memberNumber] = {
-              folder: folder.folder(String(chatLog.session.memberNumber)),
               files: {}
             };
           }
@@ -144,16 +167,22 @@ export class ExportService {
           update('Generating chat log files');
 
           for (const memberNumber in subfolders) {
-            if (subfolders.hasOwnProperty(memberNumber)) {
-              for (const file in subfolders[memberNumber].files) {
-                if (subfolders[memberNumber].files.hasOwnProperty(file)) {
-                  const data = subfolders[memberNumber].files[file];
-                  const fileName = `${this.timestampToSortableFileName(data[0].timestamp)} - ${data[0].chatRoom}.json`;
-                  subfolders[memberNumber].folder.file(fileName, JSON.stringify(data, undefined, 2), {
-                    date: data[data.length - 1].timestamp
-                  });
-                }
+            if (!Object.prototype.hasOwnProperty.call(subfolders, memberNumber)) {
+              continue;
+            }
+
+            for (const file in subfolders[memberNumber].files) {
+              if (!Object.prototype.hasOwnProperty.call(subfolders[memberNumber].files, file)) {
+                continue;
               }
+
+              const data = subfolders[memberNumber].files[file];
+              const fileName = `${this.timestampToSortableFileName(data[0].timestamp)} - ${data[0].chatRoom}.json`;
+
+              const deflate = new ZipDeflate(`chatRoomLogs/${memberNumber}/${fileName}`);
+              archive.add(deflate);
+              deflate.mtime = data[data.length - 1].timestamp;
+              deflate.push(strToU8(JSON.stringify(data, undefined, 2)), true);
             }
           }
           resolve();
@@ -172,10 +201,8 @@ export class ExportService {
     return result;
   }
 
-  private async exportMembers(options: ExportOptions, update: UpdateCallback, transaction: IDBTransaction, folder: JSZip) {
+  private async exportMembers(options: ExportOptions, update: UpdateCallback, transaction: IDBTransaction, archive: Zip) {
     return new Promise<void>(resolve => {
-      const subfolders = {} as { [key: number]: JSZip };
-
       transaction.objectStore('members').openCursor().onsuccess = event => {
         const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
         if (cursor) {
@@ -183,17 +210,12 @@ export class ExportService {
 
           update(`Generating member files for ${member.memberNumber}`, true);
 
-          if (!subfolders[member.playerMemberNumber]) {
-            subfolders[member.playerMemberNumber] = folder.folder(String(member.playerMemberNumber));
-          }
-
-          const memberFolder = subfolders[member.playerMemberNumber].folder(String(member.memberNumber));
           if (member.appearance) {
             if (options.exportAppearances) {
-              memberFolder.file('appearance.png', member.appearance.substring(22), {
-                base64: true,
-                date: member.lastSeen
-              });
+              const deflate = new ZipDeflate(`members/${member.playerMemberNumber}/${member.memberNumber}/appearance.png`);
+              archive.add(deflate);
+              deflate.mtime = member.lastSeen;
+              deflate.push(decode(member.appearance.substring(22)), true);
             } else {
               delete member.appearanceMetaData;
             }
@@ -201,10 +223,10 @@ export class ExportService {
             delete member.appearance;
           }
 
-          const data = JSON.stringify(member, undefined, 2);
-          memberFolder.file('data.json', data, {
-            date: member.lastSeen
-          });
+          const deflate = new ZipDeflate(`members/${member.playerMemberNumber}/${member.memberNumber}/data.json`);
+          archive.add(deflate);
+          deflate.mtime = member.lastSeen;
+          deflate.push(strToU8(JSON.stringify(member, undefined, 2)), true);
 
           cursor.continue();
         } else {

@@ -10,7 +10,10 @@ const JSZip = require('jszip');
 
 function createBasePackage() {
   const package = new JSZip();
-  addAllFilesToArchive(package, __dirname + '/../dist/bclub-tools/');
+  addAllFilesToArchive(package, 'background', __dirname + '/../dist/background/');
+  addAllFilesToArchive(package, 'content-script', __dirname + '/../dist/content-script/');
+  addAllFilesToArchive(package, 'log-viewer', __dirname + '/../dist/log-viewer/');
+  addAllFilesToArchive(package, 'popup', __dirname + '/../dist/popup/');
   return package;
 }
 
@@ -34,11 +37,11 @@ function finalizePackage(package, nameSuffix) {
 }
 
 // Thanks to https://github.com/Stuk/jszip/issues/386#issuecomment-508217874
-function addAllFilesToArchive(zip, dir) {
+function addAllFilesToArchive(zip, basePath, dir) {
   const allPaths = getFilePathsRecursiveSync(dir);
 
   for (const filePath of allPaths) {
-    const addPath = path.relative(dir, filePath);
+    const addPath = path.join(basePath, path.relative(dir, filePath));
 
     let data = fs.readFileSync(filePath);
     zip.file(addPath, data);
