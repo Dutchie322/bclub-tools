@@ -1,10 +1,13 @@
 //#region Common
 
 declare namespace SocketIO {
-	type Socket = import("socket.io-client").Socket;
+	type Socket = import("socket.io-client").Socket<ServerToClientEvents, ClientToServerEvents>
 }
 
 declare function io(serv: string): SocketIO.Socket;
+
+type ClientEvent = import("@socket.io/component-emitter").EventNames<ClientToServerEvents>;
+type ClientEventParams<Ev extends ClientEvent> = import("@socket.io/component-emitter").EventParams<ClientToServerEvents, Ev>;
 
 interface String {
 	replaceAt(index: number, character: string): string;
@@ -18,13 +21,19 @@ type MemoizedFunction<T extends Function> = T & {
 };
 
 // GL shim
+interface WebGLTextureData {
+	width: number,
+	height: number,
+	texture: WebGLTexture,
+}
+
 interface WebGL2RenderingContext {
 	program?: WebGLProgram;
 	programFull?: WebGLProgram;
 	programHalf?: WebGLProgram;
 	programTexMask?: WebGLProgram;
-	textureCache?: Map<string, any>;
-	maskCache?: Map<string, any>;
+	textureCache?: Map<string, WebGLTextureData>;
+	maskCache?: Map<string, WebGLTexture>;
 }
 
 interface WebGLProgram {
@@ -49,6 +58,12 @@ interface HTMLImageElement {
 
 interface HTMLElement {
 	setAttribute(qualifiedName: string, value: any): void;
+	removeAttribute(qualifiedName: string): void;
+}
+
+interface GamepadButton {
+	/** Whether the button was pressed the last input event */
+	repeat: boolean;
 }
 
 interface RGBColor {
@@ -61,20 +76,106 @@ interface RGBAColor extends RGBColor {
 	a: number;
 }
 
-type RectTuple = [number, number, number, number];
+type Rect = { x: number, y: number, w: number, h: number };
+
+/** A 4-tuple with X & Y coordinates, width and height */
+type RectTuple = [X: number, Y: number, W: number, H: number];
+
+/** A 4-tuple with X & Y coordinates and, optionally, width and height */
+type PartialRectTuple = [X: number, Y: number, W?: number, H?: number];
 
 type CommonSubstituteReplacer = (match: string, offset: number, replacement: string, string: string) => string;
 type CommonSubtituteSubstitution = [tag: string, substitution: string, replacer?: CommonSubstituteReplacer];
 
+interface CommonGenerateGridParameters {
+	/** Starting X coordinate of the grid */
+	x: number,
+	/** Starting Y coordinate of the grid */
+	y: number,
+	/** Maximum width of the grid */
+	width: number,
+	/** Maximum height of the grid */
+	height: number,
+	/** Width of one grid item */
+	itemWidth: number,
+	/** Height of one grid item */
+	itemHeight: number,
+	/**
+	 * Margin of one grid item in the X direction.
+	 * Not giving a value will calculate a margin from the item's size and the grid size
+	 */
+	itemMarginX?: number;
+	/**
+	 * Margin of one grid item in the Y direction
+	 * Not giving a value will calculate a margin from the item's size and the grid size
+	 */
+	itemMarginY?: number;
+	/**
+	 * The direction the items are layed out
+	 * @default "horizontal"
+	 */
+	direction?: "horizontal" | "vertical";
+}
+
+type CommonGenerateGridCallback<T> = (item: T, x: number, y: number, width: number, height: number) => boolean;
+
+/**
+ * An object for holding arbitrary values with a mechanism to reset them to a default
+ */
+type VariableContainer<T1, T2> = T1 & T2 & {
+	/** Default values that should be restored to the container upon calling {@link Reset} */
+	readonly Defaults: Readonly<T1>,
+	/** Restore the container to its default state */
+	readonly Reset: () => void,
+}
+
 //#endregion
 
 //#region Enums
+
+type ChatRoomSpaceLabel = "MIXED" | "FEMALE_ONLY" | "MALE_ONLY" | "ASYLUM";
+
+type DialogMenuMode = (
+	"activities"
+	| "colorDefault"
+	| "colorExpression"
+	| "colorItem"
+	| "crafted"
+	| "dialog"
+	| "extended"
+	| "items"
+	| "layering"
+	| "locking"
+	| "locked"
+	| "permissions"
+	| "struggle"
+	| "tighten"
+);
+
+type DialogMenuButton = "Activity" |
+	"ColorCancel" | "ColorChange" | "ColorChangeMulti" | "ColorDefault" | "ColorPickDisabled" | "ColorSelect" |
+	"Crafting" |
+	"NormalMode" | "PermissionMode" |
+	"Dismount" | "Escape" | "Remove" |
+	"Exit" |
+	"GGTSControl" |
+	"InspectLock" | "InspectLockDisabled" |
+	"Layering" |
+	"Lock" | "LockDisabled" | "LockMenu" |
+	"Swap" | "Next" | "Prev" | `PickLock${PickLockAvailability}` |
+	"Remote" | "RemoteDisabled" | `RemoteDisabledFor${VibratorRemoteAvailability}` |
+	"Unlock" | "Use" | "UseDisabled" | "Struggle" | "TightenLoosen" |
+	// Wardrobe buttons
+	"Wardrobe" | "WardrobeDisabled" | "Reset" | "WearRandom" | "Random" | "Naked" | "Accept" | "Cancel" | "Character"
+	;
 
 type DialogSortOrder = | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 type DialogStruggleActionType = "ActionUse" | "ActionSwap" | "ActionRemove" | "ActionUnlock" | "ActionUnlockAndRemove" | "ActionStruggle" | "ActionEscape" | "ActionDismount";
 
 type CharacterType = "online" | "npc" | "simple";
+
+type CharacterPronouns = "SheHer" | "HeHim";
 
 type VibratorIntensity = -1 | 0 | 1 | 2 | 3;
 
@@ -84,172 +185,87 @@ type VibratorMode = "Off" | "Low" | "Medium" | "High" | "Maximum" | "Random" | "
 
 type VibratorRemoteAvailability = "Available" | "NoRemote" | "NoRemoteOwnerRuleActive" | "NoLoversRemote" | "RemotesBlocked" | "CannotInteract" | "NoAccess" | "InvalidItem";
 
+type PickLockAvailability = "" | "Disabled" | "PermissionsDisabled" | "InaccessibleDisabled" | "NoPicksDisabled";
+
 type ItemVulvaFuturisticVibratorAccessMode = "" | "ProhibitSelf" | "LockMember";
 
-/**
- * @property Freeze - Prevents walking and kneeling unaided. There's a few caveats with the kneeling part.
- * @property Prone - Indicates the character is prone. Looks non-functional.
- * @property Block - Indicates that the character is "blocked". Acts as a restraint.
- * @property Mounted - Indicates that the character is mounted onto something. Acts as a restraint.
- * @property KneelFreeze - Prevents walking.
- * @property ForceKneel - Prevents kneeling unaided.
- * @property BlockKneel - Prevents items that have the CanKneel prerequisite from being applied.
- *
- * @property CuffedFeet - Enable items that have the CuffedFeet prerequisite to be applied.
- * @property CuffedLegs - Enable items that have the CuffedLegs prerequisite to be applied.
- * @property CuffedArms - Enable items that have the CuffedArms prerequisite to be applied.
- * @property IsChained - Prevents items that have the NotChained prerequisite from being applied.
- * @property FixedHead - Locks the character's head in-place. Prevents nodding and shaking activities on it.
- * @property MergedFingers - Indicates the character can't use their fingers normally. Limits activities.
- *
- * @property Shackled - Prevents items that have the NotShackled prerequisite from being applied.
- * @property Tethered - Prevents leashing items from working.
- * @property Enclose - Indicates the character cannot be interacted with and can't interact back.
- * @property OneWayEnclose - Indicates the character can be interacted with but can't interact back.
- * @property OnBed - Enable items that have the OnBed prerequisite to be applied.
- * @property Lifted - Prevents items that have the NotLifted prerequisite to be applied.
- *
- * @property Slow - Indicates the character is slowed. Used when exiting chatrooms.
- * @property FillVulva - Marks the item as filling the character's vulva.
- *   Used when checking activities' prerequisites and the auto-stimulation events.
- * @property IsPlugged - Marks the item as filling the character's butt.
- *   Used when checking activities' prerequisites and the auto-stimulation events.
- *
- * @property Egged - Marks the item as being a "vibrator" kind-of item.
- *   Make the item's Vibrator-related properties be taken into account for arousal,
- *   as well as the stuttering effect.
- * @property Vibrating - Indicates an "Egged" item as being vibrating.
- *   Normally handled automatically by VibrationMode. Makes the item preview wobble
- *   in the inventory, as well as cause auto-stimulation events.
- *
- * @property Edged - Marks the item as causing the character to be edged.
- *   Normally handled automatically by VibrationMode. Causes the character's arousal
- *   to be capped, and ruins its orgasms.
- * @property DenialMode - Marks the item as causing the character to be denied.
- *   Causes the character's arousal to be capped (higher that Edged).
- * @property RuinOrgasms - Marks the item as ruining orgasms.
- *   Requires DenialMode. Makes the character unable to fully orgasm.
- *
- * @property Remote - Marks the item as a remote. Looks non-functional.
- * @property UseRemote - Marks the item as needing a remote to be changed.
- * @property BlockRemotes - Marks the item as preventing remotes from being used
- *   on the character.
- *
- * @property Lock - Marks the item as being some kind of lock.
- * @property NotSelfPickable - Disables the item from being lock-picked.
- *
- * @property Chaste - Marks the item as applying chastity.
- *   Prevents items that have the NotChaste prerequisite from being applied.
- *   Allows the item to be taken off at the club management.
- * @property BreastChaste - Marks the item as applying breast chastity.
- *   Allows the item to be taken off at the club management.
- *
- * @property Leash - Marks the item as being usable as a leash.
- * @property IsLeashed - Marks a leash item as being held.
- * @property CrotchRope - Marks the item as being a crotchrope-style item.
- *   Used for the auto-stimulation events.
- *
- * @property ReceiveShock - Marks the item as being a shock-dispensing item.
- * @property TriggerShock - Marks the item as being a trigger for shock-dispensing items.
- *
- * @property OpenPermission - Marks the item as requiring collar-permissions (Futuristic).
- * @property OpenPermissionArm - Marks the item as requiring arm-permissions (Futuristic).
- * @property OpenPermissionLeg - Marks the item as requiring arm-permissions (Futuristic).
- * @property OpenPermissionChastity - Marks the item as requiring chastity-permissions (Futuristic).
- *
- * @property BlockMouth - Marks the item as blocking the character's mouth.
- *   Prevents items that have the NotLifted prerequisite to be applied.
- *   Also used when checking activities' prerequisites.
- * @property OpenMouth - Marks the item as opening the character's mouth.
- *   Used when checking activities' prerequisites.
- *
- * @property ProtrudingMouth - Indicates that the item bulges out from the character's mouth.
- *   Prevents items that wrap the head to be applied.
- *
- * @property Wiggling - Indicates that the item hangs from the character and can wiggle from it,
- *   triggering arousal. Used as part of the stimulation event system.
- */
-type EffectName =
-	"Freeze" | "Prone" | "Block" | "Mounted" | "KneelFreeze" | "ForceKneel" | "BlockKneel" |
+type SpeechTransformName = "gagGarble" | "stutter" | "babyTalk" | "deafen";
 
-	"CuffedFeet" | "CuffedLegs" | "CuffedArms" | "IsChained" | "FixedHead" | "MergedFingers" |
-
-	"Shackled" | "Tethered" | "Enclose" | "OneWayEnclose" | "OnBed" | "Lifted" | "Suspended" |
-
-	"Slow" | "FillVulva" | "IsPlugged" |
-
-	"Egged" | "Vibrating" |
-
-	"Edged" | "DenialMode" | "RuinOrgasms" |
-
-	"Remote" | "UseRemote" | "BlockRemotes" |
-
-	"Lock" | "NotSelfPickable" |
-
-	"Chaste" | "BreastChaste" | "ButtChaste" |
-
-	"Leash" | "IsLeashed" | "CrotchRope" |
-
-	"ReceiveShock" | "TriggerShock" |
-
-	"OpenPermission" | "OpenPermissionArm" | "OpenPermissionLeg" | "OpenPermissionChastity" |
-
-	"BlockMouth" | "OpenMouth" |
-
-	"GagVeryLight" | "GagEasy" | "GagLight" | "GagNormal" | "GagMedium" | "GagHeavy" | "GagVeryHeavy" | "GagTotal" |
+/** The {@link EffectName} values for all gag-related effects. */
+type GagEffectName = (
+	"GagVeryLight"
+	| "GagEasy"
+	| "GagLight"
+	| "GagNormal"
+	| "GagMedium"
+	| "GagHeavy"
+	| "GagVeryHeavy"
+	| "GagTotal"
 
 	// Those are only supposed to be "transient", as in, they appear because of stacked gags
-	"GagTotal2" | "GagTotal3" | "GagTotal4" |
+	| "GagTotal2"
+	| "GagTotal3"
+	| "GagTotal4"
+);
 
-	"BlindLight" | "BlindNormal" | "BlindHeavy" | "BlindTotal" |
-	"BlurLight" | "BlurNormal" | "BlurHeavy" | "BlurTotal" |
-	"DeafLight" | "DeafNormal" | "DeafHeavy" | "DeafTotal" |
+/** The {@link EffectName} values for all blindness-related effects. */
+type BlindEffectName = "BlindLight" | "BlindNormal" | "BlindHeavy" | "BlindTotal";
 
+/** The {@link EffectName} values for all blurring-related effects. */
+type BlurEffectName = "BlurLight" | "BlurNormal" | "BlurHeavy" | "BlurTotal";
+
+/** The {@link EffectName} values for all deafness-related effects. */
+type DeafEffectName = "DeafLight" | "DeafNormal" | "DeafHeavy" | "DeafTotal";
+
+/** All known effects */
+type EffectName =
+	GagEffectName | BlindEffectName | BlurEffectName | DeafEffectName |
+	"Freeze" | "BlockWardrobe" | "Block" | "Mounted" |
+	"CuffedFeet" | "CuffedLegs" | "CuffedArms" | "IsChained" | "FixedHead" | "MergedFingers" |
+	"Shackled" | "Tethered" | "MapImmobile" | "Enclose" | "OneWayEnclose" | "OnBed" | "Lifted" | "Suspended" |
+	"Slow" | "FillVulva" | "VulvaShaft" | "IsPlugged" |
+	"Egged" | "Vibrating" | "ForcedErection" |
+	"Edged" | "DenialMode" | "RuinOrgasms" |
+	"Remote" | "UseRemote" | "BlockRemotes" |
+	"Lock" | "NotSelfPickable" |
+	"Chaste" | "BreastChaste" | "ButtChaste" |
+	"Leash" | "IsLeashed" | "CrotchRope" |
+	"ReceiveShock" | "TriggerShock" |
+	"OpenPermission" | "OpenPermissionArm" | "OpenPermissionLeg" | "OpenPermissionChastity" |
+	"BlockMouth" | "OpenMouth" |
 	"VR" | "VRAvatars" | "KinkyDungeonParty" |
-
-	"LightBall" |
-
 	"RegressedTalk" |
-
 	"HideRestraints" |
-
-	"Unlock-MetalPadlock" | "Unlock-OwnerPadlock" | "Unlock-OwnerTimerPadlock" |
-	"Unlock-LoversPadlock" | "Unlock-LoversTimerPadlock" |
-	"Unlock-MistressPadlock" | "Unlock-MistressTimerPadlock" |
-	"Unlock-PandoraPadlock" |
-
-	"Unlock-MetalCuffs" | "Unlock-EscortAnkleCuffs" |
-
-	// XXX: only for lockpicks?
-	"Unlock-" |
-
-	"ProtrudingMouth" | "Wiggling" |
-	""
+	"UnlockMetalPadlock" | "UnlockOwnerPadlock" | "UnlockOwnerTimerPadlock" |
+	"UnlockLoversPadlock" | "UnlockLoversTimerPadlock" |
+	"UnlockFamilyPadlock" | "UnlockMistressPadlock" | "UnlockMistressTimerPadlock" |
+	"UnlockPandoraPadlock" | "UnlockMetalCuffs" | "UnlockEscortAnkleCuffs" | "UnlockPortalPanties" |
+	"ProtrudingMouth" | "Wiggling"
 	;
 
 interface ExpressionNameMap {
-	Eyebrows: "Raised" | "Lowered" | "OneRaised" | "Harsh" | "Angry" | "Soft",
+	Eyebrows: null | "Raised" | "Lowered" | "OneRaised" | "Harsh" | "Angry" | "Soft",
 	Eyes: (
-		"Closed" | "Dazed" | "Shy" | "Sad" | "Horny" | "Lewd" | "VeryLewd" |
+		null | "Closed" | "Dazed" | "Shy" | "Sad" | "Horny" | "Lewd" | "VeryLewd" |
 		"Heart" | "HeartPink" | "LewdHeart" | "LewdHeartPink" | "Dizzy" | "Daydream" |
 		"ShylyHappy" | "Angry" | "Surprised" | "Scared"
 	),
 	Eyes2: ExpressionNameMap["Eyes"],
 	Mouth: (
-		"Frown" | "Sad" | "Pained" | "Angry" | "HalfOpen" | "Open" | "Ahegao" | "Moan" |
+		null | "Frown" | "Sad" | "Pained" | "Angry" | "HalfOpen" | "Open" | "Ahegao" | "Moan" |
 		"TonguePinch" | "LipBite" | "Happy" | "Devious" | "Laughing" | "Grin" | "Smirk" | "Pout"
 	),
-	Pussy: "Hard",
-	Blush: "Low" | "Medium" | "High" | "VeryHigh" | "Extreme" | "ShortBreath",
+	Pussy: null | "Hard",
+	Blush: null | "Low" | "Medium" | "High" | "VeryHigh" | "Extreme" | "ShortBreath",
 	Fluids: (
-		"DroolLow" | "DroolMedium" | "DroolHigh" | "DroolSides" | "DroolMessy" | "DroolTearsLow" |
+		null | "DroolLow" | "DroolMedium" | "DroolHigh" | "DroolSides" | "DroolMessy" | "DroolTearsLow" |
 		"DroolTearsMedium" | "DroolTearsHigh" | "DroolTearsMessy" | "DroolTearsSides" |
 		"TearsHigh" | "TearsMedium" | "TearsLow"
 	),
 	Emoticon: (
-		"Afk" | "Whisper" | "Sleep" | "Hearts" | "Tear" | "Hearing" | "Confusion" | "Exclamation" |
+		null | "Afk" | "Whisper" | "Sleep" | "Hearts" | "Tear" | "Hearing" | "Confusion" | "Exclamation" |
 		"Annoyed" | "Read" | "RaisedHand" | "Spectator" | "ThumbsDown" | "ThumbsUp" | "LoveRope" |
-		"LoveGag" | "LoveLock" | "Wardrobe" | "Gaming" | "Coffee"
+		"LoveGag" | "LoveLock" | "Wardrobe" | "Gaming" | "Coffee" | "Fork" | "Music"
 	),
 }
 
@@ -263,16 +279,14 @@ type AssetGroupItemName =
 	'ItemMouth3' | 'ItemNeck' | 'ItemNeckAccessories' | 'ItemNeckRestraints' |
 	'ItemNipples' | 'ItemNipplesPiercings' | 'ItemNose' | 'ItemPelvis' |
 	'ItemTorso' | 'ItemTorso2'| 'ItemVulva' | 'ItemVulvaPiercings' |
-	'ItemHandheld' |
-
-	'ItemHidden' /* TODO: investigate, not a real group */
+	'ItemHandheld'
 	;
 
 type AssetGroupScriptName = 'ItemScript';
 
 type AssetGroupBodyName =
-	ExpressionGroupName | 'BodyLower' | 'BodyUpper' | 'Bra' | 'Bracelet' | 'Cloth' |
-	'ClothAccessory' | 'ClothLower' | 'Corset' | 'FacialHair' | 'Garters' | 'Glasses' | 'Gloves' |
+	ExpressionGroupName | 'BodyLower' | 'BodyUpper' | 'BodyMarkings' | 'Bra' | 'Bracelet' | 'Cloth' |
+	'ClothAccessory' | 'ClothLower' | 'Corset' | 'EyeShadow' | 'FacialHair' | 'Garters' | 'Glasses' | 'Gloves' |
 	'HairAccessory1' | 'HairAccessory2' | 'HairAccessory3' | 'HairBack' |
 	'HairFront' | 'FacialHair' | 'Hands' | 'Hat' | 'Head' | 'Height' | 'Jewelry' | 'LeftAnklet' | 'LeftHand' | 'Mask' |
 	'Necklace' | 'Nipples' | 'Panties' | 'Pronouns' | 'RightAnklet' | 'RightHand' |
@@ -281,40 +295,65 @@ type AssetGroupBodyName =
 
 type AssetGroupName = AssetGroupBodyName | AssetGroupItemName | AssetGroupScriptName;
 
-type AssetPoseCategory = 'BodyUpper' | 'BodyLower' | 'BodyFull';
+interface AssetPoseMap {
+	BodyHands: 'TapedHands',
+	BodyUpper: 'BaseUpper' | 'BackBoxTie' | 'BackCuffs' | 'BackElbowTouch' | 'OverTheHead' | 'Yoked',
+	BodyLower: 'BaseLower' | 'Kneel' | 'KneelingSpread' | 'LegsClosed' | 'LegsOpen' | 'Spread',
+	BodyFull: 'Hogtied' | 'AllFours',
+	BodyAddon: 'Suspension',
+}
 
-type AssetPoseName =
-	/* BodyUpper */ 'BaseUpper' | 'BackBoxTie' | 'BackCuffs' | 'BackElbowTouch' | 'OverTheHead' | 'TapedHands' | 'Yoked' |
-	/* BodyLower */ 'BaseLower' | 'Kneel' | 'KneelingSpread' | 'LegsClosed' | 'LegsOpen' | 'Spread' |
+type AssetPoseCategory = keyof AssetPoseMap;
+type AssetPoseName = AssetPoseMap[keyof AssetPoseMap];
 
-	/* BodyFull  */ 'Hogtied' | 'AllFours' |
-	/* BodyAddon */ 'Suspension'
-	;
+/**
+ * A record mapping pose names to the actually to-be drawn poses.
+ * Special values can be specified, via use of {@link PoseType}, for either hiding the asset or using pose-agnostic assets.
+ */
+type AssetPoseMapping = Partial<Record<AssetPoseName, AssetPoseName | PoseType>>;
 
-type AssetPoseMapping = Partial<Record<AssetPoseName, AssetPoseName | "">>;
+type PoseType = "Hide" | PoseTypeDefault;
+type PoseTypeDefault = "";
+
+type PoseChangeStatus = 0 | 1 | 2 | 3;
 
 type AssetLockType =
 	"CombinationPadlock" | "ExclusivePadlock" | "HighSecurityPadlock" |
-	"IntricatePadlock" | "LoversPadlock" | "LoversTimerPadlock" |
+	"IntricatePadlock" | "LoversPadlock" | "LoversTimerPadlock" | "FamilyPadlock" |
 	"MetalPadlock" | "MistressPadlock" | "MistressTimerPadlock" |
 	"OwnerPadlock" | "OwnerTimerPadlock" | "PandoraPadlock" |
-	"PasswordPadlock" | "SafewordPadlock" | "TimerPadlock" |
+	"PasswordPadlock" | "PortalLinkPadlock" | "SafewordPadlock" | "TimerPadlock" |
 	"TimerPasswordPadlock"
 	;
 
 type CraftingPropertyType =
 	"Normal" | "Large" | "Small" | "Thick" | "Thin" | "Secure" | "Loose" | "Decoy" |
 	"Malleable" | "Rigid" | "Simple" | "Puzzling" | "Painful" | "Comfy" | "Strong" |
-	"Flexible" | "Nimble" | "Arousing" | "Dull"
+	"Flexible" | "Nimble" | "Arousing" | "Dull" | "Heavy" | "Light"
 	;
 
 type AssetAttribute =
-	"Skirt" |
+	"Skirt" | "SuitLower" | "UpperLarge" |
 	"ShortHair" | "SmallEars" | "NoEars" | "NoseRing" | "HoodieFix" |
 	"CanAttachMittens" |
-	"PenisLayer" | "PussyLayer" | "GenitaliaCover" |
-	"CagePlastic2" | "CageTechno" | "CageFlat"
+	"PenisLayer" | "PussyLayer" | "GenitaliaCover" | "Pussy1" | "Pussy2" | "Pussy3" |
+	"CagePlastic2" | "CageTechno" | "CageFlat" |
+	"FuturisticRecolor" | "FuturisticRecolorDisplay" |
+	"PortalLinkLockable" | `PortalLinkChastity${string}` | `PortalLinkActivity${ActivityName}` | `PortalLinkTarget${AssetGroupItemName}`
 	;
+
+type PosePrerequisite = `Can${AssetPoseName}`;
+
+type AssetPrerequisite =
+	PosePrerequisite | "AccessBreast" | "AccessBreastSuitZip" | "AccessButt" | "AccessFullPenis" | "AccessMouth" | "AccessTorso" | "AccessVulva" | "AccessCrotch" |
+	"BlockedMouth" | "ButtEmpty" | "CanBeCeilingTethered" | "CanCoverVulva" | "CanHaveErection" | "CanBeLimp" | "CanKneel" | "CannotBeSuited" | "CannotHaveWand" |
+	"ClitEmpty" | "Collared" | "CuffedArms" | "CuffedArmsOrEmpty" | "CuffedFeet" | "CuffedFeetOrEmpty" | "CuffedLegs" | "CuffedLegsOrEmpty" |
+	"DisplayFrame" | "EyesEmpty" | "GagCorset" | "GagFlat" | "GagUnique" | "GasMask" | "HasBreasts" | "HasFlatChest" | "HasPenis" | "HasVagina" |
+	"HoodEmpty" | "NakedFeet" | "NakedHands" | "NeedsHarness" | "NeedsNippleRings" | "NoChastityCage" | "NoErection" | "NoClothLower" | "NoItemArms" |
+	"NoItemFeet" | "NoItemHands" | "NoItemLegs" | "NoMaidTray" | "NoOuterClothes" | "NotChained" | "NotChaste" | "NotKneeling" |
+	"NotLifted" | "NotMasked" | "NotMounted" | "NotProtrudingFromMouth" | "NotSuspended" | "OnBed" |
+	"RemotesAllowed" | "VulvaEmpty"
+;
 
 type CraftingStatusType = 0 | 1 | 2;
 
@@ -331,6 +370,24 @@ type ArousalActiveName = "Inactive" | "NoMeter" | "Manual" | "Hybrid" | "Automat
 type ArousalVisibleName = "All" | "Access" | "Self";
 type ArousalAffectStutterName = "None" | "Arousal" | "Vibration" | "All";
 
+/**
+ * A listener for KeyboardEvents
+ *
+ * Cheat-sheet about how to do key checks with it:
+ * - {@link KeyboardEvent.code} is the layout-insensitive code
+ * for the key (so KeyA, Space, etc.) Use this if you want to
+ * keep the QWERTY location, like movement keys.
+ *
+ * {@link KeyboardEvent.key} is the layout-dependent string
+ * for the key (so "a" (or "q" on AZERTY), "A" (or "Q"), " ", etc.)
+ * Use this if you want the key to correspond to what's actually on
+ * the user's keyboard.
+ *
+ * @see {@link CommonKeyMove}
+ */
+type KeyboardEventListener = (event: KeyboardEvent) => boolean;
+type MouseEventListener = ScreenFunctions["MouseDown"];
+
 type SettingsSensDepName = "SensDepLight" | "Normal" | "SensDepNames" | "SensDepTotal" | "SensDepExtreme";
 type SettingsVFXName = "VFXInactive" | "VFXSolid" | "VFXAnimatedTemp" | "VFXAnimated";
 type SettingsVFXVibratorName = "VFXVibratorInactive" | "VFXVibratorSolid" | "VFXVibratorAnimated";
@@ -344,7 +401,7 @@ type GraphicsFontName =
 type PreferenceSubscreenName =
 	"General" | "Difficulty" | "Restriction" | "Chat" | "CensoredWords" | "Audio" | "Arousal" |
 	"Security" | "Online" | "Visibility" | "Immersion" | "Graphics" | "Controller" | "Notifications" |
-	"Gender" | "Scripts"
+	"Gender" | "Scripts" | "Extensions"
 	;
 
 type FetishName =
@@ -353,122 +410,47 @@ type FetishName =
 	"Pony" | "ABDL" | "Forniphilia"
 	;
 
-//#endregion
+type BackgroundTag =
+	"Filter by tag" | "Indoor" | "Outdoor" | "Aquatic" | "Special Events" | "SciFi & Fantasy" |
+	"Club & College" | "Regular house" | "Dungeon" | "Asylum"
+	;
 
-//#region index.html
+// NOTE: `NPCArchetype` is for NPC's only
+type TitleName =
+	NPCArchetype | "None" | "Mistress" | "Master" | "Mistree" | "ClubSlave" | "Maid" | "HeadMaid" | "BondageMaid" | "Kidnapper" |
+	"MasterKidnapper" | "Patient" | "PermanentPatient" | "EscapedPatient" | "Nurse" | "Doctor" |
+	"LadyLuck" | "LordFortune" | "Patron" | "CollegeStudent" |"Nawashi" | "Houdini" | "PonyAlicorn" |
+	"PonyPegasus" | "PonyUnicorn" | "PonyWild" | "PonyHot" | "PonyWarm" | "PonyCold" | "PonyFarm" |
+	"PonyFoal" | "InfilrationMole" | "InfilrationInfiltrator" | "InfilrationAgent" |
+	"InfilrationOperative" | "InfilrationSuperspy" | "MagicSchoolWizard" | "MagicSchoolMagus" |
+	"MagicSchoolMagician" | "MagicSchoolSorcerer" | "MagicSchoolSage" | "MagicSchoolOracle" |
+	"MagicSchoolWitch" | "MagicSchoolWarlock" | "Duchess" | "Duke" | "LittleOne" | "Baby" | "DL" |
+	"BondageBaby" | "Switch" | "Princess" |	"Prince" | "Liege" | "Majesty" | "Missy" | "Sissy" | "Tomboy" | "Femboy" | "GoodOne" |
+	"Pet" |	"Brat" | "Kitten" | "Puppy" | "Foxy" | "Bunny" | "Doll" | "Demon" | "Angel" | "Alien" | "Captain" | "Admiral" |
+	"Succubus" | "Incubus" | "Concubus" | "GoodGirl" | "GoodBoy" | "GoodSlaveGirl" | "GoodSlaveBoy" | "GoodSlave" | "Drone"
+	;
 
-/**
- * Main game running state, runs the drawing
- * @param {number} Timestamp
- */
-declare function MainRun(Timestamp: number): void;
+type MagicSchoolHouse = "Maiestas" | "Vincula" | "Amplector" | "Corporis";
 
-/**
- * When the user presses a key, we send the KeyDown event to the current screen if it can accept it
- * @param {KeyboardEvent} event
- */
-declare function KeyDown(event: KeyboardEvent): void;
+type ModuleType = "Character" | "Cutscene" | "MiniGame" | "Online" | "Room";
 
-/**
- * Handler for document-wide keydown event
- * @param {KeyboardEvent} event
- */
-declare function DocumentKeyDown(event: KeyboardEvent): void;
+type AssetCategory = "Medical" | "Extreme" | "Pony" | "SciFi" | "ABDL" | "Fantasy";
 
-/**
- * When the user clicks, we fire the click event for other screens
- * @param {MouseEvent} event
- */
-declare function Click(event: MouseEvent): void;
+type PortalLinkStatus = "PortalLinkInvalidCode" | "PortalLinkClipboardError" | "PortalLinkValidCode" | `PortalLinkSearching${number}` | "PortalLinkDuplicateCode" | "PortalLinkTargetNotFound" | "PortalLinkEstablished";
+type PortalLinkFunction = "PortalLinkFunctionLock" | "PortalLinkFunctionUnlock" | "PortalLinkFunctionCycleChastity" | `PortalLinkFunctionActivity${ActivityName}`;
 
-/**
- * When the user touches the screen (mobile only), we fire the click event for other screens
- * @param {TouchEvent} event
- */
-declare function TouchStart(event: TouchEvent): void;
+/** Valid thumb icons for range slider elements */
+type ThumbIcon = "lock" | "blindfold" | "lightbulb" | "player" | "rope";
 
-/**
- * When touch moves, we keep it's position for other scripts
- * @param {Touch} touch
- */
-declare function TouchMove(touch: Touch): void;
-
-/**
- * When mouse move, we keep the mouse position for other scripts
- * @param {MouseEvent} event
- */
-declare function MouseMove(event: MouseEvent): void;
-
-/**
- * When the mouse is away from the control, we stop keeping the coordinates,
- * we also check for false positives with "relatedTarget"
- * @param {MouseEvent} event
- */
-declare function LoseFocus(event: MouseEvent): void;
-
-//#endregion
-
-//#region Server Messages
-
-interface IChatRoomGameResponse {
-	Data: {
-		KinkyDungeon: any;
-		OnlineBounty: any;
-		/* LARP */
-		GameProgress?: "Start" | "Stop" | "Next" | "Skip" | "Action";
-		Action?: undefined;
-		Target?: number;
-		Item?: string;
-
-		/* MagicBattle */
-		Spell?: string;
-		Time?: number; /* ms */
-	}
-	Sender: number;
-	RNG: number
-}
-
-//#endregion
-
-//#region Server messages
-
-interface IChatRoomSyncExpressionMessage {
-	MemberNumber: number;
-	Group: ExpressionGroupName;
-	Name?: ExpressionName;
-}
-
-
-interface IChatRoomSyncPoseMessage {
-	MemberNumber: number;
-	Pose: AssetPoseName[];
-}
-
-interface IChatRoomSyncArousalMessage {
-	MemberNumber: number;
-	OrgasmTimer: number;
-	OrgasmCount: number;
-	Progress: number;
-	ProgressTimer: number;
-}
 //#endregion
 
 //#region Chat
 
-interface ChatRoom {
-	Name: string;
-	Description: string;
-	Admin: number[];
-	Ban: number[];
-	Limit: number;
-	Game: string;
-	Background: string;
-	Private: boolean;
-	Locked: boolean;
-	BlockCategory: string[];
-	Language: string;
-	Character?: any[]; /* From server, not really a Character object */
-}
+type ChatRoomLovershipOption = "" | "CanOfferBeginWedding" | "CanBeginWedding";
+type ChatRoomOwnershipOption = "" | "CanOfferEndTrial" | "CanOfferTrial" | "CanEndTrial";
+
+type ChatRoom = ServerChatRoomData;
+type ChatRoomSettings = ServerChatRoomSettings;
 
 type StimulationAction = "Kneel" | "Walk" | "Struggle" | "StruggleFail" | "Talk";
 
@@ -485,6 +467,19 @@ interface StimulationEvent {
 	TalkChance?: number;
 }
 
+type StimulationEventType = "CrotchRope" | "Talk" | "Vibe" | "Inflated" | "Wiggling" | "PlugFront" | "PlugBack" | "PlugBoth";
+
+interface StimulationEventItem {
+	/** The item that caused the stimulation event */
+    item: Item;
+	/** The type of stimulation event */
+    event: StimulationEventType;
+	/** The chance of the event occurring */
+    chance: number;
+	/** Arousal booost from the event */
+    arousal: number;
+}
+
 interface ChatRoomChatLogEntry {
 	Chat: string;
 	Garbled: string;
@@ -493,262 +488,6 @@ interface ChatRoomChatLogEntry {
 	SenderMemberNumber: number;
 	Time: number;
 }
-
-type MessageActionType = "Action" | "Chat" | "Whisper" | "Emote" | "Activity" | "Hidden" |
-	"LocalMessage" | "ServerMessage" | "Status";
-
-type MessageContentType = string;
-
-type CharacterReferenceTag =
-	| "SourceCharacter"
-	| "DestinationCharacter"
-	| "DestinationCharacterName"
-	| "TargetCharacter"
-	| "TargetCharacterName"
-
-type CommonChatTags =
-	| CharacterReferenceTag
-	| "AssetName";
-
-/**
- * A dictionary entry containing a replacement tag to be replaced by some value. The replacement strategy depends on
- * the type of dictionary entry.
- */
-interface TaggedDictionaryEntry {
-	/** The tag that will be replaced in the message */
-	Tag: string;
-}
-
-/**
- * A dictionary entry used to reference a character. The character reference tag will be replaced with the provided
- * character's name or pronoun. The display format will depend on the tag chosen.
- * Example substitutions for each tag (assuming the character name is Ben987):
- * * SourceCharacter: "Ben987"
- * * DestinationCharacter: "Ben987's" (if character is not self), "her"/"him" (if character is self)
- * * DestinationCharacterName: "Ben987's"
- * * TargetCharacter: "Ben987" (if character is not self), "herself"/"himself" (if character is self)
- * * TargetCharacterName: "Ben987"
- * @deprecated Use {@link SourceCharacterDictionaryEntry} and {@link TargetCharacterDictionaryEntry} instead.
- */
-interface CharacterReferenceDictionaryEntry extends TaggedDictionaryEntry {
-	/** The member number of the referenced character */
-	MemberNumber: number;
-	/** The character reference tag, determining how the character's name or pronoun will be interpreted */
-	Tag: CharacterReferenceTag;
-	/**
-	 * The nickname of the referenced character
-	 * @deprecated Redundant information
-	 */
-	Text?: string;
-}
-
-/**
- * A dictionary entry used to indicate the source character of a chat message or action (i.e. the character initiating
- * the message or action).
- */
-interface SourceCharacterDictionaryEntry {
-	SourceCharacter: number;
-}
-
-/**
- * A dictionary entry used to indicate the target character of a chat message or action (i.e. the character that is
- * being acted upon as part of the message or action).
- */
-interface TargetCharacterDictionaryEntry {
-	TargetCharacter: number;
-	Index?: number;
-}
-
-/**
- * A dictionary entry which indicates the focused group. This represents the group that was focused or interacted with
- * when sending a chat message. For example, if the message was caused by performing an activity or modifying an item
- * on the `ItemArms` group, then it would be appropriate to send this dictionary entry with `ItemArms` as the focus
- * group name.
- */
-interface FocusGroupDictionaryEntry {
-	/**
-	 * The tag to be replaced - this is always FocusAssetGroup.
-	 * @deprecated Redundant information.
-	 */
-	Tag?: "FocusAssetGroup";
-	/** The group name representing focused group for the purposes of the sent message */
-	FocusGroupName: AssetGroupName;
-}
-
-/**
- * A direct text substitution dictionary entry. Any occurrences of the given {@link Tag} string in the associated
- * message will be directly replaced with the {@link Text} from this dictionary entry (no text lookup will be done).
- * For example, given the message:
- * ```
- * Life is like a box of ConfectionaryName.
- * ```
- * and the {@link TextDictionaryEntry}:
- * ```js
- * {Tag: "ConfectionaryName", Text: "chocolates"}
- * ```
- * The resulting message would be:
- * ```
- * Life is like a box of chocolates.
- * ```
- */
-interface TextDictionaryEntry extends TaggedDictionaryEntry {
-	/** The text that will be substituted for the tag */
-	Text: string;
-}
-
-/**
- * A text substitution dictionary entry with text lookup functionality. Any occurrences of the given {@link Tag} string
- * in the associated message will be replaced with the {@link Text} from the dictionary entry, but only after a text
- * lookup has been done on the {@link Text}, meaning that if the text has localisations, the localised version will be
- * used. The text will be looked up against `Dialog_Player.csv`.
- * For example, given the message:
- * ```
- * Hello, {GreetingObjectName}!
- * ```
- * And the {@link TextLookupDictionaryEntry}:
- * ```js
- * {Tag: "GreetingObjectName", TextToLookup: "WorldObject"}
- * ```
- * And the following in `Dialog_Player.csv`:
- * ```
- * WorldObject,,,World,,
- * ```
- * The text to lookup (`"WorldObject"`) would be looked up against `Dialog_Player.csv`, resolving to `"World"`. This
- * would then be used to replace the tag `"GreetingObjectName"` in the message, resulting in:
- * ```
- * Hello, World!
- * ```
- */
-interface TextLookupDictionaryEntry extends TaggedDictionaryEntry {
-	/** The text whose lookup will be substituted for the tag */
-	TextToLookUp: string;
-}
-
-/**
- * A dictionary entry that references an asset group. Note that this is different from
- * {@link FocusGroupDictionaryEntry}, which denotes the group being acted on. A dictionary should only ever contain
- * one {@link FocusGroupDictionaryEntry}, whereas it may contain many {@link GroupReferenceDictionaryEntry}s. This
- * represents any group that might be referenced in the message, but is not necessarily the focused group.
- * For example, given the message:
- * ```
- * Use your BodyPart!
- * ```
- * And the {@link GroupReferenceDictionaryEntry}:
- * ```
- * {Tag: "BodyPart", GroupName: "ItemHands"}
- * ```
- * The name of the `"ItemHands"` group would be looked up, and this would be used to replace the `"BodyPart"` tag. The
- * resulting message would be:
- * ```
- * Use your Hands!
- * ```
- */
-interface GroupReferenceDictionaryEntry extends TaggedDictionaryEntry {
-	/** The name of the asset group to reference */
-	GroupName: AssetGroupName;
-}
-
-/**
- * A dictionary entry that references an asset. Note that a dictionary may contain multiple of these entries, one for
- * each asset mentioned or referenced in the message. For example, a message when swapping two restraints might contain
- * two of these entries, one for the restraint being removed, and one for the restraint being added.
- */
-interface AssetReferenceDictionaryEntry extends GroupReferenceDictionaryEntry {
-	/** The name of the asset being referenced */
-	AssetName: string;
-}
-
-/**
- * A special instance of an {@link AssetReferenceDictionaryEntry} which indicates that this asset was used to carry
- * out an activity.
- */
-interface ActivityAssetReferenceDictionaryEntry extends AssetReferenceDictionaryEntry {
-	Tag: "ActivityAsset";
-}
-
-/**
- * A metadata dictionary entry sent with a shock event message including a shock intensity representing the strength
- * of the shock. This is used to determine the severity of any visual or gameplay effects the shock may have.
- */
-interface ShockEventDictionaryEntry {
-	/** The intensity of the shock - must be a non-negative number */
-	ShockIntensity: number;
-}
-
-/**
- * A metadata dictionary entry indicating that the message has been generated due to an automated event. Can be used
- * to filter out what might otherwise be spammy chat messages (these include things like automatic vibrator intensity
- * changes and events & messages triggered by some futuristic items).
- */
-interface AutomaticEventDictionaryEntry {
-	/** Indicates that this message was triggered by an automatic event */
-	Automatic: true;
-}
-
-/**
- * A metadata dictionary entry carrying a numeric counter for an associated event or activity. Currently only used by
- * the Anal Beads XL to indicate how many beads were inserted.
- */
-interface ActivityCounterDictionaryEntry {
-	/** Counter metadata to be sent with a message */
-	ActivityCounter: number;
-}
-
-/**
- * A dictionary entry for group lookup & replacement. Used ambiguously for both {@link FocusGroupDictionaryEntry} and
- * {@link GroupReferenceDictionaryEntry}. This dictionary entry type is deprecated, and one of the aforementioned entry
- * types should be used instead.
- * @deprecated Use {@link FocusGroupDictionaryEntry}/{@link GroupReferenceDictionaryEntry}
- */
-interface AssetGroupNameDictionaryEntry {
-	Tag?: "FocusAssetGroup";
-	AssetGroupName: AssetGroupName;
-}
-
-/**
- * A dictionary entry indicating the name of an activity. Sent with chat messages to indicate that an activity was
- * carried out as part of the message.
- */
-interface ActivityNameDictionaryEntry {
-	/** The name of the activity carried out */
-	ActivityName: ActivityName;
-}
-
-type ChatMessageDictionaryEntry =
-	| CharacterReferenceDictionaryEntry
-	| SourceCharacterDictionaryEntry
-	| TargetCharacterDictionaryEntry
-	| FocusGroupDictionaryEntry
-	| TextDictionaryEntry
-	| TextLookupDictionaryEntry
-	| GroupReferenceDictionaryEntry
-	| AssetReferenceDictionaryEntry
-	| ActivityAssetReferenceDictionaryEntry
-	| ShockEventDictionaryEntry
-	| AutomaticEventDictionaryEntry
-	| ActivityCounterDictionaryEntry
-	| AssetGroupNameDictionaryEntry
-	| ActivityNameDictionaryEntry;
-
-type ChatMessageDictionary = ChatMessageDictionaryEntry[];
-
-interface IChatRoomMessageBasic {
-	Content: MessageContentType;
-	Sender: number;
-	// SourceMemberNumber: number;
-}
-
-interface IChatRoomMessage extends IChatRoomMessageBasic {
-	Type: MessageActionType;
-	Dictionary?: ChatMessageDictionary;
-	Timeout?: number;
-}
-
-interface IChatRoomSyncBasic {
-	SourceMemberNumber: number
-}
-
-interface IChatRoomSyncMessage extends IChatRoomSyncBasic, ChatRoom { }
 
 interface IChatRoomMessageMetadata {
 	/** The name of the sender character, appropriately garbled if deafened */
@@ -768,8 +507,10 @@ interface IChatRoomMessageMetadata {
 	GroupName?: AssetGroupName;
 	/** The assets referenced in the message */
 	Assets?: Record<string, Asset>;
+	/** The {@link CraftingItem.Name} of the assets referenced in the message (if applicable) */
+	CraftingNames?: Record<string, string>;
 	/** The groups referenced in the message */
-	Groups?: Partial<Record<AssetGroupName, AssetGroup>>;
+	Groups?: Partial<Record<AssetGroupName, AssetGroup[]>>;
 	/** How intense the shock should be */
 	ShockIntensity?: number;
 	ActivityCounter?: number;
@@ -779,6 +520,8 @@ interface IChatRoomMessageMetadata {
 	ActivityAsset?: Asset;
 	/** The name of the chatroom, appropriately garbled */
 	ChatRoomName?: string;
+	/** The original, ungarbled message, if provided by the sender */
+	OriginalMsg?: string;
 }
 
 /**
@@ -792,7 +535,7 @@ interface IChatRoomMessageMetadata {
  * @return null if the extraction has nothing to report.
  */
 type ChatRoomMessageExtractor =
-	(data: IChatRoomMessage, sender: Character) => { metadata: IChatRoomMessageMetadata, substitutions: CommonSubtituteSubstitution[] } | null;
+	(data: ServerChatRoomMessage, sender: Character) => { metadata: IChatRoomMessageMetadata, substitutions: CommonSubtituteSubstitution[] } | null;
 
 /**
  * A chat message handler.
@@ -858,7 +601,7 @@ interface ChatRoomMessageHandler {
 	 * @param metadata - The collected metadata from the message's dictionary, only available in "post" mode.
 	 * @returns {boolean} true if the message was handled and the processing should stop, false otherwise.
 	 */
-	Callback: (data: IChatRoomMessage, sender: Character, msg: string, metadata?: IChatRoomMessageMetadata) => boolean | { msg?: string; skip?: (handler: ChatRoomMessageHandler) => boolean };
+	Callback: (data: ServerChatRoomMessage, sender: Character, msg: string, metadata?: IChatRoomMessageMetadata) => boolean | { msg?: string; skip?: (handler: ChatRoomMessageHandler) => boolean };
 }
 
 //#endregion
@@ -878,54 +621,74 @@ interface IFriendListBeepLogMessage {
 
 //#endregion
 
+/**
+ * Make all properties in T mutable.
+ * Opposite of {@link Readonly}
+ */
+type Mutable<T> = {
+    -readonly[P in keyof T]: T[P];
+};
+
 //#region Assets
 
 type IAssetFamily = "Female3DCG";
 
+type WardrobeReorderType = "None" | "Select" | "Place";
+
 interface AssetGroup {
-	Family: IAssetFamily;
-	Name: AssetGroupName;
-	Description: string;
-	Asset: readonly Asset[];
-	ParentGroupName: AssetGroupName | "";
-	Category: 'Appearance' | 'Item' | 'Script';
-	IsDefault: boolean;
-	IsRestraint: boolean;
-	AllowNone: boolean;
-	AllowColorize: boolean;
-	AllowCustomize: boolean;
-	Random?: boolean;
-	ColorSchema: readonly string[];
-	ParentSize: AssetGroupName | "";
-	ParentColor: AssetGroupName | "";
-	Clothing: boolean;
-	Underwear: boolean;
-	BodyCosplay: boolean;
-	Hide?: readonly AssetGroupName[];
-	Block?: readonly AssetGroupItemName[];
-	Zone?: readonly [number, number, number, number][];
-	SetPose?: readonly AssetPoseName[];
-	AllowPose: readonly AssetPoseName[];
-	AllowExpression?: readonly ExpressionName[];
-	Effect?: readonly EffectName[];
-	MirrorGroup: AssetGroupName | "";
-	RemoveItemOnRemove: readonly { Group: AssetGroupItemName; Name: string; Type?: string }[];
-	DrawingPriority: number;
-	DrawingLeft: number;
-	DrawingTop: number;
-	DrawingFullAlpha: boolean;
-	DrawingBlink: boolean;
-	InheritColor: AssetGroupName | null;
-	FreezeActivePose: readonly AssetPoseCategory[];
-	PreviewZone?: RectTuple;
-	DynamicGroupName: AssetGroupName;
-	MirrorActivitiesFrom?: AssetGroupItemName;
+	readonly Family: IAssetFamily;
+	readonly Name: AssetGroupName;
+	readonly Description: string;
+	readonly Asset: readonly Asset[];
+	readonly ParentGroupName: AssetGroupName | null;
+	readonly Category: 'Appearance' | 'Item' | 'Script';
+	readonly IsDefault: boolean;
+	readonly IsRestraint: boolean;
+	readonly AllowNone: boolean;
+	readonly AllowColorize: boolean;
+	readonly AllowCustomize: boolean;
+	readonly Random?: boolean;
+	readonly ColorSchema: readonly string[];
+	/**
+	 * The first color in the groups {@link ColorSchema}.
+	 * The value is used for padding the {@link Asset.DefaultColor} array if required.
+	 */
+	readonly DefaultColor: string;
+	readonly ParentSize: AssetGroupName | "";
+	readonly ParentColor: AssetGroupName | "";
+	readonly Clothing: boolean;
+	readonly Underwear: boolean;
+	readonly BodyCosplay: boolean;
+	readonly Hide?: readonly AssetGroupName[];
+	readonly Block?: readonly AssetGroupItemName[];
+	readonly Zone?: readonly RectTuple[];
+	readonly SetPose?: readonly AssetPoseName[];
+	/** @deprecated - Superceded by {@link PoseMapping} */
+	readonly AllowPose?: never;
+	readonly PoseMapping: AssetPoseMapping;
+	readonly AllowExpression?: readonly ExpressionName[];
+	readonly Effect: readonly EffectName[];
+	readonly MirrorGroup: AssetGroupName | "";
+	readonly RemoveItemOnRemove: readonly Readonly<{ Group: AssetGroupItemName; Name: string; TypeRecord?: TypeRecord }>[];
+	readonly DrawingPriority: number;
+	readonly DrawingLeft: TopLeft.Data;
+	readonly DrawingTop: TopLeft.Data;
+	readonly DrawingBlink: boolean;
+	readonly InheritColor: AssetGroupName | null;
+	/** @deprecated Use {@link Asset.AllowActivePose} instead */
+	readonly FreezeActivePose?: never;
+	readonly PreviewZone?: RectTuple;
+	readonly DynamicGroupName: AssetGroupName;
+
+	readonly MirrorActivitiesFrom?: AssetGroupItemName;
+	readonly ArousalZone?: AssetGroupItemName;
+	readonly ArousalZoneID?: number;
 
 	/** A dict mapping colors to custom filename suffices.
 	The "HEX_COLOR" key is special-cased to apply to all color hex codes. */
-	ColorSuffix?: Record<string, string>;
-	ExpressionPrerequisite?: readonly string[];
-	HasPreviewImages: boolean;
+	readonly ColorSuffix: Readonly<Record<string, string>>;
+	readonly ExpressionPrerequisite?: readonly AssetPrerequisite[];
+	readonly HasPreviewImages: boolean;
 	/** Return whether this group belongs to the `Appearance` {@link AssetGroup.Category} */
 	IsAppearance(): this is AssetAppearanceGroup;
 	/** Return whether this group belongs to the `Item` {@link AssetGroup.Category} */
@@ -936,113 +699,94 @@ interface AssetGroup {
 
 /** An AssetGroup subtype for the `Appearance` {@link AssetGroup.Category} */
 interface AssetAppearanceGroup extends AssetGroup {
-	Category: "Appearance";
-	Name: AssetGroupBodyName;
-	IsRestraint: false;
-	AllowExpression?: readonly ExpressionName[];
+	readonly Category: "Appearance";
+	readonly Name: AssetGroupBodyName;
+	readonly IsRestraint: false;
 }
 
 /** An AssetGroup subtype for the `Item` {@link AssetGroup.Category} */
 interface AssetItemGroup extends AssetGroup {
-	Category: "Item";
-	Name: AssetGroupItemName;
-	Underwear: false;
-	BodyCosplay: false;
-	Clothing: false;
-	IsDefault: false;
-	AllowExpression?: undefined;
-	Zone: readonly [number, number, number, number][];
+	readonly Category: "Item";
+	readonly Name: AssetGroupItemName;
+	readonly Underwear: false;
+	readonly BodyCosplay: false;
+	readonly Clothing: false;
+	readonly IsDefault: false;
+	readonly Zone: readonly RectTuple[];
 }
 
 /** An AssetGroup subtype for the `Script` {@link AssetGroup.Category} */
 interface AssetScriptGroup extends AssetGroup {
-	Category: "Script";
-	Name: AssetGroupScriptName;
-	IsRestraint: false;
-	BodyCosplay: false;
-	Underwear: false;
-	Clothing: false;
-	IsDefault: false;
-	AllowExpression?: undefined;
+	readonly Category: "Script";
+	readonly Name: AssetGroupScriptName;
+	readonly IsRestraint: false;
+	readonly BodyCosplay: false;
+	readonly Underwear: false;
+	readonly Clothing: false;
+	readonly IsDefault: false;
 }
 
 /** An object defining a drawable layer of an asset */
 interface AssetLayer {
 	/** The name of the layer - may be null if the asset only contains a single default layer */
-	Name: string | null;
+	readonly Name: string | null;
 	/** whether or not this layer can be colored */
-	AllowColorize: boolean;
+	readonly AllowColorize: boolean;
 	/** if not null, specifies that this layer should always copy the color of the named layer */
-	CopyLayerColor: string | null;
+	readonly CopyLayerColor: string | null;
 	/** specifies the name of a color group that this layer belongs to. Any layers within the same color group can be colored together via the item color UI */
-	ColorGroup: string | null;
+	readonly ColorGroup: string | null;
 	/** whether or not this layer can be colored in the coloring UI */
-	HideColoring: boolean;
-	/** A list of allowed extended item types that this layer permits - the layer will only be drawn if
-	the item type matches one of these types. If null, the layer is considered to permit all extended types. */
-	AllowTypes: readonly string[] | null;
-	/** whether or not the layer has separate assets per type. If not, the extended type will not be included in
-	the URL when fetching the layer's image */
-	HasType: boolean;
+	readonly HideColoring: boolean;
+	/** A record mapping stringified {@link PartialType} values to a set of unique IDs. */
+	readonly AllowTypes: AllowTypes.Data | null;
+	/** @deprecated - superceded by {@link CreateLayerTypes} */
+	readonly HasType?: never;
 	/** The name of the parent group for this layer. If null, the layer has no parent group. If
 	undefined, the layer inherits its parent group from it's asset/group. */
-	ParentGroupName?: AssetGroupName | "" | null;
-	/** An array of poses that this layer permits. If set, it will override the poses permitted
-	by the parent asset/group. */
-	AllowPose: readonly AssetPoseName[] | null;
-	/** An array of poses that this layer should be hidden for. */
-	HideForPose: readonly (AssetPoseName | "")[];
+	readonly ParentGroupName: AssetGroupName | null;
+	/** @deprecated - Superceded by {@link PoseMapping} */
+	readonly AllowPose?: never;
+	/** @deprecated - Superceded by {@link PoseMapping} */
+	readonly HideForPose?: never;
 	/** An array of objects mapping poses to other poses to determine their draw folder */
-	PoseMapping?: AssetPoseMapping;
+	readonly PoseMapping: Readonly<AssetPoseMapping>;
 	/** The drawing priority of this layer. Inherited from the parent asset/group if not specified in the layer
 	definition. */
-	Priority: number;
-	InheritColor: AssetGroupName | null;
-	Alpha: readonly AlphaDefinition[];
+	readonly Priority: number;
+	readonly InheritColor: AssetGroupName | null;
+	readonly Alpha: readonly Alpha.Data[];
 	/** The asset that this layer belongs to */
-	Asset: Asset;
-	DrawingLeft?: number;
-	DrawingTop?: number;
-	HideAs?: { Group: AssetGroupName; Asset?: string };
+	readonly Asset: Asset;
+	readonly DrawingLeft: TopLeft.Data;
+	readonly DrawingTop: TopLeft.Data;
+	readonly HideAs?: Readonly<{ Group: AssetGroupName; Asset?: string }>;
 	/** That layer is drawing at a fixed Y position */
-	FixedPosition?: boolean;
-	HasImage: boolean;
-	Opacity: number;
-	MinOpacity: number;
-	MaxOpacity: number;
-	BlendingMode: GlobalCompositeOperation;
-	LockLayer: boolean;
-	MirrorExpression?: AssetGroupName;
-	AllowModuleTypes?: readonly string[];
+	readonly FixedPosition?: boolean;
+	readonly HasImage: boolean;
+	readonly Opacity: number;
+	readonly MinOpacity: number;
+	readonly MaxOpacity: number;
+	readonly BlendingMode: GlobalCompositeOperation;
+	readonly LockLayer: boolean;
+	readonly MirrorExpression?: AssetGroupName;
+	/** @deprecated */
+	readonly AllowModuleTypes?: never;
 	/** The coloring index for this layer */
-	ColorIndex: number;
+	readonly ColorIndex: number;
 	/** Any group-specific alpha masks that should be applied when drawing the layer. Only available on layers that have
 	been created prior to drawing */
-	GroupAlpha?: AlphaDefinition[];
-	/** A module for which the layer can have types. */
-	ModuleType: readonly string[] | null;
+	readonly GroupAlpha?: readonly Alpha.Data[];
+	/** @deprecated - Superceded by {@link CreateLayerTypes} */
+	readonly ModuleType?: never;
+	readonly CreateLayerTypes: readonly string[];
 	/* Specifies that this layer should not be drawn if the character is wearing any item with the given attributes */
-	HideForAttribute: readonly AssetAttribute[] | null;
+	readonly HideForAttribute: readonly AssetAttribute[] | null;
 	/* Specifies that this layer should not be drawn unless the character is wearing an item with one of the given attributes */
-	ShowForAttribute: readonly AssetAttribute[] | null;
+	readonly ShowForAttribute: readonly AssetAttribute[] | null;
 	/** Used along with a hook to make layers of an asset disappear in some cases. */
-	Visibility: "Player" | "AllExceptPlayerDialog" | "Others" | "OthersExceptDialog" | "Owner" | "Lovers" | "Mistresses" | null;
-}
-
-/** An object defining a group of alpha masks to be applied when drawing an asset layer */
-interface AlphaDefinition {
-	/** A list of the group names that the given alpha masks should be applied to. If empty or not present, the
-alpha masks will be applied to every layer underneath the present one. */
-	Group?: AssetGroupName[];
-	/** A list of the poses that the given alpha masks should be applied to. If empty or not present, the alpha
-masks will be applied regardless of character pose. */
-	Pose?: AssetPoseName[];
-	/** A list of the extended types that the given alpha masks should be applied to. If empty or not present, the alpha
-masks will be applied regardless of the extended type. */
-	Type?: string[];
-	/** A list of alpha mask definitions. A definition is a 4-tuple of numbers defining the top left coordinate of
-a rectangle and the rectangle's width and height - e.g. [left, top, width, height] */
-	Masks: RectTuple[];
+	readonly Visibility: "Player" | "AllExceptPlayerDialog" | "Others" | "OthersExceptDialog" | "Owner" | "Lovers" | "Mistresses" | null;
+	readonly ColorSuffix: Readonly<Record<string, string>> | null;
 }
 
 interface TintDefinition {
@@ -1073,177 +817,199 @@ interface ExpressionItem {
 /**
  * The internal Asset definition of an asset.
  *
- * See AssetDefinition in Female3DCG.d.ts for documentation.
+ * See {@link AssetDefinition} in Female3DCG.d.ts for documentation.
  */
 interface Asset {
-	Name: string;
-	Description: string;
-	Group: AssetGroup;
-	ParentItem?: string;
-	ParentGroupName?: AssetGroupName | null;
-	Enable: boolean;
-	Visible: boolean;
-	NotVisibleOnScreen?: readonly string[];
-	Wear: boolean;
-	Activity: ActivityName | null;
-	AllowActivity?: readonly ActivityName[];
-	ActivityAudio?: readonly string[];
-	ActivityExpression: Partial<Record<ActivityName, readonly ExpressionTrigger[]>>;
-	AllowActivityOn?: readonly AssetGroupItemName[];
-	BuyGroup?: string;
-	PrerequisiteBuyGroups?: readonly string[];
-	Effect?: readonly EffectName[];
-	Bonus?: AssetBonusName;
-	Block?: readonly AssetGroupItemName[];
-	Expose: readonly AssetGroupItemName[];
-	Hide?: readonly AssetGroupName[];
-	HideItem?: readonly string[];
-	HideItemExclude: readonly string[];
-	HideItemAttribute: readonly AssetAttribute[];
-	Require: readonly AssetGroupBodyName[];
-	SetPose?: readonly AssetPoseName[];
-	AllowPose: readonly AssetPoseName[] | null;
-	HideForPose: readonly (AssetPoseName | "")[];
-	PoseMapping?: AssetPoseMapping;
-	AllowActivePose?: readonly AssetPoseName[];
-	WhitelistActivePose?: readonly AssetPoseName[];
-	Value: number;
-	Difficulty: number;
-	SelfBondage: number;
-	SelfUnlock: boolean;
-	ExclusiveUnlock: boolean;
-	Random: boolean;
-	RemoveAtLogin: boolean;
-	WearTime: number;
-	RemoveTime: number;
-	RemoveTimer: number;
-	MaxTimer: number;
-	DrawingPriority?: number;
-	DrawingLeft?: number;
-	DrawingTop?: number;
-	HeightModifier: number;
-	ZoomModifier: number;
-	Alpha?: readonly AlphaDefinition[];
-	Prerequisite: readonly string[];
-	Extended: boolean;
-	AlwaysExtend: boolean;
-	AlwaysInteract: boolean;
-	AllowLock: boolean;
-	LayerVisibility: boolean;
-	IsLock: boolean;
-	PickDifficulty: number;
-	OwnerOnly: boolean;
-	LoverOnly: boolean;
-	ExpressionTrigger?: readonly ExpressionTrigger[];
-	RemoveItemOnRemove: readonly { Name: string; Group: AssetGroupName; Type?: string; }[];
-	AllowEffect?: readonly EffectName[];
-	AllowBlock?: readonly AssetGroupItemName[];
-	AllowHide?: readonly AssetGroupName[];
-	AllowHideItem?: readonly string[];
-	AllowType?: readonly string[];
-	AllowTighten?: boolean;
+	readonly Name: string;
+	readonly Description: string;
+	readonly Group: AssetGroup;
+	readonly ParentItem?: string;
+	readonly ParentGroupName: AssetGroupName | null;
+	readonly Enable: boolean;
+	readonly Visible: boolean;
+	readonly NotVisibleOnScreen?: readonly string[];
+	readonly Wear: boolean;
+	readonly Activity: ActivityName | null;
+	readonly AllowActivity?: readonly ActivityName[];
+	readonly ActivityAudio?: readonly string[];
+	readonly ActivityExpression: Readonly<Partial<Record<ActivityName, readonly ExpressionTrigger[]>>>;
+	readonly AllowActivityOn?: readonly AssetGroupItemName[];
+	readonly BuyGroup?: string;
+	readonly Effect: readonly EffectName[];
+	readonly Bonus?: AssetBonusName;
+	readonly Block?: readonly AssetGroupItemName[];
+	readonly Expose: readonly AssetGroupItemName[];
+	readonly Hide?: readonly AssetGroupName[];
+	readonly HideItem?: readonly string[];
+	readonly HideItemExclude: readonly string[];
+	readonly HideItemAttribute: readonly AssetAttribute[];
+	readonly Require: readonly AssetGroupBodyName[];
+	readonly SetPose?: readonly AssetPoseName[];
+	/** @deprecated - Superceded by {@link Asset.PoseMapping} */
+	readonly AllowPose?: never;
+	/** @deprecated - Superceded by {@link Asset.PoseMapping} */
+	readonly HideForPose?: never;
+	readonly PoseMapping: Readonly<AssetPoseMapping>;
+	readonly AllowActivePose?: readonly AssetPoseName[];
+	/** @deprecated Use {@link Asset.AllowActivePose} instead */
+	readonly WhitelistActivePose?: never;
+	readonly Value: number;
+	readonly NeverSell: boolean;
+	readonly Difficulty: number;
+	readonly SelfBondage: number;
+	readonly SelfUnlock: boolean;
+	readonly ExclusiveUnlock: boolean;
+	readonly Random: boolean;
+	readonly RemoveAtLogin: boolean;
+	readonly WearTime: number;
+	readonly RemoveTime: number;
+	readonly RemoveTimer: number;
+	readonly MaxTimer: number;
+	readonly DrawingPriority?: number;
+	readonly DrawingLeft: TopLeft.Data;
+	readonly DrawingTop: TopLeft.Data;
+	readonly HeightModifier: number;
+	readonly ZoomModifier: number;
+	readonly Alpha: null | readonly Alpha.Data[];
+	readonly Prerequisite: readonly AssetPrerequisite[];
+	readonly Extended: boolean;
+	readonly AlwaysExtend: boolean;
+	readonly AlwaysInteract: boolean;
+	readonly AllowLock: boolean;
+	readonly LayerVisibility: boolean;
+	readonly IsLock: boolean;
+	readonly PickDifficulty: number;
+	readonly OwnerOnly: boolean;
+	readonly LoverOnly: boolean;
+	readonly FamilyOnly: boolean;
+	readonly ExpressionTrigger?: readonly ExpressionTrigger[];
+	readonly RemoveItemOnRemove: readonly { Name: string; Group: AssetGroupName; TypeRecord?: TypeRecord; }[];
+	readonly AllowEffect?: readonly EffectName[];
+	readonly AllowBlock?: readonly AssetGroupItemName[];
+	readonly AllowHide?: readonly AssetGroupName[];
+	readonly AllowHideItem?: readonly string[];
+	/** @deprecated */
+	readonly AllowTypes?: never;
+	readonly AllowTighten?: boolean;
 	/**
-	 * The default color of the item: an array of length {@link Asset.ColorableLayerCount} consisting of `"Default"` and/or valid color hex codes.
+	 * The default color of the item: an array of length {@link Asset.ColorableLayerCount} consisting of {@link AssetGroup.DefaultColor} and/or valid color hex codes.
 	 */
-	DefaultColor: readonly string[];
-	Opacity: number;
-	MinOpacity: number;
-	MaxOpacity: number;
-	Audio?: string;
-	Category?: readonly string[];
-	Fetish?: readonly FetishName[];
-	CustomBlindBackground?: string;
-	ArousalZone: AssetGroupItemName;
-	IsRestraint: boolean;
-	BodyCosplay: boolean;
-	OverrideBlinking: boolean;
-	DialogSortOverride?: DialogSortOrder;
-	DynamicDescription: (C: Character) => string;
-	DynamicPreviewImage: (C: Character) => string;
-	DynamicAllowInventoryAdd: (C: Character) => boolean;
-	DynamicName: (C: Character) => string;
-	DynamicGroupName: AssetGroupName;
-	DynamicActivity: (C: Character) => ActivityName | null | undefined;
-	DynamicAudio: ((C: Character) => string) | null;
-	CharacterRestricted: boolean;
-	AllowRemoveExclusive: boolean;
-	InheritColor?: AssetGroupName;
-	DynamicBeforeDraw: boolean;
-	DynamicAfterDraw: boolean;
-	DynamicScriptDraw: boolean;
-	HasType: boolean;
-	AllowLockType?: readonly string[];
-	AllowColorizeAll: boolean;
-	AvailableLocations: readonly string[];
-	OverrideHeight?: AssetOverrideHeight;
-	FreezeActivePose: readonly AssetPoseCategory[];
-	DrawLocks: boolean;
-	AllowExpression?: readonly ExpressionName[];
-	MirrorExpression?: AssetGroupName;
-	FixedPosition: boolean;
-	Layer: readonly AssetLayer[];
+	readonly DefaultColor: readonly string[];
+	readonly Opacity: number;
+	readonly MinOpacity: number;
+	readonly MaxOpacity: number;
+	readonly Audio?: string;
+	readonly Category?: readonly AssetCategory[];
+	readonly Fetish?: readonly FetishName[];
+	readonly CustomBlindBackground?: string;
+	readonly ArousalZone: AssetGroupItemName;
+	readonly IsRestraint: boolean;
+	readonly BodyCosplay: boolean;
+	readonly OverrideBlinking: boolean;
+	readonly DialogSortOverride?: DialogSortOrder;
+	readonly DynamicDescription: (C: Character) => string;
+	readonly DynamicPreviewImage: (C: Character) => string;
+	readonly DynamicAllowInventoryAdd: (C: Character) => boolean;
+	readonly DynamicName: (C: Character) => string;
+	readonly DynamicGroupName: AssetGroupName;
+	readonly DynamicActivity: (C: Character) => ActivityName | null | undefined;
+	readonly DynamicAudio: ((C: Character) => string) | null;
+	readonly CharacterRestricted: boolean;
+	readonly AllowRemoveExclusive: boolean;
+	readonly InheritColor: null | AssetGroupName;
+	readonly DynamicBeforeDraw: boolean;
+	readonly DynamicAfterDraw: boolean;
+	readonly DynamicScriptDraw: boolean;
+	/** @deprecated - superceded by {@link CreateLayerTypes} */
+	readonly HasType?: never;
+	/**
+	 * A module for which the layer can have types.
+	 * Allows one to define different module-specific assets for a single layer.
+	 */
+	readonly CreateLayerTypes: readonly string[];
+	/** A record that maps {@link ExtendedItemData.name} to a set with all option indices that support locks */
+	readonly AllowLockType: null | Record<string, Set<number>>;
+	readonly AllowColorizeAll: boolean;
+	readonly AvailableLocations: readonly string[];
+	readonly OverrideHeight?: Readonly<AssetOverrideHeight>;
+	/** @deprecated Use {@link Asset.AllowActivePose} instead */
+	readonly FreezeActivePose?: never;
+	readonly DrawLocks: boolean;
+	readonly AllowExpression?: readonly ExpressionName[];
+	readonly MirrorExpression?: AssetGroupName;
+	readonly FixedPosition: boolean;
+	readonly Layer: readonly AssetLayer[];
 	/** The number of colorable layers. Guaranteed to be >= 1 */
-	ColorableLayerCount: number;
-	Archetype?: ExtendedArchetype;
-	Attribute: readonly AssetAttribute[];
-	PreviewIcons: readonly InventoryIcon[];
-	Tint: readonly TintDefinition[];
-	AllowTint: boolean;
-	DefaultTint?: string;
-	Gender?: 'F' | 'M';
-	CraftGroup: string;
-	ColorSuffix: Record<string, string>;
-	ExpressionPrerequisite?: readonly string[];
-	TextMaxLength: null | Partial<Record<PropertyTextNames, number>>;
-	TextFont: null | string;
-
-	FuturisticRecolor?: boolean;
-	FuturisticRecolorDisplay?: boolean;
+	readonly ColorableLayerCount: number;
+	readonly Archetype?: ExtendedArchetype;
+	readonly Attribute: readonly AssetAttribute[];
+	readonly PreviewIcons: readonly InventoryIcon[];
+	readonly Tint: readonly Readonly<TintDefinition>[];
+	readonly AllowTint: boolean;
+	readonly DefaultTint?: string;
+	readonly Gender?: AssetGender;
+	readonly CraftGroup: string;
+	readonly ColorSuffix: Readonly<Record<string, string>>;
+	readonly FullAlpha: boolean;
+	readonly ExpressionPrerequisite?: readonly AssetPrerequisite[];
+	readonly AllowColorize: boolean;
 }
 
 //#endregion
 
-/** An ItemBundle is a minified version of the normal Item */
-interface ItemBundle {
-	Group: AssetGroupName;
-	Name: string;
-	Difficulty?: number;
-	Color?: ItemColor;
-	Property?: ItemProperties;
-	Craft?: CraftingItem;
-}
+type ItemBundle = ServerItemBundle;
+
+/** A tuple-based version of {@link ItemBundle} */
+type WardrobeItemBundle = [
+	Name: string,
+	Group: AssetGroupName,
+	Color?: ItemColor,
+	Property?: ItemProperties,
+];
 
 /** An AppearanceBundle is whole minified appearance of a character */
 type AppearanceBundle = ItemBundle[];
 
 interface Pose {
 	Name: AssetPoseName;
-	Category?: AssetPoseCategory;
+	Category: AssetPoseCategory;
 	AllowMenu?: true;
 	/** Only show in menu if an asset supports it */
 	AllowMenuTransient?: true;
 	OverrideHeight?: AssetOverrideHeight;
-	Hide?: AssetGroupName[];
 	MovePosition?: { Group: AssetGroupName; X: number; Y: number; }[];
 }
 
-type ActivityName = "Bite" | "Caress" | "Choke" | "Cuddle" | "FrenchKiss" |
-	"GagKiss" | "GaggedKiss" | "Grope" | "HandGag" | "Inject" | "Kick" |
+type ActivityNameBasic = "Bite" | "Caress" | "Choke" | "Cuddle" | "FrenchKiss" |
+	"GagKiss" | "GaggedKiss" | "Grope" | "HandGag" | "Kick" |
 	"Kiss" | "Lick" | "MassageFeet" | "MassageHands" | "MasturbateFist" |
-	"MasturbateFoot" |"MasturbateHand" | "MasturbateItem" | "MasturbateTongue" |
-	"MoanGag" |"MoanGagAngry" | "MoanGagGiggle" | "MoanGagGroan" | "MoanGagTalk" |
-	"MoanGagWhimper" | "Nibble" | "Nod" | "PenetrateFast" | "PenetrateItem" |
-	"PenetrateSlow" | "Pet" | "Pinch" | "PoliteKiss" | "PourItem" | "Pull" |
-	"RestHead" | "RollItem" | "Rub" | "RubItem" | "ShockItem" | "SipItem" | "Sit" |
-	"Slap" | "Spank" | "SpankItem" | "Step" | "StruggleArms" | "StruggleLegs" |
-	"Suck" | "TakeCare" | "Tickle" | "TickleItem" | "Whisper" | "Wiggle"
+	"MasturbateFoot" |"MasturbateHand" | "MasturbateTongue" |
+	"MoanGag" | "MoanGagAngry" | "MoanGagGiggle" | "MoanGagGroan" | "MoanGagTalk" |
+	"MoanGagWhimper" | "Nibble" | "Nod" | "PenetrateFast" |
+	"PenetrateSlow" | "Pet" | "Pinch" | "PoliteKiss" | "Pull" |
+	"RestHead" | "Rub" | "Scratch" | "Sit" | "Slap" | "Spank" | "Step" | "StruggleArms" | "StruggleLegs" |
+	"Suck" | "TakeCare" | "Tickle" | "Whisper" | "Wiggle" |
+	"SistersHug" | "BrothersHandshake" | "SiblingsCheekKiss"
+;
+
+type ActivityNameItem = "Inject" | "MasturbateItem" | "PenetrateItem" | "PourItem" | "RollItem" | "RubItem" | "ShockItem" | "SipItem" | "SpankItem" | "TickleItem" | "EatItem" | "Scratch" | "ThrowItem";
+
+type ActivityName = ActivityNameBasic | ActivityNameItem;
+
+type ActivityPrerequisite =
+	"AssEmpty" | "CantUseArms" | "CantUseFeet" | "CanUsePenis" | "CanUseTongue" | "HasVagina" | "IsGagged" | "MoveHead" |
+	`Needs-${ActivityNameItem}` |
+	"TargetCanUseTongue" | "TargetKneeling" | "TargetMouthBlocked" | "TargetMouthOpen" | "TargetZoneAccessible" | "TargetZoneNaked" |
+	"UseArms" | "UseFeet" | "UseHands" | "UseMouth" | "UseTongue" | "VulvaEmpty" | "ZoneAccessible" | "ZoneNaked" |
+	"Sisters" | "Brothers" | "SiblingsWithDifferentGender"
 ;
 
 interface Activity {
 	Name: ActivityName;
+	ActivityID: number,
 	MaxProgress: number;
 	MaxProgressSelf?: number;
-	Prerequisite: string[];
+	Prerequisite: ActivityPrerequisite[];
 	Target: AssetGroupItemName[];
 	TargetSelf?: AssetGroupItemName[] | true;
 	/** Whether to reverse the prerequisite checks for that one */
@@ -1280,7 +1046,20 @@ interface Item {
 
 type FavoriteIcon = "Favorite" | "FavoriteBoth" | "FavoritePlayer";
 type ItemEffectIcon = "BlindLight" | "BlindNormal" | "BlindHeavy" | "DeafLight" | "DeafNormal" | "DeafHeavy" | "GagLight" | "GagNormal" | "GagHeavy" | "GagTotal";
-type InventoryIcon = FavoriteIcon | ItemEffectIcon | "AllowedLimited" | "Handheld" | "Locked" | "LoverOnly" | "OwnerOnly" | "Unlocked";
+type ShopIcon = "Extended" | "BuyGroup";
+type InventoryIcon = (
+	FavoriteIcon
+	| ItemEffectIcon
+	| "AllowedLimited"
+	| "Handheld"
+	| "Locked"
+	| "LoverOnly"
+	| "FamilyOnly"
+	| "OwnerOnly"
+	| "Unlocked"
+	| AssetLockType
+	| ShopIcon
+);
 
 interface InventoryItem {
 	Group: AssetGroupName;
@@ -1295,6 +1074,8 @@ interface Skill {
 	Level: number;
 	Progress: number;
 	Ratio?: number;
+	ModifierLevel?: number;
+	ModifierTimeout?: number;
 }
 
 type ReputationType =
@@ -1309,19 +1090,23 @@ interface Reputation {
 interface Ownership {
 	Name: string;
 	MemberNumber: number;
-	Stage: number;
+	Stage: 0 | 1;
 	Start: number;
 }
 
 interface Lovership {
+	/** The name of the loved one. */
 	Name: string;
+	/** The member number of the loved one. Only exists for online characters */
 	MemberNumber?: number;
-	Stage?: number;
+	/** The stage of the love. 0 is Girlfriend, 1 is Fiancée, 2 is Wife */
+	Stage?: 0 | 1 | 2;
+	/** The timestamp of the beginning of the relationship */
 	Start?: number;
 	// Bad data sometimes received from server
-	BeginDatingOfferedByMemberNumber?: unknown;
-	BeginEngagementOfferedByMemberNumber?: unknown;
-	BeginWeddingOfferedByMemberNumber?: unknown;
+	BeginDatingOfferedByMemberNumber?: never;
+	BeginEngagementOfferedByMemberNumber?: never;
+	BeginWeddingOfferedByMemberNumber?: never;
 }
 
 interface ScreenFunctions {
@@ -1332,7 +1117,27 @@ interface ScreenFunctions {
 	 */
 	Run(time: number): void;
 	/**
-	 * Called when user clicks on the canvas
+	 * Called if the user presses the mouse button or touches the touchscreen on the canvas
+	 * @param {MouseEvent | TouchEvent} event - The event that triggered this
+	 */
+	MouseDown?(event: MouseEvent | TouchEvent): void;
+		/**
+	 * Called if the user releases the mouse button or the touchscreen on the canvas
+	 * @param {MouseEvent | TouchEvent} event - The event that triggered this
+	 */
+	MouseUp?(event: MouseEvent | TouchEvent): void;
+	/**
+	 * Called if the user moves the mouse cursor or the touch on the touchscreen over the canvas
+	 * @param {MouseEvent | TouchEvent} event - The event that triggered this
+	 */
+	MouseMove?(event: MouseEvent | TouchEvent): void;
+	/**
+	 * Called if the user moves the mouse wheel on the canvas
+	 * @param {MouseEvent | TouchEvent} event - The event that triggered this
+	 */
+	MouseWheel?(event: MouseEvent | TouchEvent): void;
+	/**
+	 * Called if the user clicks on the canvas
 	 * @param {MouseEvent | TouchEvent} event - The event that triggered this
 	 */
 	Click(event: MouseEvent | TouchEvent): void;
@@ -1342,23 +1147,33 @@ interface ScreenFunctions {
 	Load?(): void;
 	/** Called when this screen is being replaced */
 	Unload?(): void;
+	/** Called each frame when the screen needs to be drawn. */
+	Draw?() : void;
 	/**
 	 * Called when screen size or position changes or after screen load
 	 * @param {boolean} load - If the reason for call was load (`true`) or window resize (`false`)
 	 */
 	Resize?(load: boolean): void;
 	/**
-	 * Called when user presses any key
+	 * Called if the the user presses any key
 	 * @param {KeyboardEvent} event - The event that triggered this
 	 */
-	KeyDown?(event: KeyboardEvent): void;
+	KeyDown?(event: KeyboardEvent): boolean;
+	/**
+	 * Called if the user releases a pressed key
+	 * @param {KeyboardEvent} event - The event that triggered this
+	 */
+	KeyUp?(event: KeyboardEvent): void;
 	/** Called when user presses Esc */
 	Exit?(): void;
 }
 
 //#region Characters
 
-/** A struct for representing an item with special permissions (limited, favorited, etc). */
+/**
+ * A struct for representing an item with special permissions (limited, favorited, etc).
+ * @see {@link PermissionsPacked}
+ */
 interface ItemPermissions {
 	/** The {@link Asset.Name} of the item */
 	Name: string;
@@ -1370,6 +1185,9 @@ interface ItemPermissions {
 	 */
 	Type?: string | null;
 }
+
+/** A packed record-based version of {@link ItemPermissions}. */
+type ItemPermissionsPacked = Partial<Record<AssetGroupName, Record<string, (undefined | null | string)[]>>>;
 
 interface ScriptPermission {
 	permission: number;
@@ -1392,15 +1210,67 @@ interface DialogLine {
 	Trait: string;
 }
 
+interface DialogInfo {
+	module: ModuleType;
+	screen: string;
+	name: string;
+}
+
+/** The packed representation of a Private Room NPC */
+interface PrivateCharacterData {
+	Name: string;
+	Love: number;
+	Title: TitleName;
+	Trait: NPCTrait[];
+	Cage: boolean;
+	Owner: string;
+	Lover: string;
+	AssetFamily: "Female3DCG";
+	Appearance: AppearanceBundle,
+	AppearanceFull: AppearanceBundle,
+	ArousalSettings: Character["ArousalSettings"];
+	Event: NPCTrait[];
+	FromPandora?: boolean;
+}
+
 interface Character {
+	/**
+	 * The character's cache slot ID in the Character array
+	 *
+	 * Usually meaningless, except that ID 0 is always the player,
+	 * but please use `IsPlayer()` instead of checking that.
+	 */
 	ID: number;
-	/** Only on `Player` */
-	OnlineID?: string;
+	/**
+	 * The unique identifier for the character
+	 *
+	 * A value of `""` indicates the player before the login happens
+	 */
+	CharacterID: string;
+	/** The type of character: online, npc, or simple */
 	Type: CharacterType;
+	/**
+	 * The character's account name
+	 *
+	 * Note that it's only meaningful for the logged in player as the server never provides account names.
+	 * Online characters will use `"Online-"` plus their character ID, NPCs will have their dialog identifier,
+	 * and simple characters set it to CharacterID.
+	 */
+	AccountName: string;
+	/**
+	 * The character's loaded dialog info
+	 */
+	DialogInfo?: DialogInfo;
+	/**
+	 * A deprecated identifier for online characters
+	 * Only exists on the player, has the same value as their character ID.
+	 * @deprecated
+	 */
+	OnlineID?: string;
+	/** The asset family used by the character */
+	AssetFamily: IAssetFamily;
 	Name: string;
 	Nickname?: string;
-	AssetFamily: IAssetFamily;
-	AccountName: string;
 	Owner: string;
 	Lover: string;
 	Money: number;
@@ -1411,9 +1281,58 @@ interface Character {
 	Dialog: DialogLine[];
 	Reputation: Reputation[];
 	Skill: Skill[];
-	Pose: AssetPoseName[];
-	ActivePose: AssetPoseName[];
-	AllowedActivePose: AssetPoseName[];
+	/**
+	 * Get a copy or set the array of currently enabled poses.
+	 * @see {@link PoseMapping} - The underlying record of this property, usage of which is recommended
+	 */
+	get Pose(): readonly AssetPoseName[];
+	set Pose(value: readonly AssetPoseName[]);
+	/**
+	 * Get a copy or set the array of the last set of manually activated poses.
+	 *
+	 * Note that these poses are by no means guaranted to be enabled, as they do not reflect any item-specific automatic pose changes (see {@link Pose}).
+	 * @see {@link ActivePoseMapping} - The underlying record of this property, usage of which is recommended
+	 */
+	get ActivePose(): readonly AssetPoseName[];
+	set ActivePose(value: readonly AssetPoseName[]);
+	/**
+	 * Get a copy or set the array of the last of a subset of all allowed poses.
+	 *
+	 * Only guaranteed to reflect the total number of allowed poses if, for a given pose category, at least one pose is allowed.
+	 * @see {@link ActivePoseMapping} - The underlying record of this property, usage of which is recommended
+	 */
+	get AllowedActivePose(): readonly AssetPoseName[];
+	set AllowedActivePose(value: readonly AssetPoseName[]);
+	/**
+	 * Get a copy or set the array of something something poses.
+	 * @see {@link DrawPoseMapping} - The underlying record of this property, usage of which is recommended
+	 */
+	get DrawPose(): readonly AssetPoseName[];
+	set DrawPose(value: readonly AssetPoseName[]);
+	/**
+	 * A record mapping pose categories to the currently enabled pose belonging to it.
+	 *
+	 * @see {@link ItemProperties.SetPose} - The item-/asset-level equivalent of this property
+	 */
+	PoseMapping: Partial<Record<AssetPoseCategory, AssetPoseName>>;
+	/**
+	 * A record mapping pose categories to the last manually enabled pose belonging to it.
+	 *
+	 * Note that these poses are by no means guaranted to be enabled, as they do not reflect any item-specific automatic pose changes (see {@link PoseMapping}).
+	 */
+	ActivePoseMapping: Partial<Record<AssetPoseCategory, AssetPoseName>>;
+	/**
+	 * A record mapping pose categories to all allowed poses belonging to it.
+	 *
+	 * A value of `null` implies that all poses within the category are allowed.
+	 *
+	 * @see {@link ItemProperties.AllowActivePose} - The item-/asset-level equivalent of this property
+	 */
+	AllowedActivePoseMapping: Partial<Record<AssetPoseCategory, AssetPoseName[]>>;
+	/**
+	 * A record mapping pose categories to something something.
+	 */
+	DrawPoseMapping: Partial<Record<AssetPoseCategory, AssetPoseName>>;
 	Effect: EffectName[];
 	Tints: ResolvedTintDefinition[];
 	Attribute: AssetAttribute[];
@@ -1429,9 +1348,10 @@ interface Character {
 	WhiteList: number[];
 	HeightModifier: number;
 	MemberNumber?: number;
-	ItemPermission?: number;
+	ItemPermission?: 0 | 1 | 2 | 3 | 4 | 5;
 	Ownership?: Ownership;
 	Lovership?: Lovership[];
+	ExpressionQueue?: ExpressionQueueItem[];
 	CanTalk: () => boolean;
 	CanWalk: () => boolean;
 	CanKneel: () => boolean;
@@ -1447,12 +1367,8 @@ interface Character {
 
 	/**
 	 * Check whether a character can change another one's outfit.
-	 *
-	 * @param {Character} C - The character to check against.
-	 * @returns {boolean} - TRUE if changing is possible, FALSE otherwise.
 	 */
 	CanChangeClothesOn: (C: Character) => boolean;
-	IsProne: () => boolean;
 	IsRestrained: () => boolean;
 	IsBlind: () => boolean;
 	IsEnclose: () => boolean;
@@ -1461,16 +1377,46 @@ interface Character {
 	IsBreastChaste: () => boolean;
 	IsButtChaste: () => boolean;
 	IsEgged: () => boolean;
-	IsOwned: () => boolean;
+	/**
+	 * Whether the character is owned, and who owns it
+	 */
+	IsOwned: () => "online"|"npc"|"ggts"|"player"|false;
+	/** Whether the character is owned by the given character */
+	IsOwnedByCharacter: (C: Character) => boolean;
+	/** Whether the character is owned by the given character, number form */
+	IsOwnedByMemberNumber: (memberNumber: number) => boolean;
+	/** Whether the character has completed their ownership trial */
+	IsFullyOwned: () => boolean;
+	/** The name of this character's owner */
+	OwnerName: () => string;
+	/** The character's owner number. Might be -1 for non-online characters */
+	OwnerNumber: () => number;
+	/** Whether the player owns that character */
 	IsOwnedByPlayer: () => boolean;
+	/** The number of days since the character has been owned (-1 means not owned) */
+	OwnedSince: () => number;
+	/** Whether the given character owns the player */
 	IsOwner: () => boolean;
 	IsKneeling: () => boolean;
+	IsStanding: () => boolean;
 	IsNaked: () => boolean;
 	IsDeaf: () => boolean;
 	IsGagged: () => boolean;
 	HasNoItem: () => boolean;
+	/** Whether the character is in love with the given character */
+	IsLoverOfCharacter: (C: Character) => boolean;
+	/** Whether the character is in love with the given character, number form */
+	IsLoverOfMemberNumber: (memberNumber: number) => boolean;
+	/** The character's lover name. NPC-only */
+	LoverName: () => string;
+	/** Whether the character is in love with the player */
 	IsLoverOfPlayer: () => boolean;
+	/** Returns the list of member numbers (or names, for NPCs) the character is in love with */
 	GetLoversNumbers: (MembersOnly?: boolean) => (number | string)[];
+	/** Returns the lovership data for the character */
+	GetLovership: (MembersOnly?: boolean) => Lovership[];
+	/** @deprecated Use IsLoverOfCharacter() */
+	IsLover: (C: Character) => boolean;
 	HiddenItems: ItemPermissions[];
 	HeightRatio: number;
 	HasHiddenItems: boolean;
@@ -1482,20 +1428,20 @@ interface Character {
 	IsPlugged: () => boolean;
 	IsShackled: () => boolean;
 	IsSlow: () => boolean;
+	GetSlowLevel: () => number;
 	IsMouthBlocked: () => boolean;
 	IsMouthOpen: () => boolean;
 	IsVulvaFull: () => boolean;
 	IsAssFull: () => boolean;
 	IsFixedHead: () => boolean;
-	IsOwnedByMemberNumber: (memberNumber: number) => boolean;
-	IsLover: (C: Character) => boolean;
-	IsLoverOfMemberNumber: (memberNumber: number) => boolean;
 	GetDeafLevel: () => number;
-	IsLoverPrivate: () => boolean;
 	IsEdged: () => boolean;
 	IsPlayer: () => this is PlayerCharacter;
 	IsBirthday: () => boolean;
-	IsOnline: () => boolean;
+    IsSiblingOfCharacter: (C: Character) => boolean;
+	IsFamilyOfPlayer: () => boolean;
+	IsInFamilyOfMemberNumber: (MemberNum: number) => boolean;
+	IsOnline: () => this is Character;
 	IsNpc: () => this is NPCCharacter;
 	IsSimple: () => boolean;
 	GetDifficulty: () => number;
@@ -1507,15 +1453,15 @@ interface Character {
 	HasTints: () => boolean;
 	GetTints: () => RGBAColor[];
 	HasAttribute: (attribute: AssetAttribute) => boolean;
-	DrawPose?: AssetPoseName[];
 	DrawAppearance?: Item[];
-	AppearanceLayers?: AssetLayer[];
+	AppearanceLayers?: Mutable<AssetLayer>[];
 	Hooks: Map<CharacterHook, Map<string, () => void>> | null;
-	RegisterHook: (hookName: CharacterHook, hookInstance: string, callback: () => void) => boolean | any;
+	RegisterHook: (hookName: CharacterHook, hookInstance: string, callback: () => void) => boolean;
 	UnregisterHook: (hookName: CharacterHook, hookInstance: string) => boolean;
 	RunHooks: (hookName: CharacterHook) => void;
 	HeightRatioProportion?: number;
-	GetGenders: () => string[];
+	GetGenders: () => AssetGender[];
+	GetPronouns: () => CharacterPronouns;
 	HasPenis: () => boolean;
 	HasVagina: () => boolean;
 	IsFlatChested: () => boolean;
@@ -1523,21 +1469,17 @@ interface Character {
 	ArousalSettings?: ArousalSettingsType;
 	AppearanceFull?: Item[];
 	// Online character properties
-	Title?: string;
-	LabelColor?: any;
-	Creation?: any;
-	Description?: any;
+	Title?: TitleName;
+	LabelColor?: string;
+	Creation?: number;
+	Description?: string;
 	OnlineSharedSettings?: CharacterOnlineSharedSettings;
-	Game?: {
-		LARP?: GameLARPParameters,
-		MagicBattle?: GameMagicBattleParameters,
-		GGTS?: GameGGTSParameters,
-		Poker?: GamePokerParameters,
-	};
+	Game?: CharacterGameParameters;
+	MapData?: ChatRoomMapData;
 	BlackList: number[];
 	RunScripts?: boolean;
 	HasScriptedAssets?: boolean;
-	Cage?: true | null;
+	Cage?: boolean;
 	Difficulty?: {
 		Level: number;
 		LastChange?: number;
@@ -1548,6 +1490,20 @@ interface Character {
 	Status?: string | null;
 	StatusTimer?: number;
 	Crafting?: (null | CraftingItem)[];
+	LastMapData?: ChatRoomMapData;
+	/**
+	 * The custom background to use for the current room
+	 * Only valid on {@link Player}
+	 */
+	CustomBackground?: string;
+}
+
+interface CharacterGameParameters {
+	LARP?: GameLARPParameters,
+	MagicBattle?: GameMagicBattleParameters,
+	GGTS?: GameGGTSParameters,
+	Poker?: GamePokerParameters,
+	ClubCard?: GameClubCardParameters,
 }
 
 /**
@@ -1558,8 +1514,9 @@ interface CharacterOnlineSharedSettings {
 	AllowFullWardrobeAccess: boolean;
 	BlockBodyCosplay: boolean;
 	AllowPlayerLeashing: boolean;
+	AllowRename: boolean;
 	DisablePickingLocksOnSelf: boolean;
-	GameVersion: string;
+	GameVersion?: string;
 	ItemsAffectExpressions: boolean;
 	ScriptPermissions: ScriptPermissions;
 	WheelFortune: string;
@@ -1569,7 +1526,10 @@ type NPCArchetype =
 	/* Pandora NPCs */
 	"MemberNew"|"MemberOld"|"Cosplay"|"Mistress"|"Slave"|"Maid"|"Guard"|
 	/* Pandora Special */
-	"Victim"|"Target"|"Chest";
+	"Victim"|"Target"|"Chest"|
+	// Misc
+	"Dominatrix" | "Nurse" | "Submissive" | "Mistress" | "Patient" | "Maid" | "Mistress" | "Maiestas" | "Vincula" | "Amplector" | "Corporis"
+	;
 
 /** NPC Character extension */
 // FIXME: That one should find its way down to NPCCharacter, but
@@ -1591,14 +1551,9 @@ interface NPCCharacter extends Character {
 	Domination?: number;
 }
 
-/** College */
+/** College & Asylum */
 interface NPCCharacter {
 	GoneAway?: boolean;
-}
-
-/** Asylum */
-interface NPCCharacter {
-	RunAway?: boolean;
 }
 
 /** Movie Studio */
@@ -1660,7 +1615,7 @@ interface Character {
 
 /** Magic School */
 interface Character {
-	House?: string;
+	House?: "" | MagicSchoolHouse;
 }
 
 /** MovieStudio */
@@ -1680,147 +1635,44 @@ interface Character {
 	TrainingCountPerfect?: number;
 }
 
+interface ExtensionSettings {
+	[key: string]: any;
+}
+
+interface ControllerSettingsOld {
+	ControllerA: number;
+	ControllerB: number;
+	ControllerX: number;
+	ControllerY: number;
+	ControllerStickUpDown: number;
+	ControllerStickLeftRight: number;
+	ControllerStickRight: number;
+	ControllerStickDown: number;
+	ControllerDPadUp: number;
+	ControllerDPadDown: number;
+	ControllerDPadLeft: number;
+	ControllerDPadRight: number;
+}
+
 interface PlayerCharacter extends Character {
 	// PreferenceInitPlayer() must be updated with defaults, when adding a new setting
-	ChatSettings?: {
-		ColorActions: boolean;
-		ColorActivities: boolean;
-		ColorEmotes: boolean;
-		ColorNames: boolean;
-		ColorTheme: ChatColorThemeType;
-		DisplayTimestamps: boolean;
-		EnterLeave: ChatEnterLeaveType;
-		FontSize: ChatFontSizeType;
-		MemberNumbers: ChatMemberNumbersType;
-		MuStylePoses: boolean;
-		ShowActivities: boolean;
-		ShowAutomaticMessages: boolean;
-		ShowBeepChat: boolean;
-		ShowChatHelp: boolean;
-		ShrinkNonDialogue: boolean;
-		WhiteSpace: string;
-		/** @deprecated */
-		AutoBanBlackList?: any;
-		/** @deprecated */
-		AutoBanGhostList?: any;
-		/** @deprecated */
-		SearchFriendsFirst?: any;
-		/** @deprecated */
-		DisableAnimations?: any;
-		/** @deprecated */
-		SearchShowsFullRooms?: any;
-		CensoredWordsList: string;
-		CensoredWordsLevel: number;
-	};
-	VisualSettings?: {
-		ForceFullHeight?: boolean;
-		UseCharacterInPreviews?: boolean;
-		MainHallBackground?: string;
-		PrivateRoomBackground?: string;
-	};
-	AudioSettings?: {
-		Volume: number;
-		PlayBeeps: boolean;
-		/** Play items sounds in chatrooms */
-		PlayItem: boolean;
-		/** Play sounds only if the player is involved */
-		PlayItemPlayerOnly: boolean;
-		Notifications: boolean;
-	};
-	ControllerSettings?: {
-		ControllerSensitivity: number;
-		ControllerDeadZone: number;
-		ControllerA: number;
-		ControllerB: number;
-		ControllerX: number;
-		ControllerY: number;
-		ControllerStickUpDown: number;
-		ControllerStickLeftRight: number;
-		ControllerStickRight: number;
-		ControllerStickDown: number;
-		ControllerDPadUp: number;
-		ControllerDPadDown: number;
-		ControllerDPadLeft: number;
-		ControllerDPadRight: number;
-		ControllerActive: boolean;
-	};
-	GameplaySettings?: {
-		SensDepChatLog: SettingsSensDepName;
-		BlindDisableExamine: boolean;
-		DisableAutoRemoveLogin: boolean;
-		ImmersionLockSetting: boolean;
-		EnableSafeword: boolean;
-		DisableAutoMaid: boolean;
-		OfflineLockedRestrained: boolean;
-	};
-	ImmersionSettings?: {
-		BlockGaggedOOC: boolean;
-		StimulationEvents: boolean;
-		ReturnToChatRoom: boolean;
-		ReturnToChatRoomAdmin: boolean;
-		SenseDepMessages: boolean;
-		ChatRoomMuffle: boolean;
-		BlindAdjacent: boolean;
-		AllowTints: boolean;
-	};
-	LastChatRoom?: string;
-	LastChatRoomBG?: string;
-	LastChatRoomPrivate?: boolean;
-	LastChatRoomSize?: number;
-	LastChatRoomLanguage?: string;
-	LastChatRoomDesc?: string;
-	LastChatRoomAdmin?: any[];
-	LastChatRoomBan?: any[];
-	LastChatRoomBlockCategory?: string[];
-	LastChatRoomTimer?: any;
-	LastChatRoomSpace?: ChatRoomSpaceType;
-	RestrictionSettings?: {
-		BypassStruggle: boolean;
-		SlowImmunity: boolean;
-		BypassNPCPunishments: boolean;
-	};
+	ChatSettings?: ChatSettingsType;
+	VisualSettings?: VisualSettingsType;
+	AudioSettings?: AudioSettingsType;
+	ControllerSettings?: ControllerSettingsType;
+	GameplaySettings?: GameplaySettingsType;
+	ImmersionSettings?: ImmersionSettingsType;
+	/** The chat room we were previous in. Used for relog room re-creation */
+	// TODO: the fact that this is set *might* be used to also fold the "relog" enabled checks
+	// If we have a chatroom, then we relog to it. If we don't, then the player didn't have the
+	// setting enabled in the first place
+	LastChatRoom?: ChatRoomSettings;
+	RestrictionSettings?: RestrictionSettingsType;
 	OnlineSettings?: PlayerOnlineSettings;
-	GraphicsSettings?: {
-		Font: GraphicsFontName;
-		InvertRoom: boolean;
-		StimulationFlashes: boolean;
-		DoBlindFlash: boolean;
-		AnimationQuality: number;
-		StimulationFlash: boolean;
-		SmoothZoom: boolean;
-		CenterChatrooms: boolean;
-		AllowBlur: boolean;
-	}
-	NotificationSettings?: {
-		/** @deprecated */
-		Audio?: boolean;
-		Beeps: NotificationSetting;
-		/** @deprecated */
-		Chat?: any;
-		ChatMessage: NotificationSetting & {
-			/** @deprecated */
-			IncludeActions?: any;
-			Mention?: boolean;
-			Normal?: boolean;
-			Whisper?: boolean;
-			Activity?: boolean;
-		};
-		/** @deprecated */
-		ChatActions?: any;
-		ChatJoin: NotificationSetting & {
-			/** @deprecated */
-			Enabled?: any;
-			Owner?: boolean;
-			Lovers?: boolean;
-			Friendlist?: boolean;
-			Subs?: boolean;
-		};
-		Disconnect: NotificationSetting;
-		Larp: NotificationSetting;
-		Test: NotificationSetting;
-	};
+	GraphicsSettings?: GraphicsSettingsType;
+	NotificationSettings?: NotificationSettingsType;
 	GhostList?: number[];
-	Wardrobe?: any[][];
+	Wardrobe?: ItemBundle[][];
 	WardrobeCharacterNames?: string[];
 	SavedExpressions?: ({ Group: ExpressionGroupName, CurrentExpression?: ExpressionName }[] | null)[];
 	SavedColors: HSVColor[];
@@ -1828,10 +1680,161 @@ interface PlayerCharacter extends Character {
 	FriendNames?: Map<number, string>;
 	SubmissivesList?: Set<number>;
 	ChatSearchFilterTerms?: string;
-	GenderSettings: {
-		HideShopItems: GenderSetting;
-		AutoJoinSearch: GenderSetting;
+	GenderSettings: GenderSettingsType;
+	/** The list of items we got confiscated in the Prison */
+	ConfiscatedItems?: { Group: AssetGroupName, Name: string }[];
+	ExtensionSettings: ExtensionSettings;
+}
+
+/** A type defining which genders a setting is active for */
+interface GenderSetting {
+	/** Whether the setting is active for female cases */
+	Female: boolean;
+	/** Whether the setting is active for male cases */
+	Male: boolean;
+}
+
+interface GenderSettingsType {
+	HideShopItems: GenderSetting;
+	AutoJoinSearch: GenderSetting;
+	HideTitles: GenderSetting;
+}
+
+interface NotificationSettingsType {
+	/** @deprecated */
+	Audio?: boolean;
+	Beeps: NotificationSetting;
+	/** @deprecated */
+	Chat?: any;
+	ChatMessage: NotificationSetting & {
+		/** @deprecated */
+		IncludeActions?: any;
+		Mention?: boolean;
+		Normal?: boolean;
+		Whisper?: boolean;
+		Activity?: boolean;
 	};
+	/** @deprecated */
+	ChatActions?: any;
+	ChatJoin: NotificationSetting & {
+		/** @deprecated */
+		Enabled?: any;
+		Owner?: boolean;
+		Lovers?: boolean;
+		Friendlist?: boolean;
+		Subs?: boolean;
+	};
+	Disconnect: NotificationSetting;
+	Larp: NotificationSetting;
+	Test: NotificationSetting;
+}
+
+interface GraphicsSettingsType {
+	Font: GraphicsFontName;
+	InvertRoom: boolean;
+	StimulationFlashes: boolean;
+	DoBlindFlash: boolean;
+	AnimationQuality: number;
+	StimulationFlash: boolean;
+	SmoothZoom: boolean;
+	CenterChatrooms: boolean;
+	AllowBlur: boolean;
+	ShowFPS: boolean;
+	/** 0 means unlimited */
+	MaxFPS: number;
+	MaxUnfocusedFPS: number;
+}
+
+interface RestrictionSettingsType {
+	BypassStruggle: boolean;
+	SlowImmunity: boolean;
+	BypassNPCPunishments: boolean;
+	NoSpeechGarble: boolean;
+}
+
+interface ImmersionSettingsType {
+	/** @deprecated Removed as it prevents players from having the possibility of using OOC to discuss the scene */
+	BlockGaggedOOC: never;
+	StimulationEvents: boolean;
+	ReturnToChatRoom: boolean;
+	ReturnToChatRoomAdmin: boolean;
+	ChatRoomMapLeaveOnExit: boolean;
+	SenseDepMessages: boolean;
+	ChatRoomMuffle: boolean;
+	BlindAdjacent: boolean;
+	AllowTints: boolean;
+}
+
+type ControllerButton = typeof ControllerButton[keyof typeof ControllerButton];
+type ControllerAxis = typeof ControllerAxis[keyof typeof ControllerAxis];
+
+interface ControllerSettingsType {
+	ControllerActive: boolean;
+	ControllerSensitivity: number;
+	ControllerDeadZone: number;
+	Buttons: Record<ControllerButton, number>;
+	Axis: Record<ControllerAxis, number>;
+}
+
+interface ChatSettingsType {
+	ColorActions: boolean;
+	ColorActivities: boolean;
+	ColorEmotes: boolean;
+	ColorNames: boolean;
+	ColorTheme: ChatColorThemeType;
+	DisplayTimestamps: boolean;
+	EnterLeave: ChatEnterLeaveType;
+	FontSize: ChatFontSizeType;
+	MemberNumbers: ChatMemberNumbersType;
+	MuStylePoses: boolean;
+	ShowActivities: boolean;
+	ShowAutomaticMessages: boolean;
+	ShowBeepChat: boolean;
+	ShowChatHelp: boolean;
+	ShrinkNonDialogue: boolean;
+	WhiteSpace: "" | "Preserve";
+	/** @deprecated */
+	AutoBanBlackList?: any;
+	/** @deprecated */
+	AutoBanGhostList?: any;
+	/** @deprecated */
+	SearchFriendsFirst?: any;
+	/** @deprecated */
+	DisableAnimations?: any;
+	/** @deprecated */
+	SearchShowsFullRooms?: any;
+	CensoredWordsList: string;
+	CensoredWordsLevel: number;
+	/** Whether to preserve the chat log when switching rooms */
+	PreserveChat: boolean;
+}
+
+interface GameplaySettingsType {
+	SensDepChatLog: SettingsSensDepName;
+	BlindDisableExamine: boolean;
+	DisableAutoRemoveLogin: boolean;
+	ImmersionLockSetting: boolean;
+	EnableSafeword: boolean;
+	DisableAutoMaid: boolean;
+	OfflineLockedRestrained: boolean;
+}
+
+interface AudioSettingsType {
+	Volume: number;
+	MusicVolume: number;
+	PlayBeeps: boolean;
+	/** Play items sounds in chatrooms */
+	PlayItem: boolean;
+	/** Play sounds only if the player is involved */
+	PlayItemPlayerOnly: boolean;
+	Notifications: boolean;
+}
+
+interface VisualSettingsType {
+	ForceFullHeight?: boolean;
+	UseCharacterInPreviews?: boolean;
+	MainHallBackground?: string;
+	PrivateRoomBackground?: string;
 }
 
 /**
@@ -1847,20 +1850,23 @@ interface PlayerOnlineSettings {
 	SendStatus?: boolean;
 	ShowStatus?: boolean;
 	EnableAfkTimer: boolean;
+	ShowRoomCustomization: 0 | 1 | 2 | 3; // 0 - Never, 1 - No by default, 2 - Yes by default, 3 - Always
 }
 
 /** Pandora Player extension */
 interface PlayerCharacter {
-	Infiltration?: {
-		Punishment?: {
-			Minutes: number;
-			Timer?: number;
-			Background: string;
-			Difficulty: number;
-			FightDone?: boolean;
-		}
-		Perks?: string;
+	Infiltration?: InfiltrationType;
+}
+
+interface InfiltrationType {
+	Punishment?: {
+		Minutes: number;
+		Timer?: number;
+		Background: string;
+		Difficulty: number;
+		FightDone?: boolean;
 	}
+	Perks?: string;
 }
 
 /** Kinky Dungeon Player extension */
@@ -1878,12 +1884,96 @@ interface NPCTrait {
 
 //#region Extended items
 
+/**
+ * An interface with all available element metadata fields.
+ * Note that only a subset of fields are generally used by a given archetype.
+ * @see {@link ElementData}
+ * @see {@link ExtendedItemDrawData}
+ */
+interface ElementMetaData {
+	/** Whether to draw an element-accompanying image or not */
+	drawImage?: boolean,
+	/**
+	 * The static image path of the to-be drawn image.
+	 * A value of `null` either implies that it should not be drawn (per {@link ElementMetaData.drawImage})
+	 * or that it's a dynamic image path (_e.g._ modular item modules).
+	 */
+	imagePath?: null | string,
+	/** The name of a supported thumbnail image in \CSS\Styles.css that will show the current position on the slider */
+	icon?: ThumbIcon,
+	/** Whether an options shows up in the UI. Useful for options that are managed programmatically. */
+	hidden?: boolean,
+}
+
+declare namespace ElementMetaData {
+	interface Typed { drawImage: boolean, hidden: boolean, imagePath: null | string }
+	interface Modular { drawImage: boolean, hidden: boolean, imagePath: null | string }
+	interface Vibrating  { drawImage: false, hidden: false, imagePath: null }
+	interface Text {}
+	interface VariableHeight { icon: ThumbIcon }
+	type NoArch = ElementMetaData;
+}
+
+/** @see {@link ElementData} */
+type ElementConfigData<MetaData extends ElementMetaData> = {
+	/** A 4-tuple with X & Y coordinates, width and height. */
+	position?: PartialRectTuple,
+} & MetaData;
+
+/**
+ * An interface with element coordinates and additional (archetype-specific metadata).
+ * @template MetaData A record with (archetype-specific) additional element metadata
+ * @see {@link ExtendedItemDrawData}
+ */
+type ElementData<MetaData extends ElementMetaData> = {
+	/** A 4-tuple with X & Y coordinates, width and height. */
+	position: RectTuple,
+} & MetaData;
+
+/** @see {@link ExtendedItemDrawData} */
+interface ExtendedItemConfigDrawData<MetaData extends ElementMetaData> {
+	/** An array with two-tuples of X and Y coordinates for the buttons and, optionally, the buttons width and height */
+	elementData?: ElementConfigData<MetaData>[],
+	/** The number of buttons to be drawn per page */
+	itemsPerPage?: number,
+}
+
+/** @see {@link ExtendedItemDrawData} */
+interface VariableHeightConfigDrawData extends ExtendedItemConfigDrawData<{}> {
+	elementData: { position: RectTuple, icon: ThumbIcon }[],
+}
+
+/** @see {@link ExtendedItemDrawData} */
+interface NoArchConfigDrawData extends ExtendedItemConfigDrawData<ElementMetaData> {
+	elementData?: ElementData<ElementMetaData>[],
+}
+
+/**
+ * An interface with element-specific drawing data for a given screen.
+ * @template MetaData A record with (archetype-specific) additional element metadata
+ */
+interface ExtendedItemDrawData<MetaData extends ElementMetaData> extends Required<ExtendedItemConfigDrawData<MetaData>> {
+	/** A list of {@link ElementData} interfaces, one for each to-be drawn element (_e.g._ buttons) */
+	elementData: ElementData<MetaData>[],
+	/** The number of pages */
+	pageCount: number,
+	/** Whether pagination is required; i.e. if the number of buttons is larger than {@link ExtendedItemDrawData.itemsPerPage} */
+	paginate: boolean,
+}
+
+type ExtendedItemHeaderCallback<DataType extends ExtendedItemData<any>> = (
+	data: DataType,
+	C: Character,
+	item: Item,
+) => string;
+
 /** A record containing various dialog keys used by the extended item screen */
 interface ExtendedItemDialog<
-	OptionType extends ExtendedItemOption
+	DataType extends ExtendedItemData<any>,
+	OptionType extends ExtendedItemOption,
 > {
 	/** The dialogue prefix for the player prompt that is displayed on each module's menu screen */
-	header: string;
+	header: string | ExtendedItemHeaderCallback<DataType>;
 	/** The dialogue prefix for the name of each module */
 	module?: string;
 	/** The dialogue prefix for the name of each option */
@@ -1897,10 +1987,11 @@ interface ExtendedItemDialog<
 
 /** A record containing various dialog keys used by the extended item screen */
 interface ExtendedItemCapsDialog<
-	OptionType extends ExtendedItemOption
+	DataType extends ExtendedItemData<any>,
+	OptionType extends ExtendedItemOption,
 > {
 	/** The dialogue prefix for the player prompt that is displayed on each module's menu screen */
-	Header?: string;
+	Header?: string | ExtendedItemHeaderCallback<DataType>;
 	/** The dialogue prefix for the name of each module */
 	Module?: string;
 	/** The dialogue prefix for the name of each option */
@@ -1918,6 +2009,12 @@ type ExtendedItemScriptHookCallback<DataType extends ExtendedItemData<any>, T ex
 	...args: T,
 ) => RT;
 
+type ExtendedItemScriptHookCallbackNoNull<DataType extends ExtendedItemData<any>, T extends any[], RT=void> = (
+	data: DataType,
+	originalFunction: ((...args: T) => RT),
+	...args: T,
+) => RT;
+
 /** Basic callback for extended item functions */
 type ExtendedItemCallback<T extends any[], RT=void> = (
 	...args: T,
@@ -1928,13 +2025,17 @@ interface ExtendedItemScriptHookStruct<
 	DataType extends ExtendedItemData<any>,
 	OptionType extends ExtendedItemOption
 > {
-	load?: ExtendedItemScriptHookCallbacks.Load<DataType>,
-	draw?: ExtendedItemScriptHookCallbacks.Draw<DataType>,
-	click?: ExtendedItemScriptHookCallbacks.Click<DataType>,
-	exit?: ExtendedItemScriptHookCallbacks.Exit<DataType>,
-	validate?: ExtendedItemScriptHookCallbacks.Validate<DataType, OptionType>,
-	publishAction?: ExtendedItemScriptHookCallbacks.PublishAction<DataType, OptionType>,
-	init?: ExtendedItemScriptHookCallbacks.Init<DataType>,
+	init: ExtendedItemScriptHookCallbacks.Init<DataType>,
+	load: ExtendedItemScriptHookCallbacks.Load<DataType>,
+	draw: ExtendedItemScriptHookCallbacks.Draw<DataType>,
+	click: ExtendedItemScriptHookCallbacks.Click<DataType>,
+	exit: null | ExtendedItemScriptHookCallbacks.Exit<DataType>,
+	validate: null | ExtendedItemScriptHookCallbacks.Validate<DataType, OptionType>,
+	publishAction: null | ExtendedItemScriptHookCallbacks.PublishAction<DataType, OptionType>,
+	setOption: null | ExtendedItemScriptHookCallbacks.SetOption<DataType, OptionType>,
+	beforeDraw: null | ExtendedItemScriptHookCallbacks.BeforeDraw<DataType>,
+	afterDraw: null | ExtendedItemScriptHookCallbacks.AfterDraw<DataType>,
+	scriptDraw: null | ExtendedItemScriptHookCallbacks.ScriptDraw<DataType>,
 }
 
 /** An interface-based version of {@link ExtendedItemScriptHookCallbacks} */
@@ -1942,26 +2043,34 @@ interface ExtendedItemCapsScriptHooksStruct<
 	DataType extends ExtendedItemData<any>,
 	OptionType extends ExtendedItemOption
 > {
+	Init?: ExtendedItemScriptHookCallbacks.Init<DataType>,
 	Load?: ExtendedItemScriptHookCallbacks.Load<DataType>,
 	Draw?: ExtendedItemScriptHookCallbacks.Draw<DataType>,
 	Click?: ExtendedItemScriptHookCallbacks.Click<DataType>,
 	Exit?: ExtendedItemScriptHookCallbacks.Exit<DataType>,
 	Validate?: ExtendedItemScriptHookCallbacks.Validate<DataType, OptionType>,
 	PublishAction?: ExtendedItemScriptHookCallbacks.PublishAction<DataType, OptionType>,
-	Init?: ExtendedItemScriptHookCallbacks.Init<DataType>,
+	SetOption?: ExtendedItemScriptHookCallbacks.SetOption<DataType, OptionType>,
+	BeforeDraw?: ExtendedItemScriptHookCallbacks.BeforeDraw<DataType>,
+	AfterDraw?: ExtendedItemScriptHookCallbacks.AfterDraw<DataType>,
+	ScriptDraw?: ExtendedItemScriptHookCallbacks.ScriptDraw<DataType>,
 }
 
 /** An interface-based version of {@link ExtendedItemCallbacks} with decapitalized keys*/
 interface ExtendedItemCallbackStruct<
 	OptionType extends ExtendedItemOption
 > {
-	load?: ExtendedItemCallbacks.Load,
-	draw?: ExtendedItemCallbacks.Draw,
-	click?: ExtendedItemCallbacks.Click,
+	init: ExtendedItemCallbacks.Init,
+	load: ExtendedItemCallbacks.Load,
+	draw: ExtendedItemCallbacks.Draw,
+	click: ExtendedItemCallbacks.Click,
 	exit?: ExtendedItemCallbacks.Exit,
 	validate?: ExtendedItemCallbacks.Validate<OptionType>,
 	publishAction?: ExtendedItemCallbacks.PublishAction<OptionType>,
-	init?: ExtendedItemCallbacks.Init,
+	setOption?: ExtendedItemCallbacks.SetOption<OptionType>,
+	beforeDraw?: ExtendedItemCallbacks.BeforeDraw,
+	afterDraw?: ExtendedItemCallbacks.AfterDraw,
+	scriptDraw?: ExtendedItemCallbacks.ScriptDraw,
 }
 
 /** Namespace with item-specific functions typically called by extended items. */
@@ -1993,11 +2102,13 @@ declare namespace ExtendedItemCallbacks {
 	 * @param item The item in question
 	 * @param newOption The newly selected extended item option
 	 * @param previousOption The previusly selected extended item option
+	 * @param permitExisting - Determines whether the validation should allow the new option and previous option
+	 * to be identical. Defaults to false.
 	 * @returns A non-empty message string if the item failed validation, or an empty string otherwise
 	 */
 	type Validate<
 		OptionType extends ExtendedItemOption
-	> = ExtendedItemCallback<[C: Character, item: Item, newOption: OptionType, previousOption: OptionType], string>;
+	> = ExtendedItemCallback<[C: Character, item: Item, newOption: OptionType, previousOption: OptionType, permitExisting?: boolean], string>;
 	/**
 	 * Callback for extended item `PublishAction` functions.
 	 * `PublishAction` functions are responsible for reporting any changes to an item's properties via a chat message.
@@ -2014,10 +2125,23 @@ declare namespace ExtendedItemCallbacks {
 	 * `Init` functions are responsible for setting the initial properties of an extended item.
 	 * @param C The character that has the item equiped
 	 * @param item The item in question
-	 * @param refresh Whether the character and relevant item should be refreshed and pushed to the server
+	 * @param push Whether to push to changes to the server
+	 * @param refresh Whether to refresh the character. This should generally be `true`, with custom script hooks being a potential exception.
 	 * @returns Whether the items properties were actually updated or not
 	 */
-	type Init = ExtendedItemCallback<[C: Character, item: Item, refresh: boolean], boolean>;
+	type Init = ExtendedItemCallback<[C: Character, item: Item, push: boolean, refresh: boolean], boolean>;
+	/**
+	 * Callback for extended item `SetOption` functions.
+	 * @param C The character that has the item equiped
+	 * @param item The item in question
+	 * @param newOption The newly selected extended item option
+	 * @param previousOption The previusly selected extended item option
+	 * @param push Whether to push to changes to the server
+	 * @param refresh Whether to refresh the character. This should generally be `true`, with custom script hooks being a potential exception.
+	 */
+	type SetOption<
+		OptionType extends ExtendedItemOption
+	> = ExtendedItemCallback<[C: Character, item: Item, newOption: OptionType, previousOption: OptionType, push: boolean, refresh: boolean]>;
 	/**
 	 * Callback for extended item `AfterDraw` functions.
 	 * Relevant for assets that define {@link Asset.DynamicAfterDraw}.
@@ -2054,29 +2178,29 @@ declare namespace ExtendedItemScriptHookCallbacks {
 	 * Callback for extended item `Load` script hooks.
 	 * `Load` functions are responsible for setting up the UI when initially opening the extended item menu.
 	 * @param data The items extended item data
-	 * @param originalFunction The function (if any) that is normally called when an archetypical item reaches this point
+	 * @param originalFunction The function that is normally called when an archetypical item reaches this point
 	 */
 	type Load<
 		DataType extends ExtendedItemData<any>
-	> = ExtendedItemScriptHookCallback<DataType, []>;
+	> = ExtendedItemScriptHookCallbackNoNull<DataType, []>;
 	/**
 	 * Callback for extended item `Draw` script hooks.
 	 * `Draw` functions are responsible for drawing any UI elements within the extended item menu.
 	 * @param data The items extended item data
-	 * @param originalFunction The function (if any) that is normally called when an archetypical item reaches this point
+	 * @param originalFunction The function that is normally called when an archetypical item reaches this point
 	 */
 	type Draw<
 		DataType extends ExtendedItemData<any>
-	> = ExtendedItemScriptHookCallback<DataType, []>;
+	> = ExtendedItemScriptHookCallbackNoNull<DataType, []>;
 	/**
 	 * Callback for extended item `Click` script hooks.
 	 * `Click` functions are responsible for managing any mouse clicks within the extended item menu.
 	 * @param data The items extended item data
-	 * @param originalFunction The function (if any) that is normally called when an archetypical item reaches this point
+	 * @param originalFunction The function that is normally called when an archetypical item reaches this point
 	 */
 	type Click<
 		DataType extends ExtendedItemData<any>
-	> = ExtendedItemScriptHookCallback<DataType, []>;
+	> = ExtendedItemScriptHookCallbackNoNull<DataType, []>;
 	/**
 	 * Callback for extended item `Exit` script hooks.
 	 * `Exit` functions are responsible for cleaning up any UI elements when closing the extended item menu.
@@ -2095,12 +2219,14 @@ declare namespace ExtendedItemScriptHookCallbacks {
 	 * @param item The item in question
 	 * @param newOption The newly selected extended item option
 	 * @param previousOption The previusly selected extended item option
+	 * @param permitExisting - Determines whether the validation should allow the new option and previous option
+	 * to be identical. Defaults to false.
 	 * @returns A non-empty message string if the item failed validation, or an empty string otherwise
 	 */
 	type Validate<
 		DataType extends ExtendedItemData<any>,
 		OptionType extends ExtendedItemOption
-	> = ExtendedItemScriptHookCallback<DataType, [C: Character, item: Item, newOption: OptionType, previousOption: OptionType], string>;
+	> = ExtendedItemScriptHookCallback<DataType, [C: Character, item: Item, newOption: OptionType, previousOption: OptionType, permitExisting?: boolean], string>;
 	/**
 	 * Callback for extended item `PublishAction` script hooks.
 	 * `PublishAction` functions are responsible for reporting any changes to an item's properties via a chat message.
@@ -2122,28 +2248,83 @@ declare namespace ExtendedItemScriptHookCallbacks {
 	 * @param originalFunction The function (if any) that is normally called when an archetypical item reaches this point
 	 * @param C The character that has the item equiped
 	 * @param item The item in question
-	 * @param refresh Whether the character and relevant item should be refreshed and pushed to the server
+	 * @param push Whether to push to changes to the server
+	 * @param refresh Whether to refresh the character. This should generally be `true`, with custom script hooks being a potential exception.
 	 * @returns Whether the items properties were actually updated or not
 	 */
 	type Init<
 		DataType extends ExtendedItemData<any>
-	> = ExtendedItemScriptHookCallback<DataType, [C: Character, item: Item, refresh: boolean], boolean>;
+	> = ExtendedItemScriptHookCallbackNoNull<DataType, [C: Character, item: Item, push: boolean, refresh: boolean], boolean>;
+	/**
+	 * Callback for extended item `SetOption` functions.
+	 * @param data The items extended item data
+	 * @param originalFunction The function that is normally called when an archetypical item reaches this point
+	 * @param C The character that has the item equiped
+	 * @param item The item in question
+	 * @param newOption The newly selected extended item option
+	 * @param previousOption The previusly selected extended item option
+	 * @param push Whether to push to changes to the server
+	 * @param refresh Whether to refresh the character. This should generally be `true`, with custom script hooks being a potential exception.
+	 * @returns
+	 */
+	type SetOption<
+		DataType extends ExtendedItemData<any>,
+		OptionType extends ExtendedItemOption
+	> = ExtendedItemScriptHookCallback<DataType, [C: Character, item: Item, newOption: OptionType, previousOption: OptionType, push: boolean, refresh: boolean]>;
+	/**
+	 * Callback for extended item `AfterDraw` functions.
+	 * Relevant for assets that define {@link Asset.DynamicAfterDraw}.
+	 * @param data The items extended item data
+	 * @param originalFunction The function (if any) that is normally called when an archetypical item reaches this point
+	 * @param drawData The dynamic draw data
+	 */
+	type AfterDraw<
+		DataType extends ExtendedItemData<any>,
+		PersistentData extends Record<string, any> = Record<string, unknown>
+	> = ExtendedItemScriptHookCallback<DataType, [drawData: DynamicDrawingData<PersistentData>]>;
+	/**
+	 * Callback for extended item `BeforeDraw` functions.
+	 * Relevant for assets that define {@link Asset.DynamicBeforeDraw}.
+	 * @param data The items extended item data
+	 * @param originalFunction The function (if any) that is normally called when an archetypical item reaches this point
+	 * @param drawData The dynamic draw data
+	 * @returns A record with any and all to-be overriden draw data
+	 */
+	type BeforeDraw<
+		DataType extends ExtendedItemData<any>,
+		PersistentData extends Record<string, any> = Record<string, unknown>
+	> = ExtendedItemScriptHookCallback<DataType, [drawData: DynamicDrawingData<PersistentData>], DynamicBeforeDrawOverrides>;
+	/**
+	 * Callback for extended item `ScriptDraw` functions.
+	 * Relevant for assets that define {@link Asset.DynamicScriptDraw}.
+	 * @param data The items extended item data
+	 * @param originalFunction The function (if any) that is normally called when an archetypical item reaches this point
+	 * @param drawData The dynamic draw data
+	 */
+	type ScriptDraw<
+		DataType extends ExtendedItemData<any>,
+		PersistentData extends Record<string, any> = Record<string, unknown>
+	> = ExtendedItemScriptHookCallback<DataType, [drawData: DynamicScriptCallbackData<PersistentData>]>;
 }
+
+/** Union of all (archetype-specific) {@link ExtendedItemData.chatSetting} allowed values. */
+type ExtendedItemChatSetting = "default" | TypedItemChatSetting | ModularItemChatSetting;
 
 /**
  * Abstract extended item data interface that all archetypical item data interfaces must implement.
- * Archetypes are free to demand any appropriate subtype for a given property,
- * _e.g._ `drawImages: false` if an archetype does have any images in its UI.
+ * Archetypes are free to demand any appropriate subtype for a given property.
  */
 interface ExtendedItemData<OptionType extends ExtendedItemOption> {
+	/** The archetype of the extended item data */
+	archetype: ExtendedArchetype;
 	/**
 	 * The chat message setting for the item. This can be provided to allow
 	 * finer-grained chatroom message keys for the item.
-	 * If an archetype does not support multiple chat messages settings it should use the `"default"` literal string.
+	 * Archetypes must use the `"default"` literal string as default value.
 	 */
-	chatSetting: string;
+	chatSetting: ExtendedItemChatSetting;
 	/** A record containing various dialog keys used by the extended item screen */
-	dialogPrefix: ExtendedItemDialog<OptionType>;
+	dialogPrefix: ExtendedItemDialog<any, OptionType>;
 	/**
 	 * A recond containing functions that are run on load, click, draw, exit, and validate, with the original archetype function
 	 * and parameters passed on to them. If undefined, these are ignored.
@@ -2156,17 +2337,34 @@ interface ExtendedItemData<OptionType extends ExtendedItemOption> {
 	key: string;
 	/** The common prefix used for all extended item functions associated with the asset */
 	functionPrefix: string;
+	/** The common prefix used for all dynamic asset hook functions for the asset */
+	dynamicAssetsFunctionPrefix: string;
 	/** An array of the chat message tags that should be included in the item's chatroom messages. */
 	chatTags: CommonChatTags[];
 	/** Contains custom dictionary entries in the event that the base ones do not suffice. */
 	dictionary: ExtendedItemDictionaryCallback<OptionType>[];
-	/** A boolean indicating whether or not images should be drawn in this item's extended item menu. */
-	drawImages: boolean;
 	/**
 	 * To-be initialized properties independent of the selected item module(s).
 	 * Relevant if there are properties that are (near) exclusively managed by {@link ExtendedItemData.scriptHooks} functions.
 	 */
-	baselineProperty: ItemProperties | null;
+	baselineProperty: PropertiesNoArray.Item | null;
+	/** The extended item option of the super screen that this archetype was initialized from (if any) */
+	parentOption: null | ExtendedItemOption;
+	/** An interface with element-specific drawing data for a given screen. */
+	drawData: ExtendedItemDrawData<{}>;
+	/**
+	 * A list with extra to-be allowed effect names.
+	 * Should only defined when there are effects that are exclusively managed by script hooks and thus cannot be extracted from the normal extended item options.
+	 */
+	allowEffect: readonly EffectName[];
+	/**
+	 * The unique name for this (sub)-screen used for the automatic construction of {@link ItemProperties.TypeRecord} keys.
+	 * Names *should* be short.
+	 *
+	 * If not explicitly specified defaults to the name of {@link ExtendedItemData.parentOption}
+	 * for sub screens and the name of the archetype in case of the (outer-most) super screen.
+	 */
+	name: string;
 }
 
 /** A struct-type that maps archetypes to their respective extended item data.  */
@@ -2175,6 +2373,8 @@ interface ExtendedDataLookupStruct {
 	[ExtendedArchetype.MODULAR]: ModularItemData;
 	[ExtendedArchetype.VIBRATING]: VibratingItemData;
 	[ExtendedArchetype.VARIABLEHEIGHT]: VariableHeightData;
+	[ExtendedArchetype.TEXT]: TextItemData;
+	[ExtendedArchetype.NOARCH]: NoArchItemData;
 }
 
 interface AssetOverrideHeight {
@@ -2224,7 +2424,9 @@ interface AssetDefinitionProperties {
 	 */
 	OverridePriority?: AssetLayerOverridePriority;
 	/**
-	 * The default color of the item
+	 * The default color of the item.
+	 * Used by extended items that need one of their layers to have a different per-type default color
+	 * FIXME: That should be hoisted in the extended config, since it's set by the definition and {@link Item.Color} should be the actual colors used
 	 * @see {@link Asset.DefaultColor}
 	 */
 	DefaultColor?: ItemColor;
@@ -2289,18 +2491,21 @@ interface AssetDefinitionProperties {
 	/**
 	 * A list of allowed poses
 	 * @see {@link Asset.AllowPose}
+	 * @deprecated - Was never actually functional
 	 */
-	AllowPose?: AssetPoseName[];
+	AllowPose?: never;
 	/**
 	 * A list of poses
 	 * @see {@link Asset.WhitelistActivePose}
+	 * @deprecated Use {@link ItemProperties.AllowActivePose} instead
 	 */
-	WhitelistActivePose?: AssetPoseName[];
+	WhitelistActivePose?: never;
 	/**
 	 * A list of poses that should be frozen
 	 * @see {@link Asset.FreezeActivePose}
+	 * @deprecated Use {@link ItemProperties.AllowActivePose} instead
 	 */
-	FreezeActivePose?: AssetPoseCategory[];
+	FreezeActivePose?: never;
 
 	/**
 	 * Whether an item can be unlocked by the player even if they're restrained
@@ -2310,7 +2515,6 @@ interface AssetDefinitionProperties {
 
 	/**
 	 * The timer for after how long until a lock should be removed.
-	 * Also used for timed emoticons.
 	 * @see {@link Asset.RemoveTimer}
 	 */
 	RemoveTimer?: number;
@@ -2334,20 +2538,42 @@ interface AssetDefinitionProperties {
 	Fetish?: FetishName[];
 }
 
+/** A concatenation of a single {@link TypeRecord} key/value pair. */
+type PartialType = `${string}${number}`;
+
+/**
+ * A record mapping screen names to option indices.
+ * @see {@link PartialType} A concatenation of a single `TypeRecord` key/value pair.
+ */
+type TypeRecord = Record<string, number>;
+
+/**
+ * Properties for Expression Queue item
+ */
+
+interface ExpressionQueueItem {
+	Time?: number;
+	Group?: ExpressionGroupName;
+	Expression?: ExpressionName;
+}
+
 /**
  * Base properties for extended items
  *
  * Those are the properties the main game code enforces.
  */
 interface ItemPropertiesBase {
-	/** A string (or `null`) denoting the state of an extended item. How the type-string translate to concrete properties depends on the Archetype in question. */
-	Type?: string | null;
+	/**
+	 * A string (or `null`) denoting the state of an extended item.
+	 * How the type-string translate to concrete properties depends on the Archetype in question.
+	 * @deprecated Superseded by {@link ItemPropertiesBase.TypeRecord}. Old type strings can be convert to records via {@link ExtendedItemTypeToRecord}.
+	 */
+	Type?: null | string;
+	/** A record mapping screen names to option indices. */
+	TypeRecord?: TypeRecord;
 
 	/** A facial expression */
 	Expression?: ExpressionName;
-
-	/** Whether the asset affects should be overriden rather than extended */
-	OverrideAssetEffect?: boolean;
 
 	// Vibratory-related properties
 
@@ -2357,6 +2583,10 @@ interface ItemPropertiesBase {
 	Intensity?: VibratorIntensity;
 	/** The vibrator's state; only relevant for advanced vibrator modes */
 	State?: VibratorModeState;
+
+	/** KD modules */
+	// FIXME: Note that, as far as I can see, it's only ever set, never read
+	Modules?: number[];
 }
 
 /**
@@ -2436,8 +2666,6 @@ interface ItemPropertiesCustom {
 
 	/** The futuristic bra's heart rate value */
 	HeartRate?: number;
-	/** Is the futuristic bra's heart icon shown */
-	HeartIcon?: boolean;
 
 	// #region Futuristic gag & panel gag settings */
 
@@ -2469,6 +2697,8 @@ interface ItemPropertiesCustom {
 	PunishOrgasm?: boolean;
 	/** Whether standing up should result in punishment */
 	PunishStandup?: boolean;
+	/** Whether performing activities should result in punishment */
+	PunishActivity?: boolean;
 	/** The punishment for talking; represents an index of {@link FuturisticTrainingBeltSpeechPunishments} */
 	PunishSpeech?: 0 | 1 | 2 | 3;
 	/** The punishment for not speaking a required word; represents an index of {@link FuturisticTrainingBeltSpeechPunishments} */
@@ -2505,6 +2735,18 @@ interface ItemPropertiesCustom {
 	/** Number of times the item was triggered; often used by shock collars */
 	TriggerCount?: number;
 
+	/** Modular Belt: Number of times the wearer had orgasm;*/
+	OrgasmCount?: number;
+
+	/** Modular Belt: Number of times the wearer had ruined orgasm;*/
+	RuinedOrgasmCount?: number;
+
+	/** Modular Belt: Amount of time since the item is being worn;*/
+	TimeWorn?: number;
+
+	/** Modular Belt: Amount of time since last detected orgasm;*/
+	TimeSinceLastOrgasm?: number;
+
 	/** Number of times the suitcase got cracked */
 	Iterations?: number;
 
@@ -2525,30 +2767,55 @@ interface ItemPropertiesCustom {
 	/** Lucky Wheel: the angle the wheel should spin to */
 	TargetAngle?: number;
 
+	/** PortalLink: Used to link a remote to its target asset. */
+	PortalLinkCode?: string;
 }
 
 interface ItemProperties extends ItemPropertiesBase, AssetDefinitionProperties, ItemPropertiesCustom { }
 
-//#endregion
-
-/** A struct with drawing data for a given module. */
-interface ModularItemDrawData {
-	/** The number of pages */
-	pageCount: number,
-	/** Whether pagination is required; i.e. if the number of buttons is larger than {@link ModularItemDrawData.itemsPerPage} */
-	paginate: boolean,
-	/** An array with two-tuples of X and Y coordinates for the buttons */
-	positions: [number, number][],
-	/** Whether each button should be accompanied by a preview image */
-	drawImages: boolean,
-	/** The number of buttons to be drawn per page */
-	itemsPerPage: number
+/** All item/asset/group properties with all array-based values removed */
+declare namespace PropertiesNoArray {
+	/** All {@link ItemProperties} properties with array-based values removed */
+	type Item = { [k in keyof ItemProperties as NonNullable<ItemProperties[k]> extends readonly any[] ? never : k]: ItemProperties[k] };
+	/** All {@link Asset} properties with array-based values removed */
+	type Asset = { [k in keyof globalThis.Asset as NonNullable<globalThis.Asset[k]> extends readonly any[] ? never : k]: globalThis.Asset[k] };
+	/** All {@link Group} properties with array-based values removed */
+	type Group = { [k in keyof AssetGroup as NonNullable<AssetGroup[k]> extends readonly any[] ? never : k]: AssetGroup[k] };
 }
+type PropertiesNoArray = PropertiesNoArray.Item & PropertiesNoArray.Asset & PropertiesNoArray.Group;
+
+/** All item/asset/group properties with array-based values */
+declare namespace PropertiesArray {
+	/** All {@link ItemProperties} properties with array-based values */
+	type Item = { [k in keyof ItemProperties as NonNullable<ItemProperties[k]> extends readonly any[] ? k : never]: ItemProperties[k] };
+	/** All {@link Asset} properties with array-based values */
+	type Asset = { [k in keyof globalThis.Asset as NonNullable<globalThis.Asset[k]> extends readonly any[] ? k : never]: globalThis.Asset[k] };
+	/** All {@link Group} properties with array-based values */
+	type Group = { [k in keyof AssetGroup as NonNullable<AssetGroup[k]> extends readonly any[] ? k : never]: AssetGroup[k] };
+}
+type PropertiesArray = PropertiesArray.Item & PropertiesArray.Asset & PropertiesArray.Group;
+
+/**
+ * All item/asset/group properties with record-based values.
+ * @note This includes a number of somewhat unexpected values as arrays are treated as a record subtype.
+ */
+declare namespace PropertiesRecord {
+	/** All {@link ItemProperties} properties with record-based values. */
+	type Item = { [k in keyof ItemProperties as NonNullable<ItemProperties[k]> extends Record<string, any> ? k : never]: ItemProperties[k] };
+	/** All {@link Asset} properties with record-based values. */
+	type Asset = { [k in keyof globalThis.Asset as NonNullable<globalThis.Asset[k]> extends Record<string, any> ? k : never]: globalThis.Asset[k] };
+	/** All {@link Group} properties with record-based values. */
+	type Group = { [k in keyof AssetGroup as NonNullable<AssetGroup[k]> extends Record<string, any> ? k : never]: AssetGroup[k] };
+}
+type PropertiesRecord = PropertiesRecord.Item & PropertiesRecord.Asset & PropertiesRecord.Group;
+
+//#endregion
 
 /** An object containing modular item configuration for an asset. Contains all of the necessary information for the
  * item's load, draw & click handlers.
  */
 interface ModularItemData extends ExtendedItemData<ModularItemOption> {
+	archetype: "modular";
 	/**
 	 * The item's chatroom message setting. Determines the level of
 	 * granularity for chatroom messages when the item's module values change.
@@ -2559,7 +2826,7 @@ interface ModularItemData extends ExtendedItemData<ModularItemOption> {
 	/** A record containing various dialog keys used by the extended item screen */
 	dialogPrefix: {
 		/** The dialogue prefix for the player prompt that is displayed on each module's menu screen */
-		header: string;
+		header: string | ExtendedItemHeaderCallback<ModularItemData>;
 		/** The dialogue prefix for the name of each module */
 		module: string;
 		/** The dialogue prefix for the name of each option */
@@ -2574,7 +2841,7 @@ interface ModularItemData extends ExtendedItemData<ModularItemOption> {
 	/** A lookup for the current page in the extended item menu for each of the item's modules */
 	pages: Record<string, number>;
 	/** A lookup for the draw data for each of the item's modules */
-	drawData: Record<string, ModularItemDrawData>;
+	drawData: ExtendedItemDrawData<ElementMetaData.Modular>;
 	/** A lookup for the draw functions for each of the item's modules */
 	drawFunctions: Record<string, () => void>;
 	/** A lookup for the click functions for each of the item's modules */
@@ -2585,6 +2852,7 @@ interface ModularItemData extends ExtendedItemData<ModularItemOption> {
 	 * Note that scripthook functions must be loaded before `Female3DCGExtended.js` in `index.html`.
 	 */
 	scriptHooks: ExtendedItemScriptHookStruct<ModularItemData, ModularItemOption>;
+	parentOption: null;
 }
 
 /** A 3-tuple containing data for drawing a button in a modular item screen. A button definition takes the
@@ -2603,22 +2871,18 @@ type ModularItemButtonDefinition = [ModularItemOption | ModularItemModule, Modul
 //#region Typed Items
 
 /**
- * Callback for custom functions used for setting the `DialogFocusItem.Type` attribute.
- * Relevant for typed items that lack an archetype.
- */
-type TypedItemSetTypeCallback = (NewType: string) => void;
-
-/**
  * An object containing typed item configuration for an asset. Contains all of the necessary information for the item's
  * load, draw & click handlers.
  */
 interface TypedItemData extends ExtendedItemData<TypedItemOption> {
+	archetype: "typed";
+	drawData: ExtendedItemDrawData<ElementMetaData.Typed>;
 	/** The list of extended item options available for the item */
 	options: TypedItemOption[];
 	/** A record containing various dialog keys used by the extended item screen */
 	dialogPrefix: {
 		/** The dialog key for the item's load text (usually a prompt to select the type) */
-		header: string;
+		header: string | ExtendedItemHeaderCallback<TypedItemData>;
 		/** The prefix used for dialog keys representing the display names of the item's types */
 		option: string;
 		/** The prefix used for dialog keys representing the item's chatroom messages when its type is changed */
@@ -2637,6 +2901,7 @@ interface TypedItemData extends ExtendedItemData<TypedItemOption> {
 	 * Note that scripthook functions must be loaded before `Female3DCGExtended.js` in `index.html`.
 	 */
 	scriptHooks: ExtendedItemScriptHookStruct<TypedItemData, TypedItemOption>;
+	parentOption: null;
 }
 
 //#region Validation
@@ -2664,6 +2929,10 @@ interface AppearanceUpdateParameters {
 	 * lover-only items)
 	 */
 	fromLover: boolean;
+	/**
+	 * Whether or not the source player has permissions to use family-only items (in same BDSM family)
+	 */
+	fromFamily: boolean;
 	/** The script permission levels that the source player has with respect to the receiver */
 	permissions: ScriptPermissionLevel[];
 	/** The member number of the source player */
@@ -2709,16 +2978,18 @@ interface AppearanceValidationWrapper {
 //#region Vibrating items
 
 interface VibratingItemData extends ExtendedItemData<VibratingItemOption> {
+	archetype: "vibrating";
+	drawData: ExtendedItemDrawData<ElementMetaData.Vibrating>;
 	/** The list of extended item options available for the item */
 	options: VibratingItemOption[];
 	/** The list with all groups of extended item options available for the item */
 	modeSet: VibratorModeSet[];
-	/** The common prefix used for all dynamic asset hook functions for the asset */
-	dynamicAssetsFunctionPrefix: string;
 	/** A record containing various dialog keys used by the extended item screen */
 	dialogPrefix: {
 		/** The dialog key for the item's load text (usually a prompt to select the type) */
-		header: string;
+		header: string | ExtendedItemHeaderCallback<VibratingItemData>;
+		/** The dialogue prefix for the name of each option */
+		option: string;
 		/** The prefix used for dialog keys representing the item's chatroom messages when its type is changed */
 		chat: string | ExtendedItemChatCallback<VibratingItemOption>;
 	};
@@ -2729,7 +3000,6 @@ interface VibratingItemData extends ExtendedItemData<VibratingItemOption> {
 	 */
 	scriptHooks: ExtendedItemScriptHookStruct<VibratingItemData, VibratingItemOption>;
 	chatSetting: "default";
-	drawImages: false;
 }
 
 /**
@@ -2746,38 +3016,119 @@ interface StateAndIntensity {
 
 //#region Variable Height items
 
+/** The function that handles applying the height setting to the character */
+type VariableHeightGetHeightCallback = (
+	property: ItemProperties,
+) => number | null;
+
+/** The function that handles finding the current variable height setting */
+type VariableHeightSetHeightCallback = (
+	property: ItemProperties,
+	height: number,
+	maxHeight: number,
+	minHeight: number,
+) => void;
+
 /**
  * An object containing typed item configuration for an asset. Contains all of the necessary information for the item's
  * load, draw & click handlers.
  */
 interface VariableHeightData extends ExtendedItemData<VariableHeightOption> {
+	archetype: "variableheight";
 	/** The highest Y co-ordinate that can be set  */
 	maxHeight: number;
 	/** The lowest Y co-ordinate that can be set  */
 	minHeight: number;
-	/** Settings for the range input element the user can use to change the height */
-	slider: VariableHeightSliderConfig;
 	/** A record containing various dialog keys used by the extended item screen */
 	dialogPrefix: {
 		/** The dialog key for the item's load text (usually a prompt to select the type) */
-		header: string,
+		header: string | ExtendedItemHeaderCallback<VariableHeightData>,
 		/** The prefix used for dialog keys representing the item's chatroom messages when its type is changed */
 		chat: string | ExtendedItemChatCallback<VariableHeightOption>;
-		/** The prefix used for dialog keys representing an NPC's reactions to item type changes */
-		npc: string | ExtendedItemNPCCallback<VariableHeightOption>;
+		/** The dialogue prefix for the name of each option */
+		option: string;
 	};
 	scriptHooks: ExtendedItemScriptHookStruct<VariableHeightData, VariableHeightOption>;
 	/** The function that handles finding the current variable height setting */
-	getHeight: (property: ItemProperties) => number | null;
+	getHeight: VariableHeightGetHeightCallback;
 	/** The function that handles applying the height setting to the character */
-	setHeight: (property: ItemProperties, height: number, maxHeight: number, minHeight: number) => void;
-	/** The list of extended item options the current option was selected from, if applicable */
-	parentOptions: TypedItemOption[];
-	drawImages: false;
+	setHeight: VariableHeightSetHeightCallback;
 	chatSetting: "default";
+	drawData: ExtendedItemDrawData<ElementMetaData.VariableHeight>;
 }
 
 //#endregion
+
+// #region TextItem
+
+interface TextItemData extends ExtendedItemData<TextItemOption> {
+	archetype: "text";
+	/** A record with the maximum length for each text-based properties with an input field. */
+	maxLength: TextItemRecord<number>;
+	/** A record containing various dialog keys used by the extended item screen */
+	dialogPrefix: {
+		/** The dialog key for the item's load text (usually a prompt to select the type) */
+		header: string | ExtendedItemHeaderCallback<TextItemData>,
+		/** The prefix used for dialog keys representing the item's chatroom messages when its type is changed */
+		chat: string | ExtendedItemChatCallback<TextItemOption>;
+	};
+	scriptHooks: ExtendedItemScriptHookStruct<TextItemData, TextItemOption>;
+	chatSetting: "default";
+	baselineProperty: PropertiesNoArray.Item;
+	eventListeners: TextItemRecord<TextItemEventListener>;
+	drawData: ExtendedItemDrawData<ElementMetaData.Text>;
+	pushOnPublish: boolean;
+	textNames: TextItemNames[];
+	/**
+	 * The font used for dynamically drawing text.
+	 * Requires {@link AssetDefinition.DynamicAfterDraw} to be set.
+	 */
+	font: null | string;
+}
+
+// NOTE: Use the intersection operator to enforce that the it remains a `keyof ItemProperties` subtype
+/** Property keys of {@link ItemProperties} with text input fields */
+type TextItemNames = keyof ItemProperties & (
+	"Text" | "Text2" | "Text3"
+);
+
+type TextItemRecord<T> = Partial<Record<TextItemNames, T>>;
+
+/**
+ * A callback signature for handling (throttled) text changes.
+ * @param C - The character being modified
+ * @param item - The item being modified
+ * @param name - The property wherein the updated text should be stored
+ * @param text - The new text to be assigned to the item
+ */
+type TextItemEventListener = (
+	C: Character,
+	item: Item,
+	name: TextItemNames,
+	text: string,
+) => void;
+
+// #endregion
+
+// #region noarch
+
+interface NoArchItemData extends ExtendedItemData<NoArchItemOption> {
+	archetype: "noarch";
+	scriptHooks: ExtendedItemScriptHookStruct<NoArchItemData, NoArchItemOption>;
+	chatSetting: "default";
+	baselineProperty: null | ItemProperties;
+	drawData: ExtendedItemDrawData<ElementMetaData.NoArch>;
+	dialogPrefix: {
+		/** The dialog key for the item's load text (usually a prompt to select the type) */
+		header: string | ExtendedItemHeaderCallback<NoArchItemData>;
+		/** The prefix used for dialog keys representing the display names of the item's types */
+		option?: string;
+		/** The prefix used for dialog keys representing the item's chatroom messages when its type is changed */
+		chat?: string | ExtendedItemChatCallback<NoArchItemOption>;
+	}
+}
+
+// #endregion
 
 type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
@@ -2798,7 +3149,7 @@ type StruggleKnownMinigames = "Strength" | "Flexibility" | "Dexterity" | "Loosen
 interface StruggleMinigame {
 	Setup: (C: Character, PrevItem: Item, NextItem: Item) => void;
 	Draw: (C: Character) => void;
-	HandleEvent?: (EventType: "KeyDown"|"Click") => void;
+	HandleEvent?: (EventType: "KeyDown"|"Click", event: Event) => boolean;
 	DisablingCraftedProperty?: CraftingPropertyType;
 }
 
@@ -2860,6 +3211,14 @@ interface GamePokerParameters {
 	Challenge?: string;
 }
 
+interface GameClubCardParameters {
+	Deck: string[];
+	DeckName?: string[];
+	Reward?: string;
+	Status?: OnlineGameStatus;
+	PlayerSlot?: number;
+}
+
 //#endregion
 
 // #region Online Games
@@ -2886,8 +3245,12 @@ interface GameLARPParameters {
 	}[];
 }
 
+type GameLARPOptionName = "Pass" | "Seduce" | "Struggle" | "Hide" | "Cover" |
+	"Strip" | "Tighten" | "RestrainArms" | "RestrainLegs" | "RestrainMouth" |
+	"Silence" | "Immobilize" | "Detain" | "Dress" | "Costume" | "";
+
 interface GameLARPOption {
-	Name: string;
+	Name: GameLARPOptionName;
 	Odds: number;
 }
 
@@ -2923,15 +3286,41 @@ interface AudioEffect {
  */
 interface AudioChatAction {
 	/** Is that action applicable for that chat message? */
-	IsAction: (data: IChatRoomMessage) => boolean;
+	IsAction: (data: ServerChatRoomMessage) => boolean;
 
 	/** Extracts the actual sound effect from the chat message */
-	GetSoundEffect: (data: IChatRoomMessage, metadata: any) => (AudioSoundEffect | string | null);
+	GetSoundEffect: (data: ServerChatRoomMessage, metadata: IChatRoomMessageMetadata) => (AudioSoundEffect | string | null);
 }
 
 // #endregion
 
 // #region Character drawing
+
+/** Options available to most draw calls */
+type DrawOptions = {
+	/** Transparency between 0-1 */
+	Alpha?: number;
+	/** Area in original image to draw in format `[left, top, width, height]` */
+	SourcePos?: RectTuple;
+	/** Width of the drawn image, defaults to width of original image */
+	Width?: number;
+	/** Height of the drawn image, defaults to height of original image */
+	Height?: number;
+	/** If image should be flipped vertically */
+	Invert?: boolean;
+	/** If image should be flipped horizontally */
+	Mirror?: boolean;
+	/** Zoom factor */
+	Zoom?: number;
+	/* Color of the image to draw */
+	HexColor?: string;
+	/* Whether or not it is drawn in full alpha mode */
+	FullAlpha?: boolean;
+	/** A list of alpha masks to apply to the call */
+	readonly AlphaMasks?: readonly RectTuple[];
+	/** Blending mode for drawing the image */
+	BlendingMode?: GlobalCompositeOperation;
+}
 
 /**
  * A callback function used for clearing a rectangular area of a canvas
@@ -2969,10 +3358,7 @@ type DrawImageCallback = (
 	src: string,
 	x: number,
 	y: number,
-	alphasMasks: RectTuple[],
-	opacity?: number,
-	rotate?: boolean,
-	blendingMode?: GlobalCompositeOperation,
+	options?: DrawOptions
 ) => void;
 
 /**
@@ -2992,12 +3378,7 @@ type DrawImageColorizeCallback = (
 	src: string,
 	x: number,
 	y: number,
-	color: string,
-	fullAlpha: boolean,
-	alphaMasks?: RectTuple[],
-	opacity?: number,
-	rotate?: boolean,
-	blendingMode?: GlobalCompositeOperation,
+	options?: DrawOptions
 ) => void;
 
 interface CommonDrawCallbacks {
@@ -3136,7 +3517,13 @@ interface PandoraBaseRoom {
 
 //#region Crafting items
 
-type CraftingMode = "Slot" | "Item" | "Property" | "Lock" | "Name" | "Color";
+type CraftingMode = (
+	"Slot" | "Item" | "Property" | "Lock" | "Name" | "Color" | "Extended"
+	| "OverridePriority"
+);
+
+type CraftingReorderType = "None" | "Select" | "Place";
+
 
 /**
  * A struct with an items crafting-related information.
@@ -3163,11 +3550,26 @@ interface CraftingItem {
 	Private: boolean;
 	/**
 	 * The type of the crafted item; only relevant for extended items and should be an empty string otherwise.
+	 * @deprecated superseded by {@link CraftingItem.TypeRecord}. Old type strings can be convert to records via {@link ExtendedItemTypeToRecord}.
 	 * @see {@link ItemProperties.Type}
 	 */
-	Type: string | null;
-	/** An integer representing the item layering priority; see {@link ItemProperties.OverridePriority} */
-	OverridePriority: number | null;
+	Type?: string | null;
+	/**
+	 * An integer (or `null`) representing the item layering priority; see {@link ItemProperties.OverridePriority}.
+	 * @deprecated - superseded by {@link CraftingItem.ItemProperty}
+	 */
+	OverridePriority?: null | number;
+	/**
+	 * A record with a select few (optional) extra item properties:
+	 * * {@link ItemProperties.OverridePriority} in either its record or number form.
+	 * * Properties as specified in {@link ExtendedItemData.baselineProperty}
+	 */
+	ItemProperty: ItemProperties | null;
+	/**
+	 * A record for extended items mapping screen names to option indices.
+	 * @see {@link ItemProperties.TypeRecord}
+	 */
+	TypeRecord?: null | TypeRecord;
 }
 
 /**
@@ -3181,8 +3583,14 @@ interface CraftingItemSelected {
 	Description: string;
 	/** The comma-separated color(s) of the item. */
 	Color: string;
-	/** The name of the crafted item. */
-	Asset: Asset | null;
+	/** The names of the crafted item's supported assets. */
+	Assets: readonly Asset[];
+	/**
+	 * The first member of the {@link CraftingItemSelected.Assets} array.
+	 *
+	 * The asset is guaranteed to satisfy `Asset.Group.Name === Asset.DynamicGroupName` _if_ any of the list members satisfy this condition.
+	 */
+	get Asset(): Asset | undefined;
 	/** The crafted item propery. */
 	Property: CraftingPropertyType;
 	/** The lock as equiped on the item or, if absent, `null`. */
@@ -3190,13 +3598,19 @@ interface CraftingItemSelected {
 	/** Whether the crafted item should be private or not. */
 	Private: boolean;
 	/**
-	 * The type of the crafted item; only relevant for extended items and should be an empty string otherwise.
-	 * Note that `null` values, which are legal for Typed extended items, *must* be converted to empty strings.
-	 * @see {@link ItemProperties.Type}
+	 * A record for extended items mapping screen names to option indices.
+	 * @see {@link ItemProperties.TypeRecord}
 	 */
-	Type: string;
-	/** An integer representing the item layering priority; see {@link ItemProperties.OverridePriority} */
-	OverridePriority: number | null;
+	TypeRecord: null | TypeRecord;
+	/**
+	 * A record with a select few (optional) extra item properties:
+	 * * {@link ItemProperties.OverridePriority} in either its record or number form.
+	 * * Properties as specified in {@link ExtendedItemData.baselineProperty}
+	 */
+	ItemProperty: ItemProperties;
+	/** Get or set the `OverridePriority` property of {@link CraftingItemSelected.ItemProperty} */
+	get OverridePriority(): null | AssetLayerOverridePriority;
+	set OverridePriority(value: null | AssetLayerOverridePriority);
  }
 
 /**
@@ -3206,8 +3620,8 @@ interface CraftingItemSelected {
  * @property {CraftingStatusType} - The {@link CraftingStatusType} code for when the validation fails
  */
 interface CratingValidationStruct {
-	Validate: (Craft: CraftingItem, Asset: Asset | null) => boolean;
-	GetDefault: (Craft: CraftingItem, Asset: Asset | null) => any;
+	Validate: (craft: CraftingItem, asset: Asset | null, checkPlayerInventory?: boolean) => boolean;
+	GetDefault: (craft: CraftingItem, asset: Asset | null, checkPlayerInventory?: boolean) => any;
 	StatusCode: CraftingStatusType;
 }
 
@@ -3240,6 +3654,11 @@ type itemColorExitListener = (
 interface ItemColorStateType {
 	colorGroups: ColorGroup[];
 	colors: string[];
+	/**
+	 * The underlying assets default colors.
+	 * @see {@link Asset.DefaultColor}
+	 */
+	defaultColors: readonly string[];
 	simpleMode: boolean;
 	paginationButtonX: number;
 	cancelButtonX: number;
@@ -3275,44 +3694,23 @@ type ColorPickerCallbackType = (Color: string) => void;
 
 //#end region
 
-// #region property
-
-// NOTE: Use the intersection operator to enforce that the it remains a `keyof ItemProperties` subtype
-/** Property keys of {@link ItemProperties} with text input fields */
-type PropertyTextNames = keyof ItemProperties & (
-	"Text" | "Text2" | "Text3"
-);
-
-/**
- * A callback signature for handling (throttled) text changes.
- * @param {Character} C - The character being modified
- * @param {Item} item - The item being modified
- * @param {PropertyTextNames} PropName - The property wherein the updated text should be stored
- * @param {string} Text - The new text to be assigned to the item
- * @returns {void} Nothing
- */
-type PropertyTextEventListener = (
-	C: Character,
-	Item: Item,
-	PropName: PropertyTextNames,
-	Text: string,
-) => void;
-
-/** A record type with custom event listeners for one or more text input fields. */
-type PropertyTextEventListenerRecord = Partial<Record<PropertyTextNames, PropertyTextEventListener>>;
-
-// #end region
-
 // #region Log
 
 interface LogRecord {
-	Name: string;
+	Name: LogNameType[LogGroupType];
 	Group: LogGroupType;
 	Value: number;
 }
 
 /** The logging groups as supported by the {@link LogRecord.Group} */
 type LogGroupType = keyof LogNameType;
+
+type LogNameAdvanced = (
+	`BlockScreen${string}`
+	| `BlockAppearance${string}`
+	| `BlockItemGroup${string}`
+	| `ForbiddenWords${string}`
+);
 
 /** An interface mapping {@link LogRecord.Group} types to valid {@link LogRecord.Name} types */
 interface LogNameType {
@@ -3335,7 +3733,10 @@ interface LogNameType {
 	"NPC-Sarah": "SarahLover" | "SarahCollared" | "SarahCollaredWithCurfew",
 	"NPC-SarahIntro": "SarahWillBePunished" | "SarahCameWithPlayer",
 	"NPC-Sidney": "SidneyLover" | "SidneyMistress" | "SidneyCollared" | "SidneyCollaredWithCurfew",
-	// NOTE: A number of owner rules can have arbitrary suffices, and can thus not be expressed as string literals
+	"NPC-Julia": "Dominant" | "Submissive",
+	"NPC-Yuki": "Dominant" | "Submissive",
+	"NPC-Mildred": "Dominant" | "Submissive",
+	// NOTE: A number of owner rules can have arbitrary suffices, and can thus not be fully expressed as string literals
 	OwnerRule: (
 		"BlockChange"
 		| "BlockTalk"
@@ -3345,6 +3746,7 @@ interface LogNameType {
 		| "BlockAccessSelf"
 		| "BlockAccessOther"
 		| "BlockKey"
+		| "BlockFamilyKey"
 		| "BlockOwnerLockSelf"
 		| "BlockRemote"
 		| "BlockRemoteSelf"
@@ -3355,7 +3757,7 @@ interface LogNameType {
 		| "BlockItemGroup"
 		| "ForbiddenWords"
 		| "BlockTalkForbiddenWords"
-		| string
+		| LogNameAdvanced
 	),
 	Pony: "JoinedStable",
 	PonyExam: "JoinedStable",
@@ -3397,7 +3799,6 @@ interface DialogInventoryItem extends Item {
 	Worn: boolean;
 	Icons: InventoryIcon[];
 	SortOrder: string;
-	Hidden: boolean;
 	Vibrating: boolean;
 }
 
@@ -3446,7 +3847,7 @@ interface ActivityEnjoyment {
 
 interface ArousalZone {
 	/** The relevant zone */
-	Name: AssetGroupName,
+	Name: AssetGroupItemName,
 	/** The arousal factor associated with the zone */
 	Factor: ArousalFactor,
 	/** Whether one can orgasm from stimulating the zone */
@@ -3474,15 +3875,338 @@ interface ArousalSettingsType {
 	VFXFilter: SettingsVFXFilterName;
 	Progress: number;
 	ProgressTimer: number;
-	VibratorLevel: number;
+	VibratorLevel: 0 | 1 | 2 | 3 | 4;
 	ChangeTime: number;
-	Activity: ActivityEnjoyment[];
-	Zone: ArousalZone[];
-	Fetish: ArousalFetish[];
+	Activity: string;
+	Zone: string;
+	Fetish: string;
 	OrgasmTimer?: number;
-	OrgasmStage?: number;
+	OrgasmStage?: 0 | 1 | 2;
 	OrgasmCount?: number;
 	DisableAdvancedVibes: boolean;
 }
 
+/** Preference Menu info for extensions settings*/
+interface PreferenceExtensionsSettingItem {
+	/**
+	 * The identifier of the extension.
+	 * This is used to identify the extension and should be unique.
+	 */
+	Identifier: string;
+
+	/**
+	 * The button text for the button of extension.
+	 * If it's a Function, it will be called once when entering
+	 * the extension setting menu. Use the return value as button text.
+	 */
+	ButtonText: string | (()=>string);
+
+	/**
+	 * The image path of the extension, and is passed
+	 * into {@link DrawButton} for creating the HTMLImageElement
+	 * that is needed for drawing the Button image.
+	 * If it's a Function, it will be called once when entering
+	 * the extension setting menu. Use the return value as image
+	 * path.
+	 * If it's undefined, there will be no image for the button
+	 */
+	Image?: string | (()=>string);
+
+	/** Handles loading on entering the extension setting */
+	load?: () => void;
+
+	/** Handles the clicks of the extension setting */
+	click: () => void;
+
+	/** Handles the run and draws of the extension setting */
+	run: () => void;
+
+	/**
+	 * Handles the unloading of the extension setting, typically
+	 * from {@link CommonSetScreen}, when the player is disconnected.
+	 * If it's undefined, there will be no unloading for the extension
+	 * setting.
+	 * Remind to check those HTML elements that are created in the
+	 * extension setting, and hide/remove them from the DOM.
+	 * Note that HTML elements with `HideOnPopup` class will be hidden
+	 * automatically when a popup is shown.
+	 */
+	unload?: () => void;
+
+	/**
+	 * Handles the exits of the extension setting, typically when
+	 * user press `Esc` key.
+	 * If a extension wants to exit the menu by itself
+	 * (clicking `exit` button, etc.), the extension should call
+	 * `PreferenceSubscreenExtensionsClear`.
+	 * @returns If it returns `true`, the extension setting will be unload.
+	 * And `unload` will be called once if it's defined and then main extension
+	 * setting page is shown.
+	 */
+	exit: () => boolean | void;
+}
+
+/** Preference Menu info for extensions settings*/
+type PreferenceExtensionsMenuButtonInfo = {
+	Button: string;
+	Image?: string;
+	click: () => void;
+}
+
 // #end region
+
+// #region fortune wheel
+
+/** A union of valid wheel of fortune button colors */
+type WheelFortuneColor = "Blue" | "Gold" | "Gray" | "Green" | "Orange" | "Purple" | "Red" | "Yellow";
+
+/** Base type for fortune wheel options */
+interface WheelFortuneOptionType {
+    /** A single-character UTF16 string with the option's ID */
+    ID: string;
+    /** The color of the option button */
+    Color: WheelFortuneColor;
+    /** An optional script that will be executed whenever the option is picked */
+    Script?: () => void;
+}
+
+// #end region
+
+interface ClubCard {
+	ID: number;
+	Name: string;
+	Type?: string;
+	Title?: string;
+	Text?: string;
+	Prerequisite?: string;
+	Reward?: string;
+	RewardMemberNumber?: number;
+	MoneyPerTurn?: number;
+	FamePerTurn?: number;
+	RequiredLevel?: number;
+	Time?: number;
+	ExtraTime?: number;
+	ExtraDraw?: number;
+	ExtraPlay?: number;
+	Group?: string[];
+	Location?: string;
+	GlowTimer?: number;
+	GlowColor?: string;
+	OnPlay?: (C: ClubCardPlayer) => void;
+	BeforeTurnEnd?: (C: ClubCardPlayer) => void;
+	AfterTurnEnd?: (C: ClubCardPlayer) => void;
+	BeforeOpponentTurnEnd?: (C: ClubCardPlayer) => void;
+	AfterOpponentTurnEnd?: (C: ClubCardPlayer) => void;
+	CanPlay?: (C: ClubCardPlayer) => boolean;
+}
+
+interface ClubCardPlayer {
+	Character: Character;
+	Control: string;
+	Index: number;
+	Sleeve: string;
+	Deck: ClubCard[];
+	FullDeck: ClubCard[];
+	Hand: ClubCard[];
+	Board: ClubCard[];
+	Event: ClubCard[];
+	Level: number;
+	Money: number;
+	Fame: number;
+	LastFamePerTurn?: number;
+	LastMoneyPerTurn?: number;
+}
+
+// #region drawing
+
+/** Drawing options for an item's preview box */
+interface PreviewDrawOptions {
+	/** The character using the item (used to calculate dynamic item descriptions/previews) */
+	C?: Character;
+	/** The preview box description. */
+	Description?: string;
+	/** The background color to draw the preview box in - defaults to white */
+	Background?: string;
+	/** The foreground (text) color to draw the description in - defaults to black */
+	Foreground?: string;
+	/** Whether or not to add vibration effects to the item - defaults to false */
+	Vibrating?: boolean;
+	/** Whether or not to draw a border around the preview box */
+	Border?: boolean;
+	/** Whether or not the button should enable hover behavior (background color change) */
+	Hover?: boolean;
+	/** The background color that should be used on mouse hover, if any */
+	HoverBackground?: string;
+	/** Whether or not the element is disabled (prevents hover functionality) */
+	Disabled?: boolean;
+	/** A list of images to draw in the top-left of the preview box */
+	Icons?: readonly InventoryIcon[];
+	/** The crafted properties of the item */
+	Craft?: CraftingItem;
+	/** The width of the preview rectangle */
+	Width?: number;
+	/** The height of the preview rectangle */
+	Height?: number;
+}
+
+// #end region
+
+
+// #region Chat Room Maps
+
+interface ChatRoomView {
+	Activate?: () => void;
+	Deactivate?: () => void;
+	Run: () => void;
+	Draw: () => void;
+	DrawUi: () => void;
+	DisplayMessage: (data: ServerChatRoomMessage, msg: string, SenderCharacter: Character, metadata: IChatRoomMessageMetadata) => string|null;
+	Click?: (event: MouseEvent | TouchEvent) => void;
+	MouseDown?: (event: MouseEvent | TouchEvent) => void;
+	MouseUp?: (event: MouseEvent | TouchEvent) => void;
+	MouseMove?: (event: MouseEvent | TouchEvent) => void;
+	MouseWheel?: (event: MouseEvent | TouchEvent) => void;
+	KeyDown?: (event: KeyboardEvent) => boolean;
+	SyncRoomProperties?: (data: ServerChatRoomSyncMessage) => void;
+	CanStartWhisper?: (C: Character) => boolean;
+	CanLeave?: () => boolean;
+	Screenshot: () => void;
+}
+
+type ChatRoomMapType = "Always" | "Hybrid" | "Never";
+
+type ChatRoomMapPos = {
+	X: number;
+	Y: number;
+}
+
+type ChatRoomMapData = {
+	Pos: ChatRoomMapPos
+	PrivateState: Record<string, Object>
+}
+
+type ChatRoomMapDirection = "" | "R" | "L" | "D" | "U";
+
+type ChatRoomMapObjectType = (
+	"FloorDecoration"
+	| "FloorDecorationThemed"
+	| "FloorDecorationParty"
+	| "FloorDecorationCamping"
+	| "FloorItem"
+	| "FloorObstacle"
+	| "WallDecoration"
+	| "WallPath"
+);
+
+type ChatRoomMapTileType = "Floor" | "FloorExterior" | "Wall" | "Water";
+
+interface ChatRoomMapDoodad {
+	ID: number;
+	Style: string;
+	OccupiedStyle?: "WoodOpen" | "MetalOpen";
+	CanEnter?: (direction: ChatRoomMapDirection) => boolean;
+	OnEnter?: () => void;
+}
+
+interface ChatRoomMapTile extends ChatRoomMapDoodad {
+	Type: ChatRoomMapTileType;
+	Transparency?: number;
+	TransparencyCutoutHeight?: number;
+	BlockVision?: boolean;
+	BlockHearing?: boolean;
+}
+
+interface ChatRoomMapObject extends ChatRoomMapDoodad {
+	Type: ChatRoomMapObjectType;
+	Top?: number;
+	Left?: number;
+	Width?: number;
+	Height?: number;
+	Exit?: boolean;
+	Unique?: boolean;
+	AssetGroup?: AssetGroupItemName;
+	AssetName?: string;
+	BlockVision?: boolean;
+	BlockHearing?: boolean;
+	IsVisible?: () => boolean;
+}
+
+interface ChatRoomMapMovement {
+	X: number;
+	Y: number;
+	Direction: "West" | "East" | "North" | "South";
+	TimeStart: number;
+	TimeEnd: number;
+}
+
+// #endregion
+
+// #region shop
+
+/** The current shop mode */
+type ShopMode = "Buy" | "Sell" | "Preview" | "Color" | "Extended" | "Layering";
+
+/** The current dressing state of the preview character */
+type ShopClothesMode = "Clothes" | "Underwear" | "Cosplay" | "Nude";
+
+/** The currently active dropdown menu */
+type ShopDropdownState = "None" | "Group" | "Pose";
+
+interface ShopScreenFunctions extends Omit<Partial<ScreenFunctions>, "Draw"> {
+	Draw(...coords: RectTuple): void,
+	/** Coordinates associated with a particular to-be drawn/clicked element */
+	Coords: RectTuple,
+	/** A set of shop modes for which the screen functions must be active */
+	Mode: Set<ShopMode>,
+}
+
+interface ShopItem {
+	/** The underlying asset */
+	readonly Asset: Asset,
+	/** The assets sorting priority within the asset list; lower values take priority */
+	readonly SortPriority: number,
+	/** Whether an item should never be able to be sold */
+	readonly NeverSell: boolean,
+	/** Whether the asset can be bought; `false` implies that it can be sold */
+	Buy: boolean,
+}
+
+// #endregion
+
+// #region layering
+
+interface LayeringExitOptions {
+	screen?: string;
+	callback?: (C: Character, item: Item) => void;
+}
+
+/** Various display options for the layering screen */
+interface LayeringDisplay extends Rect {
+	/** The gap between buttons */
+	buttonGap: number;
+}
+
+// #endregion
+
+// #region deprecation
+
+/** @deprecated superseded by {@link PoseAvailable} */
+declare const CharacterItemsHavePoseAvailable: never;
+/** @deprecated superseded by {@link PoseAvailable} */
+declare const InventoryPrerequisiteCanChangeToPose: never;
+/** @deprecated superseded by {@link PoseSetByItems} */
+declare const CharacterItemsHavePose: never;
+/** @deprecated superseded by {@link PoseSetByItems} */
+declare const CharacterDoItemsSetPose: never;
+/** @deprecated superseded by {@link PoseCategoryAvailable} */
+declare const CharacterItemsHavePoseType: never;
+/** @deprecated superseded by {@link PoseRefresh} */
+declare const CharacterLoadPose: never;
+/** @deprecated superseded by {@link PoseToMapping} */
+declare const AssetPoseToMapping: never;
+/** @deprecated superseded by {@link InventoryPrerequisiteConflicts.GagPrerequisite} */
+declare const InventoryPrerequisiteConflictingGags: never;
+/** @deprecated the chat log is now hidden via {@link ChatRoomHideElements}; use {@link ChatRoomShowElements} to unhide it */
+declare const RelogChatLog: never;
+/** @deprecated the chat log is now hidden via {@link ChatRoomHideElements}; use {@link ChatRoomShowElements} to unhide it */
+declare const RelogInputText: never;

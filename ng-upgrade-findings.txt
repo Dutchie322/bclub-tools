@@ -1,4 +1,0 @@
-- Filter input fields in table headers are too high (todo layout rework)
-- Missing member data after import?
-- Manifest v3 upgrade:
-  - Find a way to cancel chat room search auto refresh after reload of extension (low prio)

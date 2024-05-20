@@ -3,7 +3,7 @@ Nickname,Nickname:
 Title,Title:
 TitleNone,None
 TitleMistress,Mistress
-TitleDominatrix,Dominatrix
+TitleMaster,Master
 TitleClubSlave,Club Slave
 TitleHeadMaid,Head Maid
 TitleMaid,Maid
@@ -16,6 +16,7 @@ TitleEscapedPatient,Escaped Patient
 TitleNurse,Nurse
 TitleDoctor,Doctor
 TitleLadyLuck,Lady Luck
+TitleLordFortune,Lord Fortune
 TitlePatron,Patron
 TitleCollegeStudent,College Student
 TitleNawashi,Nawashi
@@ -42,16 +43,21 @@ TitleMagicSchoolSage,Sage
 TitleMagicSchoolOracle,Oracle
 TitleMagicSchoolWitch,Witch
 TitleMagicSchoolWarlock,Warlock
-TitleMaiestas,Wizard
-TitleVincula,Magician
-TitleAmplector,Sage
-TitleCorporis,Witch
 TitleLittleOne,Little One
 TitleBaby,Baby
 TitleDL,Diaper Lover
 TitleBondageBaby,Bondage Baby
 TitleDuchess,Duchess
+TitleDuke,Duke
 TitleSwitch,Switch
+TitlePrincess,Princess
+TitlePrince,Prince
+TitleMissy,Missy
+TitleSissy,Sissy
+TitleTomboy,Tomboy
+TitleFemboy,Femboy
+TitlePet,Pet
+TitleBrat,Brat
 TitleKitten,Kitten
 TitlePuppy,Puppy
 TitleFoxy,Foxy
@@ -59,11 +65,27 @@ TitleBunny,Bunny
 TitleDoll,Doll
 TitleDemon,Demon
 TitleAngel,Angel
+TitleAlien,Alien
 TitleSuccubus,Succubus
+TitleIncubus,Incubus
 TitleGoodGirl,Good Girl
 TitleGoodSlaveGirl,Good Slave Girl
+TitleGoodBoy,Good Boy
+TitleGoodSlaveBoy,Good Slave Boy
 TitleGoodSlave,Good Slave
 TitleDrone,Drone
+TitleMistree,Mistree
+TitleGoodOne,Good One
+TitleLiege,Liege
+TitleConcubus,Concubus
+TitleMajesty,Majesty
+TitleCaptain,Captain
+TitleAdmiral,Admiral
+TitleDominatrix,Dominatrix
+TitleMaiestas,Wizard
+TitleVincula,Magician
+TitleAmplector,Sage
+TitleCorporis,Witch
 Pronouns,Pronouns:
 MemberNumber,Member Number:
 NoMemberNumber,-
@@ -79,7 +101,6 @@ Birthday,Bondage Club Birthday!
 FriendsFor,Friends for
 TrialFor,On trial for
 CollaredFor,Collared for
-LoverFor,Lover for
 DatingFor,Dating for
 EngagedFor,Engaged for
 MarriedFor,Married for
@@ -101,7 +122,8 @@ ReputationHouseMaiestasPositive,House Maiestas:
 ReputationHouseVinculaPositive,House Vincula:
 ReputationHouseAmplectorPositive,House Amplector:
 ReputationHouseCorporisPositive,House Corporis:
-DifficultyTitle,difficulty for NumberOfDays day(s)
+DifficultyTitle,difficulty
+DifficultyDaysTillCanChange, - Can change again in NumberOfDays day(s)
 DifficultyLevel0,Roleplay
 DifficultyLevel1,Regular
 DifficultyLevel2,Hardcore
@@ -110,13 +132,12 @@ Skill,- Skills -
 SkillNone,None
 SkillBondage,Bondage:
 SkillSelfBondage,Self-bondage:
-SkillLockPicking,Lock-Picking:
+SkillLockPicking,Lockpicking:
 SkillEvasion,Evasion:
 SkillWillpower,Willpower:
 SkillInfiltration,Infiltration:
 SkillDressage,Dressage:
-SkillModifier,Skills modifier:
-SkillModifierDuration, Time left:
+SkillModifier,ABSVAL for DURATION
 Trait,- Traits -
 TraitUnknown,Spend more time with her to know her traits
 TraitDominant,Dominant:

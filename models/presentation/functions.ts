@@ -4,7 +4,7 @@
 
 import { parse as parseCsv } from 'papaparse';
 import { IChatLog, IMember, retrieveMember, IChatMessageCharacter, IChatMessageCharacters } from '../database';
-import { IAsset, IDialog } from '../internal';
+import { IAsset } from '../internal';
 
 interface ChatLogMetaData {
   SourceCharacter?: IChatMessageCharacter;
@@ -18,8 +18,8 @@ let loadingChatLogDictionaries: Promise<void[]>;
 let loadingMemberInfoDictionaries: Promise<void[]>;
 const ActivityNameCache: Record<string, string>[] = [];
 const AssetNameCache: IAsset[] = [];
-const DialogCache: IDialog[] = [];
 const InformationSheetTextCache: Record<string, string>[] = [];
+const InterfaceTextCache: Record<string, string>[] = [];
 const MemberCache: Record<number, Promise<IMember>> = {};
 
 export async function renderContent(chatLog: IChatLog): Promise<string> {
@@ -27,7 +27,7 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
   let content = chatLog.content;
   if (chatLog.type === 'Action' || chatLog.type === 'ServerMessage') {
     content = chatLog.type === 'ServerMessage' ? 'ServerMessage' + content : content;
-    content = findDialog(content);
+    content = findInterfaceText(content);
   }
 
   if (chatLog.type === 'Activity') {
@@ -75,7 +75,7 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
 
       substitutions.push([tag, String(entry.Text)]);
     } else if (hasTextLookup(entry)) {
-      substitutions.push([entry.Tag, findDialog(entry.TextToLookUp).toLocaleLowerCase()]);
+      substitutions.push([entry.Tag, findInterfaceText(entry.TextToLookUp).toLocaleLowerCase()]);
     }
   }
 
@@ -86,7 +86,7 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
 
   if (metadata.TargetCharacter) {
     const name = metadata.TargetCharacter.Name;
-    const destinationCharacterName = `${name}${findDialog('\'s')}`;
+    const destinationCharacterName = `${name}${findInterfaceText('\'s')}`;
 
     substitutions.push(
       ['DestinationCharacter', destinationCharacterName],
@@ -101,8 +101,8 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
     let description = metadata.FocusGroup.Description;
     if (metadata.TargetCharacter.HasPenis && ['ItemVulva', 'ItemVulvaPiercings'].includes(metadata.FocusGroup.Name)) {
       description = (metadata.FocusGroup.Name === 'ItemVulva'
-        ? findDialog('ItemPenis')
-        : findDialog('ItemGlans')
+        ? findInterfaceText('ItemPenis')
+        : findInterfaceText('ItemGlans')
       ).toLocaleLowerCase();
     }
     substitutions.push(['FocusAssetGroup', description]);
@@ -211,7 +211,7 @@ function memberName(member: IMember) {
 
 function memberPronoun(member: IChatMessageCharacter, dialogKey: string) {
   const pronounName = member.Pronouns || 'SheHer';
-  return findDialog(`Pronoun${dialogKey}${pronounName}`);
+  return findInterfaceText(`Pronoun${dialogKey}${pronounName}`);
 }
 
 export function findActivity(content: string): string {
@@ -237,9 +237,8 @@ export function findAssetName(item: string, group?: string): string {
   return filtered[0] ? filtered[0].Description : item;
 }
 
-export function findDialog(content: string): string {
-  const dialog = DialogCache.find(line => line.Stage === content);
-  return (dialog && dialog.Result.trim()) || content;
+export function findInterfaceText(content: string): string {
+  return InterfaceTextCache[content]?.trim() || content;
 }
 
 export async function findTitle(titleCode: string): Promise<string> {
@@ -256,11 +255,18 @@ function loadAndCacheDictionariesForChatLog() {
           ActivityNameCache[activity[0]] = activity[1];
         }
       }),
+      loadDictionary('AssetStrings', data => {
+        for (const assetString of data) {
+          InterfaceTextCache[assetString[0]] = assetString[1];
+        }
+      }),
       loadDictionary('Female3DCG', data => {
         AssetNameCache.push(...data.map(mapAsset));
       }),
-      loadDictionary('Dialog_Player', data => {
-        DialogCache.push(...data.map(mapDialog));
+      loadDictionary('Interface', data => {
+        for (const interfaceText of data) {
+          InterfaceTextCache[interfaceText[0]] = interfaceText[1];
+        }
       })
     ]);
   }
@@ -299,17 +305,4 @@ function mapAsset(asset: string[]): IAsset {
     ItemName: (asset[1] && asset[1].trim()) || undefined,
     Description: asset[2] && asset[2].trim(),
   };
-}
-
-function mapDialog(dialog: string[]) {
-  return {
-    Stage: dialog[0],
-    // NextStage: dialog[1],
-    // Option: dialog[2],
-    Result: dialog[3],
-    // Function: dialog[4],
-    // Prerequisite: dialog[5],
-    // Group: dialog[6],
-    // Trait: dialog[7],
-  } as IDialog;
 }
