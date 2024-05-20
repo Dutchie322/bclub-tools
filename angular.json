@@ -185,9 +185,6 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all"
-            },
-            "development": {
               "optimization": {
                 "scripts": true,
                 "styles": {
@@ -196,6 +193,10 @@
                 },
                 "fonts": true
               },
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
             }
@@ -305,9 +306,6 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all"
-            },
-            "development": {
               "optimization": {
                 "scripts": true,
                 "styles": {
@@ -316,6 +314,10 @@
                 },
                 "fonts": true
               },
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
             }
