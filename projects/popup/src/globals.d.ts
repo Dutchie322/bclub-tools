@@ -2,14 +2,14 @@ import { Socket } from 'socket.io-client';
 import { ChatRoomSpace, CurrentScreen, IChatRoom, IPlayer } from '../../../models/game';
 
 declare global {
-  var ChatRoomData: IChatRoom;
-  var ChatRoomSpace: ChatRoomSpace;
-  var ChatSearchResultOffset: number;
-  var CurrentScreen: CurrentScreen;
-  var CharacterAppearanceReturnRoom: CurrentScreen;
-  var InformationSheetPreviousScreen: CurrentScreen;
-  var Player: IPlayer;
-  var ServerSocket: Socket;
+  let ChatRoomData: IChatRoom;
+  let ChatRoomSpace: ChatRoomSpace;
+  let ChatSearchResultOffset: number;
+  let CurrentScreen: CurrentScreen;
+  let CharacterAppearanceReturnRoom: CurrentScreen;
+  let InformationSheetPreviousScreen: CurrentScreen;
+  let Player: IPlayer;
+  let ServerSocket: Socket;
 
-  var CommonDrawAppearanceBuild: (C: any, callbacks: object) => void;
+  let CommonDrawAppearanceBuild: (C: unknown, callbacks: object) => void;
 }
