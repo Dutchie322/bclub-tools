@@ -15,7 +15,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Subscription, Observable, combineLatest, ReplaySubject } from 'rxjs';
-import { tap, map, throttleTime, switchMap } from 'rxjs/operators';
+import { tap, map, switchMap, debounceTime } from 'rxjs/operators';
 import { storeGlobal, ISettings, retrieveGlobal, executeForAllGameTabs, IMember } from 'models';
 import { DatabaseService } from 'src/app/shared/database.service';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
@@ -121,7 +121,7 @@ export class OptionsComponent implements OnDestroy {
       switchMap(() =>
         combineLatest({ chatLogs: this.chatLogsService.getTotalSize(), members: this.memberService.getTotalSize()}).pipe(
           tap(values => console.log(values)),
-          throttleTime(500),
+          debounceTime(100),
           map(values => values.chatLogs + values.members),
           map(value => humanFileSize(value))
         )
@@ -173,27 +173,44 @@ export class OptionsComponent implements OnDestroy {
     return label.trim();
   }
 
-  public downloadDatabase() {
-    this.exportService.exportDatabase({
-      exportAppearances: this.dataForm.get('exportAppearances').value
-    }).subscribe({
-      next: update => {
-        if (update instanceof Blob) {
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(update);
-          link.download = 'bondage-club-tools-export-' + new Date().toISOString() + '.zip';
-          link.click();
-        } else {
-          this.exportProgress = update;
-        }
-      },
-      error: error => {
-        console.error(error);
-        alert(error);
-        this.exportProgress = undefined;
-      },
-      complete: () => this.exportProgress = undefined
-    });
+  public async downloadDatabase() {
+    try {
+      const handle = await (<any>window).showSaveFilePicker({
+        id: 'bctools-export',
+        startIn: 'downloads',
+        suggestedName: 'bondage-club-tools-export-' + new Date().toISOString() + '.zip',
+        types: [
+          {
+            description: 'ZIP File',
+            accept: { 'application/zip': ['.zip'] }
+          }
+        ]
+      });
+
+      this.exportService.exportDatabase({
+        exportAppearances: this.dataForm.get('exportAppearances').value,
+        handle
+      }).subscribe({
+        next: update => {
+          if (update instanceof Blob) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(update);
+            link.download = 'bondage-club-tools-export-' + new Date().toISOString() + '.zip';
+            link.click();
+          } else {
+            this.exportProgress = update;
+          }
+        },
+        error: error => {
+          console.error(error);
+          alert(error);
+          this.exportProgress = undefined;
+        },
+        complete: () => this.exportProgress = undefined
+      });
+    } catch (e) {
+      console.warn(e);
+    }
   }
 
   public uploadDatabase() {
