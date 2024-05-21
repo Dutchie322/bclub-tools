@@ -1,4 +1,4 @@
-import { Component, NgZone, TrackByFunction, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, NgZone, TrackByFunction, ViewChild, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,17 +17,16 @@ import {
   IOwnership,
   IReputation,
   IMember,
-  // retrieveGlobal,
-  // storeGlobal,
-  // IMigration,
+  retrieveGlobal,
+  storeGlobal,
+  IMigration,
 } from 'models';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { IPlayerCharacter } from 'src/app/shared/models';
-// import { NewVersionNotificationComponent } from '../new-version-notification/new-version-notification.component';
+import { NewVersionNotificationComponent } from '../new-version-notification/new-version-notification.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { requestOnlineFriends } from 'projects/content-script/src/update-friends';
-// import { switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-popup',
@@ -51,7 +50,7 @@ import { requestOnlineFriends } from 'projects/content-script/src/update-friends
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss']
 })
-export class PopupComponent /*implements AfterViewInit*/ {
+export class PopupComponent implements AfterViewInit {
   @ViewChild('onlineFriendsSort', { static: true }) set onlineFriendsSort(sort: MatSort) {
     this.onlineFriends.sort = sort;
     this.onlineFriends.sortingDataAccessor = (data, sortHeaderId) => {
@@ -78,7 +77,8 @@ export class PopupComponent /*implements AfterViewInit*/ {
   constructor(
     private chatLogsService: ChatLogsService,
     private snackBar: MatSnackBar,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private viewContainerRef: ViewContainerRef
   ) {
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       const tabId = tabs[0].id;
@@ -113,8 +113,7 @@ export class PopupComponent /*implements AfterViewInit*/ {
         },
         world: 'MAIN'
       }, results => {
-        console.log(`Injection results for ${requestOnlineFriends.name}:`);
-        console.log(results);
+        console.log(`Injection results for requestOnlineFriends():`, results);
       });
     });
 
@@ -128,31 +127,30 @@ export class PopupComponent /*implements AfterViewInit*/ {
     });
   }
 
-  // TODO Disabled until I can figure why the Dismiss button won't work...
-  // public ngAfterViewInit(): void {
-  //   this.checkForNewVersion().then(console.log, console.error);
-  // }
+  public ngAfterViewInit(): void {
+    this.checkForNewVersion().then(console.log, console.error);
+  }
 
-  // private async checkForNewVersion() {
-  //   const migration = await retrieveGlobal('migration') || {} as IMigration;
-  //   const currentVersion = chrome.runtime.getManifest().version;
-  //   if (migration.readChangelogVersion === currentVersion) {
-  //     return;
-  //   }
+  private async checkForNewVersion() {
+    const migration = await retrieveGlobal('migration') || {} as IMigration;
+    const currentVersion = chrome.runtime.getManifest().version;
+    if (migration.readChangelogVersion === currentVersion) {
+      return;
+    }
 
-  //   const snackBarRef = this.snackBar.openFromComponent(NewVersionNotificationComponent, {
-  //     politeness: 'off'
-  //   });
-  //   snackBarRef.afterDismissed()
-  //     .pipe(
-  //       take(1),
-  //       switchMap(() => {
-  //         migration.readChangelogVersion = currentVersion;
-  //         return storeGlobal('migration', migration);
-  //       })
-  //     )
-  //     .subscribe();
-  // }
+    const snackBarRef = this.snackBar.openFromComponent(NewVersionNotificationComponent, {
+      viewContainerRef: this.viewContainerRef
+    });
+    snackBarRef.afterDismissed()
+      .subscribe({
+        next(dismissal) {
+          if (dismissal.dismissedByAction) {
+            migration.readChangelogVersion = currentVersion;
+            return storeGlobal('migration', migration);
+          }
+        }
+      });
+  }
 
   public createCharacterLink(character: IChatRoomCharacter) {
     return chrome.runtime.getURL(`/log-viewer/index.html#/${this.player.MemberNumber}/member/${character.MemberNumber}`);

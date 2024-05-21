@@ -13,13 +13,10 @@ export class NewVersionNotificationComponent {
   public snackBarRef = inject(MatSnackBarRef);
   public extensionVersion = chrome.runtime.getManifest().version;
 
-  public dismiss() {
-    this.snackBarRef.dismissWithAction();
-  }
-
   public showChangelog() {
     chrome.tabs.create({
       url: 'https://github.com/Dutchie322/bclub-tools/releases/tag/v' + this.extensionVersion
     });
+    this.snackBarRef.dismiss();
   }
 }
