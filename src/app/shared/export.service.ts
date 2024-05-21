@@ -214,6 +214,7 @@ export class ExportService {
             if (options.exportAppearances) {
               const deflate = new ZipDeflate(`members/${member.playerMemberNumber}/${member.memberNumber}/appearance.png`);
               archive.add(deflate);
+              deflate.compression = 0;
               deflate.mtime = member.lastSeen;
               deflate.push(decode(member.appearance.substring(22)), true);
             } else {

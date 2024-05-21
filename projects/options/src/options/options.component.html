@@ -77,8 +77,7 @@
     <mat-list-item *ngIf="importProgress !== undefined">
       <p matLine>{{ importProgress.text }}...</p>
       <mat-progress-bar matLine
-                        mode="determinate"
-                        [value]="importProgress.percentage"
+                        mode="indeterminate"
                         ></mat-progress-bar>
     </mat-list-item>
     <mat-divider></mat-divider>

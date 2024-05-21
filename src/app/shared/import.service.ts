@@ -1,7 +1,7 @@
 import { IMember, IChatLog, StoreNames } from 'models';
 import { DatabaseService } from './database.service';
 import { Injectable } from '@angular/core';
-import { Unzipped, unzip } from 'fflate';
+import { AsyncUnzipInflate, Unzip, UnzipFile } from 'fflate';
 import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
@@ -9,9 +9,6 @@ const ValidStoresForJsonImport = ['members', 'chatRoomLogs'] as StoreNames[];
 
 type UpdateCallback = (text: string, progress?: boolean) => void;
 export interface IImportProgressState {
-  progress: number;
-  total: number;
-  percentage: number;
   text: string;
 }
 
@@ -64,7 +61,7 @@ export class ImportService {
     });
   }
 
-  private readFile(fileType: ImportFileType, file: File): Promise<JsonExport | Unzipped> {
+  private readFile(fileType: ImportFileType, file: File): Promise<JsonExport | ReadableStream<Uint8Array>> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       if (fileType === 'json') {
@@ -79,73 +76,17 @@ export class ImportService {
         });
         reader.readAsText(file);
       } else if (fileType === 'zip') {
-        reader.addEventListener('load', () => {
-          unzip(new Uint8Array(reader.result as ArrayBuffer), (err, unzipped) => {
-            if (err) {
-              reject(err);
-
-              return;
-            }
-
-            resolve(unzipped);
-          });
-        });
-        reader.readAsArrayBuffer(file);
+        resolve(file.stream());
       } else {
         reject(`Unknown file type ${fileType}`);
       }
     });
   }
 
-  private countSize(fileType: ImportFileType, contents: JsonExport | Unzipped): IImportProgressState {
-    const state = {
-      progress: 0,
-      total: 0,
-      percentage: 0,
-      text: ''
-    } as IImportProgressState;
-
-    function isJson(input: JsonExport | Unzipped): input is JsonExport {
-      return fileType === 'json';
-    }
-
-    function isZip(input: JsonExport | Unzipped): input is Unzipped {
-      return fileType === 'zip';
-    }
-
-    if (isJson(contents)) {
-      state.total += contents.chatRoomLogs.length;
-      state.total += contents.members.length;
-    } else if (isZip(contents)) {
-      const files = Object.keys(contents);
-      files.forEach(name => {
-        if (name.match(/^chatRoomLogs\/[\d]+\/.+\.json$/)) {
-          state.total++;
-        } else if (name.match(/^members\/[\d]+\/[\d]+\/.+$/)) {
-          state.total++;
-        }
-      });
-      // contents['chatRoomLogs'].folder(/^[\d]+\/$/).forEach(folder => {
-      //   state.total += contents.folder(folder.name).file(/\.json$/).length;
-      // });
-      // contents['members'].folder(/^[\d]+\/$/).forEach(contextFolder => {
-      //   state.total += contents.folder(contextFolder.name).folder(/^[\d]+\/$/).length;
-      // });
-    }
-
-    return state;
-  }
-
-  private importFromFile(fileType: ImportFileType, contents: JsonExport | Unzipped): Observable<IImportProgressState> {
+  private importFromFile(fileType: ImportFileType, contents: JsonExport | ReadableStream<Uint8Array>): Observable<IImportProgressState> {
     return new Observable(subscriber => {
-      const state = this.countSize(fileType, contents);
-
-      function update(text: string, progress = false) {
-        if (progress) {
-          state.progress++;
-          state.percentage = state.progress / state.total * 100;
-        }
-        subscriber.next(Object.assign({}, state, {
+      function update(text: string) {
+        subscriber.next(Object.assign({}, {
           text
         }));
       }
@@ -160,11 +101,11 @@ export class ImportService {
         throw error;
       }
 
-      function isJson(input: JsonExport | Unzipped): input is JsonExport {
+      function isJson(input: JsonExport | ReadableStream<Uint8Array>): input is JsonExport {
         return fileType === 'json';
       }
 
-      function isZip(input: JsonExport | Unzipped): input is Unzipped {
+      function isZip(input: JsonExport | ReadableStream<Uint8Array>): input is ReadableStream<Uint8Array> {
         return fileType === 'zip';
       }
 
@@ -202,7 +143,7 @@ export class ImportService {
           const request = transaction.objectStore(storeName).add(toAdd);
           request.onsuccess = () => {
             count++;
-            update(`Imported object`, true);
+            update(`Imported object`);
 
             if (count === importObject[storeName].length) {
               update(`Done ${storeName}`);
@@ -220,45 +161,106 @@ export class ImportService {
     });
   }
 
-  private async importDatabaseFromZip(update: UpdateCallback, archive: Unzipped) {
-    const filePaths = Object.keys(archive);
-    for (let i = 0; i < filePaths.length; i++) {
-      const filePath = filePaths[i];
-      console.log(`Found ${filePath}...`, archive[filePath]);
+  private importDatabaseFromZip(update: UpdateCallback, readableStream: ReadableStream<Uint8Array>) {
+    const fileReads: Promise<void>[] = [];
+    const reader = readableStream.getReader();
+    const archive = new Unzip(file => {
+      console.log('Found file in zip file:', file);
 
-      if (filePath.startsWith('beepMessages/')) {
-        console.log('Not implemented', filePath);
-        continue;
-      } else if (filePath.startsWith('chatRoomLogs/')) {
-        const parts = filePath.split('/', 3);
+      if (file.name.startsWith('beepMessages/')) {
+        console.log('Not implemented', file.name);
+        return;
+      } else if (file.name.startsWith('chatRoomLogs/')) {
+        const parts = file.name.split('/', 3);
         if (parts.length !== 3 || parts[2] === '') {
-          continue;
+          return;
+        }
+
+        if (!parts[2].endsWith('.json')) {
+          console.warn(`Skipping unexpected file ${file.name}`);
+          return;
         }
 
         console.log('Valid chatRoomLogs', parts);
-        await this.importChatLog(update, parts[2], filePath, archive[filePath]);
-      } else if (filePath.startsWith('members/')) {
-        const parts = filePath.split('/', 4);
+        fileReads.push(new Promise<Uint8Array>((resolve, reject) => {
+          let data = new Uint8Array(0);
+
+          update(`Reading data ${file.name}`);
+          file.ondata = (err, chunk, final) => {
+            if (err) {
+              reject(err);
+              return;
+            }
+
+            const length = data.length + chunk.length;
+            const mergedData = new Uint8Array(length);
+            mergedData.set(data, 0);
+            mergedData.set(chunk, data.length);
+
+            data = mergedData;
+
+            if (final) {
+              resolve(data);
+            }
+          };
+          file.start();
+        }).then(data => {
+          return this.importChatLog(update, parts[2], data);
+        }).catch(console.error));
+      } else if (file.name.startsWith('members/')) {
+        const parts = file.name.split('/', 4);
         if (parts.length !== 4 || parts[3] === '') {
-          continue;
+          return;
         }
 
         console.log('Valid members', parts);
-        await this.importMember(update, parseInt(parts[1], 10), parseInt(parts[2], 10), parts[3], filePath, archive[filePath]);
-      }
-    }
+        fileReads.push(new Promise<Uint8Array>((resolve, reject) => {
+          let data = new Uint8Array(0);
 
-    update('Done importing.');
+          update(`Reading data ${file.name}`);
+          file.ondata = (err, chunk, final) => {
+            if (err) {
+              reject(err);
+              return;
+            }
+
+            const length = data.length + chunk.length;
+            const mergedData = new Uint8Array(length);
+            mergedData.set(data, 0);
+            mergedData.set(chunk, data.length);
+
+            data = mergedData;
+
+            if (final) {
+              resolve(data);
+            }
+          };
+          file.start();
+        }).then(data => {
+          return this.importMember(update, parseInt(parts[1], 10), parseInt(parts[2], 10), parts[3], file, data);
+        }).catch(console.error));
+      }
+    });
+    archive.register(AsyncUnzipInflate);
+    const read = async () => {
+      const { done, value } = await reader.read();
+      if (done) {
+        archive.push(new Uint8Array(), true);
+        return;
+      }
+      archive.push(value);
+      read();
+    };
+    read();
+
+    return Promise.all(fileReads).then(() => {
+      update('Done importing.');
+    });
   }
 
-  private async importChatLog(update: UpdateCallback, fileName: string, filePath: string, entry: Uint8Array) {
-    if (!fileName.endsWith('.json')) {
-      console.warn(`Skipping unexpected file ${filePath}`);
-      return;
-    }
-
-    update(`Reading data ${filePath}`);
-    const data = JSON.parse(ImportService.Decoder.decode(entry), (_, value) => {
+  private async importChatLog(update: UpdateCallback, fileName: string, data: Uint8Array) {
+    const text = ImportService.Decoder.decode(data);
+    const json = JSON.parse(text, (_, value) => {
       if (typeof value === 'string' && ImportService.DateTimeRegex.test(value)) {
         return new Date(value);
       }
@@ -273,11 +275,11 @@ export class ImportService {
       };
 
       let count = 0;
-      for (const chatLog of data) {
+      for (const chatLog of json) {
         const request = transaction.objectStore('chatRoomLogs').add(chatLog);
         request.addEventListener('success', () => {
           count++;
-          if (count === data.length) {
+          if (count === json.length) {
             update(`Imported ${fileName}`, true);
             resolve();
           }
@@ -286,12 +288,11 @@ export class ImportService {
     });
   }
 
-  private async importMember(update: UpdateCallback, context: number, memberNumber: number, fileName: string, filePath: string, entry: Uint8Array) {
-    let data: IMember;
+  private async importMember(update: UpdateCallback, context: number, memberNumber: number, fileName: string, file: UnzipFile, data1: Uint8Array) {
+    let member: IMember;
     switch (fileName) {
       case 'data.json':
-        update(`Reading data ${filePath}`);
-        data = JSON.parse(ImportService.Decoder.decode(entry), (_, value) => {
+        member = JSON.parse(ImportService.Decoder.decode(data1), (_, value) => {
           if (typeof value === 'string' && ImportService.DateTimeRegex.test(value)) {
             return new Date(value);
           }
@@ -301,11 +302,10 @@ export class ImportService {
         break;
 
       case 'appearance.png':
-        update(`Reading appearance ${filePath}`);
-        data = {
+        member = {
           playerMemberNumber: context,
           memberNumber,
-          appearance: 'data:image/png;base64,' + this.toBase64(entry)
+          appearance: 'data:image/png;base64,' + this.toBase64(data1)
         } as IMember;
 
         break;
@@ -326,14 +326,14 @@ export class ImportService {
       request.addEventListener('success', event => {
         const storedMember = (event.target as IDBRequest<IMember>).result;
         if (!storedMember) {
-          const request = transaction.objectStore('members').add(data);
+          const request = transaction.objectStore('members').add(member);
           request.addEventListener('success', () => {
             update(`Imported member`, true);
             resolve();
           });
         } else {
-          data = Object.assign(data, storedMember);
-          const request = transaction.objectStore('members').put(data);
+          member = Object.assign(member, storedMember);
+          const request = transaction.objectStore('members').put(member);
           request.addEventListener('success', () => {
             update(`Updated member`, true);
             resolve();
