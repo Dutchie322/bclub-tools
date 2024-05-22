@@ -4,8 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ChatLogsService } from '../shared/chat-logs.service';
 import { IChatSession } from '../shared/models';
-import { IMember } from 'models';
-import { MemberService } from 'src/app/shared/member.service';
+import { MemberOverviewItem, MemberService } from 'src/app/shared/member.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -54,7 +53,7 @@ export class ChatSessionsComponent implements OnDestroy {
   public chatSessions = new MatTableDataSource<IChatSession>();
   public chatSessionsColumns = ['chatRoom', 'start'];
 
-  public members = new MatTableDataSource<IMember>();
+  public members = new MatTableDataSource<MemberOverviewItem>();
   public membersColumns = ['memberName', 'memberNumber', 'lastSeen'];
   public memberSearchForm = new UntypedFormGroup({
     memberName: new UntypedFormControl(''),
@@ -68,6 +67,7 @@ export class ChatSessionsComponent implements OnDestroy {
   ) {
     route.paramMap.pipe(
       map(params => +params.get('memberNumber')),
+      tap(async memberNumber => await memberService.fixMembers(memberNumber)),
       tap(async memberNumber => this.chatSessions.data = await chatLogsService.findChatRoomsForMemberNumber(memberNumber)),
       tap(async memberNumber => this.members.data = await memberService.findMembersWithName(memberNumber)),
       takeUntil(this.destroySubject)

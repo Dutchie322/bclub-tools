@@ -3,30 +3,89 @@ import { DatabaseService } from './database.service';
 import { IMember } from 'models';
 import { Observable } from 'rxjs';
 
+export type MemberOverviewItem = {
+  memberName: string,
+  memberNumber: number,
+  lastSeen: Date
+};
+
 @Injectable({
   providedIn: 'root'
 })
 export class MemberService {
   public constructor(private databaseService: DatabaseService) {}
 
+  public async fixMembers(memberNumber: number) {
+    let transaction = await this.databaseService.transaction('members');
+    new Promise<void>((resolve, reject) => {
+      let lastGoodKey: IDBValidKey;
+      const request = transaction.objectStore('members').openCursor(IDBKeyRange.bound([memberNumber, 0], [memberNumber, Infinity]));
+      request.addEventListener('error', event => {
+        console.log('request error', event, request);
+        reject({ lastGoodKey, event });
+      });
+      request.addEventListener('success', event => {
+        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+        if (cursor) {
+          lastGoodKey = cursor.key;
+          cursor.continue();
+        } else {
+          resolve();
+        }
+      });
+    }).then(() => {
+      console.log('all good, stopping loop');
+    }, async (err) => {
+      console.log('last good', err.lastGoodKey, err.event);
+      transaction = await this.databaseService.transaction('members');
+      const request = transaction.objectStore('members').getAllKeys(IDBKeyRange.lowerBound(err.lastGoodKey, true));
+      request.addEventListener('error', err => {
+        console.log('error', err);
+      });
+      request.addEventListener('success', event => {
+        const faultyKey = (event.target as IDBRequest<IDBValidKey[]>).result[0];
+        console.log('success', event);
+
+        this.databaseService.transaction('members', 'readwrite').then(transaction => {
+          const request = transaction.objectStore('members').delete(faultyKey);
+          request.addEventListener('success', event => {
+            console.log('deleted', faultyKey, event);
+
+            // Try to find more
+            this.fixMembers(memberNumber);
+          });
+          request.addEventListener('error', err => {
+            console.log('deleting failed', err);
+          })
+        });
+      });
+    });
+  }
+
   public async findMembersWithName(memberNumber: number) {
     const transaction = await this.databaseService.transaction('members');
-    return new Promise<IMember[]>(resolve => {
-      const members: IMember[] = [];
-      transaction.objectStore('members')
-        .openCursor(IDBKeyRange.bound([memberNumber, 0], [memberNumber, Infinity]))
-        .addEventListener('success', event => {
-          const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
-          if (cursor) {
-            const member = cursor.value as IMember;
-            if (member.memberName) {
-              members.push(member);
-            }
-            cursor.continue();
-          } else {
-            resolve(members);
+    return new Promise<MemberOverviewItem[]>(resolve => {
+      const members: MemberOverviewItem[] = [];
+      const request = transaction.objectStore('members').openCursor(IDBKeyRange.bound([memberNumber, 0], [memberNumber, Infinity]));
+      request.addEventListener('error', event => {
+        console.log('request error', event, request);
+      });
+      request.addEventListener('success', event => {
+        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+        if (cursor) {
+          const member = cursor.value as IMember;
+          if (member.memberName) {
+            members.push({
+              memberName: member.memberName,
+              memberNumber: member.memberNumber,
+              lastSeen: member.lastSeen
+            });
           }
-        });
+          cursor.continue();
+        } else {
+          resolve(members);
+        }
+      });
     });
   }
 
