@@ -1,7 +1,7 @@
 import { IChatLog, IMember } from 'models';
 import { DatabaseService } from './database.service';
 import { Injectable } from '@angular/core';
-import { Zip, ZipDeflate, strToU8 } from 'fflate';
+import { Zip, ZipPassThrough, strToU8 } from 'fflate';
 import { Observable } from 'rxjs';
 import { decode } from './utils/base64';
 
@@ -179,7 +179,7 @@ export class ExportService {
               const data = subfolders[memberNumber].files[file];
               const fileName = `${this.timestampToSortableFileName(data[0].timestamp)} - ${data[0].chatRoom}.json`;
 
-              const deflate = new ZipDeflate(`chatRoomLogs/${memberNumber}/${fileName}`);
+              const deflate = new ZipPassThrough(`chatRoomLogs/${memberNumber}/${fileName}`);
               archive.add(deflate);
               deflate.mtime = data[data.length - 1].timestamp;
               deflate.push(strToU8(JSON.stringify(data, undefined, 2)), true);
@@ -212,7 +212,7 @@ export class ExportService {
 
           if (member.appearance) {
             if (options.exportAppearances) {
-              const deflate = new ZipDeflate(`members/${member.playerMemberNumber}/${member.memberNumber}/appearance.png`);
+              const deflate = new ZipPassThrough(`members/${member.playerMemberNumber}/${member.memberNumber}/appearance.png`);
               archive.add(deflate);
               deflate.compression = 0;
               deflate.mtime = member.lastSeen;
@@ -224,7 +224,7 @@ export class ExportService {
             delete member.appearance;
           }
 
-          const deflate = new ZipDeflate(`members/${member.playerMemberNumber}/${member.memberNumber}/data.json`);
+          const deflate = new ZipPassThrough(`members/${member.playerMemberNumber}/${member.memberNumber}/data.json`);
           archive.add(deflate);
           deflate.mtime = member.lastSeen;
           deflate.push(strToU8(JSON.stringify(member, undefined, 2)), true);

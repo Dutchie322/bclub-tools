@@ -161,7 +161,7 @@ export class ImportService {
     });
   }
 
-  private importDatabaseFromZip(update: UpdateCallback, readableStream: ReadableStream<Uint8Array>) {
+  private async importDatabaseFromZip(update: UpdateCallback, readableStream: ReadableStream<Uint8Array>) {
     const fileReads: Promise<void>[] = [];
     const reader = readableStream.getReader();
     const archive = new Unzip(file => {
@@ -253,9 +253,8 @@ export class ImportService {
     };
     read();
 
-    return Promise.all(fileReads).then(() => {
-      update('Done importing.');
-    });
+    await Promise.all(fileReads);
+    update('Done importing.');
   }
 
   private async importChatLog(update: UpdateCallback, fileName: string, data: Uint8Array) {
