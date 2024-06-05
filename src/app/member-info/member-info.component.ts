@@ -76,7 +76,9 @@ export class MemberInfoComponent implements OnDestroy {
       height: '1000px'
     };
     const imageStyle: NgStyle['ngStyle'] = {
-      position: 'relative'
+      position: 'relative',
+      marginLeft: '50%',
+      transform: 'translateX(-50%)'
     };
 
     const metaData = this.member.appearanceMetaData;
