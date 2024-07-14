@@ -46,3 +46,7 @@ testem.log
 .DS_Store
 Thumbs.db
 *.zip
+
+# private project files
+projects/manifest/private-chrome-additions.json
+projects/manifest/private-firefox-additions.json

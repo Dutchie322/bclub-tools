@@ -6,10 +6,12 @@ ensureDirectoryExists(__dirname + '/../../dist/manifests');
 
 const baseManifest = readJsonFile('base-manifest.json');
 const chromeManifestAdditions = readJsonFile('chrome-additions.json');
+const privChromeManifestAdditions = readJsonFile('private-chrome-additions.json', true);
 const firefoxManifestAdditions = readJsonFile('firefox-additions.json');
+const privFirefoxManifestAdditions = readJsonFile('private-firefox-additions.json', true);
 
-const chromeManifest = mergeDeep(baseManifest, chromeManifestAdditions);
-const firefoxManifest = mergeDeep(baseManifest, firefoxManifestAdditions);
+const chromeManifest = mergeDeep(baseManifest, chromeManifestAdditions, privChromeManifestAdditions);
+const firefoxManifest = mergeDeep(baseManifest, firefoxManifestAdditions, privFirefoxManifestAdditions);
 
 // Output Chrome manifest to dist directory for easy debugging.
 writeJsonFile('manifest.json', chromeManifest);
@@ -26,8 +28,17 @@ function ensureDirectoryExists(directory) {
   }
 }
 
-function readJsonFile(fileName) {
-  return JSON.parse(fs.readFileSync(__dirname + '/' + fileName, {
+function readJsonFile(fileName, optional = false) {
+  const path = __dirname + '/' + fileName;
+  if (!fs.existsSync(path)) {
+    if (optional) {
+      return;
+    }
+
+    throw new Error(`File ${path} does not exist`);
+  }
+
+  return JSON.parse(fs.readFileSync(path, {
     encoding: 'utf8',
     flag: 'r'
   }));
