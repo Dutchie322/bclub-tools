@@ -45,37 +45,35 @@ chrome.runtime.onInstalled.addListener(async () => {
   // Ensure default settings
   const settings = await retrieveGlobal('settings');
 
-  if (settings) {
-    if (settings.tools) {
-      if (settings.tools.chatRoomRefresh) {
-        delete settings.tools.chatRoomRefresh;
-      }
-      if (settings.tools.fpsCounter) {
-        delete settings.tools.fpsCounter;
-      }
-      if (settings.tools.wardrobeSize) {
-        delete settings.tools.wardrobeSize;
-      }
+  if (settings.tools) {
+    if (settings.tools.chatRoomRefresh) {
+      delete settings.tools.chatRoomRefresh;
     }
-    if (settings.notifications) {
-      if (settings.notifications.beeps) {
-        delete settings.notifications.beeps;
-      }
-      if (settings.notifications.friendOnline) {
-        delete settings.notifications.friendOnline;
-      }
-      if (settings.notifications.friendOffline) {
-        delete settings.notifications.friendOffline;
-      }
-      if (settings.notifications.actions) {
-        delete settings.notifications.actions;
-      }
-      if (settings.notifications.mentions) {
-        delete settings.notifications.mentions;
-      }
-      if (settings.notifications.whispers) {
-        delete settings.notifications.whispers;
-      }
+    if (settings.tools.fpsCounter) {
+      delete settings.tools.fpsCounter;
+    }
+    if (settings.tools.wardrobeSize) {
+      delete settings.tools.wardrobeSize;
+    }
+  }
+  if (settings.notifications) {
+    if (settings.notifications.beeps) {
+      delete settings.notifications.beeps;
+    }
+    if (settings.notifications.friendOnline) {
+      delete settings.notifications.friendOnline;
+    }
+    if (settings.notifications.friendOffline) {
+      delete settings.notifications.friendOffline;
+    }
+    if (settings.notifications.actions) {
+      delete settings.notifications.actions;
+    }
+    if (settings.notifications.mentions) {
+      delete settings.notifications.mentions;
+    }
+    if (settings.notifications.whispers) {
+      delete settings.notifications.whispers;
     }
   }
 

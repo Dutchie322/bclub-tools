@@ -18,8 +18,7 @@ import {
   IReputation,
   IMember,
   retrieveGlobal,
-  storeGlobal,
-  IMigration,
+  storeGlobal
 } from 'models';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { IPlayerCharacter } from 'src/app/shared/models';
@@ -132,7 +131,7 @@ export class PopupComponent implements AfterViewInit {
   }
 
   private async checkForNewVersion() {
-    const migration = await retrieveGlobal('migration') || {} as IMigration;
+    const migration = await retrieveGlobal('migration');
     const currentVersion = chrome.runtime.getManifest().version;
     if (migration.readChangelogVersion === currentVersion) {
       return;

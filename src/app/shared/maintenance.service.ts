@@ -13,11 +13,14 @@ export class MaintenanceService {
   ) {}
 
   public async runWithCheck(): Promise<void> {
-    const lastRun = await retrieveGlobal('lastMaintenanceRun');
-    if (new Date().valueOf() - lastRun.valueOf() < 3600000) {
+    const maintenance = await retrieveGlobal('maintenance');
+    if (new Date().valueOf() - maintenance.lastRun < 3600000) {
       // Run once per hour
       return;
     }
+
+    maintenance.lastRun = new Date().valueOf();
+    await storeGlobal('maintenance', maintenance);
 
     this.runImmediately();
   }
@@ -27,7 +30,6 @@ export class MaintenanceService {
     for (const character of characters) {
       while (!await this.fixMembers(character.memberNumber));
     }
-    await storeGlobal('lastMaintenanceRun', new Date());
   }
 
   private async fixMembers(memberNumber: number) {

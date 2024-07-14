@@ -1,7 +1,7 @@
 import { IStorageMap, StorageKeys, STORAGE_KEYS, GlobalStorageKeys, IGlobalStorageMap } from './IStorageMap';
 
-export async function retrieveGlobal<K extends GlobalStorageKeys>(key: K): Promise<IGlobalStorageMap[K] | undefined> {
-  return (await chrome.storage.local.get([key]))[key];
+export async function retrieveGlobal<K extends GlobalStorageKeys>(key: K): Promise<IGlobalStorageMap[K]> {
+  return (await chrome.storage.local.get([key]))[key] || {} as IGlobalStorageMap[K];
 }
 
 export async function retrieve<K extends StorageKeys>(tabId: number, key: K): Promise<IStorageMap[K] | undefined> {

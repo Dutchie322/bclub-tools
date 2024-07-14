@@ -1,8 +1,8 @@
-import { IChatRoomCharacter, IStoredPlayer, ISettings, IMigration } from 'models';
+import { IChatRoomCharacter, IStoredPlayer, ISettings, IMigration, IMaintenance } from 'models';
 import { IMember } from 'models/database';
 
 export const GLOBAL_STORAGE_KEYS = [
-  'lastMaintenanceRun',
+  'maintenance',
   'migration',
   'settings'
 ] as const;
@@ -18,7 +18,7 @@ export type GlobalStorageKeys = typeof GLOBAL_STORAGE_KEYS[number];
 export type StorageKeys = typeof STORAGE_KEYS[number];
 
 export interface IGlobalStorageMap {
-  'lastMaintenanceRun': Date;
+  'maintenance': IMaintenance;
   'migration': IMigration;
   'settings': ISettings;
 }
