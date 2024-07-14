@@ -67,7 +67,6 @@ export class ChatSessionsComponent implements OnDestroy {
   ) {
     route.paramMap.pipe(
       map(params => +params.get('memberNumber')),
-      tap(async memberNumber => await memberService.fixMembers(memberNumber)),
       tap(async memberNumber => this.chatSessions.data = await chatLogsService.findChatRoomsForMemberNumber(memberNumber)),
       tap(async memberNumber => this.members.data = await memberService.findMembersWithName(memberNumber)),
       takeUntil(this.destroySubject)

@@ -71,7 +71,8 @@ export class MemberInfoComponent implements OnDestroy {
     return Math.abs(x);
   }
 
-  public calculateAppearanceImageStyles(imageElement: HTMLImageElement) {
+  public calculateAppearanceImageStyles(element: EventTarget) {
+    const imageElement = element as HTMLImageElement;
     const imageContainerStyle: NgStyle['ngStyle'] = {
       height: '1000px'
     };

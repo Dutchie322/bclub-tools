@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -23,6 +24,7 @@ import { humanFileSize } from 'src/app/shared/utils/human-file-size';
 import { MemberService } from 'src/app/shared/member.service';
 import { ExportService, IExportProgressState } from 'src/app/shared/export.service';
 import { ImportService, IImportProgressState } from 'src/app/shared/import.service';
+import { MaintenanceService } from 'src/app/shared/maintenance.service';
 
 @Component({
   standalone: true,
@@ -41,6 +43,7 @@ import { ImportService, IImportProgressState } from 'src/app/shared/import.servi
     MatIconModule,
     MatListModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
     MatSnackBarModule,
     MatSortModule,
@@ -78,6 +81,7 @@ export class OptionsComponent implements OnDestroy {
   public databaseSize$: Observable<string>;
   public exportProgress?: IExportProgressState;
   public importProgress?: IImportProgressState;
+  public databaseOperationInProgress: boolean;
 
   private refreshDatabaseSize$ = new ReplaySubject<void>(1);
 
@@ -94,6 +98,7 @@ export class OptionsComponent implements OnDestroy {
     private databaseService: DatabaseService,
     private exportService: ExportService,
     private importService: ImportService,
+    private maintenanceService: MaintenanceService,
     private memberService: MemberService,
     private snackBar: MatSnackBar
   ) {
@@ -236,6 +241,12 @@ export class OptionsComponent implements OnDestroy {
       });
     });
     input.click();
+  }
+
+  public async fixMembers() {
+    this.databaseOperationInProgress = true;
+    await this.maintenanceService.runImmediately();
+    this.databaseOperationInProgress = false;
   }
 
   public async clearAppearances() {

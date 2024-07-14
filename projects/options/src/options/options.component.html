@@ -85,6 +85,25 @@
 </ng-container>
 <ng-container>
   <mat-list>
+    <h2 matSubheader>Maintenance</h2>
+    <mat-list-item>
+      <mat-label>If for some reason people do not show up anymore, you can try this:</mat-label>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button
+              mat-stroked-button
+              color="info"
+              (click)="fixMembers()"
+              [disabled]="databaseOperationInProgress"
+              >
+              <mat-spinner *ngIf="databaseOperationInProgress; else elseBlock" diameter="24" />
+              <ng-template #elseBlock>Scan & Fix Member Database</ng-template>
+            </button>
+    </mat-list-item>
+  </mat-list>
+</ng-container>
+<ng-container>
+  <mat-list>
     <h2 matSubheader>Danger zone</h2>
     <mat-list-item>
       <mat-label>Appearances take up a lot of space, you can remove them while leaving other data intact here:</mat-label>
