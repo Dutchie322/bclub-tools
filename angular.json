@@ -15,11 +15,13 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/log-viewer",
+            "outputPath": {
+              "base": "dist/log-viewer",
+              "browser": ""
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -32,12 +34,11 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
@@ -59,8 +60,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -147,11 +146,13 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/popup",
+            "outputPath": {
+              "base": "dist/popup",
+              "browser": ""
+            },
             "index": "projects/popup/src/index.html",
-            "main": "projects/popup/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -169,7 +170,8 @@
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/popup/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "projects/popup/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -268,11 +270,13 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/options",
+            "outputPath": {
+              "base": "dist/options",
+              "browser": ""
+            },
             "index": "projects/options/src/index.html",
-            "main": "projects/options/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -290,7 +294,8 @@
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/options/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "browser": "projects/options/src/main.ts"
           },
           "configurations": {
             "production": {

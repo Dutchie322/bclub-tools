@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -28,41 +28,35 @@ import { ChatReplayComponent } from './chat-replay/chat-replay.component';
 import { ChatLineComponent } from './chat-replay/chat-line/chat-line.component';
 import { MemberInfoComponent } from './member-info/member-info.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    ChatSessionsComponent,
-    ChatReplayComponent,
-    ChatLineComponent,
-    PlayerCharactersComponent,
-    MemberInfoComponent
-  ],
-  imports: [
-    // Angular modules
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    CommonModule,
-    ReactiveFormsModule,
-
-    // Material modules
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    MatSortModule,
-    MatTableModule,
-    MatTabsModule,
-    MatToolbarModule,
-  ],
-  providers: [
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        ChatSessionsComponent,
+        ChatReplayComponent,
+        ChatLineComponent,
+        PlayerCharactersComponent,
+        MemberInfoComponent
+    ],
+    bootstrap: [AppComponent], imports: [
+        // Angular modules
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        CommonModule,
+        ReactiveFormsModule,
+        // Material modules
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatPaginatorModule,
+        MatProgressBarModule,
+        MatSelectModule,
+        MatSnackBarModule,
+        MatSortModule,
+        MatTableModule,
+        MatTabsModule,
+        MatToolbarModule], providers: [
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
