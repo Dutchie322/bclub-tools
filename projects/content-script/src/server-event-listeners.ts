@@ -66,6 +66,7 @@ export function listenToServerEvents(handshake: string) {
       Creation: character.Creation,
       Lovership: character.Lovership,
       Description: character.Description,
+      Difficulty: character.Difficulty?.Level ?? 1,
       Owner: character.Owner,
       MemberNumber: character.MemberNumber,
       LabelColor: character.LabelColor,

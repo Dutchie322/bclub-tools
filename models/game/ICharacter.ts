@@ -1,5 +1,6 @@
 import { IAppearance } from './IAppearance';
 import { IArousalSettings } from './IArousalSettings';
+import { ICharacterDifficulty } from './ICharacterDifficulty';
 import { ILovership } from './ILovership';
 import { IOwnership } from './IOwnership';
 import { IReputation } from './IReputation';
@@ -19,6 +20,7 @@ export interface IChatRoomCharacter {
   Creation: number;
   Lovership: ILovership[];
   Description: string;
+  Difficulty?: ICharacterDifficulty;
   Owner: string;
   MemberNumber: number;
   LabelColor: string;
@@ -30,8 +32,6 @@ export interface IChatRoomCharacter {
   Ownership: IOwnership | null;
   BlockItems: IChatRoomCharacterBlockItem[];
   ArousalSettings: IArousalSettings;
-  WhiteList: any[];
-  Game: any;
 }
 
 export interface IChatRoomCharacterBlockItem {

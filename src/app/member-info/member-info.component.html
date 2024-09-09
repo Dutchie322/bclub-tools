@@ -25,6 +25,12 @@
           <span matListItemLine>{{ member.dominant ? absolute(member.dominant) + '%' : 'Neutral' }}</span>
         </mat-list-item>
         <mat-list-item>
+          <mat-icon matListItemIcon>settings</mat-icon>
+          <h3 matListItemTitle>Difficulty</h3>
+          <span matListItemLine *ngIf="member.difficulty">{{ difficulty(member.difficulty) }}</span>
+          <span matListItemLine *ngIf="!member.difficulty" class="empty-value">Unknown</span>
+        </mat-list-item>
+        <mat-list-item>
           <mat-icon matListItemIcon>access_time</mat-icon>
           <h3 matListItemTitle>Last Seen</h3>
           <ng-container *ngIf="member.lastSeen; else noLastSeen" ngProjectAs="[matListItemLine]">

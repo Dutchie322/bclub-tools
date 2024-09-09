@@ -151,4 +151,18 @@ export class MemberInfoComponent implements OnDestroy {
   public timeToDays(start: Date) {
     return Math.floor((new Date().getTime() - start.getTime()) / 86400000).toString();
   }
+
+  public difficulty(difficulty: number) {
+    switch (difficulty) {
+      case 0:
+        return 'Roleplay';
+      default:
+      case 1:
+        return 'Regular';
+      case 2:
+        return 'Hardcore';
+      case 3:
+        return 'Extreme';
+    }
+  }
 }

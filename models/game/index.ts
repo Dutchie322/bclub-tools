@@ -4,6 +4,7 @@ export * from './CurrentScreen';
 export * from './IAppearance';
 export * from './IArousalSettings';
 export * from './ICharacter';
+export * from './ICharacterDifficulty';
 export * from './IChatRoom';
 export * from './ILovership';
 export * from './IOwnership';

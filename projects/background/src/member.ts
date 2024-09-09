@@ -61,6 +61,7 @@ function mapChatRoomCharacter(data: IChatRoomCharacter) {
       ? data.Reputation.find(r => r.Type === 'Dominant').Value
       : 0,
     description: decompress(data.Description),
+    difficulty: data.Difficulty,
     labelColor: data.LabelColor,
     lovership: data.Lovership ? data.Lovership.map(lover => ({
       memberNumber: lover.MemberNumber,

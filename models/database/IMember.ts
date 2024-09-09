@@ -18,6 +18,7 @@ export interface IMember {
   appearance?: string;
   appearanceMetaData?: IMemberAppearanceMetaData;
   description?: string;
+  difficulty?: number;
   labelColor?: string;
   lovership?: IMemberLovership[];
   ownership?: IMemberOwnership;
