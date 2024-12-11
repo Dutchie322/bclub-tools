@@ -30,7 +30,7 @@
               "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/rose-red.css",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -105,7 +105,7 @@
               "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/rose-red.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -167,7 +167,7 @@
               "projects/popup/src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/rose-red.css",
               "projects/popup/src/styles.scss"
             ],
             "scripts": [],
@@ -241,7 +241,7 @@
               "projects/popup/src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/rose-red.css",
               "projects/popup/src/styles.scss"
             ],
             "scripts": []
@@ -291,7 +291,7 @@
               "projects/options/src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/rose-red.css",
               "projects/options/src/styles.scss"
             ],
             "scripts": [],
@@ -365,7 +365,7 @@
               "projects/options/src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/rose-red.css",
               "projects/options/src/styles.scss"
             ],
             "scripts": []

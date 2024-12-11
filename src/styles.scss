@@ -74,6 +74,11 @@ html, body {
   height: 100%;
 }
 
+html {
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface)
+}
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -81,5 +86,9 @@ body {
 
   &.popup {
     min-width: 780px;
+  }
+
+  .mat-toolbar {
+    background: var(--mat-sys-primary-container);
   }
 }
