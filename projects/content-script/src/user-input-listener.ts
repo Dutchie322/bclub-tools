@@ -42,8 +42,8 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
 
   function mapAppearance(appearance: IAppearance) {
     return {
-      Group: appearance.Group || appearance.Asset.Group.Name,
-      Name: appearance.Name || appearance.Asset.Name,
+      Group: appearance.Asset ? appearance.Asset.Group.Name : appearance.Group,
+      Name: appearance.Asset ? appearance.Asset.Name : appearance.Name,
       Color: appearance.Color,
       Difficulty: appearance.Difficulty,
       Property: appearance.Property,

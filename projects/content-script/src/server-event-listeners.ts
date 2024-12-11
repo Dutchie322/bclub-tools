@@ -28,7 +28,7 @@ export function listenToServerEvents(handshake: string) {
       try {
         data = mapData ? mapData(incomingData) : undefined;
       } catch (e) {
-        console.warn(`[Bondage Club Tools] Could not store data, skipping message ${event}. Game is unaffected.`, data, 'Error:', e);
+        console.warn(`[Bondage Club Tools] Could not store data, skipping message ${event}. Game is unaffected.`, incomingData, 'Error:', e);
         return;
       }
 
@@ -48,8 +48,8 @@ export function listenToServerEvents(handshake: string) {
   }
   function mapAppearance(appearance: IAppearance) {
     return {
-      Group: appearance.Group || appearance.Asset.Group.Name,
-      Name: appearance.Name || appearance.Asset.Name,
+      Group: appearance.Asset ? appearance.Asset.Group.Name : appearance.Group,
+      Name: appearance.Asset ? appearance.Asset.Name : appearance.Name,
       Color: appearance.Color,
       Difficulty: appearance.Difficulty,
       Property: appearance.Property,
