@@ -9,9 +9,10 @@ import { MemberService } from 'src/app/shared/member.service';
 import { NgStyle } from '@angular/common';
 
 @Component({
-  selector: 'app-member-info',
-  templateUrl: './member-info.component.html',
-  styleUrls: ['./member-info.component.scss']
+    selector: 'app-member-info',
+    templateUrl: './member-info.component.html',
+    styleUrls: ['./member-info.component.scss'],
+    standalone: false
 })
 export class MemberInfoComponent implements OnDestroy {
   private formSubscription: Subscription;

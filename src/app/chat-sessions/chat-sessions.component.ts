@@ -11,9 +11,10 @@ import { Subject } from 'rxjs';
 import { map, tap, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-chat-sessions',
-  templateUrl: './chat-sessions.component.html',
-  styleUrls: ['./chat-sessions.component.scss']
+    selector: 'app-chat-sessions',
+    templateUrl: './chat-sessions.component.html',
+    styleUrls: ['./chat-sessions.component.scss'],
+    standalone: false
 })
 export class ChatSessionsComponent implements OnDestroy {
   private destroySubject = new Subject<void>();

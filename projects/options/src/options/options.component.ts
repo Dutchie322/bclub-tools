@@ -27,30 +27,28 @@ import { ImportService, IImportProgressState } from 'src/app/shared/import.servi
 import { MaintenanceService } from 'src/app/shared/maintenance.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-options',
-  imports: [
-    // Angular modules
-    CommonModule,
-    ReactiveFormsModule,
-
-    // Angular Material modules
-    MatButtonModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatListModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    MatSortModule,
-    MatToolbarModule
-  ],
-  templateUrl: './options.component.html',
-  styleUrls: ['./options.component.scss']
+    selector: 'app-options',
+    imports: [
+        // Angular modules
+        CommonModule,
+        ReactiveFormsModule,
+        // Angular Material modules
+        MatButtonModule,
+        MatCardModule,
+        MatCheckboxModule,
+        MatChipsModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatListModule,
+        MatProgressBarModule,
+        MatProgressSpinnerModule,
+        MatSelectModule,
+        MatSnackBarModule,
+        MatSortModule,
+        MatToolbarModule
+    ],
+    templateUrl: './options.component.html',
+    styleUrls: ['./options.component.scss']
 })
 export class OptionsComponent implements OnDestroy {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;

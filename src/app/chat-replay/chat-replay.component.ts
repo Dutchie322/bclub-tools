@@ -8,9 +8,10 @@ import { ChatLogsService } from '../shared/chat-logs.service';
 import { IChatLog } from 'models';
 
 @Component({
-  selector: 'app-chat-replay',
-  templateUrl: './chat-replay.component.html',
-  styleUrls: ['./chat-replay.component.scss']
+    selector: 'app-chat-replay',
+    templateUrl: './chat-replay.component.html',
+    styleUrls: ['./chat-replay.component.scss'],
+    standalone: false
 })
 export class ChatReplayComponent {
   private loadingSubject = new BehaviorSubject<boolean>(true);

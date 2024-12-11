@@ -3,11 +3,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarAction, MatSnackBarActions, MatSnackBarLabel, MatSnackBarRef } from '@angular/material/snack-bar';
 
 @Component({
-  standalone: true,
-  selector: 'app-new-version-notification',
-  imports: [MatButtonModule, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction],
-  templateUrl: './new-version-notification.component.html',
-  styleUrls: ['./new-version-notification.component.scss']
+    selector: 'app-new-version-notification',
+    imports: [MatButtonModule, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction],
+    templateUrl: './new-version-notification.component.html',
+    styleUrls: ['./new-version-notification.component.scss']
 })
 export class NewVersionNotificationComponent {
   public snackBarRef = inject(MatSnackBarRef);

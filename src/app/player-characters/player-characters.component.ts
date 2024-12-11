@@ -3,9 +3,10 @@ import { ChatLogsService } from '../shared/chat-logs.service';
 import { IPlayerCharacter } from '../shared/models';
 
 @Component({
-  selector: 'app-player-characters',
-  templateUrl: './player-characters.component.html',
-  styleUrls: ['./player-characters.component.scss']
+    selector: 'app-player-characters',
+    templateUrl: './player-characters.component.html',
+    styleUrls: ['./player-characters.component.scss'],
+    standalone: false
 })
 export class PlayerCharactersComponent {
   public playerCharacters: IPlayerCharacter[];

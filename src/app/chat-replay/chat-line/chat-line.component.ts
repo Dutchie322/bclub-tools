@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { IChatLog, renderContent } from 'models';
 
 @Component({
-  selector: 'app-chat-line',
-  templateUrl: './chat-line.component.html',
-  styleUrls: ['./chat-line.component.scss']
+    selector: 'app-chat-line',
+    templateUrl: './chat-line.component.html',
+    styleUrls: ['./chat-line.component.scss'],
+    standalone: false
 })
 export class ChatLineComponent {
   private renderedContent: Promise<string>;

@@ -28,26 +28,24 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { requestOnlineFriends } from 'projects/content-script/src/update-friends';
 
 @Component({
-  selector: 'app-popup',
-  standalone: true,
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    CommonModule,
-
-    // Material design
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatListModule,
-    MatSnackBarModule,
-    MatSortModule,
-    MatTabsModule,
-    MatTableModule,
-    MatToolbarModule,
-  ],
-  templateUrl: './popup.component.html',
-  styleUrls: ['./popup.component.scss']
+    selector: 'app-popup',
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        // Material design
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        MatListModule,
+        MatSnackBarModule,
+        MatSortModule,
+        MatTabsModule,
+        MatTableModule,
+        MatToolbarModule,
+    ],
+    templateUrl: './popup.component.html',
+    styleUrls: ['./popup.component.scss']
 })
 export class PopupComponent implements AfterViewInit {
   @ViewChild('onlineFriendsSort', { static: true }) set onlineFriendsSort(sort: MatSort) {
