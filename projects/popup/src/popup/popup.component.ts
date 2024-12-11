@@ -153,6 +153,10 @@ export class PopupComponent implements AfterViewInit {
     return chrome.runtime.getURL(`/log-viewer/index.html#/${this.player.MemberNumber}/member/${character.MemberNumber}`);
   }
 
+  public createFriendLink(friend: IMember) {
+    return chrome.runtime.getURL(`/log-viewer/index.html#/${this.player.MemberNumber}/member/${friend.memberNumber}`);
+  }
+
   public openLogViewer(memberNumber?: number) {
     let url = '/log-viewer/index.html';
     if (memberNumber) {
