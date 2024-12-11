@@ -136,8 +136,8 @@ export class ImportService {
         }
 
         importObject[storeName].forEach((toAdd: Record<string, unknown>) => {
-          if (toAdd.id) {
-            delete toAdd.id;
+          if (toAdd['id']) {
+            delete toAdd['id'];
           }
 
           const request = transaction.objectStore(storeName).add(toAdd);

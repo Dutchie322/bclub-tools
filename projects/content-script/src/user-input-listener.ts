@@ -82,7 +82,7 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
       message = message.trim();
       if (!message) {
         // Sanity check
-        return false;
+        return;
       }
 
       const data = {

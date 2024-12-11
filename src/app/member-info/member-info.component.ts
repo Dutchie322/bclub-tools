@@ -1,18 +1,29 @@
 import { Component, OnDestroy } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, tap, map, switchMap, mergeMap } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
 import { IMember, addOrUpdateObjectStore, decompress, findTitle } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
-import { NgStyle } from '@angular/common';
+import { CommonModule, NgStyle } from '@angular/common';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
+import { MatIcon } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
     selector: 'app-member-info',
+    imports: [
+      CommonModule,
+      ReactiveFormsModule,
+      MatIcon,
+      MatListModule,
+      MatTabsModule,
+      MatToolbar,
+    ],
     templateUrl: './member-info.component.html',
-    styleUrls: ['./member-info.component.scss'],
-    standalone: false
+    styleUrls: ['./member-info.component.scss']
 })
 export class MemberInfoComponent implements OnDestroy {
   private formSubscription: Subscription;
@@ -86,13 +97,13 @@ export class MemberInfoComponent implements OnDestroy {
     const metaData = this.member.appearanceMetaData;
     if (!metaData) {
       if (imageElement.height > 1000) {
-        imageContainerStyle.overflow = 'auto';
+        imageContainerStyle['overflow'] = 'auto';
       }
     } else {
-      imageContainerStyle.overflow = 'hidden';
+      imageContainerStyle['overflow'] = 'hidden';
 
       if (metaData.isInverted) {
-        imageStyle.transform = 'rotate(180deg)';
+        imageStyle['transform'] = 'rotate(180deg)';
       }
 
       const offsetY = metaData.heightRatioProportion - metaData.heightModifier;
@@ -105,7 +116,7 @@ export class MemberInfoComponent implements OnDestroy {
       // const sourceHeight = 1000 / metaData.heightRatio;
       // const sourceY = metaData.isInverted ? metaData.canvasHeight - (startY + sourceHeight) : startY;
       // sourceY += 63;
-      imageStyle.top = `-${sourceY}px`;
+      imageStyle['top'] = `-${sourceY}px`;
     }
 
     this.imageContainerStyle = imageContainerStyle;

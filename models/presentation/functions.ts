@@ -146,51 +146,51 @@ function retrieveAndCacheMember(contextMemberNumber: number, memberNumber: numbe
 }
 
 export function hasSourceCharacter(value: ChatMessageDictionaryEntry): value is SourceCharacterDictionaryEntry {
-  return isDictionary(value) && typeof (value as Record<string, unknown>).SourceCharacter !== 'undefined';
+  return isDictionary(value) && typeof (value as Record<string, unknown>)['SourceCharacter'] !== 'undefined';
 }
 
 export function hasTargetCharacter(value: ChatMessageDictionaryEntry): value is TargetCharacterDictionaryEntry {
-  return isDictionary(value) && typeof (value as Record<string, unknown>).TargetCharacter !== 'undefined';
+  return isDictionary(value) && typeof (value as Record<string, unknown>)['TargetCharacter'] !== 'undefined';
 }
 
 export function hasCharacterReference(value: ChatMessageDictionaryEntry): value is CharacterReferenceDictionaryEntry {
   return isDictionary(value) &&
-    ((value as Record<string, unknown>).Tag === 'SourceCharacter' ||
-      (value as Record<string, unknown>).Tag === 'TargetCharacter' ||
-      (value as Record<string, unknown>).Tag === 'TargetCharacterName' ||
-      (value as Record<string, unknown>).Tag === 'DestinationCharacter' ||
-      (value as Record<string, unknown>).Tag === 'DestinationCharacterName') &&
-    typeof (value as Record<string, unknown>).MemberNumber !== 'undefined';
+    ((value as Record<string, unknown>)['Tag'] === 'SourceCharacter' ||
+      (value as Record<string, unknown>)['Tag'] === 'TargetCharacter' ||
+      (value as Record<string, unknown>)['Tag'] === 'TargetCharacterName' ||
+      (value as Record<string, unknown>)['Tag'] === 'DestinationCharacter' ||
+      (value as Record<string, unknown>)['Tag'] === 'DestinationCharacterName') &&
+    typeof (value as Record<string, unknown>)['MemberNumber'] !== 'undefined';
 }
 
 function hasAssetReference(value: ChatMessageDictionaryEntry): value is AssetReferenceDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as Record<string, unknown>).Tag === 'string' &&
-    typeof (value as Record<string, unknown>).GroupName === 'string' &&
-    typeof (value as Record<string, unknown>).AssetName === 'string';
+    typeof (value as Record<string, unknown>)['Tag'] === 'string' &&
+    typeof (value as Record<string, unknown>)['GroupName'] === 'string' &&
+    typeof (value as Record<string, unknown>)['AssetName'] === 'string';
 }
 
 function hasFocusGroup(value: ChatMessageDictionaryEntry): value is FocusGroupDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as Record<string, unknown>).FocusGroupName === 'string' &&
-    (!(value as Record<string, unknown>).Tag || (value as Record<string, unknown>).Tag === 'FocusAssetGroup');
+    typeof (value as Record<string, unknown>)['FocusGroupName'] === 'string' &&
+    (!(value as Record<string, unknown>)['Tag'] || (value as Record<string, unknown>)['Tag'] === 'FocusAssetGroup');
 }
 
 function hasAssetGroupName(value: ChatMessageDictionaryEntry): value is AssetGroupNameDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as Record<string, unknown>).Tag === 'string' &&
-    typeof (value as Record<string, unknown>).AssetGroupName === 'string';
+    typeof (value as Record<string, unknown>)['Tag'] === 'string' &&
+    typeof (value as Record<string, unknown>)['AssetGroupName'] === 'string';
 }
 
 function hasText(value: ChatMessageDictionaryEntry): value is TextDictionaryEntry {
   return isDictionary(value) &&
-    (typeof (value as Record<string, unknown>).Text === 'string' || typeof (value as Record<string, unknown>).Text === 'number');
+    (typeof (value as Record<string, unknown>)['Text'] === 'string' || typeof (value as Record<string, unknown>)['Text'] === 'number');
 }
 
 function hasTextLookup(value: ChatMessageDictionaryEntry): value is TextLookupDictionaryEntry {
   return isDictionary(value) &&
-    typeof (value as Record<string, unknown>).Tag === 'string' &&
-    typeof (value as Record<string, unknown>).TextToLookUp === 'string';
+    typeof (value as Record<string, unknown>)['Tag'] === 'string' &&
+    typeof (value as Record<string, unknown>)['TextToLookUp'] === 'string';
 }
 
 function isDictionary(value: unknown): value is Record<string, unknown> {

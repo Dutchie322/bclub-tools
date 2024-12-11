@@ -99,7 +99,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (!message || !message.type || !message.event) {
-    return;
+    return undefined;
   }
 
   console.log('Received:', message);
@@ -149,6 +149,8 @@ async function handleContentScriptMessage(message: any, sender: chrome.runtime.M
       await injectScripts(handshake, sender.tab.id);
       break;
   }
+
+  return undefined;
 }
 
 async function injectScripts(handshake: string, tabId: number) {

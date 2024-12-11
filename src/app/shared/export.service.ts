@@ -96,7 +96,7 @@ export class ExportService {
     if (objectStoreNames.length === 0) {
       update('Generating archive');
       archive.end();
-      return;
+      return archive;
     }
 
     const transaction = await this.databaseService.transaction(objectStoreNames, 'readonly');

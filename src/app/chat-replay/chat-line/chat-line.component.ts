@@ -1,11 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { IChatLog, renderContent } from 'models';
 
 @Component({
     selector: 'app-chat-line',
+    imports: [
+      CommonModule
+    ],
     templateUrl: './chat-line.component.html',
-    styleUrls: ['./chat-line.component.scss'],
-    standalone: false
+    styleUrls: ['./chat-line.component.scss']
 })
 export class ChatLineComponent {
   private renderedContent: Promise<string>;

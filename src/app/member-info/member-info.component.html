@@ -87,28 +87,31 @@
         <mat-list-item>
           <mat-icon matListItemIcon>supervisor_account</mat-icon>
           <h3 matListItemTitle>Owner</h3>
-        </mat-list-item>
-        <mat-list-item class="relationship">
-          <ng-container *ngIf="member.ownership; else noOwner" ngProjectAs="[matListItemLine]">
-            <ng-container *ngIf="member.ownership.memberNumber; else npcOwner">
-              <span matListItemLine><b>{{ member.ownership.name }} ({{ member.ownership.memberNumber }})</b></span>
-              <span matListItemLine>{{ ownershipStageToName(member.ownership.stage) }} for {{ timeToDays(member.ownership.start) }} days</span>
-              <span matListItemLine>(since {{ member.ownership.start | date }})</span>
-            </ng-container>
-            <ng-template #npcOwner>
-              <span matListItemLine>{{ member.ownership.name | slice:4 }}</span>
-            </ng-template>
-          </ng-container>
-          <ng-template #noOwner>
+          @if (!member.ownership) {
             <span matListItemLine class="empty-value">None</span>
-          </ng-template>
+          }
         </mat-list-item>
+        @if (member.ownership) {
+          <mat-list-item class="relationship">
+            @if (member.ownership.memberNumber) {
+              <ng-container ngProjectAs="[matListItemLine]">
+                <span matListItemLine><b>{{ member.ownership.name }} ({{ member.ownership.memberNumber }})</b></span>
+                <span matListItemLine>{{ ownershipStageToName(member.ownership.stage) }} for {{ timeToDays(member.ownership.start) }} days</span>
+                <span matListItemLine>(since {{ member.ownership.start | date }})</span>
+              </ng-container>
+            } @else {
+              <span matListItemLine>{{ member.ownership.name | slice:4 }}</span>
+            }
+          </mat-list-item>
+        }
         <mat-list-item>
           <mat-icon matListItemIcon>favorite</mat-icon>
           <h3 matListItemTitle>Lovers</h3>
+          @if (!member.lovership || member.lovership.length === 0) {
+            <span matListItemLine class="empty-value">None</span>
+          }
         </mat-list-item>
-        <span *ngIf="!member.lovership || member.lovership.length === 0; else loversList" matListItemLine class="empty-value">None</span>
-        <ng-template #loversList>
+        @if (member.lovership && member.lovership.length > 0) {
           <ng-container *ngFor="let lover of member.lovership" ngProjectAs="mat-list-item">
             <ng-container *ngIf="lover.memberNumber; else npcLover">
               <mat-list-item class="relationship">
@@ -123,7 +126,7 @@
               </mat-list-item>
             </ng-template>
           </ng-container>
-        </ng-template>
+        }
       </mat-list>
     </div>
   </div>

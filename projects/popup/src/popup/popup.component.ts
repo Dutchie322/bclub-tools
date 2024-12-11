@@ -23,15 +23,11 @@ import {
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { IPlayerCharacter } from 'src/app/shared/models';
 import { NewVersionNotificationComponent } from '../new-version-notification/new-version-notification.component';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { requestOnlineFriends } from 'projects/content-script/src/update-friends';
 
 @Component({
     selector: 'app-popup',
     imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
         CommonModule,
         // Material design
         MatButtonModule,
@@ -62,6 +58,7 @@ export class PopupComponent implements AfterViewInit {
   public onlineFriends = new MatTableDataSource<IMember>();
   public player: IStoredPlayer;
   public alternativeCharacters: IPlayerCharacter[];
+  public selectedTabIndex = 0;
 
   public characterColumns = ['name', 'pronouns', 'owner', 'reputation'];
   public chatRoomColumns = ['name', 'creator', 'members', 'description'];
@@ -81,7 +78,12 @@ export class PopupComponent implements AfterViewInit {
       const tabId = tabs[0].id;
       retrieve(tabId, 'player').then(player => this.player = player);
       retrieve(tabId, 'onlineFriends').then(friends => this.onlineFriends.data = friends || []);
-      retrieve(tabId, 'chatRoomCharacter').then(characters => this.characters.data = characters);
+      retrieve(tabId, 'chatRoomCharacter').then(characters => {
+        this.characters.data = characters;
+        if (this.characters.data.length == 0) {
+          this.selectedTabIndex = 1;
+        }
+      });
 
       onChanged(tabId, (changes, areaName) => {
         if (areaName !== 'local') {
@@ -91,6 +93,9 @@ export class PopupComponent implements AfterViewInit {
         this.ngZone.run(() => {
           if (changes.chatRoomCharacter) {
             this.characters.data = changes.chatRoomCharacter.newValue;
+            if (this.characters.data.length == 0) {
+              this.selectedTabIndex = 1;
+            }
           }
 
           if (changes.onlineFriends) {
@@ -143,7 +148,7 @@ export class PopupComponent implements AfterViewInit {
         next(dismissal) {
           if (dismissal.dismissedByAction) {
             migration.readChangelogVersion = currentVersion;
-            return storeGlobal('migration', migration);
+            storeGlobal('migration', migration);
           }
         }
       });

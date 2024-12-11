@@ -1,17 +1,30 @@
 import { Component } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 import { map, reduce, switchMap, startWith, tap } from 'rxjs/operators';
 
 import { ChatLogsService } from '../shared/chat-logs.service';
 import { IChatLog } from 'models';
+import { ChatLineComponent } from './chat-line/chat-line.component';
+import { CommonModule } from '@angular/common';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
     selector: 'app-chat-replay',
+    standalone: true,
+    imports: [
+      CommonModule,
+      ChatLineComponent,
+      ReactiveFormsModule,
+      MatCheckbox,
+      MatProgressBar,
+      MatToolbar
+    ],
     templateUrl: './chat-replay.component.html',
-    styleUrls: ['./chat-replay.component.scss'],
-    standalone: false
+    styleUrls: ['./chat-replay.component.scss']
 })
 export class ChatReplayComponent {
   private loadingSubject = new BehaviorSubject<boolean>(true);
@@ -25,7 +38,7 @@ export class ChatReplayComponent {
     private chatLogsService: ChatLogsService
   ) {
     this.loading$ = this.loadingSubject.asObservable();
-    this.chatReplay$ = combineLatest(
+    this.chatReplay$ = combineLatest([
       (this.showWhispers.valueChanges as Observable<boolean>).pipe(
         startWith(this.showWhispers.value as boolean)
       ),
@@ -36,7 +49,7 @@ export class ChatReplayComponent {
           chatRoom: params.get('chatRoom')
         }))
       )
-    ).pipe(
+    ]).pipe(
       tap(() => this.loadingSubject.next(true)),
       switchMap(([showWhispers, params]) =>
         this.chatLogsService.findChatReplay(params.memberNumber, params.sessionId, params.chatRoom).pipe(
