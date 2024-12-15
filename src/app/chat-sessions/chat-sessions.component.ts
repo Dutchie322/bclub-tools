@@ -17,6 +17,7 @@ import { IChatSession } from '../shared/models';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { getEndOfDayDate } from '../shared/utils/date';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-chat-sessions',
@@ -94,10 +95,12 @@ export class ChatSessionsComponent implements OnDestroy {
   constructor(
     route: ActivatedRoute,
     chatLogsService: ChatLogsService,
-    memberService: MemberService
+    memberService: MemberService,
+    title: Title
   ) {
     route.paramMap.pipe(
       map(params => +params.get('memberNumber')),
+      tap(memberNumber => title.setTitle(`Sessions & People (${memberNumber}) - Bondage Club Tools`)),
       tap(async memberNumber => this.chatSessions.data = await chatLogsService.findChatRoomsForMemberNumber(memberNumber)),
       tap(async memberNumber => this.members.data = await memberService.findMembersWithName(memberNumber)),
       takeUntil(this.destroySubject)

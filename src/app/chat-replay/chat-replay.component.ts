@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-chat-replay',
@@ -35,7 +36,8 @@ export class ChatReplayComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private chatLogsService: ChatLogsService
+    private chatLogsService: ChatLogsService,
+    title: Title
   ) {
     this.loading$ = this.loadingSubject.asObservable();
     this.chatReplay$ = combineLatest([
@@ -47,7 +49,8 @@ export class ChatReplayComponent {
           memberNumber: +params.get('memberNumber'),
           sessionId: params.get('sessionId'),
           chatRoom: params.get('chatRoom')
-        }))
+        })),
+        tap(params => title.setTitle(`${params.chatRoom} (${params.memberNumber}) - Bondage Club Tools`))
       )
     ]).pipe(
       tap(() => this.loadingSubject.next(true)),

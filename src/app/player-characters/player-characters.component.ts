@@ -5,6 +5,7 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { MatList, MatListItem } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-player-characters',
@@ -21,7 +22,8 @@ import { CommonModule } from '@angular/common';
 export class PlayerCharactersComponent {
   public playerCharacters: IPlayerCharacter[];
 
-  constructor(private chatLogsService: ChatLogsService) {
+  constructor(private chatLogsService: ChatLogsService, title: Title) {
+    title.setTitle('Own Characters - Bondage Club Tools');
     this.chatLogsService.findPlayerCharacters().then(characters => {
       this.playerCharacters = characters;
     });

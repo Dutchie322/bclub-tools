@@ -11,6 +11,7 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-member-info',
@@ -45,7 +46,8 @@ export class MemberInfoComponent implements OnDestroy {
   constructor(
     route: ActivatedRoute,
     memberService: MemberService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    title: Title
   ) {
     this.member$ = route.paramMap.pipe(
       map(params => ({
@@ -58,7 +60,8 @@ export class MemberInfoComponent implements OnDestroy {
       }),
       switchMap(params => memberService.retrieveMember(params.playerCharacter, params.memberNumber)),
       tap(member => this.memberForm.patchValue({ notes: member.notes }, { emitEvent: false })),
-      tap(member => this.member = member)
+      tap(member => this.member = member),
+      tap(member => title.setTitle(`${member.memberName} (${member.memberNumber}) - Bondage Club Tools`))
     );
 
     this.formSubscription = this.memberForm.valueChanges.pipe(
