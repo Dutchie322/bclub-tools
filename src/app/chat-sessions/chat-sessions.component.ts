@@ -156,6 +156,6 @@ export class ChatSessionsComponent implements OnDestroy {
         start: values.lastSeenRange.start,
         end: values.lastSeenRange.end && getEndOfDayDate(values.lastSeenRange.end)
       }
-    } as any as string;
+    } as unknown as string;
   }
 }
