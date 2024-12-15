@@ -23,6 +23,7 @@ import {
  */
 export function listenToServerEvents(handshake: string) {
   function createForwarder<TIncomingMessage, TOutgoingMessage>(event: string, mapData?: (data: TIncomingMessage) => TOutgoingMessage | false) {
+    const postFn = window.postMessage;
     ServerSocket.listeners(event).unshift((incomingData: TIncomingMessage) => {
       let data: false | TOutgoingMessage = false;
       try {
@@ -37,7 +38,7 @@ export function listenToServerEvents(handshake: string) {
         return;
       }
 
-      window.postMessage({
+      postFn({
         handshake,
         type: 'server',
         event,

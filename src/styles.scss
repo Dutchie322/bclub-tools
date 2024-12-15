@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
@@ -75,13 +77,17 @@ html, body {
 }
 
 html {
+  @include mat.theme((
+    typography: (Arial, sans-serif),
+    density: 0,
+  ));
+
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface)
 }
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
   min-height: 500px;
 
   &.popup {

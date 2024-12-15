@@ -1,11 +1,22 @@
-.table-wrapper {
-  width: 50%;
-  display: inline-block;
-  vertical-align: top;
+.overview {
+  display: grid;
+  grid-template-rows: 64px auto;
+  grid-template-columns: 1fr 1fr 300px;
+  gap: 5px;
 
   table {
     width: 100%;
   }
+}
+
+.search-form {
+  .mat-toolbar {
+    margin-bottom: 10px;
+  }
+}
+
+.mat-mdc-header-cell {
+  font-weight: bold;
 }
 
 .never-seen {

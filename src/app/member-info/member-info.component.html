@@ -95,7 +95,7 @@
           <mat-list-item class="relationship">
             @if (member.ownership.memberNumber) {
               <ng-container ngProjectAs="[matListItemLine]">
-                <span matListItemLine><b>{{ member.ownership.name }} ({{ member.ownership.memberNumber }})</b></span>
+                <h3 matListItemTitle>{{ member.ownership.name }} ({{ member.ownership.memberNumber }})</h3>
                 <span matListItemLine>{{ ownershipStageToName(member.ownership.stage) }} for {{ timeToDays(member.ownership.start) }} days</span>
                 <span matListItemLine>(since {{ member.ownership.start | date }})</span>
               </ng-container>
@@ -115,7 +115,7 @@
           <ng-container *ngFor="let lover of member.lovership" ngProjectAs="mat-list-item">
             <ng-container *ngIf="lover.memberNumber; else npcLover">
               <mat-list-item class="relationship">
-                <span matListItemLine><b>{{ lover.name }} ({{ lover.memberNumber }})</b></span>
+                <h3 matListItemTitle>{{ lover.name }} ({{ lover.memberNumber }})</h3>
                 <span matListItemLine>{{ lovershipStageToName(lover.stage) }} for {{ timeToDays(lover.start) }} days</span>
                 <span matListItemLine>(since {{ lover.start | date }})</span>
               </mat-list-item>
