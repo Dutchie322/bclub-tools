@@ -56,8 +56,9 @@
               (click)="downloadDatabase()"
               >Export database</button>
       <label>
-        <input type="checkbox" formControlName="exportAppearances">
-        Include appearances (can be a lot of data, slows down export)
+        <mat-checkbox formControlName="exportAppearances">
+          Include appearances (can be a lot of data, slows down export)
+        </mat-checkbox>
       </label>
     </mat-list-item>
     <mat-list-item *ngIf="exportProgress !== undefined">
