@@ -61,7 +61,7 @@ export class MemberInfoComponent implements OnDestroy {
       switchMap(params => memberService.retrieveMember(params.playerCharacter, params.memberNumber)),
       tap(member => this.memberForm.patchValue({ notes: member.notes }, { emitEvent: false })),
       tap(member => this.member = member),
-      tap(member => title.setTitle(`${member.memberName} (${member.memberNumber}) - Bondage Club Tools`))
+      tap(member => title.setTitle(`${member.nickname || member.memberName} (${member.memberNumber}) - Bondage Club Tools`))
     );
 
     this.formSubscription = this.memberForm.valueChanges.pipe(

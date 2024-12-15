@@ -29,7 +29,7 @@ export class MemberService {
           const member = cursor.value as IMember;
           if (member.memberName) {
             members.push({
-              memberName: member.memberName,
+              memberName: member.nickname || member.memberName,
               memberNumber: member.memberNumber,
               lastSeen: member.lastSeen
             });

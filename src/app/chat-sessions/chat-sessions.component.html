@@ -32,7 +32,7 @@
         </th>
         <td mat-cell *matCellDef="let member">
           <a [routerLink]="['member', member.memberNumber]">
-            {{ member.nickname || member.memberName }}
+            {{ member.memberName }}
           </a>
         </td>
       </ng-container>
