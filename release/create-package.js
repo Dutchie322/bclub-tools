@@ -13,6 +13,7 @@ function createBasePackage() {
   addAllFilesToArchive(package, 'background', __dirname + '/../dist/background/');
   addAllFilesToArchive(package, 'content-script', __dirname + '/../dist/content-script/');
   addAllFilesToArchive(package, 'log-viewer', __dirname + '/../dist/log-viewer/');
+  addAllFilesToArchive(package, 'options', __dirname + '/../dist/options/');
   addAllFilesToArchive(package, 'popup', __dirname + '/../dist/popup/');
   return package;
 }
