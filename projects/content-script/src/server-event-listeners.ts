@@ -170,6 +170,6 @@ export function listenToServerEvents(handshake: string) {
     Lovership: data.Lovership,
     Ownership: data.Ownership
   }));
-  createForwarder('disconnect');
-  createForwarder('ForceDisconnect');
+  // createForwarder('disconnect');
+  // createForwarder('ForceDisconnect');
 }

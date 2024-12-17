@@ -235,7 +235,8 @@ async function handleServerMessage(message: IServerMessage<any>, sender: chrome.
       break;
     case 'disconnect':
     case 'ForceDisconnect':
-      await handleDisconnect(sender.tab.id);
+      // Not the best way to handle disconnection: leaves extension disconnected if relogged
+      // await handleDisconnect(sender.tab.id);
       break;
     default:
       console.error('[Bondage Club Tools] Unhandled server message:');
@@ -338,9 +339,9 @@ async function handleCommonDrawAppearanceBuild(tabId: number, message: IClientMe
   }
 }
 
-async function handleDisconnect(tabId: number) {
-  await cleanUpData(tabId);
-}
+// async function handleDisconnect(tabId: number) {
+//   await cleanUpData(tabId);
+// }
 
 async function handleVariablesUpdate(tabId: number, message: IClientMessage<IVariablesUpdate>) {
   if (message.data.CurrentScreen === 'Login') {
