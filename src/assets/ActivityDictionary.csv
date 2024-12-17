@@ -62,6 +62,7 @@ ActivitySipItem,Sip
 ActivityEatItem,Eat
 ActivityScratch,Scratch
 ActivityThrowItem,Throw Item
+ActivityCollarGrab,Grab Collar
 OrgasmFailResist0,"SourceCharacter is tormented by the vibrations, struggling to keep PronounPossessive cool."
 OrgasmFailResist1,"SourceCharacter struggles against the intense vibrations, hardly able to control PronounPossessiveself."
 OrgasmFailResist2,SourceCharacter resists the stimulation until it finally cuts off abruptly.
@@ -313,6 +314,7 @@ Label-ChatOther-ItemNeck-ShockItem,Shock Neck
 Label-ChatOther-ItemNeck-Step,Gently Foot on Neck
 Label-ChatOther-ItemNeck-Tickle,Tickle Neck
 Label-ChatOther-ItemNeck-TickleItem,Tickle Neck
+Label-ChatOther-ItemNeck-CollarGrab,Grab Collar
 Label-ChatOther-ItemNipples-Bite,Bite Nipple
 Label-ChatOther-ItemNipples-Caress,Caress Nipples
 Label-ChatOther-ItemNipples-GaggedKiss,Press Gag on Nipple
@@ -613,6 +615,7 @@ Label-ChatSelf-ItemNeck-Scratch,Scratch
 Label-ChatSelf-ItemNeck-ShockItem,Shock Neck
 Label-ChatSelf-ItemNeck-Tickle,Tickle Neck
 Label-ChatSelf-ItemNeck-TickleItem,Tickle Neck
+Label-ChatSelf-ItemNeck-CollarGrab,Grab Collar
 Label-ChatSelf-ItemNipples-Caress,Caress Nipple
 Label-ChatSelf-ItemNipples-Kiss,Kiss Nipple
 Label-ChatSelf-ItemNipples-Lick,Lick Nipple
@@ -914,6 +917,7 @@ ChatOther-ItemNeck-ShockItem,SourceCharacter shocks TargetCharacter's neck with 
 ChatOther-ItemNeck-Step,SourceCharacter gently places PronounPossessive foot over TargetCharacter's neck.
 ChatOther-ItemNeck-Tickle,SourceCharacter tickles TargetCharacter's neck.
 ChatOther-ItemNeck-TickleItem,SourceCharacter tickles TargetCharacter's neck with PronounPossessive ActivityAsset.
+ChatOther-ItemNeck-CollarGrab,SourceCharacter grabs TargetCharacter's collar and pulls TargetPronounObject closer.
 ChatOther-ItemNipples-Bite,SourceCharacter bites TargetCharacter's nipple.
 ChatOther-ItemNipples-Caress,SourceCharacter caresses TargetCharacter's nipples.
 ChatOther-ItemNipples-GaggedKiss,SourceCharacter presses PronounPossessive gag to TargetCharacter's nipple.
@@ -1211,6 +1215,7 @@ ChatSelf-ItemNeck-Scratch,SourceCharacter scratches PronounPossessive neck.
 ChatSelf-ItemNeck-ShockItem,SourceCharacter shocks PronounPossessive own neck with PronounPossessive ActivityAsset.
 ChatSelf-ItemNeck-Tickle,SourceCharacter tickles PronounPossessive neck.
 ChatSelf-ItemNeck-TickleItem,SourceCharacter tickles PronounPossessive own neck with PronounPossessive ActivityAsset.
+ChatSelf-ItemNeck-CollarGrab,SourceCharacter holds onto PronounPossessive collar tightly.
 ChatSelf-ItemNipples-Caress,SourceCharacter caresses PronounPossessive nipples.
 ChatSelf-ItemNipples-Kiss,SourceCharacter kisses PronounPossessive own nipple.
 ChatSelf-ItemNipples-Lick,SourceCharacter licks PronounPossessive own nipple.

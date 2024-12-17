@@ -39,7 +39,11 @@ BeepFromOwner,Beep from your owner in your private room
 BeepWithMail,(Mail)
 BeepWithMessage,With Message
 BlindToggleFacialExpressions,Toggle closed eyes blindness
-BlockedByRoom,Blocked in this room.
+BlockedByEquipped,Item is already equipped.
+BlockedByGGTS,Item is blocked by GGTS.
+BlockedByLock,AssetName must be unlocked first.
+BlockedByPermissions,Item is blocked by user.
+BlockedByRoom,Item is blocked in this room.
 Brightness,Brightness
 Cancel,Cancel
 CannotUseOnSelf,Cannot use on yourself.
@@ -68,6 +72,7 @@ CraftedItemProperties,Crafted item properties.
 CraftingDescription,Description: CraftDescription
 CraftingMember,Crafter: MemberName (MemberNumber)
 CraftingName,Name: CraftName
+CraftingPrivate,Private: CraftPrivate
 CraftingProperty,Property: CraftProperty
 CurrentMode,Current Mode:
 Decoding,Decoding the lock...
@@ -136,13 +141,16 @@ Intensity2,Item intensity: High
 Intensity3,Item intensity: Maximum
 LayeringAsset,Configure total priority
 LayeringExit,Exit
+LayeringHide,Hide hidden layers
 LayeringLayer,Configure layer-specific priority
+LayeringLock,Item configuration locked
 LayeringReset,Reset layering
+LayeringShow,Show hidden layers
 Locking,Locking...
 LockMemberNumber,Member number on lock:
 LockZoneBlocked,Another item is blocking access to this lock
 LockPickArousal,Your hands are shaky and you lose some tension by accident!
-LockPickBreak,DestinationCharacterName jammed a lock and broke TargetPronounPossessive lockpick!
+LockPickBreak,SourceCharacter jammed a lock on DestinationCharacterName and broke PronounPossessive lockpick!
 LockpickFailed,You jammed the lock.
 LockpickFailedTimeout,You are too tired to continue. Time remaining:
 LockpickIntro,Click the pins in the correct order to open the lock!
@@ -161,16 +169,30 @@ Minutes,minutes
 NextExpressions,View next expressions
 NextPage,View next page
 NoItems,You have no items in this category
+NoItemEquipped,No lockable item equipped
 NotificationTitleBeep,Beep
 NotificationTitleChatJoin,Joined Room
 NotificationTitleChatMessage,Chat Message
 NotificationTitleDisconnect,Disconnected
-NotificationTitleFromRoom, from ChatRoomName
+NotificationTitleFromRoom,from ChatRoomName
 NotificationTitleLarp,LARP - Your turn
 NotificationTitleTest,Test Notification
 OpacityLabel,Change Opacity
 OptionNeedsToBeBought,Option needs to be bought
 Page,Page
+PandoraActivityBondage,A Pandora guard puts SourceCharacter in new restraints.
+PandoraActivitySpank,A Pandora guard spanks SourceCharacter butt many times.
+PandoraActivityHose,A Pandora guard hoses SourceCharacter with cold water.
+PandoraActivityGag,A Pandora guard gags SourceCharacter.
+PandoraActivityUngag,A Pandora guard removes the gag from SourceCharacter.
+PandoraActivityHogtie,A Pandora guard chains and hogties SourceCharacter.
+PandoraActivityShibari,A Pandora guard puts SourceCharacter in shibari bondage.
+PandoraActivityNaked,A Pandora guard strips SourceCharacter and confiscates the clothes for a while.
+PandoraActivityLock,A Pandora guard adds locks on SourceCharacter restraints.
+PandoraActivityChastity,A Pandora guard locks a chastity device on SourceCharacter.
+PandoraActivityUnchaste,A Pandora guard removes the chastity device from SourceCharacter.
+PandoraActivityUnlock,A Pandora guard unlocks some restraints on SourceCharacter.
+PandoraActivityRelease,A Pandora guard removes some restraints on SourceCharacter.
 Picking,Picking the lock...
 PoseMenu,Pose
 PrerequisiteAddItemsToUse,Must have an arm/torso/pelvis item to use ceiling tethers.
@@ -226,7 +248,8 @@ PrerequisiteMustStandUpFirst,Must stand up first.
 PrerequisiteNeedHarness,TargetPronounSubject must be wearing a baby harness to chain the mittens.
 PrerequisiteNeedPadlock,You need some padlocks to do this.
 PrerequisiteNeedPadlockKey,You need a padlock key to do this.
-PrerequisiteNeedsHarness,Requires a harness.
+PrerequisiteNeedsChestHarness,Requires a chest harness.
+PrerequisiteNeedsHipHarness,Requires a hip harness.
 PrerequisiteNeedsNippleRings,Requires round piercings on nipples.
 PrerequisiteRemoveChain,Unchain mittens
 PrerequisiteRemoveChainForItem,Remove the chain first.
@@ -244,6 +267,7 @@ PreviewIconAllowedLimited,Allowed Limited Item
 PreviewIconBlindHeavy,Heavily blinds
 PreviewIconBlindLight,Lightly blinds
 PreviewIconBlindNormal,Blinds
+PreviewIconBlock,Restrains hands
 PreviewIconBuyGroup,Buygroup member
 PreviewIconDeafHeavy,Heavily deafens
 PreviewIconDeafLight,Lightly deafens
@@ -253,6 +277,7 @@ PreviewIconFamilyOnly,D/s Family only
 PreviewIconFavorite,Favorite
 PreviewIconFavoriteBoth,Favorite (theirs & yours)
 PreviewIconFavoritePlayer,Favorite (yours)
+PreviewIconFreeze,Restrains legs
 PreviewIconGagHeavy,Heavily gags
 PreviewIconGagLight,Lightly gags
 PreviewIconGagNormal,Gags
@@ -265,11 +290,11 @@ PreviewIconPadlock,Locked with a AssetName
 PreviewIconUnlocked,Automatically locks
 PrevPage,View previous page
 Private,Private
-PrivateRoom,<i>Private room</i>
+PrivateRoom,<i>Private</i>
 ProgressClick,Click here to speed up the progress
 ProgressDex,Click when the player reaches the buckle to progress
 ProgressFlex,Click the ropes before they hit the ground to progress
-ProgressKeys,Alternate keys A (Q on AZERTY) and D to speed up,,
+ProgressKeys,Alternate keys A (Q on AZERTY) and D to speed up
 ProgressKeysController,Alternate keys A and S or X and Y on a controller
 PronounObjectHeHim,him
 PronounObjectSheHer,her
@@ -287,6 +312,7 @@ ReceivedBeep,Received at
 RemoveItemWithTimer,Remove item when the lock timer runs out
 Removing,Removing...
 RequireBondageLevel,Need Bondage ReqLevel
+RequirePlayer,Requires the player character
 RequireSelfBondage1,Requires self-bondage 1.
 RequireSelfBondage10,Requires self-bondage 10.
 RequireSelfBondage2,Requires self-bondage 2.
@@ -392,12 +418,15 @@ ServerMessageStartTrial,The Bondage Club is pleased to announce that SourceChara
 ServerMoveLeft,TargetCharacterName was moved to the left by SourceCharacter.
 ServerMoveRight,TargetCharacterName was moved to the right by SourceCharacter.
 ServerPromoteAdmin,TargetCharacterName was promoted to administrator by SourceCharacter.
+ServerRoomUnwhitelist,TargetCharacterName was removed from the room whitelist by SourceCharacter.
+ServerRoomWhitelist,TargetCharacterName was added to the room whitelist by SourceCharacter.
 ServerShuffle,SourceCharacter shuffles the position of everyone in the room randomly.
 ServerSwap,SourceCharacter swapped TargetCharacterName and DestinationCharacterName1 places.
 ServerUpdateRoom,SourceCharacter updated the room. Name: ChatRoomName. Limit: ChatRoomLimit.  ChatRoomPrivacy.  ChatRoomLocked.
 ShowAllZones,Show all zones
 ShowItemWithTimerRemaining,Show the time remaining/being added
 Someone,Someone
+StatusAndEffects,Status & effects:
 StruggleDexterity,Try to unfasten
 StruggleFlexibility,Try to squeeze out
 StruggleImpossible,Impossible to escape!
@@ -412,6 +441,7 @@ tightens,tightens
 Tightness,Tightness:
 TryLoosen,Try to loosen the item
 TimerLeft,Time left:
+TimerUnknown,Unknown time left
 Unlocked,Unlocked
 Unlocking,Unlocking...
 Using0,Using none of your skill...
@@ -423,4 +453,4 @@ WillRemoveItemWithTimer,The item will be removed when the lock timer runs out
 WontRemoveItemWithTimer,The item will stay when the lock timer runs out
 ZoneBlocked,This zone is out of reach from another item
 ZoneBlockedOwner,Your owner doesn't allow you to access that zone
-ZoneBlockedRange,You're too far to reach DialogCharacterObject body and items.
+ZoneBlockedRange,You're too far to reach DialogCharacterObject's body and items.

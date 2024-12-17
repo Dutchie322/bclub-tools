@@ -4,6 +4,24 @@ AnalHookPoseHair,Hair
 AnalHookRestrainBase,SourceCharacter detaches DestinationCharacter anal hook.
 AnalHookRestrainChain,SourceCharacter attaches a chain to DestinationCharacter anal hook.
 AnalHookRestrainHair,SourceCharacter attaches DestinationCharacter anal hook to TargetPronounPossessive hair.
+AnkletLeftLegFurModuleAnkle,Ankle zone
+AnkletLeftLegFurModuleKnee,Knee zone
+AnkletLeftLegFurOptionk0,None
+AnkletLeftLegFurOptionk1,Adding fur
+AnkletLeftLegFurOptionn0,None
+AnkletLeftLegFurOptionn1,Adding fur
+AnkletLeftLegFurSelectAnkle,Wear or remove it
+AnkletLeftLegFurSelectBase,Customise your fur accessory:
+AnkletLeftLegFurSelectKnee,Wear or remove it
+AnkletRightLegFurModuleAnkle,Ankle zone
+AnkletRightLegFurModuleKnee,Knee zone
+AnkletRightLegFurOptionk0,None
+AnkletRightLegFurOptionk1,Adding fur
+AnkletRightLegFurOptionn0,None
+AnkletRightLegFurOptionn1,Adding fur
+AnkletRightLegFurSelectAnkle,wear or remove it
+AnkletRightLegFurSelectBase,Customise your fur accessory:
+AnkletRightLegFurSelectKnee,wear or remove it
 ArmsChainSetAllFours,SourceCharacter uses chains on TargetCharacter to have TargetPronounObject crawling on all fours.
 ArmsChainSetBoxTie,SourceCharacter uses chains on TargetCharacter to do a box tie.
 ArmsChainSetChainCuffs,SourceCharacter uses chains to tie chain cuffs on DestinationCharacter wrists.
@@ -195,6 +213,88 @@ BodyMarkingsWombTattoosSelectViper,Apply
 BodyMarkingsWombTattoosSelectWaves,Apply
 BodyMarkingsWombTattoosSelectWingSmall,Apply
 BodyMarkingsWombTattoosSelectZoom,Apply
+BodyMarkingsFaceScarsModule1,Forehead
+BodyMarkingsFaceScarsModule2,Left Lip
+BodyMarkingsFaceScarsModule3,Right Lip
+BodyMarkingsFaceScarsModule4,Left Under eye
+BodyMarkingsFaceScarsModule5,Right Under eye
+BodyMarkingsFaceScarsModule6,Left Cheek Cross
+BodyMarkingsFaceScarsModule7,Right Cheek Cross
+BodyMarkingsFaceScarsModule8,Left Eye
+BodyMarkingsFaceScarsModule9,Right Eye
+BodyMarkingsFaceScarsModule10,Nose
+BodyMarkingsFaceScarsModule11,Vertical
+BodyMarkingsFaceScarsOptiona0,No
+BodyMarkingsFaceScarsOptiona1,Yes
+BodyMarkingsFaceScarsOptionb0,No
+BodyMarkingsFaceScarsOptionb1,Yes
+BodyMarkingsFaceScarsOptionc0,No
+BodyMarkingsFaceScarsOptionc1,Yes
+BodyMarkingsFaceScarsOptiond0,No
+BodyMarkingsFaceScarsOptiond1,Yes
+BodyMarkingsFaceScarsOptione0,No
+BodyMarkingsFaceScarsOptione1,Yes
+BodyMarkingsFaceScarsOptionf0,No
+BodyMarkingsFaceScarsOptionf1,Yes
+BodyMarkingsFaceScarsOptiong0,No
+BodyMarkingsFaceScarsOptiong1,Yes
+BodyMarkingsFaceScarsOptionh0,No
+BodyMarkingsFaceScarsOptionh1,Yes
+BodyMarkingsFaceScarsOptioni0,No
+BodyMarkingsFaceScarsOptioni1,Yes
+BodyMarkingsFaceScarsOptionj0,No
+BodyMarkingsFaceScarsOptionj1,Yes
+BodyMarkingsFaceScarsOptionk0,No
+BodyMarkingsFaceScarsOptionk1,Yes
+BodyMarkingsFaceScarsSelectBase,Select Mark
+BodyMarkingsFaceScarsSelect1,Apply
+BodyMarkingsFaceScarsSelect2,Apply
+BodyMarkingsFaceScarsSelect3,Apply
+BodyMarkingsFaceScarsSelect4,Apply
+BodyMarkingsFaceScarsSelect5,Apply
+BodyMarkingsFaceScarsSelect6,Apply
+BodyMarkingsFaceScarsSelect7,Apply
+BodyMarkingsFaceScarsSelect8,Apply
+BodyMarkingsFaceScarsSelect9,Apply
+BodyMarkingsFaceScarsSelect10,Apply
+BodyMarkingsFaceScarsSelect11,Apply
+BodyMarkingsFacePaintsModule1,Bottom stripes
+BodyMarkingsFacePaintsModule2,Top stripes
+BodyMarkingsFacePaintsModule3,Cheek spots
+BodyMarkingsFacePaintsModule4,Eye spots
+BodyMarkingsFacePaintsModule5,Forhead spots
+BodyMarkingsFacePaintsModule6,Muzzle
+BodyMarkingsFacePaintsModule7,Nose spots
+BodyMarkingsFacePaintsModule8,Left barcode
+BodyMarkingsFacePaintsModule9,Right barcode
+BodyMarkingsFacePaintsOptiona0,No
+BodyMarkingsFacePaintsOptiona1,Yes
+BodyMarkingsFacePaintsOptionb0,No
+BodyMarkingsFacePaintsOptionb1,Yes
+BodyMarkingsFacePaintsOptionc0,No
+BodyMarkingsFacePaintsOptionc1,Yes
+BodyMarkingsFacePaintsOptiond0,No
+BodyMarkingsFacePaintsOptiond1,Yes
+BodyMarkingsFacePaintsOptione0,No
+BodyMarkingsFacePaintsOptione1,Yes
+BodyMarkingsFacePaintsOptionf0,No
+BodyMarkingsFacePaintsOptionf1,Yes
+BodyMarkingsFacePaintsOptiong0,No
+BodyMarkingsFacePaintsOptiong1,Yes
+BodyMarkingsFacePaintsOptionh0,No
+BodyMarkingsFacePaintsOptionh1,Yes
+BodyMarkingsFacePaintsOptioni0,No
+BodyMarkingsFacePaintsOptioni1,Yes
+BodyMarkingsFacePaintsSelectBase,Select marks
+BodyMarkingsFacePaintsSelect1,Apply
+BodyMarkingsFacePaintsSelect2,Apply
+BodyMarkingsFacePaintsSelect3,Apply
+BodyMarkingsFacePaintsSelect4,Apply
+BodyMarkingsFacePaintsSelect5,Apply
+BodyMarkingsFacePaintsSelect6,Apply
+BodyMarkingsFacePaintsSelect7,Apply
+BodyMarkingsFacePaintsSelect8,Apply
+BodyMarkingsFacePaintsSelect9,Apply
 BodyUpperFlatMediumDefault,Default
 BodyUpperFlatMediumSelect,Select body overlay.
 BodyUpperFlatSmallDefault,Default
@@ -569,6 +669,14 @@ ClothCustomTShirtOptiont0,None
 ClothCustomTShirtOptiont1,Bondage College
 ClothCustomTShirtOptiont10,Zam's Stick Art
 ClothCustomTShirtOptiont11,Eclipse
+ClothCustomTShirtOptiont12,Cesium Frog
+ClothCustomTShirtOptiont13,Zam's Stick ArtII
+ClothCustomTShirtOptiont14,Hornyhood
+ClothCustomTShirtOptiont15,Bondage Club Rules!
+ClothCustomTShirtOptiont16,Born To Be Tied
+ClothCustomTShirtOptiont17,Hogtied
+ClothCustomTShirtOptiont18,Bondage College 2
+ClothCustomTShirtOptiont19,S.Tiyana's White C-Pad
 ClothCustomTShirtOptiont2,BTG
 ClothCustomTShirtOptiont3,Dominant
 ClothCustomTShirtOptiont4,Bonk!
@@ -1165,9 +1273,9 @@ GwenHoodChangeStyleHairInAccOut,SourceCharacter changes the style of Destination
 GwenHoodChangeStyleHairOutAccIn,SourceCharacter changes the style of DestinationCharacter gwen hood.
 GwenHoodChangeStyleHairOutAccOut,SourceCharacter changes the style of DestinationCharacter gwen hood.
 GwenHoodSelectStyle,Select hood style
-GwenHoodStyleHairInAccIn, Hair in & Accessories in
-GwenHoodStyleHairInAccOut, Hair in & Accessories out
-GwenHoodStyleHairOutAccIn, Hair out & Accessories in
+GwenHoodStyleHairInAccIn,Hair in & Accessories in
+GwenHoodStyleHairInAccOut,Hair in & Accessories out
+GwenHoodStyleHairOutAccIn,Hair out & Accessories in
 GwenHoodStyleHairOutAccOut,Hair out & Accessories out
 HairAccessory1ElfEarsBehind,Behind hair
 HairAccessory1ElfEarsInFront,In front of hair
@@ -1177,6 +1285,108 @@ HairAccessory1HaloDefault,Full
 HairAccessory1HaloSelect,Select Halo Type
 HairAccessory1HaloSetBroken,SourceCharacter shatters DestinationCharacter AssetName
 HairAccessory1HaloSetDefault,SourceCharacter mends DestinationCharacter AssetName
+HairAccessory1OnihornsModuleLeftHorn,Left Horn
+HairAccessory1OnihornsModuleRightHorn,Right Horn
+HairAccessory1OnihornsOptionl0,Short
+HairAccessory1OnihornsOptionl1,Medium
+HairAccessory1OnihornsOptionl2,Long
+HairAccessory1OnihornsOptionr0,Short
+HairAccessory1OnihornsOptionr1,Medium
+HairAccessory1OnihornsOptionr2,Long
+HairAccessory1OnihornsSelectBase,Select Horn
+HairAccessory1OnihornsSelectLeftHorn,Select Size
+HairAccessory1OnihornsSelectRightHorn,Select Size
+HairAccessory1AquaticEarsSmall,Small
+HairAccessory1AquaticEarsLarge,Large
+HairAccessory1AquaticEarsSelect,Select inner style
+HairAccessory2OnihornsModuleLeftHorn,Left Horn
+HairAccessory2OnihornsModuleRightHorn,Right Horn
+HairAccessory2OnihornsOptionl0,Short
+HairAccessory2OnihornsOptionl1,Medium
+HairAccessory2OnihornsOptionl2,Long
+HairAccessory2OnihornsOptionr0,Short
+HairAccessory2OnihornsOptionr1,Medium
+HairAccessory2OnihornsOptionr2,Long
+HairAccessory2OnihornsSelectBase,Select Horn
+HairAccessory2OnihornsSelectLeftHorn,Select Size
+HairAccessory2OnihornsSelectRightHorn,Select Size
+HairAccessory2AquaticEarsSmall,Small
+HairAccessory2AquaticEarsLarge,Large
+HairAccessory2AquaticEarsSelect,Select inner style
+HairBackHairBack58Select,Select Type.
+HairBackHairBack58SetBoth,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack58SetLeftOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack58SetRightOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack58Both,Both
+HairBackHairBack58LeftOnly,Left Only
+HairBackHairBack58RightOnly,Right Only
+HairBackHairBack58bSelect,Select Type.
+HairBackHairBack58bSetBoth,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack58bSetLeftOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack58bSetRightOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack58bBoth,Both
+HairBackHairBack58bLeftOnly,Left Only
+HairBackHairBack58bRightOnly,Right Only
+HairBackHairBack60Select,Select Type.
+HairBackHairBack60SetBoth,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack60SetLeftOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack60SetRightOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack60Both,Both
+HairBackHairBack60LeftOnly,Left Only
+HairBackHairBack60RightOnly,Right Only
+HairBackHairBack61Select,Select Type.
+HairBackHairBack61SetBoth,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack61SetLeftOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack61SetRightOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack61Both,Both
+HairBackHairBack61LeftOnly,Left Only
+HairBackHairBack61RightOnly,Right Only
+HandAccessoryLeftRingsModuleIndex,Index
+HandAccessoryLeftRingsModuleMiddle,Middle finger
+HandAccessoryLeftRingsModulePinkie,Pinkie
+HandAccessoryLeftRingsModuleRing,Ring finger
+HandAccessoryLeftRingsModuleThumb,Thumb
+HandAccessoryLeftRingsOptioni0,None
+HandAccessoryLeftRingsOptioni1,Steel Ring
+HandAccessoryLeftRingsOptionm0,None
+HandAccessoryLeftRingsOptionm1,Steel Ring
+HandAccessoryLeftRingsOptionp0,None
+HandAccessoryLeftRingsOptionp1,Steel Ring
+HandAccessoryLeftRingsOptionp2,Honor Ring
+HandAccessoryLeftRingsOptionr0,None
+HandAccessoryLeftRingsOptionr1,Steel Ring
+HandAccessoryLeftRingsOptionr2,Wedding Ring
+HandAccessoryLeftRingsOptiont0,None
+HandAccessoryLeftRingsOptiont1,Steel Ring
+HandAccessoryLeftRingsSelectBase,Choose your rings
+HandAccessoryLeftRingsSelectIndex,Choose a ring for the Index
+HandAccessoryLeftRingsSelectMiddle,Choose a ring for the Middle finger
+HandAccessoryLeftRingsSelectPinkie,Choose a ring for the Pinkie
+HandAccessoryLeftRingsSelectRing,Choose a ring for the Ring finger
+HandAccessoryLeftRingsSelectThumb,Choose a ring for the Thumb
+HandAccessoryRightRingsModuleIndex,Index
+HandAccessoryRightRingsModuleMiddle,Middle finger
+HandAccessoryRightRingsModulePinkie,Pinkie
+HandAccessoryRightRingsModuleRing,Ring finger
+HandAccessoryRightRingsModuleThumb,Thumb
+HandAccessoryRightRingsOptioni0,None
+HandAccessoryRightRingsOptioni1,Steel Ring
+HandAccessoryRightRingsOptionm0,None
+HandAccessoryRightRingsOptionm1,Steel Ring
+HandAccessoryRightRingsOptionp0,None
+HandAccessoryRightRingsOptionp1,Steel Ring
+HandAccessoryRightRingsOptionp2,Honor Ring
+HandAccessoryRightRingsOptionr0,None
+HandAccessoryRightRingsOptionr1,Steel Ring
+HandAccessoryRightRingsOptionr2,Wedding Ring
+HandAccessoryRightRingsOptiont0,None
+HandAccessoryRightRingsOptiont1,Steel Ring
+HandAccessoryRightRingsSelectBase,Choose your rings
+HandAccessoryRightRingsSelectIndex,Choose a ring for the Index
+HandAccessoryRightRingsSelectMiddle,Choose a ring for the Middle finger
+HandAccessoryRightRingsSelectPinkie,Choose a ring for the Pinkie
+HandAccessoryRightRingsSelectRing,Choose a ring for the Ring finger
+HandAccessoryRightRingsSelectThumb,Choose a ring for the Thumb
 HatBallCapBackSelect,Select strap location.
 HatBallCapBackStrapOver,Over the hair
 HatBallCapBackStrapUnder,Under the hair
@@ -2201,6 +2411,48 @@ ItemHandsElbowLengthMittensSelect,Select options
 ItemHandsElbowLengthMittensSetChained,SourceCharacter attaches DestinationCharacter mittens to some chains.
 ItemHandsElbowLengthMittensSetUnchained,SourceCharacter detaches DestinationCharacter mittens from the chains.
 ItemHandsElbowLengthMittensUnchained,Free Limbs
+ItemHandsHempRopeCuffsCuffed,Cuffed
+ItemHandsHempRopeCuffsHarnessBack,Harness (back)
+ItemHandsHempRopeCuffsHarnessFront,Harness (front)
+ItemHandsHempRopeCuffsUnlinked,Unlinked
+ItemHandsHempRopeCuffsSelect,Select style
+ItemHandsHempRopeCuffsSetCuffed,SourceCharacter ties DestinationCharacter rope cuffs in her back.
+ItemHandsHempRopeCuffsSetHarnessBack,SourceCharacter ties DestinationCharacter rope cuffs to the back of her harness.
+ItemHandsHempRopeCuffsSetHarnessFront,SourceCharacter ties DestinationCharacter rope cuffs to the front of her harness.
+ItemHandsHempRopeCuffsSetUnlinked,SourceCharacter detaches DestinationCharacter rope cuffs.
+ItemHandsLatexBondageMittsSelectBase,Select Bondage Mitt Details
+ItemHandsLatexBondageMittsSelectGloveType,Select Mitt Type
+ItemHandsLatexBondageMittsModuleGloveType,Mitt Type
+ItemHandsLatexBondageMittsOptiont0,Padded
+ItemHandsLatexBondageMittsOptiont1,Inflated
+ItemHandsLatexBondageMittsOptiont2,Nozzle Inflated
+ItemHandsLatexBondageMittsSetGloveType,SourceCharacter changes the glove type of DestinationCharacter bondage mitts.
+ItemHandsLatexBondageMittsSelectWrist,Select Cuff Style
+ItemHandsLatexBondageMittsModuleWrist,Cuff Style
+ItemHandsLatexBondageMittsOptionw0,None
+ItemHandsLatexBondageMittsOptionw1,Firm Cuffs
+ItemHandsLatexBondageMittsOptionw2,Fitted Cuffs
+ItemHandsLatexBondageMittsSetWrist,SourceCharacter adjusts the cuffs of DestinationCharacter bondage mitts.
+ItemHandsLatexBondageMittsSelectPatternRight,Select Right Hand Pattern
+ItemHandsLatexBondageMittsModulePatternRight,Right Pattern
+ItemHandsLatexBondageMittsOptionr0,None
+ItemHandsLatexBondageMittsOptionr1,Pumpkin (Under Only)
+ItemHandsLatexBondageMittsOptionr2,Pumpkin
+ItemHandsLatexBondageMittsOptionr3,Smiley (Under Only)
+ItemHandsLatexBondageMittsOptionr4,Smiley
+ItemHandsLatexBondageMittsOptionr5,Split
+ItemHandsLatexBondageMittsOptionr6,Quarters
+ItemHandsLatexBondageMittsSetPatternRight,SourceCharacter changes the pattern of DestinationCharacter right bondage mitt.
+ItemHandsLatexBondageMittsSelectPatternLeft,Select Left Hand Pattern
+ItemHandsLatexBondageMittsModulePatternLeft,Left Pattern
+ItemHandsLatexBondageMittsOptionl0,None
+ItemHandsLatexBondageMittsOptionl1,Pumpkin (Under Only)
+ItemHandsLatexBondageMittsOptionl2,Pumpkin
+ItemHandsLatexBondageMittsOptionl3,Smiley (Under Only)
+ItemHandsLatexBondageMittsOptionl4,Smiley
+ItemHandsLatexBondageMittsOptionl5,Split
+ItemHandsLatexBondageMittsOptionl6,Quarters
+ItemHandsLatexBondageMittsSetPatternLeft,SourceCharacter changes the pattern of DestinationCharacter left bondage mitt.
 ItemHandsPaddedMittensChained,Chained
 ItemHandsPaddedMittensSelect,Select options
 ItemHandsPaddedMittensSetChained,SourceCharacter chains DestinationCharacter padded mittens to the harness.
@@ -2232,6 +2484,7 @@ ItemHeadDroneMaskModuleLayering,Adv. Layering
 ItemHeadDroneMaskModuleMouth,Mouth
 ItemHeadDroneMaskModulePattern,Pattern
 ItemHeadDroneMaskModuleSight,Lenses
+ItemHeadDroneMaskNoLayering,Must be equipped in the head slot
 ItemHeadDroneMaskOptione0,Smooth
 ItemHeadDroneMaskOptione1,Open
 ItemHeadDroneMaskOptione2,Spirals
@@ -2247,6 +2500,9 @@ ItemHeadDroneMaskOptionh2,Total Hood
 ItemHeadDroneMaskOptionj0,Hidden
 ItemHeadDroneMaskOptionj1,Right Gag Visible
 ItemHeadDroneMaskOptionj2,All Gags Visible
+ItemHeadDroneMaskOptionj3,Blindfold Visible
+ItemHeadDroneMaskOptionj4,Blindfold and Right
+ItemHeadDroneMaskOptionj5,All Visible
 ItemHeadDroneMaskOptionm0,Smooth
 ItemHeadDroneMaskOptionm1,Onahole
 ItemHeadDroneMaskOptionm2,Pussy
@@ -2394,6 +2650,28 @@ ItemHoodBigMouthHoodSetLenses,SourceCharacter put a pair of lenses on Destinatio
 ItemHoodBigMouthHoodSetMesh,SourceCharacter put a mesh on DestinationCharacter hood.
 ItemHoodBigMouthHoodSetSlim,SourceCharacter blinds DestinationCharacter completely.
 ItemHoodBigMouthHoodSlim,Blind
+ItemHoodCustomBallHoodModuleFinish,Finish
+ItemHoodCustomBallHoodModulePattern,Pattern
+ItemHoodCustomBallHoodModuleCover,Coverage
+ItemHoodCustomBallHoodOptionf0,Matte
+ItemHoodCustomBallHoodOptionf1,Shiny
+ItemHoodCustomBallHoodOptionp0,None
+ItemHoodCustomBallHoodOptionp1,Pumpkin
+ItemHoodCustomBallHoodOptionp2,Smiley Lines
+ItemHoodCustomBallHoodOptionp3,Smiley Filled
+ItemHoodCustomBallHoodOptionp4,8 Ball
+ItemHoodCustomBallHoodOptionp5,Tree
+ItemHoodCustomBallHoodOptionp6,Quarters
+ItemHoodCustomBallHoodOptionc0,Cover All
+ItemHoodCustomBallHoodOptionc1,Cover Limited
+ItemHoodCustomBallHoodOptionc2,Cover Hair Only
+ItemHoodCustomBallHoodSelectBase,Select Hood Details
+ItemHoodCustomBallHoodSelectFinish,Select Hood Finish
+ItemHoodCustomBallHoodSelectPattern,Select Pattern
+ItemHoodCustomBallHoodSelectCover,Select Coverage
+ItemHoodCustomBallHoodSetFinish,SourceCharacter adjusts the shine of DestinationCharacter ball hood.
+ItemHoodCustomBallHoodSetPattern,SourceCharacter changes the pattern on DestinationCharacter ball hood.
+ItemHoodCustomBallHoodSetCover,SourceCharacter adjusts the coverage of DestinationCharacter ball hood.
 ItemHoodCustomLatexHoodModuleEFill,Eye Panel Fill
 ItemHoodCustomLatexHoodModuleEPanel,Eye Panel
 ItemHoodCustomLatexHoodModuleHairShow,Hair Options
@@ -3913,7 +4191,7 @@ ItemPelvisPortalPantiesOptionco0,Detached Unit
 ItemPelvisPortalPantiesOptionco1,Attached Unit
 ItemPelvisPortalPantiesOptiono0,Configuration screen
 ItemPelvisPortalPantiesSelect,Select Cover
-ItemPelvisPortalPantiesSelectBase, Select options
+ItemPelvisPortalPantiesSelectBase,Select options
 ItemPelvisPortalPantiesSelectBase,Select options
 ItemPelvisPortalPantiesSelectCode,Open configuration screen
 ItemPelvisPortalPantiesSelectCrotchCover,Select Crotch Cover
@@ -4185,38 +4463,6 @@ LeatherDeluxeAnkleCuffsPoseNone,Detached
 LeatherDeluxeAnkleCuffsRestrainChained,SourceCharacter attaches the Leather Deluxe ankle cuffs chain on DestinationCharacter ankles.
 LeatherDeluxeAnkleCuffsRestrainClosed,SourceCharacter attaches the Leather Deluxe ankle cuffs chain on DestinationCharacter ankles.
 LeatherDeluxeAnkleCuffsRestrainNone,SourceCharacter detaches the chain from DestinationCharacter Leather Deluxe ankle cuffs.
-LeftAnkletLegFurModuleAnkle,Ankle zone
-LeftAnkletLegFurModuleKnee,Knee zone
-LeftAnkletLegFurOptionk0,None
-LeftAnkletLegFurOptionk1,Adding fur
-LeftAnkletLegFurOptionn0,None
-LeftAnkletLegFurOptionn1,Adding fur
-LeftAnkletLegFurSelectAnkle,Wear or remove it
-LeftAnkletLegFurSelectBase,Customise your fur accessory:
-LeftAnkletLegFurSelectKnee,Wear or remove it
-LeftHandRingsModuleIndex,Index
-LeftHandRingsModuleMiddle,Middle finger
-LeftHandRingsModulePinkie,Pinkie
-LeftHandRingsModuleRing,Ring finger
-LeftHandRingsModuleThumb,Thumb
-LeftHandRingsOptioni0,None
-LeftHandRingsOptioni1,Steel Ring
-LeftHandRingsOptionm0,None
-LeftHandRingsOptionm1,Steel Ring
-LeftHandRingsOptionp0,None
-LeftHandRingsOptionp1,Steel Ring
-LeftHandRingsOptionp2,Honor Ring
-LeftHandRingsOptionr0,None
-LeftHandRingsOptionr1,Steel Ring
-LeftHandRingsOptionr2,Wedding Ring
-LeftHandRingsOptiont0,None
-LeftHandRingsOptiont1,Steel Ring
-LeftHandRingsSelectBase,Choose your rings
-LeftHandRingsSelectIndex,Choose a ring for the Index
-LeftHandRingsSelectMiddle,Choose a ring for the Middle finger
-LeftHandRingsSelectPinkie,Choose a ring for the Pinkie
-LeftHandRingsSelectRing,Choose a ring for the Ring finger
-LeftHandRingsSelectThumb,Choose a ring for the Thumb
 LegChainSetBasic,SourceCharacter uses the chain on TargetCharacter to do a basic tie.
 LegChainSetStrict,SourceCharacter uses the chain on TargetCharacter to do a strict tie.
 LegChainSetSuspension,SourceCharacter uses the chain on TargetCharacter to do a suspension tie.
@@ -4361,6 +4607,13 @@ MaskSwimCapSelectHair,Adjust Hair Openings
 MaskSwimCapSelectPattern,Choose Pattern
 MaskSwimCapSetHair,SourceCharacter adjusts DestinationCharacter swimcap hair openings.
 MaskSwimCapSetPattern,SourceCharacter swaps DestinationCharacter swimcap pattern.
+MaskAnimalNosesSelect,Select Nose Type
+MaskAnimalNosesButtonNose,Button Nose
+MaskAnimalNosesElegantFelineNose,Elegant Feline Nose
+MaskAnimalNosesLargeCanineNose,Large Canine Nose
+MaskEldritchMaskSelect,Select Mask Type
+MaskEldritchMaskEyes,Eyes
+MaskEldritchMaskGlowingEyes,Glowing Eyes
 MaximumSuction,Maximum
 MediumSuction,Medium
 Medium,Medium
@@ -4627,38 +4880,6 @@ RibbonsTorsoHarness1,Harness
 RibbonsTorsoHarness2,Harness 2
 RibbonTypeBasic,Basic
 RibbonTypeBow,Bow
-RightAnkletLegFurModuleAnkle,Ankle zone
-RightAnkletLegFurModuleKnee,Knee zone
-RightAnkletLegFurOptionk0,None
-RightAnkletLegFurOptionk1,Adding fur
-RightAnkletLegFurOptionn0,None
-RightAnkletLegFurOptionn1,Adding fur
-RightAnkletLegFurSelectAnkle,wear or remove it
-RightAnkletLegFurSelectBase,Customise your fur accessory:
-RightAnkletLegFurSelectKnee,wear or remove it
-RightHandRingsModuleIndex,Index
-RightHandRingsModuleMiddle,Middle finger
-RightHandRingsModulePinkie,Pinkie
-RightHandRingsModuleRing,Ring finger
-RightHandRingsModuleThumb,Thumb
-RightHandRingsOptioni0,None
-RightHandRingsOptioni1,Steel Ring
-RightHandRingsOptionm0,None
-RightHandRingsOptionm1,Steel Ring
-RightHandRingsOptionp0,None
-RightHandRingsOptionp1,Steel Ring
-RightHandRingsOptionp2,Honor Ring
-RightHandRingsOptionr0,None
-RightHandRingsOptionr1,Steel Ring
-RightHandRingsOptionr2,Wedding Ring
-RightHandRingsOptiont0,None
-RightHandRingsOptiont1,Steel Ring
-RightHandRingsSelectBase,Choose your rings
-RightHandRingsSelectIndex,Choose a ring for the Index
-RightHandRingsSelectMiddle,Choose a ring for the Middle finger
-RightHandRingsSelectPinkie,Choose a ring for the Pinkie
-RightHandRingsSelectRing,Choose a ring for the Ring finger
-RightHandRingsSelectThumb,Choose a ring for the Thumb
 RopeBondageAllFours,All Fours
 RopeBondageAnkles,Ankles Tie
 RopeBondageAnklesKnees,Ankles and Knees Tie
@@ -4909,7 +5130,6 @@ TimerRelease,The LockName on DestinationCharacterName FocusAssetGroup opens with
 TimerReleaseMany,The locks on DestinationCharacterName UnlockedGroups open with a click
 TimerRemoveTime,SourceCharacter removes TimerTime TimerUnit from the padlock on DestinationCharacter FocusAssetGroup.
 TimerRestart,SourceCharacter restarts the five minutes timer padlock on DestinationCharacter FocusAssetGroup.
-TimerUnknown,Unknown time left
 ToeTapePoseFull,Full
 ToeTapePoseToes,Toes
 ToeTapeSetFull,SourceCharacter uses the tape on TargetCharacter to fully wrap TargetPronounPossessive feet with tape.
@@ -4983,6 +5203,10 @@ WebBondageWrapped,Wrapped
 WingsSteampunkWingsOff,Off
 WingsSteampunkWingsOn,On
 WingsSteampunkWingsSelect,Select the state.
+WingsDragonWingsSpread,Spread
+WingsDragonWingsFolded,Folded
+WingsDragonWingsBound,Bound
+WingsDragonWingsSelect,Select the state
 YourRoom,<i>Your private room</i>
 ZipBondageZipFeetFull,Full Binding
 ZipBondageZipFeetLight,Light Binding
@@ -5008,3 +5232,590 @@ ShoesStrictPonyBootsSelect,Select Type.
 ShoesStrictPonyBootsSetBase,SourceCharacter changes DestinationCharacter boots.
 ShoesStrictPonyBootsSetBootsOnly,SourceCharacter changes DestinationCharacter boots.
 ShoesStrictPonyBootsBootsOnly,Boots Only
+ItemDevicesGlueFloorSelect,Legs position options:
+ItemDevicesGlueFloorStand,Stand pose
+ItemDevicesGlueFloorSetStand,SourceCharacter glued the DestinationCharacter feet on the ground with TargetPronounPossessive open legs.
+ItemDevicesGlueFloorLegsClosed,With legs closed
+ItemDevicesGlueFloorSetLegsClosed,SourceCharacter glued the DestinationCharacter feet on the ground with TargetPronounPossessive closed legs.
+ItemDevicesOneBarGirlSelectBase,Unsuspected pose bar main menu
+ItemDevicesOneBarGirlModuleModel,Fake legs model
+ItemDevicesOneBarGirlSelectModel,Choose a fake legs pair:
+ItemDevicesOneBarGirlOptionm0,Crossed legs
+ItemDevicesOneBarGirlOptionm1,Laid-back legs
+ItemDevicesOneBarGirlOptionm2,Loose socks style
+ItemDevicesOneBarGirlOptionm3,Open legs
+ItemDevicesOneBarGirlOptionm4,Maid outfit
+ItemDevicesOneBarGirlSetm0,SourceCharacter traps DestinationCharacterName body on the bar with crossed legs pose.
+ItemDevicesOneBarGirlSetm1,SourceCharacter traps DestinationCharacterName body on the bar with laid-back legs pose.
+ItemDevicesOneBarGirlSetm2,SourceCharacter traps DestinationCharacterName body on the bar with loose socks style.
+ItemDevicesOneBarGirlSetm3,SourceCharacter traps DestinationCharacterName body on the bar with open legs pose.
+ItemDevicesOneBarGirlSetm4,SourceCharacter traps DestinationCharacterName body on the bar with maid outfit style.
+ItemDevicesOneBarGirlModuleVibration,Device vibration
+ItemDevicesOneBarGirlSelectVibration,Device speed control:
+ItemDevicesOneBarGirlOptionv0,Off
+ItemDevicesOneBarGirlOptionv1,Low
+ItemDevicesOneBarGirlOptionv2,Medium
+ItemDevicesOneBarGirlOptionv3,High
+ItemDevicesOneBarGirlOptionv4,Full on
+ItemDevicesOneBarGirlSetv0,SourceCharacter turned off the device vibration on DestinationCharacter clitoris.
+ItemDevicesOneBarGirlSetv1,SourceCharacter selected the device vibration to Low on DestinationCharacter clitoris.
+ItemDevicesOneBarGirlSetv2,SourceCharacter selected the device vibration to Medium on DestinationCharacter clitoris.
+ItemDevicesOneBarGirlSetv3,SourceCharacter selected the device vibration to High on DestinationCharacter clitoris.
+ItemDevicesOneBarGirlSetv4,SourceCharacter selected the device vibration to Max on DestinationCharacter clitoris.
+ItemDevicesOneBarGirlModuleInflateLevel,Dildo inflatable
+ItemDevicesOneBarGirlSelectInflateLevel,Dildo Inflatable mode:
+ItemDevicesOneBarGirlOptioni0,Empty
+ItemDevicesOneBarGirlOptioni1,Light
+ItemDevicesOneBarGirlOptioni2,Inflated
+ItemDevicesOneBarGirlOptioni3,Bloated
+ItemDevicesOneBarGirlOptioni4,Maximum
+ItemDevicesOneBarGirlSeti0,SourceCharacter emptied the dildo device into the DestinationCharacter vagina.
+ItemDevicesOneBarGirlSeti1,SourceCharacter sets the dildo on slightly level into the DestinationCharacter vagina.
+ItemDevicesOneBarGirlSeti2,SourceCharacter sets the dildo on normal size into the DestinationCharacter vagina.
+ItemDevicesOneBarGirlSeti3,SourceCharacter sets the dildo on bulk mode into the DestinationCharacter vagina.
+ItemDevicesOneBarGirlSeti4,SourceCharacter sets the dildo on almost self-explosion into the DestinationCharacter vagina.
+ClothLowerSatinSkirtSelect,Choose skirt lenght:
+ClothLowerSatinSkirtLong,Long skirt
+ClothLowerSatinSkirtMid,At knee height
+GlovesOperaGlovesSelect,Choose gloves lenght:
+GlovesOperaGlovesDefault,Elbow gloves
+GlovesOperaGlovesLong,Long gloves
+NecklacePearlNecklace1SelectBase,Customize your necklace:
+NecklacePearlNecklace1ModuleOption1,Normal
+NecklacePearlNecklace1SelectOption1,Normal necklace:
+NecklacePearlNecklace1Optionm0,None
+NecklacePearlNecklace1Optionm1,Placed
+NecklacePearlNecklace1ModuleOption2,Long
+NecklacePearlNecklace1SelectOption2,Long necklace:
+NecklacePearlNecklace1Optionn0,None
+NecklacePearlNecklace1Optionn1,Placed
+NecklacePearlNecklace1ModuleOption3,Choker
+NecklacePearlNecklace1SelectOption3,Choker style:
+NecklacePearlNecklace1Optiono0,None
+NecklacePearlNecklace1Optiono1,Placed
+ItemHandheldAnimeGirlWandSelect,Choose your Power Staff stance:
+ItemHandheldAnimeGirlWandStaff,A (spanker) staff
+ItemHandheldAnimeGirlWandSetStaff,SourceCharacter transform the Power Staff into Wand
+ItemHandheldAnimeGirlWandWand,A (kinky) wand
+ItemHandheldAnimeGirlWandSetWand,SourceCharacter transform the Power Staff into Staff
+ItemDevicesCementSelectBase,"Pole, material and bucket menu:"
+ItemDevicesCementModulePole,Pole and ratchets
+ItemDevicesCementSelectPole,Choose restraint lenght:
+ItemDevicesCementOptionp0,None
+ItemDevicesCementOptionp1,Just ankles
+ItemDevicesCementOptionp2,Lower legs
+ItemDevicesCementOptionp3,Full legs
+ItemDevicesCementModuleMaterial,Material to fill
+ItemDevicesCementSelectMaterial,Choose material to fill her/him feet:
+ItemDevicesCementOptionc0,None
+ItemDevicesCementOptionc1,Expanding foam
+ItemDevicesCementOptionc2,Slime
+ItemDevicesCementOptionc3,Glue
+ItemDevicesCementOptionc4,Cement
+ItemDevicesCementModuleBucket,Bucket option
+ItemDevicesCementSelectBucket,Remove or keep the bucket:
+ItemDevicesCementOptionb0,Keep bucket
+ItemDevicesCementOptionb1,Remove bucket
+ItemDevicesCementSetp0,SourceCharacter frees DestinationCharacterName legs from ratchets.
+ItemDevicesCementSetp1,SourceCharacter ties DestinationCharacterName ankles with ratchets.
+ItemDevicesCementSetp2,SourceCharacter ties DestinationCharacterName lower legs ankles with ratchets.
+ItemDevicesCementSetp3,SourceCharacter ties DestinationCharacterName legs completely ankles with ratchets.
+ItemDevicesCementSetb0,SourceCharacter puts DestinationCharacterName feet in the bucket.
+ItemDevicesCementSetb1,SourceCharacter removes the bucket from DestinationCharacterName feet.
+ItemDevicesCementSetc0,SourceCharacter frees DestinationCharacterName feet.
+ItemDevicesCementSetc1,SourceCharacter fills DestinationCharacterName feet with expanding foam.
+ItemDevicesCementSetc2,SourceCharacter fills DestinationCharacterName feet with hard slime.
+ItemDevicesCementSetc3,SourceCharacter fills DestinationCharacterName feet with atoxic glue.
+ItemDevicesCementSetc4,SourceCharacter fills DestinationCharacterName feet with quick drying cement.
+ClothLatexHobbleDressSelectBase,Customize your Strict Hobble Dress:
+ClothLatexHobbleDressModuleTop,Top dress
+ClothLatexHobbleDressSelectTop,Cleavage option:
+ClothLatexHobbleDressOptiont0,No cleavage
+ClothLatexHobbleDressOptiont1,Cleavege
+ClothLatexHobbleDressModuleCollarOpt,Collar
+ClothLatexHobbleDressSelectCollarOpt,Collar option:
+ClothLatexHobbleDressOptionc0,None
+ClothLatexHobbleDressOptionc1,Collar
+ClothLatexHobbleDressModuleSkirtOpt,Skirt length
+ClothLatexHobbleDressSelectSkirtOpt,Skirt lenght option:
+ClothLatexHobbleDressOptionk0,Knee lenght
+ClothLatexHobbleDressOptionk1,Full lenght (Slow)
+ClothLatexHobbleDressModuleEndSkirt,Skirt end
+ClothLatexHobbleDressSelectEndSkirt,End skirt option:
+ClothLatexHobbleDressOptionr0,Normal
+ClothLatexHobbleDressOptionr1,Mermaid style
+ClothLatexHobbleDressModuleBelt,Leg belts
+ClothLatexHobbleDressSelectBelt,Leg belts option:
+ClothLatexHobbleDressOptionb0,None
+ClothLatexHobbleDressOptionb1,Belt below the knee (Slow)
+ClothLatexHobbleDressOptionb2,Ankle belt (Slow)
+ClothLatexHobbleDressOptionb3,Belts in both positions (Slow)
+PincenezSelectType,Select a style:
+PincenezTypeNoAcc,Normal
+PincenezTypeNoAccOver,Normal over hair
+PincenezTypeAcc,With accessory
+PincenezTypeAccOver,With accessory over hair
+QualityHarnessGagSetBallGag,SourceCharacter attaches ball gag to DestinationCharacter gag harness.
+QualityHarnessGagSetRingGag,SourceCharacter attaches ring gag to DestinationCharacter gag harness.
+QualityHarnessGagTypeRingGag,Ring Gag
+QualityHarnessGagTypeBallGag,Ball Gag
+ItemArmsArmbinderSuitSelectBase,Armbinder Suit customization menu:
+ItemArmsArmbinderSuitModuleCollar,Collar
+ItemArmsArmbinderSuitSelectCollar,Collar menu
+ItemArmsArmbinderSuitOptionc0,None
+ItemArmsArmbinderSuitOptionc1,Security collar
+ItemArmsArmbinderSuitModuleBinder,Armbinder sector
+ItemArmsArmbinderSuitSelectBinder,Armbinder menu
+ItemArmsArmbinderSuitOptionb0,Binder on the left
+ItemArmsArmbinderSuitOptionb1,Binder on the right
+ItemArmsArmbinderSuitOptionb2,Neutral position
+ItemArmsArmbinderSuitOptionb3,Strict by harness belts
+ItemArmsArmbinderSuitOptionb4,Harness plus link legs
+ItemArmsArmbinderSuitOptionb5,Short link chain
+ItemArmsArmbinderSuitModuleStrap,Security straps
+ItemArmsArmbinderSuitSelectStrap,Strap menu
+ItemArmsArmbinderSuitOptionp0,None
+ItemArmsArmbinderSuitOptionp1,Shoulder straps
+ItemArmsArmbinderSuitModuleZipper,Genital access
+ItemArmsArmbinderSuitSelectZipper,Suit's zipper menu
+ItemArmsArmbinderSuitOptionz0,Zipped up
+ItemArmsArmbinderSuitOptionz1,Open
+ItemArmsArmbinderSuitModuleLegs,Leg lenght & belts
+ItemArmsArmbinderSuitSelectLegs,Lower suit menu
+ItemArmsArmbinderSuitOptionl0,No leg extension
+ItemArmsArmbinderSuitOptionl1,Leg extension
+ItemArmsArmbinderSuitOptionl2,Knee belt
+ItemArmsArmbinderSuitOptionl3,Full belted
+ItemArmsArmbinderSuitModuleSkirt,Rubber skirt
+ItemArmsArmbinderSuitSelectSkirt,Skirt accessory menu
+ItemArmsArmbinderSuitOptionk0,None
+ItemArmsArmbinderSuitOptionk1,Rubber skirt
+ItemArmsArmbinderSuitModuleSingleHeel,Single ballet boot
+ItemArmsArmbinderSuitSelectSingleHeel,Single heel menu
+ItemArmsArmbinderSuitOptionh0,Free feet
+ItemArmsArmbinderSuitOptionh1,Loose heel boot
+ItemArmsArmbinderSuitOptionh2,Tight belts
+ItemArmsArmbinderSuitOptionh3,Chained to the floor
+ItemArmsArmbinderSuitSetc0,SourceCharacter removes the suit collar from DestinationCharacterName neck.
+ItemArmsArmbinderSuitSetc1,SourceCharacter buckles the suit collar from DestinationCharacterName neck.
+ItemArmsArmbinderSuitSetb0,DestinationCharacterName binded arms are on TargetPronounObject left side.
+ItemArmsArmbinderSuitSetb1,DestinationCharacterName binded arms are on TargetPronounObject right side.
+ItemArmsArmbinderSuitSetb2,DestinationCharacterName binded arms are in normal position.
+ItemArmsArmbinderSuitSetb3,SourceCharacter completely immobilizes DestinationCharacterName arms with harness belts.
+ItemArmsArmbinderSuitSetb4,SourceCharacter links DestinationCharacterName armbinder to the TargetPronounObject feet with chain and cuffs.
+ItemArmsArmbinderSuitSetb5,SourceCharacter shorten chain to force DestinationCharacterName stands TargetPronounObject knees.
+ItemArmsArmbinderSuitSetp0,SourceCharacter removes the straps from DestinationCharacterName shoulders.
+ItemArmsArmbinderSuitSetp1,SourceCharacter is adding some harness straps from DestinationCharacterName shoulders.
+ItemArmsArmbinderSuitSetz0,SourceCharacter closes the DestinationCharacterName suit zipper.
+ItemArmsArmbinderSuitSetz1,SourceCharacter opens the suit zipper and DestinationCharacterName genital is exposed.
+ItemArmsArmbinderSuitSetl0,SourceCharacter chooses a shorten suit model for DestinationCharacterName.
+ItemArmsArmbinderSuitSetl1,SourceCharacter chooses a long suit model for DestinationCharacterName.
+ItemArmsArmbinderSuitSetl2,SourceCharacter puts a belt under DestinationCharacterName knees.
+ItemArmsArmbinderSuitSetl3,SourceCharacter binds completely DestinationCharacterName upper legs with more belts.
+ItemArmsArmbinderSuitSetk0,SourceCharacter removes the rubber skirt from DestinationCharacterName.
+ItemArmsArmbinderSuitSetk1,SourceCharacter wears a short rubber skirt in DestinationCharacterName.
+ItemArmsArmbinderSuitSeth0,SourceCharacter removes the single heel boot from DestinationCharacterName feet.
+ItemArmsArmbinderSuitSeth1,SourceCharacter puts on the single heel boot on DestinationCharacterName feet.
+ItemArmsArmbinderSuitSeth2,SourceCharacter tights the DestinationCharacterName single heel boot with another belt.
+ItemArmsArmbinderSuitSeth3,SourceCharacter chains the DestinationCharacterName single heel boot on the ground.
+ItemHoodRubberMaskSelectBase,Select Rubber Mask options
+ItemHoodRubberMaskModuleMode,Mask base
+ItemHoodRubberMaskSelectMode,Mask base menu
+ItemHoodRubberMaskOptionm0,Mask mode
+ItemHoodRubberMaskOptionm1,Hood mode
+ItemHoodRubberMaskModuleSight,Sight
+ItemHoodRubberMaskSelectSight,Sight menu
+ItemHoodRubberMaskOptions0,Normal
+ItemHoodRubberMaskOptions1,Low sight
+ItemHoodRubberMaskOptions2,Opaque lenses
+ItemHoodRubberMaskModuleDeafness,Hearing control
+ItemHoodRubberMaskSelectDeafness,Hearing control menu
+ItemHoodRubberMaskOptiond0,Normal
+ItemHoodRubberMaskOptiond1,Add earplugs
+ItemHoodRubberMaskModuleWig,Hair and Wig
+ItemHoodRubberMaskSelectWig,Hair and wig menu
+ItemHoodRubberMaskOptiong0,Default hair
+ItemHoodRubberMaskOptiong1,Wig A
+ItemHoodRubberMaskOptiong2,Wig B
+ItemHoodRubberMaskOptiong3,Wig C
+ItemHoodRubberMaskOptiong4,Wig D
+ItemHoodRubberMaskOptiong5,Wig E
+ItemHoodRubberMaskOptiong6,Wig F
+ItemHoodRubberMaskOptiong7,Wig G
+ItemHoodRubberMaskOptiong8,Wig H
+ItemHoodRubberMaskOptiong9,Wig I
+ItemHoodRubberMaskOptiong10,Wig J
+ItemHoodRubberMaskOptiong11,Wig K
+ItemHoodRubberMaskOptiong12,Wig L
+ItemHoodRubberMaskOptiong13,Wig M
+ItemHoodRubberMaskOptiong14,Wig N
+ItemHoodRubberMaskModuleEyes,Eyes
+ItemHoodRubberMaskSelectEyes,Eye expression menu
+ItemHoodRubberMaskOptione0,Normal
+ItemHoodRubberMaskOptione1,Closed eyes
+ItemHoodRubberMaskOptione2,Wide open eyes
+ItemHoodRubberMaskOptione3,Scared
+ItemHoodRubberMaskOptione4,Feline normal
+ItemHoodRubberMaskOptione5,Feline Wide open eyes
+ItemHoodRubberMaskOptione6,Feline scared
+ItemHoodRubberMaskModuleEyebrows,Eyebrows
+ItemHoodRubberMaskSelectEyebrows,Eyebrow expression menu
+ItemHoodRubberMaskOptiony0,Normal
+ItemHoodRubberMaskOptiony1,Sad
+ItemHoodRubberMaskOptiony2,Angry
+ItemHoodRubberMaskOptiony3,Alternating (L-r)
+ItemHoodRubberMaskOptiony4,Alternating (l-R)
+ItemHoodRubberMaskModuleLips,Lips
+ItemHoodRubberMaskSelectLips,Lip expression menu
+ItemHoodRubberMaskOptionl0,Neutral
+ItemHoodRubberMaskOptionl1,Serious
+ItemHoodRubberMaskOptionl2,Open mouth
+ItemHoodRubberMaskOptionl3,Vampire neutral
+ItemHoodRubberMaskOptionl4,Vampire serious
+ItemHoodRubberMaskOptionl5,Vampire open mouth
+ItemHoodRubberMaskModuleGag,Additional gag
+ItemHoodRubberMaskSelectGag,Supplemental mask gag menu
+ItemHoodRubberMaskOptiona0,None
+ItemHoodRubberMaskOptiona1,Single duct tape piece
+ItemHoodRubberMaskOptiona2,Horror gag
+ItemHoodRubberMaskSetm0,SourceCharacter turns the rubber mask into mask mode on DestinationCharacterName head.
+ItemHoodRubberMaskSetm1,SourceCharacter turns the rubber mask into hood mode on DestinationCharacterName head.
+ItemHoodRubberMaskSets0,SourceCharacter installs a one way lenses pair in DestinationCharacterName rubber mask.
+ItemHoodRubberMaskSets1,SourceCharacter installs a darker lenses pair in DestinationCharacterName rubber mask.
+ItemHoodRubberMaskSets2,SourceCharacter almost completely obstructs DestinationCharacterName sight with opaque fake eyes.
+ItemHoodRubberMaskSetd0,SourceCharacter removes the rubber mask's earplugs from DestinationCharacterName ears.
+ItemHoodRubberMaskSetd1,SourceCharacter puts a pair of earplugs inside DestinationCharacterName ears.
+ItemHoodRubberMaskSetg0,SourceCharacter keeps the DestinationCharacterName default hair.
+ItemHoodRubberMaskSetg1,SourceCharacter puts the wig A on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg2,SourceCharacter puts the wig B on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg3,SourceCharacter puts the wig C on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg4,SourceCharacter puts the wig D on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg5,SourceCharacter puts the wig E on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg6,SourceCharacter puts the wig F on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg7,SourceCharacter puts the wig G on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg8,SourceCharacter puts the wig H on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg9,SourceCharacter puts the wig I on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg10,SourceCharacter puts the wig J on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg11,SourceCharacter puts the wig K on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg12,SourceCharacter puts the wig L on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg13,SourceCharacter puts the wig M on the DestinationCharacterName head.
+ItemHoodRubberMaskSetg14,SourceCharacter puts the wig N on the DestinationCharacterName head.
+ItemHoodRubberMaskSete0,SourceCharacter chooses a normal eye expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSete1,SourceCharacter chooses a closed eye expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSete2,SourceCharacter chooses a wide open eye expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSete3,SourceCharacter chooses a scared eye expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSete4,SourceCharacter chooses a feline eye expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSete5,SourceCharacter chooses a feline wide open eye expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSete6,SourceCharacter chooses a feline scared eye expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSety0,SourceCharacter chooses a neutral eyebrow expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSety1,SourceCharacter chooses a sad eyebrow expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSety2,SourceCharacter chooses a angry eyebrow expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSety3,SourceCharacter chooses a alterning eyebrow expression (L-r) in DestinationCharacterName mask.
+ItemHoodRubberMaskSety4,SourceCharacter chooses a alterning eyebrow expression (l-R) in DestinationCharacterName mask.
+ItemHoodRubberMaskSetl0,SourceCharacter chooses a normal lip expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSetl1,SourceCharacter chooses a serious lip expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSetl2,SourceCharacter chooses a open mouth expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSetl3,SourceCharacter chooses a normal vampire lip expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSetl4,SourceCharacter chooses a serious vampire lip expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSetl5,SourceCharacter chooses a open mouth vampire expression in DestinationCharacterName mask.
+ItemHoodRubberMaskSeta0,SourceCharacter removes any rubber mask gag from DestinationCharacterName mouth.
+ItemHoodRubberMaskSeta1,SourceCharacter gags DestinationCharacterName with a single piece of duct tape.
+ItemHoodRubberMaskSeta2,SourceCharacter gags DestinationCharacterName totally locking TargetPronounObject mouth with the Horror Gag.
+MaskRubberMaskSelectBase,Select Rubber Mask options
+MaskRubberMaskModuleWig,Hair and Wig
+MaskRubberMaskSelectWig,Hair and wig menu
+MaskRubberMaskOptiong0,Default hair
+MaskRubberMaskOptiong1,Wig A
+MaskRubberMaskOptiong2,Wig B
+MaskRubberMaskOptiong3,Wig C
+MaskRubberMaskOptiong4,Wig D
+MaskRubberMaskOptiong5,Wig E
+MaskRubberMaskOptiong6,Wig F
+MaskRubberMaskOptiong7,Wig G
+MaskRubberMaskOptiong8,Wig H
+MaskRubberMaskOptiong9,Wig I
+MaskRubberMaskOptiong10,Wig J
+MaskRubberMaskOptiong11,Wig K
+MaskRubberMaskOptiong12,Wig L
+MaskRubberMaskOptiong13,Wig M
+MaskRubberMaskOptiong14,Wig N
+MaskRubberMaskModuleEyes,Eyes
+MaskRubberMaskSelectEyes,Eye expression menu
+MaskRubberMaskOptione0,Normal
+MaskRubberMaskOptione1,Closed eyes
+MaskRubberMaskOptione2,Wide open eyes
+MaskRubberMaskOptione3,Scared
+MaskRubberMaskOptione4,Feline normal
+MaskRubberMaskOptione5,Feline Wide open eyes
+MaskRubberMaskOptione6,Feline scared
+MaskRubberMaskModuleEyebrows,Eyebrows
+MaskRubberMaskSelectEyebrows,Eyebrow expression menu
+MaskRubberMaskOptiony0,Normal
+MaskRubberMaskOptiony1,Sad
+MaskRubberMaskOptiony2,Angry
+MaskRubberMaskOptiony3,Alternating (L-r)
+MaskRubberMaskOptiony4,Alternating (l-R)
+MaskRubberMaskModuleLips,Lips
+MaskRubberMaskSelectLips,Lip expression menu
+MaskRubberMaskOptionl0,Neutral
+MaskRubberMaskOptionl1,Serious
+MaskRubberMaskOptionl2,Open mouth
+MaskRubberMaskOptionl3,Vampire neutral
+MaskRubberMaskOptionl4,Vampire serious
+MaskRubberMaskOptionl5,Vampire open mouth
+MaskFaceScarsModule1,Forehead
+MaskFaceScarsModule2,Left Lip
+MaskFaceScarsModule3,Right Lip
+MaskFaceScarsModule4,Left Under eye
+MaskFaceScarsModule5,Right Under eye
+MaskFaceScarsModule6,Left Cheek Cross
+MaskFaceScarsModule7,Right Cheek Cross
+MaskFaceScarsModule8,Left Eye
+MaskFaceScarsModule9,Right Eye
+MaskFaceScarsModule10,Nose
+MaskFaceScarsModule11,Vertical
+MaskFaceScarsOptiona0,No
+MaskFaceScarsOptiona1,Yes
+MaskFaceScarsOptionb0,No
+MaskFaceScarsOptionb1,Yes
+MaskFaceScarsOptionc0,No
+MaskFaceScarsOptionc1,Yes
+MaskFaceScarsOptiond0,No
+MaskFaceScarsOptiond1,Yes
+MaskFaceScarsOptione0,No
+MaskFaceScarsOptione1,Yes
+MaskFaceScarsOptionf0,No
+MaskFaceScarsOptionf1,Yes
+MaskFaceScarsOptiong0,No
+MaskFaceScarsOptiong1,Yes
+MaskFaceScarsOptionh0,No
+MaskFaceScarsOptionh1,Yes
+MaskFaceScarsOptioni0,No
+MaskFaceScarsOptioni1,Yes
+MaskFaceScarsOptionj0,No
+MaskFaceScarsOptionj1,Yes
+MaskFaceScarsOptionk0,No
+MaskFaceScarsOptionk1,Yes
+MaskFaceScarsSelectBase,Select Mark
+MaskFaceScarsSelect1,Apply
+MaskFaceScarsSelect2,Apply
+MaskFaceScarsSelect3,Apply
+MaskFaceScarsSelect4,Apply
+MaskFaceScarsSelect5,Apply
+MaskFaceScarsSelect6,Apply
+MaskFaceScarsSelect7,Apply
+MaskFaceScarsSelect8,Apply
+MaskFaceScarsSelect9,Apply
+MaskFaceScarsSelect10,Apply
+MaskFaceScarsSelect11,Apply
+ItemDevicesBrickWallSelect,Build and choose the brick wall's height:
+ItemDevicesBrickWallNone,No brick
+ItemDevicesBrickWallLegs,Up to the hips
+ItemDevicesBrickWallChest,At breast/chest height
+ItemDevicesBrickWallNeck,Neck height
+ItemDevicesBrickWallFull,Full wall
+ItemDevicesBrickWallFullOpt,Full with a grided window
+ItemDevicesBrickWallLastBrick,Wall's last brick
+ItemDevicesBrickWallSetNone,SourceCharacter removes all front wall brick from DestinationCharacterName.
+ItemDevicesBrickWallSetLegs,SourceCharacter builds a brick wall that reaches DestinationCharacterName hips.
+ItemDevicesBrickWallSetChest,SourceCharacter builds a brick wall that reaches DestinationCharacterName chest.
+ItemDevicesBrickWallSetNeck,SourceCharacter builds a brick wall that reaches DestinationCharacterName neck.
+ItemDevicesBrickWallSetFull,SourceCharacter builds a brick wall completely but a single hole at DestinationCharacterName eye height.
+ItemDevicesBrickWallSetFullOpt,SourceCharacter builds a brick wall completely and puts a small grid at DestinationCharacterName eye height.
+ItemDevicesBrickWallSetLastBrick,SourceCharacter builds a brick wall completely and puts the last brick at DestinationCharacterName eye height.
+ShoesCustomHeelsSelectBase,Customize your heels:
+ShoesCustomHeelsModuleStrap1,Ankle straps
+ShoesCustomHeelsSelectStrap1,Ankle straps menu
+ShoesCustomHeelsOptionm0,No straps
+ShoesCustomHeelsOptionm1,Ankle straps placed
+ShoesCustomHeelsModuleStrap2,Mid straps
+ShoesCustomHeelsSelectStrap2,Mid straps menu
+ShoesCustomHeelsOptionn0,No straps
+ShoesCustomHeelsOptionn1,Mid straps placed
+ShoesCustomHeelsModuleStrap3,Lower straps
+ShoesCustomHeelsSelectStrap3,Lower straps menu
+ShoesCustomHeelsOptiono0,No straps
+ShoesCustomHeelsOptiono1,Lower straps placed
+ItemMouthGenitalGagSelect,Choose a latex genital for attach on head harness:
+ItemMouthGenitalGagPussy,Pussy
+ItemMouthGenitalGagSetPussy,SourceCharacter attaches a fake pussy in the DestinationCharacterName mouth.
+ItemMouthGenitalGagButthole,A butthole
+ItemMouthGenitalGagSetButthole,SourceCharacter attaches a fake butthole in the DestinationCharacterName mouth. (Damn!)
+HairFrontHairFront60Select,Select Accessory.
+HairFrontHairFront60SetBand,SourceCharacter changes DestinationCharacter hair.
+HairFrontHairFront60SetNoBand,SourceCharacter changes DestinationCharacter hair.
+HairFrontHairFront60Band,Band
+HairFrontHairFront60NoBand,No Band
+HairFrontHairFront61Select,Select Hair Type.
+HairFrontHairFront61SetLong,SourceCharacter changes DestinationCharacter hair.
+HairFrontHairFront61SetShort,SourceCharacter changes DestinationCharacter hair.
+HairFrontHairFront61Long,Long
+HairFrontHairFront61Short,Short
+HairFrontHairFront62aModuleStyle,Base
+HairFrontHairFront62aModuleStrands,Strands
+HairFrontHairFront62aModuleExtra,Extra
+HairFrontHairFront62aOptionStyle0,Shiny
+HairFrontHairFront62aOptionStyle1,Normal
+HairFrontHairFront62aOptionStrands0,Colored Strands
+HairFrontHairFront62aOptionStrands1,No Strands
+HairFrontHairFront62aOptionExtra0,Braids
+HairFrontHairFront62aOptionExtra1,Extra
+HairFrontHairFront62aOptionExtra2,None
+HairFrontHairFront62aSelectBase,Select Options
+HairFrontHairFront62aSelectStyle,Select Style
+HairFrontHairFront62aSelectStrands,Select Strands
+HairFrontHairFront62aSelectExtra,Select Extras
+HairFrontHairFront62bModuleStyle,Base
+HairFrontHairFront62bModuleStrands,Strands
+HairFrontHairFront62bModuleExtra,Extra
+HairFrontHairFront62bOptionStyle0,Shiny
+HairFrontHairFront62bOptionStyle1,Normal
+HairFrontHairFront62bOptionStrands0,Colored Strands
+HairFrontHairFront62bOptionStrands1,No Strands
+HairFrontHairFront62bOptionExtra0,Braids
+HairFrontHairFront62bOptionExtra1,Extra
+HairFrontHairFront62bOptionExtra2,None
+HairFrontHairFront62bSelectBase,Select Options
+HairFrontHairFront62bSelectStyle,Select Style
+HairFrontHairFront62bSelectStrands,Select Strands
+HairFrontHairFront62bSelectExtra,Select Extras
+PremiumMuzzleMouthSetCrossStraps,SourceCharacter adds extra straps to DestinationCharacter muzzle
+PremiumMuzzleMouthSetNormal,SourceCharacter turns DestinationCharacter muzzle back to normal.
+PremiumMuzzleMouthSetExtraMuzzle,SourceCharacter attaches an extra panel over DestinationCharacter muzzle.
+PremiumMuzzleMouthTypeCrossStraps,Cross Straps
+PremiumMuzzleMouthTypeNormal,Normal
+PremiumMuzzleMouthTypeExtraMuzzle,Extra Panel
+OverfilledGagModuleGagtype,Gag Type
+OverfilledGagModuleStuffing,Stuffing Type
+OverfilledGagOptionGagtype0,Cloth Mask
+OverfilledGagOptionGagtype1,Cross Tape
+OverfilledGagOptionGagtype2,Full Tape
+OverfilledGagOptionGagtype3,Tape + Panties
+OverfilledGagOptionGagtype4,None
+OverfilledGagOptionStuffing0,Panties
+OverfilledGagOptionStuffing1,Rolled Wad
+OverfilledGagSelectBase,Configure Options
+OverfilledGagSelectGagtype,Select Gag Type
+OverfilledGagSelectStuffing,Select Stuffing Type
+OverfilledGagSetGagtype,SourceCharacter changes the gag type on DestinationCharacter mouth.
+OverfilledGagSetStuffing,SourceCharacter shoves a huge stuffing into DestinationCharacter mouth.
+ItemHandsFullMittensSelectBase,Choose a extended restraint:
+ItemHandsFullMittensModuleRestraints,Current condition
+ItemHandsFullMittensSelectRestraints,Full Mittens menu:
+ItemHandsFullMittensOptionr0,Just Mittens
+ItemHandsFullMittensOptionr1,Yoked with bar
+ItemHandsFullMittensOptionr2,Hands up with bar
+ItemHandsFullMittensOptionr3,Straitjacket mode
+ItemHandsFullMittensOptionr4,Harness belts
+ItemHandsFullMittensOptionr5,Armbinder mode
+ItemHandsFullMittensOptionr6,Ankle shackles combo
+ItemHandsFullMittensSetr0,SourceCharacter removes any restraint accessory from DestinationCharacterName mittens.
+ItemHandsFullMittensSetr1,SourceCharacter tied DestinationCharacterName mittens to the bar in yoke pose. 
+ItemHandsFullMittensSetr2,SourceCharacter tied DestinationCharacterName mittens to the bar with hands up.
+ItemHandsFullMittensSetr3,SourceCharacter binds DestinationCharacterName arms as straitjacket style.
+ItemHandsFullMittensSetr4,SourceCharacter binds DestinationCharacterName hands in the back and put some harness belt on TargetPronounObject torso.
+ItemHandsFullMittensSetr5,SourceCharacter binds DestinationCharacterName arms as armbinder style.
+ItemHandsFullMittensSetr6,SourceCharacter links DestinationCharacterName mittens in TargetPronounObject ankles with chain and shackles.
+ItemFeetKneeOvernighterSelect,How would you like to adjust this?
+ItemFeetKneeOvernighterLoose,Just for fun
+ItemFeetKneeOvernighterSetLoose,SourceCharacter takes it easy on the DestinationCharacterName and left the Under Knee Overnight belts loose a bit.
+ItemFeetKneeOvernighterThigh,Real Deal
+ItemFeetKneeOvernighterSetThigh,SourceCharacter thighens the Under Knee Overnighter belts a lot on the DestinationCharacterName feet.
+ItemFeetHeelBindersSelectBase,Choose a extended restraint:
+ItemFeetHeelBindersModuleRestraints,Current condition
+ItemFeetHeelBindersSelectRestraints,Feet Binders menu:
+ItemFeetHeelBindersOptionr0,Just cuffs
+ItemFeetHeelBindersOptionr1,Long chain link
+ItemFeetHeelBindersOptionr2,Chain around ankles
+ItemFeetHeelBindersOptionr3,Link strap limiter
+ItemFeetHeelBindersOptionr4,Metal bar
+ItemFeetHeelBindersOptionr5,Spread bar
+ItemFeetHeelBindersOptionr6,Spread bar suspension
+ItemFeetHeelBindersOptionr7,Grounded spread bar
+ItemFeetHeelBindersSetr0,SourceCharacter removes any bind accessory from DestinationCharacterName ankle cuffs.
+ItemFeetHeelBindersSetr1,SourceCharacter links the DestinationCharacterName ankle cuffs with a long chain. 
+ItemFeetHeelBindersSetr2,SourceCharacter tightens the chain around DestinationCharacterName ankles.
+ItemFeetHeelBindersSetr3,SourceCharacter links DestinationCharacterName ankle cuffs with a short leather strap.
+ItemFeetHeelBindersSetr4,SourceCharacter links DestinationCharacterName ankle cuffs with a metal bar.
+ItemFeetHeelBindersSetr5,SourceCharacter spreads the DestinationCharacterName legs with a spread bar.
+ItemFeetHeelBindersSetr6,SourceCharacter suspends the spread bar and DestinationCharacterName is suspended upside down.
+ItemFeetHeelBindersSetr7,SourceCharacter chained the spread bar to the floor and DestinationCharacterName feet are stuck in place.
+ItemArmsBedMetalCuffsLeft,Left
+ItemArmsBedMetalCuffsRight,Right
+ItemArmsBedMetalCuffsBoth,Both
+ItemArmsBedMetalCuffsSelect,Select cuffs location.
+ItemArmsBedMetalCuffsSetLeft,SourceCharacter cuffs DestinationCharacter left arm to the bed.
+ItemArmsBedMetalCuffsSetRight,SourceCharacter cuffs DestinationCharacter right arm to the bed.
+ItemArmsBedMetalCuffsSetBoth,SourceCharacter cuffs DestinationCharacter both arms to the bed.
+SocksRippedPantyhoseRippedA,Ripped A
+SocksRippedPantyhoseRippedB,Ripped B
+SocksRippedPantyhoseRippedC,Ripped C
+SocksRippedPantyhoseNormal,Normal
+SocksRippedPantyhoseSelect,Choose the pantyhose type:
+SuitLowerRippedPantyhoseRippedA,Ripped A
+SuitLowerRippedPantyhoseRippedB,Ripped B
+SuitLowerRippedPantyhoseRippedC,Ripped C
+SuitLowerRippedPantyhoseNormal,Normal
+SuitLowerRippedPantyhoseSelect,Choose the pantyhose type:
+ItemPelvisWaistLegHarnessSelectBase,Waist-Leg Combo Harness main menu
+ItemPelvisWaistLegHarnessModuleLinkLegs,Link strap legs
+ItemPelvisWaistLegHarnessSelectLinkLegs,Link strap menu
+ItemPelvisWaistLegHarnessOptionl0,None
+ItemPelvisWaistLegHarnessOptionl1,Flexible strap
+ItemPelvisWaistLegHarnessOptionl2,Restrain legs
+ItemPelvisWaistLegHarnessModuleBeltAcc_A,Accessory strap A
+ItemPelvisWaistLegHarnessSelectBeltAcc_A,Accessory strap A menu
+ItemPelvisWaistLegHarnessOptionx0,None
+ItemPelvisWaistLegHarnessOptionx1,Equipped
+ItemPelvisWaistLegHarnessModuleBeltAcc_B,Accessory strap B
+ItemPelvisWaistLegHarnessSelectBeltAcc_B,Accessory strap B menu
+ItemPelvisWaistLegHarnessOptiony0,None
+ItemPelvisWaistLegHarnessOptiony1,Equipped
+ItemPelvisWaistLegHarnessModuleStrapOn,Strap-on belt
+ItemPelvisWaistLegHarnessSelectStrapOn,Strap-on belt menu
+ItemPelvisWaistLegHarnessOptionc0,None
+ItemPelvisWaistLegHarnessOptionc1,Equipped
+ItemPelvisWaistLegHarnessModuleVibrator,Wand Vibrating
+ItemPelvisWaistLegHarnessSelectVibrator,Wand Vibrating menu
+ItemPelvisWaistLegHarnessOptionv0,None
+ItemPelvisWaistLegHarnessOptionv1,Equipped-Off
+ItemPelvisWaistLegHarnessOptionv2,Low
+ItemPelvisWaistLegHarnessOptionv3,Mid-Low
+ItemPelvisWaistLegHarnessOptionv4,Mid
+ItemPelvisWaistLegHarnessOptionv5,High
+ItemPelvisWaistLegHarnessOptionv6,Maximum
+ItemPelvisWaistLegHarnessModuleChastity,Chastity mode
+ItemPelvisWaistLegHarnessSelectChastity,Chastity mode menu
+ItemPelvisWaistLegHarnessOptiont0,None
+ItemPelvisWaistLegHarnessOptiont1,Just base
+ItemPelvisWaistLegHarnessOptiont2,Closed front
+ItemPelvisWaistLegHarnessOptiont3,Closed rear
+ItemPelvisWaistLegHarnessOptiont4,Closed both
+ItemPelvisWaistLegHarnessSetl0,SourceCharacter removes the link strap from between the DestinationCharacterName legs.
+ItemPelvisWaistLegHarnessSetl1,SourceCharacter installs the link strap from between the DestinationCharacterName legs.
+ItemPelvisWaistLegHarnessSetl2,SourceCharacter restrain DestinationCharacterName legs with a shorter device.
+ItemPelvisWaistLegHarnessSetx0,SourceCharacter removes a accessory strap (A) on the DestinationCharacterName pelvis.
+ItemPelvisWaistLegHarnessSetx1,SourceCharacter puts a accessory strap (A) on the DestinationCharacterName pelvis.
+ItemPelvisWaistLegHarnessSety0,SourceCharacter removes a accessory strap (B) on the DestinationCharacterName pelvis.
+ItemPelvisWaistLegHarnessSety1,SourceCharacter puts a accessory strap (B) on the DestinationCharacterName pelvis.
+ItemPelvisWaistLegHarnessSetc0,SourceCharacter removes the strap-on belt accessory from the DestinationCharacterName pelvis.
+ItemPelvisWaistLegHarnessSetc1,SourceCharacter installs the strap-on belt accessory from the DestinationCharacterName pelvis.
+ItemPelvisWaistLegHarnessSetv0,SourceCharacter removes the wand device accessory from the DestinationCharacterName pelvis.
+ItemPelvisWaistLegHarnessSetv1,SourceCharacter just installs the wand device accessory from the DestinationCharacterName pelvis and doesn't turn it on.
+ItemPelvisWaistLegHarnessSetv2,SourceCharacter installs the wand device accessory from the DestinationCharacterName pelvis and puts it in lowest intensity.
+ItemPelvisWaistLegHarnessSetv3,SourceCharacter installs the wand device accessory from the DestinationCharacterName pelvis and select a low intensity.
+ItemPelvisWaistLegHarnessSetv4,SourceCharacter installs the wand device accessory from the DestinationCharacterName pelvis and select a mid intensity.
+ItemPelvisWaistLegHarnessSetv5,SourceCharacter installs the wand device accessory from the DestinationCharacterName pelvis and select a high intensity.
+ItemPelvisWaistLegHarnessSetv6,SourceCharacter installs the wand device accessory from the DestinationCharacterName pelvis and select a max intensity.
+ItemPelvisWaistLegHarnessSett0,SourceCharacter removes any chastity module on the DestinationCharacterName pelvis.
+ItemPelvisWaistLegHarnessSett1,SourceCharacter attaches the chastity base on the DestinationCharacterName pelvis.
+ItemPelvisWaistLegHarnessSett2,SourceCharacter locks the chastity module on the DestinationCharacterName vagina only.
+ItemPelvisWaistLegHarnessSett3,SourceCharacter locks the chastity module on the DestinationCharacterName butt only.
+ItemPelvisWaistLegHarnessSett4,SourceCharacter locks the chastity module on the DestinationCharacterName both sides.
+ItemHoodBalloonSelect,Balloon hood adjustment menu:
+ItemHoodBalloonLoose,Loose on the head
+ItemHoodBalloonTight,Tight on the head
+ItemHoodBalloonExtreme,Breathplay condition
+ItemHoodBalloonSetLoose,SourceCharacter fills the DestinationCharacterName balloon with air.
+ItemHoodBalloonSetTight,SourceCharacter empties the DestinationCharacterName balloon a little.
+ItemHoodBalloonSetExtreme,SourceCharacter empties completely the DestinationCharacterName balloon.

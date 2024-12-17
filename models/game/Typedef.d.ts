@@ -76,6 +76,81 @@ interface RGBAColor extends RGBColor {
 	a: number;
 }
 
+/**
+ * A singleton for explicitly signifying to {@link ElementCreate} that it should have no parent element.
+ *
+ * Can be used for overriding any function that would otherwise default to {@link document.body} when a nullish value is provided as parent.
+ */
+type ElementNoParent = 0;
+
+/**
+ * A {@link HTMLElementTagNameMap} subtype with all non-scalar properties removed from the HTML elements
+ *
+ * Serves as an approximation (and superset) of all element-specific attributes
+ */
+type HTMLElementScalarTagNameMap = {
+	[k1 in keyof HTMLElementTagNameMap]: {
+		[k2 in keyof HTMLElementTagNameMap[k1] as Required<HTMLElementTagNameMap[k1][k2]> extends (boolean | number | string | null) ? k2 : never]:
+			HTMLElementTagNameMap[k1][k2]
+	}
+};
+
+type HTMLOptions<T extends keyof HTMLElementTagNameMap> = {
+	/** The elements HTML tag */
+	tag: T,
+	/** Scalar-valued attributes that will be set on the HTML element. */
+	attributes?: Partial<HTMLElementScalarTagNameMap[T]> & Partial<Record<string, number | boolean | string>>;
+	/** Data attributes that will be set on the HTML element (see {@link HTMLElement.dataset}). */
+	dataAttributes?: Partial<Record<string, number | boolean | string>>;
+	/** CSS style declarations that will be set on the HTML element (see {@link HTMLElement.style}). */
+	style?: Record<string, string>;
+	/** Event listeners that will be attached to the HTML element (see {@link HTMLElement.addEventListener}). */
+	eventListeners?: { [k in keyof HTMLElementEventMap]?: (this: HTMLElementTagNameMap[T], event: HTMLElementEventMap[k]) => any };
+	/** The elements parent (if any) to which it will be attached (see {@link HTMLElement.parentElement}). */
+	parent?: ElementNoParent | Node;
+	/** A list of CSS classes to-be assigned to the element (see {@link HTMLElement.classList}). */
+	classList?: readonly (null | undefined | string)[];
+	/** Any to-be added child elements. */
+	children?: readonly (null | undefined | string | Node | HTMLOptions<keyof HTMLElementTagNameMap>)[];
+	/** The {@link HTMLElement.innerHTML} of the element; will be assigned before appending children */
+	innerHTML?: string;
+};
+
+interface HTMLElementEventMap {
+	/** Custom event fired by {@link ElementButton.Create} buttons whenever a click-event encounters `aria-disabled: "true"`. */
+	bcClickDisabled: MouseEvent;
+}
+
+declare namespace ElementButton {
+	/** Various options that can be passed along to {@link ElementButton.Create} */
+	interface Options {
+		/** Optional tooltip content. If not supplied then one should manually prepend it to the tooltip later */
+		tooltip?: null | string | Node | HTMLOptions<any> | readonly (null | string | Node | HTMLOptions<any>)[]
+		/** The position of the tooltip w.r.t. the button */
+		tooltipPosition?: "left" | "right" | "top" | "bottom";
+		/** A button label */
+		label?: string;
+		/** The position of the button label */
+		labelPosition?: "top" | "center" | "bottom";
+		/** A background image for the button */
+		image?: string;
+		/**
+		 * Button icons to-be displayed in the top-left corner of the button.
+		 *
+		 * Alternatively, one can directly pass the icon's {@link HTMLImageElement.src} and its tooltip component.
+		 */
+		icons?: readonly (null | InventoryIcon | { iconSrc: string, tooltipText: string | Node, name: string })[];
+		/** The role of the button. All accepted values are currently special-cased in order to set role-specific event listeners and/or attributes. */
+		role?: "radio" | "checkbox" | "menuitemradio" | "menuitemcheckbox";
+		/** Whether to limit the default styling of the button's border and background */
+		noStyling?: boolean;
+		/** Whether the button should be disabled or not */
+		disabled?: boolean;
+		/** A click event listener to-be fired when a button is disabled via `aria-disabled: "true"`. */
+		clickDisabled?: (this: HTMLButtonElement, event: MouseEvent) => any;
+	}
+}
+
 type Rect = { x: number, y: number, w: number, h: number };
 
 /** A 4-tuple with X & Y coordinates, width and height */
@@ -166,8 +241,32 @@ type DialogMenuButton = "Activity" |
 	"Remote" | "RemoteDisabled" | `RemoteDisabledFor${VibratorRemoteAvailability}` |
 	"Unlock" | "Use" | "UseDisabled" | "Struggle" | "TightenLoosen" |
 	// Wardrobe buttons
-	"Wardrobe" | "WardrobeDisabled" | "Reset" | "WearRandom" | "Random" | "Naked" | "Accept" | "Cancel" | "Character"
+	"Wardrobe" | "WardrobeDisabled" | "Reset" | "WearRandom" | "Random" | "Copy" | "Paste" | "Naked" | "Accept" | "Cancel" | "Character"
 	;
+
+declare namespace DialogMenu {
+	/** Customization options for {@link DialogMenu.Reload} */
+	interface ReloadOptions {
+		/** Whether to hard reset and reconstruct the button grid, rather than just re-evaluating the existing button's states via a soft reset. */
+		reset?: boolean;
+		/** The to-be assigned custom status message */
+		status?: string;
+		/** Display the {@link ReloadOptions.status} message on a timer; units are in ms */
+		statusTimer?: number;
+		/**
+		 * Reset the position of the scroll bar to the checked button, or, if unavailable, the top of the button grid.
+		 *
+		 * Defaults to `true` if {@link ReloadOptions.reset} is specified.
+		 */
+		resetScrollbar?: boolean;
+		/**
+		 * Whether to regenerate the subscreen's underlying item or activity list (see {@link DialogBuildActivities} and {@link DialogInventoryBuild}).
+		 *
+		 * Defaults to `true` if {@link ReloadOptions.reset} is specified.
+		 */
+		resetDialogItems?: boolean;
+	}
+}
 
 type DialogSortOrder = | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
@@ -240,7 +339,7 @@ type EffectName =
 	"UnlockLoversPadlock" | "UnlockLoversTimerPadlock" |
 	"UnlockFamilyPadlock" | "UnlockMistressPadlock" | "UnlockMistressTimerPadlock" |
 	"UnlockPandoraPadlock" | "UnlockMetalCuffs" | "UnlockEscortAnkleCuffs" | "UnlockPortalPanties" |
-	"ProtrudingMouth" | "Wiggling"
+	"ProtrudingMouth" | "Wiggling" | "CanEdge"
 	;
 
 interface ExpressionNameMap {
@@ -265,7 +364,8 @@ interface ExpressionNameMap {
 	Emoticon: (
 		null | "Afk" | "Whisper" | "Sleep" | "Hearts" | "Tear" | "Hearing" | "Confusion" | "Exclamation" |
 		"Annoyed" | "Read" | "RaisedHand" | "Spectator" | "ThumbsDown" | "ThumbsUp" | "LoveRope" |
-		"LoveGag" | "LoveLock" | "Wardrobe" | "Gaming" | "Coffee" | "Fork" | "Music"
+		"LoveGag" | "LoveLock" | "Wardrobe" | "Gaming" | "Coffee" | "Fork" | "Music" | "Car" | "Hanger" |
+		"Call" | "Lightbulb" | "Warning" | "BrokenHeart" | "Drawing" | "Coding" | "TV" | "Bathing"
 	),
 }
 
@@ -285,12 +385,14 @@ type AssetGroupItemName =
 type AssetGroupScriptName = 'ItemScript';
 
 type AssetGroupBodyName =
-	ExpressionGroupName | 'BodyLower' | 'BodyUpper' | 'BodyMarkings' | 'Bra' | 'Bracelet' | 'Cloth' |
+	ExpressionGroupName | 'AnkletLeft' | 'AnkletRight' | 'ArmsLeft' | 'ArmsRight' |
+	'BodyLower' | 'BodyUpper' | 'BodyMarkings' | 'Bra' | 'Bracelet' | 'Cloth' |
 	'ClothAccessory' | 'ClothLower' | 'Corset' | 'EyeShadow' | 'FacialHair' | 'Garters' | 'Glasses' | 'Gloves' |
 	'HairAccessory1' | 'HairAccessory2' | 'HairAccessory3' | 'HairBack' |
-	'HairFront' | 'FacialHair' | 'Hands' | 'Hat' | 'Head' | 'Height' | 'Jewelry' | 'LeftAnklet' | 'LeftHand' | 'Mask' |
-	'Necklace' | 'Nipples' | 'Panties' | 'Pronouns' | 'RightAnklet' | 'RightHand' |
-	'Shoes' | 'Socks' | 'SocksLeft' | 'SocksRight' | 'Suit' | 'SuitLower' | 'TailStraps' | 'Wings'
+	'HairFront' | 'HandAccessoryLeft' | 'HandAccessoryRight' |  'FacialHair' | 'Hat' | 'Head' | 'Height' | 'Jewelry' | 'Mask' |
+	'Necklace' | 'Nipples' | 'Panties' | 'Pronouns' |
+	'Shoes' | 'Socks' | 'SocksLeft' | 'SocksRight' | 'Suit' | 'SuitLower' | 'TailStraps' | 'Wings' |
+	'HandsLeft' | 'HandsRight'
 	;
 
 type AssetGroupName = AssetGroupBodyName | AssetGroupItemName | AssetGroupScriptName;
@@ -329,13 +431,14 @@ type AssetLockType =
 type CraftingPropertyType =
 	"Normal" | "Large" | "Small" | "Thick" | "Thin" | "Secure" | "Loose" | "Decoy" |
 	"Malleable" | "Rigid" | "Simple" | "Puzzling" | "Painful" | "Comfy" | "Strong" |
-	"Flexible" | "Nimble" | "Arousing" | "Dull" | "Heavy" | "Light"
+	"Flexible" | "Nimble" | "Arousing" | "Dull" | "Edging" | "Heavy" | "Light"
 	;
 
 type AssetAttribute =
 	"Skirt" | "SuitLower" | "UpperLarge" |
 	"ShortHair" | "SmallEars" | "NoEars" | "NoseRing" | "HoodieFix" |
 	"CanAttachMittens" |
+	"IsChestHarness" | "IsHipHarness" |
 	"PenisLayer" | "PussyLayer" | "GenitaliaCover" | "Pussy1" | "Pussy2" | "Pussy3" |
 	"CagePlastic2" | "CageTechno" | "CageFlat" |
 	"FuturisticRecolor" | "FuturisticRecolorDisplay" |
@@ -347,9 +450,11 @@ type PosePrerequisite = `Can${AssetPoseName}`;
 type AssetPrerequisite =
 	PosePrerequisite | "AccessBreast" | "AccessBreastSuitZip" | "AccessButt" | "AccessFullPenis" | "AccessMouth" | "AccessTorso" | "AccessVulva" | "AccessCrotch" |
 	"BlockedMouth" | "ButtEmpty" | "CanBeCeilingTethered" | "CanCoverVulva" | "CanHaveErection" | "CanBeLimp" | "CanKneel" | "CannotBeSuited" | "CannotHaveWand" |
+	"CanAttachMittens" |
 	"ClitEmpty" | "Collared" | "CuffedArms" | "CuffedArmsOrEmpty" | "CuffedFeet" | "CuffedFeetOrEmpty" | "CuffedLegs" | "CuffedLegsOrEmpty" |
 	"DisplayFrame" | "EyesEmpty" | "GagCorset" | "GagFlat" | "GagUnique" | "GasMask" | "HasBreasts" | "HasFlatChest" | "HasPenis" | "HasVagina" |
-	"HoodEmpty" | "NakedFeet" | "NakedHands" | "NeedsHarness" | "NeedsNippleRings" | "NoChastityCage" | "NoErection" | "NoClothLower" | "NoItemArms" |
+	"HoodEmpty" | "NakedFeet" | "NakedHands" | "NeedsChestHarness" | "NeedsHipHarness" | "NeedsNippleRings" |
+	"NoChastityCage" | "NoErection" | "NoClothLower" | "NoItemArms" |
 	"NoItemFeet" | "NoItemHands" | "NoItemLegs" | "NoMaidTray" | "NoOuterClothes" | "NotChained" | "NotChaste" | "NotKneeling" |
 	"NotLifted" | "NotMasked" | "NotMounted" | "NotProtrudingFromMouth" | "NotSuspended" | "OnBed" |
 	"RemotesAllowed" | "VulvaEmpty"
@@ -385,7 +490,7 @@ type ArousalAffectStutterName = "None" | "Arousal" | "Vibration" | "All";
  *
  * @see {@link CommonKeyMove}
  */
-type KeyboardEventListener = (event: KeyboardEvent) => boolean;
+type KeyboardEventListener = ScreenFunctions["KeyDown"];
 type MouseEventListener = ScreenFunctions["MouseDown"];
 
 type SettingsSensDepName = "SensDepLight" | "Normal" | "SensDepNames" | "SensDepTotal" | "SensDepExtreme";
@@ -401,8 +506,26 @@ type GraphicsFontName =
 type PreferenceSubscreenName =
 	"General" | "Difficulty" | "Restriction" | "Chat" | "CensoredWords" | "Audio" | "Arousal" |
 	"Security" | "Online" | "Visibility" | "Immersion" | "Graphics" | "Controller" | "Notifications" |
-	"Gender" | "Scripts" | "Extensions"
+	"Gender" | "Scripts" | "Extensions" | "Main"
 	;
+
+interface PreferenceSubscreen {
+	name: PreferenceSubscreenName;
+	description?: string;
+	icon?: string;
+	hidden?: boolean;
+	load?: () => void;
+	run: () => void;
+	click: () => void;
+	exit?: () => boolean;
+}
+
+interface PreferenceGenderSetting {
+	/** Whether the setting is active for female cases */
+	Female: boolean;
+	/** Whether the setting is active for male cases */
+	Male: boolean;
+}
 
 type FetishName =
 	"Bondage" | "Gagged" | "Blindness" | "Deafness" | "Chastity" | "Exhibitionist" | "Masochism" |
@@ -418,7 +541,7 @@ type BackgroundTag =
 // NOTE: `NPCArchetype` is for NPC's only
 type TitleName =
 	NPCArchetype | "None" | "Mistress" | "Master" | "Mistree" | "ClubSlave" | "Maid" | "HeadMaid" | "BondageMaid" | "Kidnapper" |
-	"MasterKidnapper" | "Patient" | "PermanentPatient" | "EscapedPatient" | "Nurse" | "Doctor" |
+	"MasterKidnapper" | "Patient" | "PermanentPatient" | "EscapedPatient" | "Nurse" | "Doctor" | "AnimeBoy" |
 	"LadyLuck" | "LordFortune" | "Patron" | "CollegeStudent" |"Nawashi" | "Houdini" | "PonyAlicorn" |
 	"PonyPegasus" | "PonyUnicorn" | "PonyWild" | "PonyHot" | "PonyWarm" | "PonyCold" | "PonyFarm" |
 	"PonyFoal" | "InfilrationMole" | "InfilrationInfiltrator" | "InfilrationAgent" |
@@ -670,6 +793,9 @@ interface AssetGroup {
 	readonly Effect: readonly EffectName[];
 	readonly MirrorGroup: AssetGroupName | "";
 	readonly RemoveItemOnRemove: readonly Readonly<{ Group: AssetGroupItemName; Name: string; TypeRecord?: TypeRecord }>[];
+	readonly EditOpacity: boolean;
+	readonly MinOpacity: number;
+	readonly MaxOpacity: number;
 	readonly DrawingPriority: number;
 	readonly DrawingLeft: TopLeft.Data;
 	readonly DrawingTop: TopLeft.Data;
@@ -833,7 +959,8 @@ interface Asset {
 	readonly AllowActivity?: readonly ActivityName[];
 	readonly ActivityAudio?: readonly string[];
 	readonly ActivityExpression: Readonly<Partial<Record<ActivityName, readonly ExpressionTrigger[]>>>;
-	readonly AllowActivityOn?: readonly AssetGroupItemName[];
+	readonly AllowActivityOn: readonly AssetGroupItemName[];
+	readonly InventoryID?: number;
 	readonly BuyGroup?: string;
 	readonly Effect: readonly EffectName[];
 	readonly Bonus?: AssetBonusName;
@@ -890,7 +1017,7 @@ interface Asset {
 	readonly AllowHideItem?: readonly string[];
 	/** @deprecated */
 	readonly AllowTypes?: never;
-	readonly AllowTighten?: boolean;
+	readonly AllowTighten: boolean;
 	/**
 	 * The default color of the item: an array of length {@link Asset.ColorableLayerCount} consisting of {@link AssetGroup.DefaultColor} and/or valid color hex codes.
 	 */
@@ -898,6 +1025,7 @@ interface Asset {
 	readonly Opacity: number;
 	readonly MinOpacity: number;
 	readonly MaxOpacity: number;
+	readonly EditOpacity: boolean;
 	readonly Audio?: string;
 	readonly Category?: readonly AssetCategory[];
 	readonly Fetish?: readonly FetishName[];
@@ -970,6 +1098,17 @@ type WardrobeItemBundle = [
 /** An AppearanceBundle is whole minified appearance of a character */
 type AppearanceBundle = ItemBundle[];
 
+interface ClipboardItemBundle {
+	/** The item's asset group name */
+	G: AssetGroupName;
+	/** The item's asset name */
+	A: string;
+	/** The item's color */
+	C?: string;
+}
+
+type ClipboardAppearanceBundle = ClipboardItemBundle[];
+
 interface Pose {
 	Name: AssetPoseName;
 	Category: AssetPoseCategory;
@@ -989,7 +1128,7 @@ type ActivityNameBasic = "Bite" | "Caress" | "Choke" | "Cuddle" | "FrenchKiss" |
 	"PenetrateSlow" | "Pet" | "Pinch" | "PoliteKiss" | "Pull" |
 	"RestHead" | "Rub" | "Scratch" | "Sit" | "Slap" | "Spank" | "Step" | "StruggleArms" | "StruggleLegs" |
 	"Suck" | "TakeCare" | "Tickle" | "Whisper" | "Wiggle" |
-	"SistersHug" | "BrothersHandshake" | "SiblingsCheekKiss"
+	"SistersHug" | "BrothersHandshake" | "SiblingsCheekKiss" | "CollarGrab"
 ;
 
 type ActivityNameItem = "Inject" | "MasturbateItem" | "PenetrateItem" | "PourItem" | "RollItem" | "RubItem" | "ShockItem" | "SipItem" | "SpankItem" | "TickleItem" | "EatItem" | "Scratch" | "ThrowItem";
@@ -1001,7 +1140,7 @@ type ActivityPrerequisite =
 	`Needs-${ActivityNameItem}` |
 	"TargetCanUseTongue" | "TargetKneeling" | "TargetMouthBlocked" | "TargetMouthOpen" | "TargetZoneAccessible" | "TargetZoneNaked" |
 	"UseArms" | "UseFeet" | "UseHands" | "UseMouth" | "UseTongue" | "VulvaEmpty" | "ZoneAccessible" | "ZoneNaked" |
-	"Sisters" | "Brothers" | "SiblingsWithDifferentGender"
+	"Sisters" | "Brothers" | "SiblingsWithDifferentGender" | "Collared"
 ;
 
 interface Activity {
@@ -1027,6 +1166,8 @@ type ItemActivityRestriction = "blocked" | "limited" | "unavail";
 interface ItemActivity {
 	/** The activity performed */
 	Activity: Activity;
+	/** The target group of the activity */
+	Group: AssetGroupName;
 	/** An optional item used for the activity. Null if the player is used their hand, for example. */
 	Item?: Item;
 	/** Whether the item is blocked or limited on the target character, or unavailable because the player is blocked. Undefined means no restriction. */
@@ -1045,7 +1186,7 @@ interface Item {
 }
 
 type FavoriteIcon = "Favorite" | "FavoriteBoth" | "FavoritePlayer";
-type ItemEffectIcon = "BlindLight" | "BlindNormal" | "BlindHeavy" | "DeafLight" | "DeafNormal" | "DeafHeavy" | "GagLight" | "GagNormal" | "GagHeavy" | "GagTotal";
+type ItemEffectIcon = "BlindLight" | "BlindNormal" | "BlindHeavy" | "DeafLight" | "DeafNormal" | "DeafHeavy" | "GagLight" | "GagNormal" | "GagHeavy" | "GagTotal" | "Freeze" | "Block";
 type ShopIcon = "Extended" | "BuyGroup";
 type InventoryIcon = (
 	FavoriteIcon
@@ -1061,9 +1202,11 @@ type InventoryIcon = (
 	| ShopIcon
 );
 
-interface InventoryItem {
+interface InventoryBundle {
 	Group: AssetGroupName;
-	Name: string;
+	Name: string
+}
+interface InventoryItem extends InventoryBundle {
 	Asset: Asset;
 }
 
@@ -1135,7 +1278,7 @@ interface ScreenFunctions {
 	 * Called if the user moves the mouse wheel on the canvas
 	 * @param {MouseEvent | TouchEvent} event - The event that triggered this
 	 */
-	MouseWheel?(event: MouseEvent | TouchEvent): void;
+	MouseWheel?(event: WheelEvent): void;
 	/**
 	 * Called if the user clicks on the canvas
 	 * @param {MouseEvent | TouchEvent} event - The event that triggered this
@@ -1170,24 +1313,20 @@ interface ScreenFunctions {
 
 //#region Characters
 
+/** The different types of (mutually exclusive) permissions an item or item option can have */
+type ItemPermissionMode = "Default" | "Block" | "Limited" | "Favorite";
+
 /**
- * A struct for representing an item with special permissions (limited, favorited, etc).
- * @see {@link PermissionsPacked}
+ * A struct for representing an item with special permissions (limited, favorited, etc) in the client.
  */
 interface ItemPermissions {
-	/** The {@link Asset.Name} of the item */
-	Name: string;
-	/** The {@link AssetGroup.Name} of the item */
-	Group: AssetGroupName;
-	/**
-	 * Either the item's {@link ItemProperties.Type} or, in the case of modular items,
-	 * a substring thereof denoting the type of a single module
-	 */
-	Type?: string | null;
+	/** Whether the item is hidden */
+	Hidden: boolean;
+	/** The permission associated with the item */
+	Permission: ItemPermissionMode;
+	/** The permission associated with specific extended options of the item */
+	TypePermissions: Record<string, ItemPermissionMode>;
 }
-
-/** A packed record-based version of {@link ItemPermissions}. */
-type ItemPermissionsPacked = Partial<Record<AssetGroupName, Record<string, (undefined | null | string)[]>>>;
 
 interface ScriptPermission {
 	permission: number;
@@ -1229,7 +1368,7 @@ interface PrivateCharacterData {
 	Appearance: AppearanceBundle,
 	AppearanceFull: AppearanceBundle,
 	ArousalSettings: Character["ArousalSettings"];
-	Event: NPCTrait[];
+	Event: NPCEvent[];
 	FromPandora?: boolean;
 }
 
@@ -1275,6 +1414,7 @@ interface Character {
 	Lover: string;
 	Money: number;
 	Inventory: InventoryItem[];
+	InventoryData?: string;
 	Appearance: Item[];
 	Stage: string;
 	CurrentDialog: string;
@@ -1342,9 +1482,14 @@ interface Character {
 	MustDraw: boolean;
 	BlinkFactor: number;
 	AllowItem: boolean;
-	BlockItems: ItemPermissions[];
-	FavoriteItems: ItemPermissions[];
-	LimitedItems: ItemPermissions[];
+	/** @deprecated - superseded by {@link Character.PermissionItems} */
+	BlockItems?: never;
+	/** @deprecated - superseded by {@link Character.PermissionItems} */
+	FavoriteItems?: never;
+	/** @deprecated - superseded by {@link Character.PermissionItems} */
+	LimitedItems?: never;
+	/** A record with all asset- and type-specific permission settings */
+	PermissionItems: Partial<Record<`${AssetGroupName}/${string}`, ItemPermissions>>;
 	WhiteList: number[];
 	HeightModifier: number;
 	MemberNumber?: number;
@@ -1417,7 +1562,8 @@ interface Character {
 	GetLovership: (MembersOnly?: boolean) => Lovership[];
 	/** @deprecated Use IsLoverOfCharacter() */
 	IsLover: (C: Character) => boolean;
-	HiddenItems: ItemPermissions[];
+	/** @deprecated - superseded by {@link Character.PermissionItems} */
+	HiddenItems?: never;
 	HeightRatio: number;
 	HasHiddenItems: boolean;
 	SavedColors: HSVColor[];
@@ -1435,6 +1581,7 @@ interface Character {
 	IsAssFull: () => boolean;
 	IsFixedHead: () => boolean;
 	GetDeafLevel: () => number;
+	CanPickLocks: () => boolean;
 	IsEdged: () => boolean;
 	IsPlayer: () => this is PlayerCharacter;
 	IsBirthday: () => boolean;
@@ -1465,12 +1612,13 @@ interface Character {
 	HasPenis: () => boolean;
 	HasVagina: () => boolean;
 	IsFlatChested: () => boolean;
+	WearingCollar: () => boolean;
 	// Properties created in other places
 	ArousalSettings?: ArousalSettingsType;
 	AppearanceFull?: Item[];
 	// Online character properties
 	Title?: TitleName;
-	LabelColor?: string;
+	LabelColor?: HexColor;
 	Creation?: number;
 	Description?: string;
 	OnlineSharedSettings?: CharacterOnlineSharedSettings;
@@ -1504,6 +1652,7 @@ interface CharacterGameParameters {
 	GGTS?: GameGGTSParameters,
 	Poker?: GamePokerParameters,
 	ClubCard?: GameClubCardParameters,
+	Prison? : GamePrisonParameters;
 }
 
 /**
@@ -1528,7 +1677,7 @@ type NPCArchetype =
 	/* Pandora Special */
 	"Victim"|"Target"|"Chest"|
 	// Misc
-	"Dominatrix" | "Nurse" | "Submissive" | "Mistress" | "Patient" | "Maid" | "Mistress" | "Maiestas" | "Vincula" | "Amplector" | "Corporis"
+	"Dominatrix" | "Nurse" | "Submissive" | "Mistress" | "Patient" | "Maid" | "Mistress" | "Maiestas" | "Vincula" | "Amplector" | "Corporis" | "AnimeGirl" | "Bunny" | "Succubus"
 	;
 
 /** NPC Character extension */
@@ -1546,7 +1695,7 @@ interface Character {
 interface NPCCharacter extends Character {
 	Archetype?: NPCArchetype;
 	Trait?: NPCTrait[];
-	Event?: NPCTrait[];
+	Event?: NPCEvent[];
 	Affection?: number;
 	Domination?: number;
 }
@@ -1763,6 +1912,10 @@ interface ImmersionSettingsType {
 	ChatRoomMuffle: boolean;
 	BlindAdjacent: boolean;
 	AllowTints: boolean;
+	/**
+	 * Whether garbled messages that have a non-garbled variant will be decoded.
+	 */
+	ShowUngarbledMessages: boolean;
 }
 
 type ControllerButton = typeof ControllerButton[keyof typeof ControllerButton];
@@ -1807,6 +1960,7 @@ interface ChatSettingsType {
 	CensoredWordsLevel: number;
 	/** Whether to preserve the chat log when switching rooms */
 	PreserveChat: boolean;
+	OOCAutoClose: boolean;
 }
 
 interface GameplaySettingsType {
@@ -1851,6 +2005,7 @@ interface PlayerOnlineSettings {
 	ShowStatus?: boolean;
 	EnableAfkTimer: boolean;
 	ShowRoomCustomization: 0 | 1 | 2 | 3; // 0 - Never, 1 - No by default, 2 - Yes by default, 3 - Always
+	FriendListAutoRefresh: boolean;
 }
 
 /** Pandora Player extension */
@@ -1875,8 +2030,40 @@ interface PlayerCharacter {
 	KinkyDungeonExploredLore?: any[];
 }
 
+type NPCTraitType =
+	| "Dominant" | "Submissive"
+	| "Violent" | "Peaceful"
+	| "Horny" | "Frigid"
+	| "Rude" | "Polite"
+	| "Wise" | "Dumb"
+	| "Serious" | "Playful";
+
 interface NPCTrait {
-	Name: string;
+	Name: NPCTraitType;
+	/** 1 to 100 */
+	Value: number;
+}
+
+type NPCEventType =
+	| "LastInteraction"
+	| "Wife" | "Fiancee" | "Girlfriend"
+	| "PrivateRoomEntry"
+	| "NPCCollaring" | "PlayerCollaring"
+	| "NextGift" | "LastGift"
+	| "Kidnap" | "NextKidnap"
+	| "NPCBrainwashing"
+	| "EndSubTrial" | "EndDomTrial"
+	| "NextBed"
+	| "NewCloth"
+	| "RefusedActivity"
+	| "SlaveMarketRent"
+	| "AsylumSent"
+	| "LastDecay"
+;
+
+interface NPCEvent {
+	Name: NPCEventType;
+	/** timestamp */
 	Value: number;
 }
 
@@ -2523,7 +2710,7 @@ interface AssetDefinitionProperties {
 	 * The asset's draw opacity
 	 * @see {@link Asset.Opacity}
 	 */
-	Opacity?: number;
+	Opacity?: number | number[];
 
 	/**
 	 * A custom background for this option that overrides the default
@@ -2940,6 +3127,12 @@ interface AppearanceUpdateParameters {
 }
 
 /**
+ * A map containing appearance item diffs, keyed according to the item group. Used to compare and validate before/after
+ * for appearance items.
+ */
+type AppearanceDiffMap = Partial<Record<AssetGroupName, [before: Item, after: Item]>>
+
+/**
  * A wrapper object containing the results of a diff resolution. This includes the final item that the diff resolved to
  * (or null if the diff resulted in no item, for example in the case of item removal), along with a valid flag which
  * indicates whether or not the diff was fully valid or not.
@@ -3217,6 +3410,10 @@ interface GameClubCardParameters {
 	Reward?: string;
 	Status?: OnlineGameStatus;
 	PlayerSlot?: number;
+}
+
+interface GamePrisonParameters {
+	Timer?: number;
 }
 
 //#endregion
@@ -3518,7 +3715,11 @@ interface PandoraBaseRoom {
 //#region Crafting items
 
 type CraftingMode = (
-	"Slot" | "Item" | "Property" | "Lock" | "Name" | "Color" | "Extended"
+	"Slot"
+	| "Name"
+	| "Color"
+	| "Extended"
+	| "Tighten"
 	| "OverridePriority"
 );
 
@@ -3570,6 +3771,17 @@ interface CraftingItem {
 	 * @see {@link ItemProperties.TypeRecord}
 	 */
 	TypeRecord?: null | TypeRecord;
+	/**
+	 * Whether the crafting item is elligble for use.
+	 * Only relevant if the player is the craft's owner but do they not own the underlying item (_e.g._ due to an inventory wipe).
+	 */
+	Disabled?: boolean;
+	/**
+	 * A tighten-/loosen-specific modifier to-be added to the base difficulty[1] of the item
+	 *
+	 * [1] The sum of the asset difficulty, `Bondage` skill modifier and crafted property `Secure`/`Loose` modifiers.
+	 */
+	DifficultyFactor?: number;
 }
 
 /**
@@ -3581,6 +3793,12 @@ interface CraftingItemSelected {
 	Name: string;
 	/** The custom item description. */
 	Description: string;
+	/**
+	 * A tighten-/loosen-specific modifier to-be added to the base difficulty[1] of the item
+	 *
+	 * [1] The sum of the asset difficulty, `Bondage` skill modifier and crafted property `Secure`/`Loose` modifiers.
+	 */
+	DifficultyFactor: number;
 	/** The comma-separated color(s) of the item. */
 	Color: string;
 	/** The names of the crafted item's supported assets. */
@@ -3672,6 +3890,7 @@ interface ItemColorStateType {
 	colorInputWidth: number;
 	colorInputX: number;
 	colorInputY: number;
+	editOpacity: boolean;
 	exportButtonX: number;
 	importButtonX: number;
 	resetButtonX: number;
@@ -3890,21 +4109,22 @@ interface ArousalSettingsType {
 interface PreferenceExtensionsSettingItem {
 	/**
 	 * The identifier of the extension.
-	 * This is used to identify the extension and should be unique.
+	 * This is used to identify the extension and must be unique.
 	 */
 	Identifier: string;
 
 	/**
-	 * The button text for the button of extension.
+	 * The label for the extension button.
 	 * If it's a Function, it will be called once when entering
 	 * the extension setting menu. Use the return value as button text.
 	 */
 	ButtonText: string | (()=>string);
 
 	/**
-	 * The image path of the extension, and is passed
-	 * into {@link DrawButton} for creating the HTMLImageElement
-	 * that is needed for drawing the Button image.
+	 * The image path of the extension.
+	 *
+	 * This is passed to {@link DrawButton} directly. You can use a `data` URL here.
+	 *
 	 * If it's a Function, it will be called once when entering
 	 * the extension setting menu. Use the return value as image
 	 * path.
@@ -3912,36 +4132,51 @@ interface PreferenceExtensionsSettingItem {
 	 */
 	Image?: string | (()=>string);
 
-	/** Handles loading on entering the extension setting */
+	/**
+	 * Called when the extension screen is about to be displayed.
+	 *
+	 * You can create your own HTML elements in here, or load your data.
+	 *
+	 * Note that HTML elements with the `HideOnPopup` class will be hidden
+	 * automatically when a popup is shown.
+	 */
 	load?: () => void;
 
-	/** Handles the clicks of the extension setting */
+	/**
+	 * Called when a click happens on the extension screen.
+	 *
+	 * Note: your exit button handling *must* call {@link PreferenceSubscreenExit};
+	 */
 	click: () => void;
 
-	/** Handles the run and draws of the extension setting */
+	/**
+	 * Called every frame while the extension screen is shown.
+	 */
 	run: () => void;
 
 	/**
-	 * Handles the unloading of the extension setting, typically
-	 * from {@link CommonSetScreen}, when the player is disconnected.
-	 * If it's undefined, there will be no unloading for the extension
-	 * setting.
-	 * Remind to check those HTML elements that are created in the
-	 * extension setting, and hide/remove them from the DOM.
-	 * Note that HTML elements with `HideOnPopup` class will be hidden
-	 * automatically when a popup is shown.
+	 * Called when the extension screen is about to be closed.
+	 *
+	 * Handles the unloading of the extension setting, usually when the user clicks the exit button,
+	 * but it can also be called by the relog screen being triggered because of a disconnect.
+	 *
+	 * If you created any HTML elements in {@link PreferenceExtensionsSettingItem.load}, this is a good place to remove them.
 	 */
 	unload?: () => void;
 
 	/**
-	 * Handles the exits of the extension setting, typically when
-	 * user press `Esc` key.
-	 * If a extension wants to exit the menu by itself
-	 * (clicking `exit` button, etc.), the extension should call
-	 * `PreferenceSubscreenExtensionsClear`.
-	 * @returns If it returns `true`, the extension setting will be unload.
-	 * And `unload` will be called once if it's defined and then main extension
-	 * setting page is shown.
+	 * Called when the extension screen is about to exit.
+	 *
+	 * Happens either through a click of the exit button, or the ESC key.
+	 *
+	 * @returns {boolean | void} If you have some validation that needs to happen
+	 * (for example, ensuring that a textfield contains a valid color code), return false;
+	 * this will stop the subscreen from exiting.
+	 * You might want to show a message to the user explaining why "nothing is happening" in that case,
+	 * either through your own means or by setting `PreferenceMessage` to a string.
+	 *
+	 * If you return true or nothing, your screen's {@link PreferenceExtensionsSettingItem.unload} handler
+	 * will be called afterward.
 	 */
 	exit: () => boolean | void;
 }
@@ -3975,6 +4210,7 @@ interface WheelFortuneOptionType {
 interface ClubCard {
 	ID: number;
 	Name: string;
+	ArrayIndex?: number;
 	Type?: string;
 	Title?: string;
 	Text?: string;
@@ -3998,6 +4234,22 @@ interface ClubCard {
 	BeforeOpponentTurnEnd?: (C: ClubCardPlayer) => void;
 	AfterOpponentTurnEnd?: (C: ClubCardPlayer) => void;
 	CanPlay?: (C: ClubCardPlayer) => boolean;
+	/**
+	 * @param C Player that owns the card and played a card
+	 * @param Card that was played
+	 */
+	onPlayedCard?: (C: ClubCardPlayer, Card: ClubCard) => void;
+	/**
+	 * @param C player that owns the card (not the one who played it in this case)
+	 * @param Card the card that was played
+	 */
+	onOpponentPlayedCard?: (C: ClubCardPlayer, Card: ClubCard) => void;
+	/**
+	 * Hook to run when card is removed from the board.
+	 * @param C Player that owns the card
+	 */
+	onLeaveClub?: (C: ClubCardPlayer) => void;
+	turnStart?: (C: ClubCardPlayer) => void;
 }
 
 interface ClubCardPlayer {
@@ -4010,11 +4262,21 @@ interface ClubCardPlayer {
 	Hand: ClubCard[];
 	Board: ClubCard[];
 	Event: ClubCard[];
+	DiscardPile: ClubCard[];
 	Level: number;
 	Money: number;
 	Fame: number;
 	LastFamePerTurn?: number;
 	LastMoneyPerTurn?: number;
+	ClubCardTurnCounter: number;
+	CardsPlayedThisTurn: Record<number, ClubCard[]>
+}
+
+interface ClubCardMessage {
+	Message: string,
+	MessageType: string,
+	PlayerId: string,
+	TurnCounter:  number
 }
 
 // #region drawing
@@ -4054,19 +4316,12 @@ interface PreviewDrawOptions {
 
 // #region Chat Room Maps
 
-interface ChatRoomView {
+interface ChatRoomView extends Pick<ScreenFunctions, "Run" | "MouseDown" | "MouseUp" | "MouseMove" | "MouseWheel" | "Click" | "Draw" | "KeyDown"> {
 	Activate?: () => void;
 	Deactivate?: () => void;
-	Run: () => void;
 	Draw: () => void;
 	DrawUi: () => void;
 	DisplayMessage: (data: ServerChatRoomMessage, msg: string, SenderCharacter: Character, metadata: IChatRoomMessageMetadata) => string|null;
-	Click?: (event: MouseEvent | TouchEvent) => void;
-	MouseDown?: (event: MouseEvent | TouchEvent) => void;
-	MouseUp?: (event: MouseEvent | TouchEvent) => void;
-	MouseMove?: (event: MouseEvent | TouchEvent) => void;
-	MouseWheel?: (event: MouseEvent | TouchEvent) => void;
-	KeyDown?: (event: KeyboardEvent) => boolean;
 	SyncRoomProperties?: (data: ServerChatRoomSyncMessage) => void;
 	CanStartWhisper?: (C: Character) => boolean;
 	CanLeave?: () => boolean;
@@ -4092,6 +4347,7 @@ type ChatRoomMapObjectType = (
 	| "FloorDecorationThemed"
 	| "FloorDecorationParty"
 	| "FloorDecorationCamping"
+	| "FloorDecorationExpanding"
 	| "FloorItem"
 	| "FloorObstacle"
 	| "WallDecoration"
@@ -4122,6 +4378,8 @@ interface ChatRoomMapObject extends ChatRoomMapDoodad {
 	Left?: number;
 	Width?: number;
 	Height?: number;
+	Transparency?: number;
+	TransparencyCutoutHeight?: number;
 	Exit?: boolean;
 	Unique?: boolean;
 	AssetGroup?: AssetGroupItemName;
@@ -4129,6 +4387,7 @@ interface ChatRoomMapObject extends ChatRoomMapDoodad {
 	BlockVision?: boolean;
 	BlockHearing?: boolean;
 	IsVisible?: () => boolean;
+	BuildImageName?: (X: number, Y: number) => string;
 }
 
 interface ChatRoomMapMovement {

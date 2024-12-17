@@ -42,15 +42,16 @@ interface ServerAccountData extends ServerAccountImmutableData {
 	LabelColor?: string;
 	Appearance?: ServerAppearanceBundle;
 	Description?: string;
-	BlockItems?: ItemPermissionsPacked | ItemPermissions[];
-	LimitedItems?: ItemPermissionsPacked | ItemPermissions[];
-	FavoriteItems?: ItemPermissionsPacked | ItemPermissions[];
-	HiddenItems?: ItemPermissions[];
+	BlockItems?: ServerItemPermissionsPacked | ServerItemPermissions[];
+	LimitedItems?: ServerItemPermissionsPacked | ServerItemPermissions[];
+	FavoriteItems?: ServerItemPermissionsPacked | ServerItemPermissions[];
+	HiddenItems?: ServerItemPermissions[];
 	Title?: TitleName;
 	Nickname?: string;
 	Crafting?: string;
 	/** String-based values have been deprecated as of BondageProjects/Bondage-College#2138 */
 	Inventory?: string | Partial<Record<AssetGroupName, string[]>>;
+	InventoryData?: string;
 	AssetFamily?: "Female3DCG";
 	Infiltration?: InfiltrationType;
 	SavedColors?: HSVColor[];
@@ -70,6 +71,8 @@ interface ServerAccountData extends ServerAccountImmutableData {
 	LastChatRoomDesc?: string;
 	/** @deprecated superseded by the {@link ServerAccountData.LastChatRoom} object */
 	LastChatRoomAdmin?: string;
+	/** @deprecated superseded by the {@link ServerAccountData.LastChatRoom} object */
+	LastChatRoomWhitelist?: string;
 	/** @deprecated superseded by the {@link ServerAccountData.LastChatRoom} object */
 	LastChatRoomBan?: string;
 	/** @deprecated superseded by the {@link ServerAccountData.LastChatRoom} object */
@@ -128,12 +131,31 @@ type ServerAccountDataNoDeprecated = ServerAccountData & { [k in ServerAccountDa
 	Inventory?: Partial<Record<AssetGroupName, string[]>>;
 };
 
+/**
+ * A struct for representing an item with special permissions (limited, favorited, etc) in the server.
+ * @see {@link ServerItemPermissionsPacked}
+ */
+interface ServerItemPermissions {
+	/** The {@link Asset.Name} of the item */
+	Name: string;
+	/** The {@link AssetGroup.Name} of the item */
+	Group: AssetGroupName;
+	/**
+	 * Either the item's {@link ItemProperties.Type} or, in the case of modular items,
+	 * a substring thereof denoting the type of a single module
+	 */
+	Type?: string | null;
+}
+
+/** A packed record-based version of {@link ServerItemPermissions}. */
+type ServerItemPermissionsPacked = Partial<Record<AssetGroupName, Record<string, (undefined | null | string)[]>>>;
+
 interface ServerMapDataResponse {
 	MemberNumber: number;
 	MapData: ChatRoomMapPos;
 }
 
-type ServerAccountDataSynced = Omit<ServerAccountData, "Money" | "FriendList">;
+type ServerAccountDataSynced = Omit<ServerAccountData, "Money" | "FriendList" | "AccountName">;
 
 interface ServerOwnership {
 	MemberNumber?: number;
@@ -176,7 +198,7 @@ interface ServerPrivateCharacterData {
 	Appearance: ServerAppearanceBundle;
 	AppearanceFull: ServerAppearanceBundle;
 	ArousalSettings: ArousalSettingsType;
-	Event: NPCTrait[];
+	Event: NPCEvent[];
 	FromPandora?: boolean;
 }
 
@@ -185,7 +207,7 @@ type ServerAppearanceBundle = ServerItemBundle[];
 
 type ServerChatRoomSpace = "X" | "" | "M" | "Asylum";
 type ServerChatRoomLanguage = "EN" | "DE" | "FR" | "ES" | "CN" | "RU" | "UA";
-type ServerChatRoomGame = "" | "ClubCard" | "LARP" | "MagicBattle" | "GGTS";
+type ServerChatRoomGame = "" | "ClubCard" | "LARP" | "MagicBattle" | "GGTS" | "Prison";
 type ServerChatRoomBlockCategory =
 	/** Those are known as AssetCategory to the client */
 	"Medical" | "Extreme" | "Pony" | "SciFi" | "ABDL" | "Fantasy" |
@@ -201,6 +223,7 @@ type ServerChatRoomData = {
 	Name: string;
 	Description: string;
 	Admin: number[];
+	Whitelist: number[];
 	Ban: number[];
 	Background: string;
 	/* FIXME: server actually expects a string there, but we cheat to make the typing simpler */
@@ -437,7 +460,7 @@ interface ServerChatRoomAdminUpdateRequest {
 
 interface ServerChatRoomAdminMoveRequest {
 	MemberNumber: number;
-	Action: "Move" | "MoveLeft" | "MoveRight" | "Kick" | "Ban" | "Unban" | "Promote" | "Demote" | "Shuffle";
+	Action: "Move" | "MoveLeft" | "MoveRight" | "Kick" | "Ban" | "Unban" | "Promote" | "Demote" | "Whitelist" | "Unwhitelist" | "Shuffle";
 	Publish?: boolean;
 }
 
@@ -795,7 +818,7 @@ interface ServerChatRoomGameCardGameStartRequest {
 	Player2: number;
 }
 
-type ServerChatRoomGameCardGameActionRequest = { GameProgress: "Action" } & ({ CCLog: string } | { CCData: any });
+type ServerChatRoomGameCardGameActionRequest = { GameProgress: "Action" } & ({ CCLog: any } | { CCData: any });
 
 type ServerChatRoomGameCardGameUpdateRequest = ServerChatRoomGameCardGameStartRequest | ServerChatRoomGameCardGameQueryRequest | ServerChatRoomGameCardGameActionRequest;
 
@@ -825,7 +848,7 @@ interface ServerChatRoomGameResponse extends ServerChatRoomMessageBase {
 		Player1?: number;
 		Player2?: number;
 		CCData: [any];
-		CCLog: string;
+		CCLog: [any];
 	};
     RNG: number;
 }
