@@ -1,8 +1,8 @@
 const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
 
-var config = {
+module.exports = {
   entry: './src/main.ts',
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -19,27 +19,4 @@ var config = {
     filename: 'main.js',
     path: path.resolve( __dirname, '..', '..', 'dist', 'content-script')
   }
-};
-
-module.exports = (env, argv) => {
-  if (argv.mode === 'development') {
-    config.devtool = 'source-map';
-  }
-
-  if (argv.mode === 'production') {
-    config.optimization = {
-      minimizer: [
-        // new TerserPlugin({
-        //   terserOptions: {
-        //     output: {
-        //       comments: /@preserve/i,
-        //     },
-        //   },
-        //   extractComments: true
-        // })
-      ],
-    };
-  }
-
-  return config;
 };

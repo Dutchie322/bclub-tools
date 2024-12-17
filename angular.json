@@ -35,7 +35,12 @@
             ],
             "scripts": [],
             "extractLicenses": false,
-            "sourceMap": true,
+            "sourceMap": {
+              "scripts": true,
+              "styles": true,
+              "hidden": false,
+              "vendor": true
+            },
             "optimization": false,
             "namedChunks": true,
             "browser": "src/main.ts"
@@ -51,13 +56,18 @@
               "optimization": {
                 "scripts": true,
                 "styles": {
-                  "minify": true,
+                  "minify": false,
                   "inlineCritical": false
                 },
                 "fonts": true
               },
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": {
+                "scripts": true,
+                "styles": true,
+                "hidden": false,
+                "vendor": true
+              },
               "namedChunks": false,
               "extractLicenses": true,
               "budgets": [
@@ -190,17 +200,28 @@
               "optimization": {
                 "scripts": true,
                 "styles": {
-                  "minify": true,
+                  "minify": false,
                   "inlineCritical": false
                 },
                 "fonts": true
               },
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "sourceMap": {
+                "scripts": true,
+                "styles": true,
+                "hidden": false,
+                "vendor": true
+              }
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": {
+                "scripts": true,
+                "styles": true,
+                "hidden": false,
+                "vendor": true
+              }
             }
           },
           "defaultConfiguration": "production"
@@ -314,17 +335,28 @@
               "optimization": {
                 "scripts": true,
                 "styles": {
-                  "minify": true,
+                  "minify": false,
                   "inlineCritical": false
                 },
                 "fonts": true
               },
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "sourceMap": {
+                "scripts": true,
+                "styles": true,
+                "hidden": false,
+                "vendor": true
+              }
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": {
+                "scripts": true,
+                "styles": true,
+                "hidden": false,
+                "vendor": true
+              }
             }
           },
           "defaultConfiguration": "production"

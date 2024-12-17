@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/bclub-tools/content-script",
-    "sourceMap": false,
+    "sourceMap": true,
     "module": "esnext",
     "target": "es2015",
     "types": []
