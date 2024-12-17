@@ -4,9 +4,9 @@
 </mat-toolbar>
 
 <div class="container">
-  <button mat-button mat-stroked-button color="accent" class="primary-character-btn" (click)="openLogViewer()">Log Viewer</button>
+  <button mat-button mat-stroked-button color="accent" [class.merged-btn-left]="alternativeCharacters?.length > 0" (click)="openLogViewer()">Log Viewer</button>
   @if (alternativeCharacters?.length > 0) {
-    <button mat-button mat-stroked-button color="accent" class="more-characters-menu-btn" aria-label="Log Viewer for other characters" [matMenuTriggerFor]="charactersMenu">
+    <button mat-button mat-stroked-button color="accent" class="merged-btn-right" aria-label="Log Viewer for other characters" [matMenuTriggerFor]="charactersMenu">
       <mat-icon>expand_more</mat-icon>
     </button>
   }
