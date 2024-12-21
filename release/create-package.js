@@ -15,6 +15,7 @@ function createBasePackage() {
   addAllFilesToArchive(package, 'log-viewer', __dirname + '/../dist/log-viewer/');
   addAllFilesToArchive(package, 'options', __dirname + '/../dist/options/');
   addAllFilesToArchive(package, 'popup', __dirname + '/../dist/popup/');
+  addFilesToArchiveRoot(package, [__dirname + '/../dist/index.html', __dirname + '/../dist/main.js']);
   return package;
 }
 
@@ -35,6 +36,14 @@ function finalizePackage(package, nameSuffix) {
     .on('finish', () => {
       console.log(`${nameSuffix} package created.`);
     });
+}
+
+function addFilesToArchiveRoot(zip, files) {
+  for (const filePath of files) {
+    let base = path.parse(filePath).base;
+    let data = fs.readFileSync(filePath);
+    zip.file(base, data);
+  }
 }
 
 // Thanks to https://github.com/Stuk/jszip/issues/386#issuecomment-508217874
