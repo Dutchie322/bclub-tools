@@ -50,14 +50,18 @@ export class MemberInfoComponent implements OnDestroy {
     title: Title
   ) {
     this.member$ = route.paramMap.pipe(
-      mergeMap(params => {
+      switchMap(params => {
         this.playerCharacter = +params.get('playerCharacter');
         this.memberNumber = +params.get('memberNumber');
         this.isError = false;
+        this.snackBar.dismiss();
 
         return memberService.retrieveMember(this.playerCharacter, this.memberNumber).pipe(
           catchError(err => {
             console.error(err);
+            this.snackBar.open(err, undefined, {
+              verticalPosition: 'top'
+            });
 
             this.isError = true;
             this.memberForm.patchValue({ notes: '' }, { emitEvent: false });
