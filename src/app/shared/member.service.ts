@@ -49,6 +49,12 @@ export class MemberService {
 
         request.addEventListener('success', event => {
           const member = (event.target as IDBRequest<IMember>).result;
+          if (!member) {
+            subscriber.error(`Member number ${memberNumber} not found.`);
+            subscriber.complete();
+            return;
+          }
+
           this.sanitizeData(member);
           subscriber.next(member);
           subscriber.complete();

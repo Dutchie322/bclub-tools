@@ -2,9 +2,9 @@ import { Component, OnDestroy } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { debounceTime, tap, map, switchMap, mergeMap } from 'rxjs/operators';
-import { Subscription, Observable } from 'rxjs';
-import { IMember, addOrUpdateObjectStore, decompress, findTitle } from 'models';
+import { debounceTime, tap, map, switchMap, mergeMap, catchError } from 'rxjs/operators';
+import { Subscription, Observable, of } from 'rxjs';
+import { IMember, IMemberAppearanceMetaData, addOrUpdateObjectStore, decompress, findTitle } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
 import { CommonModule, NgStyle } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
@@ -14,26 +14,26 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-    selector: 'app-member-info',
-    imports: [
-      CommonModule,
-      ReactiveFormsModule,
-      MatIcon,
-      MatListModule,
-      MatTabsModule,
-      MatToolbar,
-    ],
-    templateUrl: './member-info.component.html',
-    styleUrls: ['./member-info.component.scss']
+  selector: 'app-member-info',
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatIcon,
+    MatListModule,
+    MatTabsModule,
+    MatToolbar,
+  ],
+  templateUrl: './member-info.component.html',
+  styleUrls: ['./member-info.component.scss']
 })
 export class MemberInfoComponent implements OnDestroy {
   private formSubscription: Subscription;
   private playerCharacter: number;
   private memberNumber: number;
-  private member: IMember;
   private titlePromise: Promise<string>;
 
-  public member$: Observable<IMember>;
+  public member$: Observable<IMember | undefined>;
+  public isError = false;
 
   public imageContainerStyle: NgStyle['ngStyle'];
   public imageStyle: NgStyle['ngStyle'];
@@ -50,18 +50,31 @@ export class MemberInfoComponent implements OnDestroy {
     title: Title
   ) {
     this.member$ = route.paramMap.pipe(
-      map(params => ({
-        playerCharacter: +params.get('playerCharacter'),
-        memberNumber: +params.get('memberNumber')
-      })),
-      tap(params => {
-        this.playerCharacter = params.playerCharacter;
-        this.memberNumber = params.memberNumber;
-      }),
-      switchMap(params => memberService.retrieveMember(params.playerCharacter, params.memberNumber)),
-      tap(member => this.memberForm.patchValue({ notes: member.notes }, { emitEvent: false })),
-      tap(member => this.member = member),
-      tap(member => title.setTitle(`${member.nickname || member.memberName} (${member.memberNumber}) - Bondage Club Tools`))
+      mergeMap(params => {
+        this.playerCharacter = +params.get('playerCharacter');
+        this.memberNumber = +params.get('memberNumber');
+        this.isError = false;
+
+        return memberService.retrieveMember(this.playerCharacter, this.memberNumber).pipe(
+          catchError(err => {
+            console.error(err);
+
+            this.isError = true;
+            this.memberForm.patchValue({ notes: '' }, { emitEvent: false });
+            title.setTitle(`${this.memberNumber} not found - Bondage Club Tools`);
+
+            return of(undefined);
+          }));
+      }
+      ),
+      tap(member => {
+        if (this.isError) {
+          return;
+        }
+
+        this.memberForm.patchValue({ notes: member.notes }, { emitEvent: false });
+        title.setTitle(`${member.nickname || member.memberName} (${member.memberNumber}) - Bondage Club Tools`);
+      })
     );
 
     this.formSubscription = this.memberForm.valueChanges.pipe(
@@ -86,7 +99,7 @@ export class MemberInfoComponent implements OnDestroy {
     return Math.abs(x);
   }
 
-  public calculateAppearanceImageStyles(element: EventTarget) {
+  public calculateAppearanceImageStyles(metaData: IMemberAppearanceMetaData, element: EventTarget) {
     const imageElement = element as HTMLImageElement;
     const imageContainerStyle: NgStyle['ngStyle'] = {
       height: '1000px'
@@ -97,7 +110,6 @@ export class MemberInfoComponent implements OnDestroy {
       transform: 'translateX(-50%)'
     };
 
-    const metaData = this.member.appearanceMetaData;
     if (!metaData) {
       if (imageElement.height > 1000) {
         imageContainerStyle['overflow'] = 'auto';

@@ -1,7 +1,7 @@
-<ng-container [formGroup]="memberForm" *ngIf="member$ | async; let member">
+<ng-container [formGroup]="memberForm" *ngIf="member$ | async; let member;">
   <div class="character-sheet" [ngClass]="{'with-appearance': !!member.appearance, 'without-appearance': !member.appearance}">
     <div *ngIf="member.appearance" class="character-appearance" [ngStyle]="imageContainerStyle">
-      <img #appearanceImage [src]="member.appearance || ''" [ngStyle]="imageStyle" (load)="calculateAppearanceImageStyles($event.target)" />
+      <img #appearanceImage [src]="member.appearance || ''" [ngStyle]="imageStyle" (load)="calculateAppearanceImageStyles(member.appearanceMetaData, $event.target)" />
     </div>
     <mat-toolbar class="character-name">
       <h1 [ngStyle]="{ color: member.labelColor || 'inherit' }">{{ member.nickname || member.memberName }}</h1>
