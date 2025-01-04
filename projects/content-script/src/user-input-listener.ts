@@ -4,7 +4,8 @@ import {
   IClientMessage,
   IEnrichedChatRoomChat,
   IAppearance,
-  IClientAccountBeep
+  IClientAccountBeep,
+  IPlayer
 } from '../../../models';
 
 export function listenForUserSentEvents(handshake: string, searchInterval: number) {
@@ -39,6 +40,9 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
     }, interval * 1000);
   }
 
+  function getName(character: IChatRoomCharacter | IPlayer) {
+    return character.Nickname || character.Name;
+  }
   function mapAppearance(appearance: IAppearance) {
     return {
       Group: appearance.Asset ? appearance.Asset.Group.Name : appearance.Group,
@@ -53,6 +57,7 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
     return {
       ID: character.ID,
       Name: character.Name,
+      Nickname: character.Nickname ? character.Nickname : undefined,
       Title: character.Title,
       Reputation: character.Reputation,
       Creation: character.Creation,
@@ -121,9 +126,10 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
         SessionId: Player.OnlineID,
         Sender: Player.MemberNumber,
         PlayerName: Player.Name,
+        PlayerNickname: Player.Nickname,
         MemberNumber: Player.MemberNumber,
         TargetName: incomingData.Target
-          ? ChatRoomData.Character.find(c => c.MemberNumber === incomingData.Target).Name
+          ? getName(ChatRoomData.Character.find(c => c.MemberNumber === incomingData.Target))
           : undefined,
         Timestamp: new Date()
       } as IEnrichedChatRoomChat;

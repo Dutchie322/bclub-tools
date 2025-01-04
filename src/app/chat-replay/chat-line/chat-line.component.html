@@ -3,7 +3,7 @@
     <div class="line">
       <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
       <span class="chat">
-        <span class="sender" [ngStyle]="{ color: getColor(chatLog.sender.color) }">{{ chatLog.sender.name }}</span>:
+        <span class="sender" [ngStyle]="{ color: getColor(chatLog.sender.color) }">{{ chatLog.sender.nickname || chatLog.sender.name }}</span>:
         <span class="content">{{ chatLog.content }}</span>
       </span>
     </div>
@@ -12,7 +12,7 @@
     <div class="line">
       <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
       <span class="whisper">
-        <span class="sender" [ngStyle]="{ color: getColor(chatLog.sender.color) }">{{ chatLog.sender.name }}{{ chatLog.target ? ' to ' + chatLog.target.name : '' }}</span>:
+        <span class="sender" [ngStyle]="{ color: getColor(chatLog.sender.color) }">{{ chatLog.sender.nickname || chatLog.sender.name }}{{ chatLog.target ? ' to ' + chatLog.target.name : '' }}</span>:
         <span class="content">{{ chatLog.content }}</span>
       </span>
     </div>
@@ -21,7 +21,7 @@
     <div class="line">
       <time [attr.datetime]="chatLog.timestamp">{{ chatLog.timestamp.toLocaleString() }}</time>
       <span class="emote" [ngStyle]="{ 'background-color': getLighterColor(chatLog.sender.color) }">
-        <ng-container *ngIf="!isGeneralAction(chatLog.content)">*{{ chatLog.sender.name }}</ng-container>{{ chatLog.content[0] === "'" ? chatLog.content : ' ' + chatLog.content }}*
+        <ng-container *ngIf="!isGeneralAction(chatLog.content)">*{{ chatLog.sender.nickname || chatLog.sender.name }}</ng-container>{{ chatLog.content[0] === "'" ? chatLog.content : ' ' + chatLog.content }}*
       </span>
     </div>
   </ng-container>

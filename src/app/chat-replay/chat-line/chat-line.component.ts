@@ -60,7 +60,7 @@ export class ChatLineComponent {
     if (chatLog.type === 'Whisper' && !chatLog.target) {
       // Fill in the target so that we can display whispers more clearly
       cleanChatLog.target = {
-        name: chatLog.session.name,
+        name: chatLog.session.nickname || chatLog.session.name,
         memberNumber: chatLog.session.memberNumber
       };
     }

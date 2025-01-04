@@ -119,14 +119,15 @@ export class PopupComponent implements AfterViewInit {
       });
     });
 
-    this.chatLogsService.findPlayerCharacters().then(members => {
-      this.alternativeCharacters = members.filter(m => {
-        if (this.loggedIn) {
-          return m.memberNumber !== this.player.MemberNumber;
-        }
-        return true;
-      });
-    });
+    // Disabled for now because it strains large databases
+    // this.chatLogsService.findPlayerCharacters().then(members => {
+    //   this.alternativeCharacters = members.filter(m => {
+    //     if (this.loggedIn) {
+    //       return m.memberNumber !== this.player.MemberNumber;
+    //     }
+    //     return true;
+    //   });
+    // });
   }
 
   public ngAfterViewInit(): void {

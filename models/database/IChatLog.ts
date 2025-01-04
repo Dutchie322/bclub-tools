@@ -20,6 +20,7 @@ export interface IChatMessageCharacters {
 
 export interface IChatMessageCharacter {
   Name: string;
+  Nickname?: string;
   MemberNumber: number;
   Pronouns: string;
   HasPenis: boolean;
@@ -29,12 +30,14 @@ export interface IChatMessageCharacter {
 export interface IChatSender {
   id: number;
   name: string;
+  nickname?: string;
   color: string;
 }
 
 export interface IChatSessionPerspective {
   id: string;
   name: string;
+  nickname?: string;
   memberNumber: number;
 }
 

@@ -23,11 +23,13 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage | IEnrichedCha
     sender: {
       id: data.Sender,
       name: senderChar.Name,
+      nickname: senderChar.Nickname,
       color: senderChar.LabelColor,
     },
     session: {
       id: data.SessionId,
       name: data.PlayerName,
+      nickname: data.PlayerNickname,
       memberNumber: data.MemberNumber
     },
     timestamp: new Date(data.Timestamp),
@@ -75,7 +77,8 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage | IEnrichedCha
 function createChatLogCharacter(char: IChatRoomCharacter): IChatMessageCharacter {
   const crotchArea = getItem(char, 'Pussy');
   return {
-    Name: char.Nickname || char.Name,
+    Name: char.Name,
+    Nickname: char.Nickname,
     MemberNumber: char.MemberNumber,
     Pronouns: char.Appearance.find(a => a.Group === 'Pronouns').Name,
     HasPenis: crotchArea.Name === 'Penis',

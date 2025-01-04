@@ -80,12 +80,12 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
   }
 
   if (metadata.SourceCharacter) {
-    substitutions.push(['SourceCharacter', metadata.SourceCharacter.Name]);
+    substitutions.push(['SourceCharacter', metadata.SourceCharacter.Nickname || metadata.SourceCharacter.Name]);
     substitutions.push(...createPronounSubstitutions(metadata.SourceCharacter, 'Pronoun'));
   }
 
   if (metadata.TargetCharacter) {
-    const name = metadata.TargetCharacter.Name;
+    const name = metadata.TargetCharacter.Nickname || metadata.TargetCharacter.Name;
     const destinationCharacterName = `${name}${findInterfaceText('\'s')}`;
 
     substitutions.push(
@@ -128,7 +128,8 @@ async function getChatMessageCharacter(
 
   const member = await retrieveAndCacheMember(chatLog.session.memberNumber, memberNumber);
   return {
-    Name: memberName(member),
+    Name: member.memberName,
+    Nickname: member.nickname,
     MemberNumber: member.memberNumber,
     // Use fallbacks for older data
     Pronouns: member.pronouns || 'SheHer',
@@ -203,10 +204,6 @@ function createPronounSubstitutions(member: IChatMessageCharacter, dialogKey: st
     substitutions.push([dialogKey + pronounType, memberPronoun(member, pronounType)]);
   }
   return substitutions;
-}
-
-function memberName(member: IMember) {
-  return member.nickname || member.memberName;
 }
 
 function memberPronoun(member: IChatMessageCharacter, dialogKey: string) {

@@ -140,6 +140,7 @@ export function listenToServerEvents(handshake: string) {
       },
       SessionId: Player.OnlineID,
       PlayerName: Player.Name,
+      PlayerNickname: Player.Nickname,
       MemberNumber: Player.MemberNumber,
       Timestamp: new Date()
     }

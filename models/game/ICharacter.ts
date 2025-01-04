@@ -8,11 +8,11 @@ import { IReputation } from './IReputation';
 export interface IChatRoomCharacter {
   ID: number;
   Name: string;
-  Nickname: string;
-  AssetFamily: 'Female3DCG';
+  Nickname?: string;
+  AssetFamily?: 'Female3DCG';
   Title: string;
   Appearance: IAppearance[];
-  ActivePose: 'Kneel' | undefined;
+  ActivePose?: 'Kneel' | undefined;
   Reputation?: IReputation[];
   /**
    * Timestamp
@@ -28,10 +28,10 @@ export interface IChatRoomCharacter {
   /**
    * Encoded gibberish, can be quite long so it's best to skip it for performance reasons.
    */
-  Inventory: string;
+  Inventory?: string;
   Ownership: IOwnership | null;
-  BlockItems: IChatRoomCharacterBlockItem[];
-  ArousalSettings: IArousalSettings;
+  BlockItems?: IChatRoomCharacterBlockItem[];
+  ArousalSettings?: IArousalSettings;
 }
 
 export interface IChatRoomCharacterBlockItem {

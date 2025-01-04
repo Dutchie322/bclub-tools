@@ -7,6 +7,7 @@ export interface IPlayer {
   OnlineSettings: IPlayerOnlineSettings;
   MemberNumber: number;
   Name: string;
+  Nickname?: string;
   FriendList: number[];
   FriendNames: Map<number, string>;
   Lovership: ILovership[];

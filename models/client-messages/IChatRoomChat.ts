@@ -14,6 +14,7 @@ export type ChatRoomChatType = 'Chat' | 'Emote' | 'Whisper' | 'Hidden';
 export interface IEnrichedChatRoomChat extends IChatRoomChat {
   ChatRoom: IChatRoom;
   PlayerName: string;
+  PlayerNickname?: string;
   Sender: number;
   SessionId: string;
   TargetName?: string;
