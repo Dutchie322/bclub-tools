@@ -26,8 +26,7 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
   member = Object.assign({}, member, {
     playerMemberNumber: context.MemberNumber,
     playerMemberName: context.Name,
-    memberNumber: data.MemberNumber,
-    lastSeen: new Date()
+    memberNumber: data.MemberNumber
   });
 
   delete member.type;
@@ -37,6 +36,7 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
   }
   if (isChatRoomCharacter(data)) {
     member = Object.assign(member, mapChatRoomCharacter(data));
+    member.lastSeen = new Date();
   }
 
   return await addOrUpdateObjectStore('members', member);

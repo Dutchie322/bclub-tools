@@ -1,6 +1,5 @@
 /// <reference types="chrome"/>
 
-import './chat-log';
 import { writeChatLog } from './chat-log';
 import {
   IAccountBeep,
