@@ -1,5 +1,6 @@
-import { Socket } from 'socket.io-client';
-import { ChatRoomSpace, CurrentScreen, IChatRoom, IPlayer } from '../../../models/game';
+import type { Socket } from 'socket.io-client';
+import type { EventNames, EventParams } from "@socket.io/component-emitter";
+import type { ChatRoomSpace, CurrentScreen, IChatRoom, IPlayer } from '../../../models/game';
 
 declare global {
   let ChatRoomData: IChatRoom;
@@ -12,4 +13,5 @@ declare global {
   let ServerSocket: Socket;
 
   let CommonDrawAppearanceBuild: (C: unknown, callbacks: object) => void;
+  declare function ServerSend<Ev extends EventNames<ClientToServerEvents>>(Message: Ev, ...args: EventParams<ClientToServerEvents, Ev>): void;
 }

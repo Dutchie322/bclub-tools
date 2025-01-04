@@ -1,7 +1,6 @@
 import {
   IChatRoomCharacter,
   IChatRoomChat,
-  IChatRoomSearch,
   IClientMessage,
   IEnrichedChatRoomChat,
   IAppearance,
@@ -9,7 +8,7 @@ import {
 } from '../../../models';
 
 export function listenForUserSentEvents(handshake: string, searchInterval: number) {
-  let lastExecutedSearch: IChatRoomSearch;
+  let lastExecutedSearch: ServerChatRoomSearchRequest;
   let activeTimer: any;
 
   function configureNextRefresh(interval: number) {
@@ -32,7 +31,7 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
 
       if (ChatSearchResultOffset === 0) {
         // Only refresh chat rooms if we're on the first page.
-        ServerSocket.emit('ChatRoomSearch', lastExecutedSearch);
+        ServerSend('ChatRoomSearch', lastExecutedSearch);
       } else {
         // Otherwise, we'll try again in the next cycle.
         configureNextRefresh(interval);
@@ -143,7 +142,7 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
         event
       } as IClientMessage<void>, '*');
     },
-    ChatRoomSearch: (_: string, incomingData: IChatRoomSearch) => {
+    ChatRoomSearch: (_: string, incomingData: ServerChatRoomSearchRequest) => {
       lastExecutedSearch = incomingData;
 
       configureNextRefresh(searchInterval);

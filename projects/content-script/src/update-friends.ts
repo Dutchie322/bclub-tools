@@ -1,6 +1,6 @@
 export function requestOnlineFriends() {
   if (CurrentScreen !== 'Login') {
-    ServerSocket.emit('AccountQuery', {
+    ServerSend('AccountQuery', {
       Query: 'OnlineFriends'
     });
   }

@@ -3,10 +3,9 @@
   "compilerOptions": {
     "outDir": "../../dist/bclub-tools/content-script",
     "sourceMap": true,
-    "typeRoots": [
-      "../../node_modules/@types",
-      "../../typings"
-    ],
+    "module": "esnext",
+    "target": "es2015",
+    "types": []
   },
   "include": [
     "src/**/*.ts"
