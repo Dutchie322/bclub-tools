@@ -144,6 +144,14 @@ export function listenToServerEvents(handshake: string) {
       Timestamp: new Date()
     }
   });
+  createForwarder<string, string>('ChatRoomSearchResponse', data => {
+    if (data === 'RoomBanned' || data === 'RoomKicked') {
+      // We are forcibly removed from the room
+      return data;
+    }
+
+    return false;
+  });
   createForwarder<IChatRoomSync, any>('ChatRoomSync', data => ({
     Name: data.Name,
     Description: data.Description,
@@ -170,6 +178,4 @@ export function listenToServerEvents(handshake: string) {
     Lovership: data.Lovership,
     Ownership: data.Ownership
   }));
-  // createForwarder('disconnect');
-  // createForwarder('ForceDisconnect');
 }

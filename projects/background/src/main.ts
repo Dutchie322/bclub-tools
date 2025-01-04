@@ -214,6 +214,9 @@ async function handleServerMessage(message: IServerMessage<any>, sender: chrome.
     case 'ChatRoomMessage':
       await handleChatRoomMessage(sender.tab.id, message);
       break;
+    case 'ChatRoomSearchResponse':
+      await handleChatRoomSearchResponse(sender.tab.id, message);
+      break;
     case 'ChatRoomSync':
       await handleChatRoomSync(sender.tab.id, message);
       break;
@@ -276,6 +279,12 @@ async function handleChatRoomMessage(tabId: number, message: IServerMessage<IEnr
   }
 
   await notifyIncomingMessage(tabId, chatLog);
+}
+
+async function handleChatRoomSearchResponse(tabId: number, message: IServerMessage<string>) {
+  if (message.data === 'RoomBanned' || message.data === 'RoomKicked') {
+    await store(tabId, 'chatRoomCharacter', []);
+  }
 }
 
 async function handleChatRoomSync(tabId: number, message: IServerMessage<IChatRoomSync>) {
