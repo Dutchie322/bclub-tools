@@ -1,2 +1,1 @@
-- Filter input fields in table headers are too high (todo layout rework)
-- Find a way to cancel chat room search auto refresh after reload of extension (low prio)
+- Find a way to cancel chat room search auto refresh after reload of extension (low prio: mostly annoying during development, only happens after update for the rest)

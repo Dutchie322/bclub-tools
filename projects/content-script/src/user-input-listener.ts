@@ -1,3 +1,5 @@
+/// <reference path="../../../node_modules/bc-stubs/bc/Scripts/Common.d.ts"/>
+
 import {
   IChatRoomCharacter,
   IChatRoomChat,
@@ -40,20 +42,20 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
     }, interval * 1000);
   }
 
-  function getName(character: IChatRoomCharacter | IPlayer) {
+  function getName(character: IChatRoomCharacter | IPlayer | ServerAccountDataSynced) {
     return character.Nickname || character.Name;
   }
-  function mapAppearance(appearance: IAppearance) {
+  function mapAppearance(appearance: IAppearance | ServerItemBundle) {
     return {
-      Group: appearance.Asset ? appearance.Asset.Group.Name : appearance.Group,
-      Name: appearance.Asset ? appearance.Asset.Name : appearance.Name,
+      Group: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset.Group.Name : appearance.Group,
+      Name: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset.Name : appearance.Name,
       Color: appearance.Color,
       Difficulty: appearance.Difficulty,
       Property: appearance.Property,
       Craft: appearance.Craft
     };
   }
-  function mapCharacter(character: IChatRoomCharacter) {
+  function mapCharacter(character: IChatRoomCharacter | ServerAccountDataSynced) {
     return {
       ID: character.ID,
       Name: character.Name,
@@ -123,7 +125,7 @@ export function listenForUserSentEvents(handshake: string, searchInterval: numbe
           Name: ChatRoomData.Name,
           Character: ChatRoomData.Character.map(mapCharacter)
         },
-        SessionId: Player.OnlineID,
+        SessionId: Player.CharacterID,
         Sender: Player.MemberNumber,
         PlayerName: Player.Name,
         PlayerNickname: Player.Nickname,

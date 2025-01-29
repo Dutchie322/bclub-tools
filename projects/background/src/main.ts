@@ -28,7 +28,7 @@ import {
 import { checkForGame } from '../../content-script/src/check-for-game';
 import { checkForLoggedInState } from '../../content-script/src/check-for-logged-in-state';
 import { listenForUserSentEvents } from '../../content-script/src/user-input-listener';
-import { listenToServerEvents } from '../../content-script/src/server-event-listeners';
+import { listenToServerEvents, createConnectionListener } from '../../content-script/src/server-event-listeners';
 import { characterAppearance } from '../../content-script/src/draw-listeners';
 import { notifyIncomingMessage } from './notifications';
 import { writeMember, writeFriends, removeChatRoomData } from './member';
@@ -133,7 +133,7 @@ async function handleContentScriptMessage(message: any, sender: chrome.runtime.M
 
       chrome.scripting.executeScript({
         func: checkForGame,
-        args: [ handshake ],
+        args: [handshake],
         target: {
           tabId: sender.tab.id
         },
@@ -147,12 +147,16 @@ async function handleContentScriptMessage(message: any, sender: chrome.runtime.M
       handshake = await retrieve(sender.tab.id, 'handshake');
       await injectScripts(handshake, sender.tab.id);
       break;
+    case 'Reconnecting':
+      handshake = await retrieve(sender.tab.id, 'handshake');
+      await injectScripts(handshake, sender.tab.id);
+      break;
   }
 
   return undefined;
 }
 
-async function injectScripts(handshake: string, tabId: number) {
+async function injectScripts(handshake: string, tabId: number, isReconnect = false) {
   function injectScript<Args extends any[], Result>(func: (...args: Args) => Result, args: Args) {
     chrome.scripting.executeScript({
       func,
@@ -169,10 +173,13 @@ async function injectScripts(handshake: string, tabId: number) {
 
   const settings = await retrieveGlobal('settings');
 
-  injectScript(checkForLoggedInState, [ handshake ]);
-  injectScript(listenForUserSentEvents, [ handshake, settings.tools.chatRoomRefreshInterval ]);
-  injectScript(listenToServerEvents, [ handshake ]);
-  injectScript(characterAppearance, [ handshake ]);
+  if (!isReconnect) {
+    injectScript(checkForLoggedInState, [handshake]);
+    injectScript(characterAppearance, [handshake]);
+    injectScript(createConnectionListener, [handshake]);
+  }
+  injectScript(listenForUserSentEvents, [handshake, settings.tools.chatRoomRefreshInterval]);
+  injectScript(listenToServerEvents, [handshake]);
 }
 
 async function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtime.MessageSender) {

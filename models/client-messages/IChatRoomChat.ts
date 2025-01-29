@@ -1,4 +1,4 @@
-/// <reference path="../game/Messages.d.ts"/>
+/// <reference path="../../node_modules/bc-stubs/bc/NativeDeclarations/Messages.d.ts"/>
 
 import { IChatRoom } from '../game';
 

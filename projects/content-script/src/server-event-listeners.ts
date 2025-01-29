@@ -1,3 +1,5 @@
+/// <reference path="../../../node_modules/bc-stubs/bc/Scripts/Common.d.ts"/>
+
 import {
   IChatRoomMessage,
   IAccountBeep,
@@ -47,17 +49,17 @@ export function listenToServerEvents(handshake: string) {
       } as IServerMessage<TOutgoingMessage>, '*');
     });
   }
-  function mapAppearance(appearance: IAppearance) {
+  function mapAppearance(appearance: IAppearance | ServerItemBundle) {
     return {
-      Group: appearance.Asset ? appearance.Asset.Group.Name : appearance.Group,
-      Name: appearance.Asset ? appearance.Asset.Name : appearance.Name,
+      Group: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset.Group.Name : appearance.Group,
+      Name: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset.Name : appearance.Name,
       Color: appearance.Color,
       Difficulty: appearance.Difficulty,
       Property: appearance.Property,
       Craft: appearance.Craft
     };
   }
-  function mapCharacter(character: IChatRoomCharacter) {
+  function mapCharacter(character: IChatRoomCharacter | ServerAccountDataSynced) {
     return {
       ID: character.ID,
       Name: character.Name,
@@ -138,7 +140,7 @@ export function listenToServerEvents(handshake: string) {
         Name: ChatRoomData.Name,
         Character: ChatRoomData.Character.map(mapCharacter)
       },
-      SessionId: Player.OnlineID,
+      SessionId: Player.CharacterID,
       PlayerName: Player.Name,
       PlayerNickname: Player.Nickname,
       MemberNumber: Player.MemberNumber,
@@ -179,4 +181,39 @@ export function listenToServerEvents(handshake: string) {
     Lovership: data.Lovership,
     Ownership: data.Ownership
   }));
+}
+
+export function createConnectionListener(handshake: string) {
+  const identifier = Symbol.for(handshake);
+
+  if (window.io[identifier]) {
+    return;
+  }
+
+  const handler = {
+    apply(target, thisArg, argArray) {
+      const returnValue = target.apply(thisArg, argArray);
+
+      if (argArray[0] !== ServerURL) {
+        // Might be a mod using Socket.IO to connect somewhere. We're only interested in the game's
+        // own connections.
+        return returnValue;
+      }
+
+      try {
+        window.postMessage({
+          handshake,
+          type: 'content-script',
+          event: 'Reconnecting'
+        }, '*');
+      } catch (e) {
+        console.warn('[Bondage Club Tools] Failed to reconnect with the extension after the game lost connection, chat logs will not be stored.', e);
+      }
+
+      return returnValue;
+    },
+  } as ProxyHandler<typeof io>;
+  const proxy = new Proxy(io, handler);
+  proxy[identifier] = true;
+  window.io = proxy;
 }

@@ -46,6 +46,7 @@ BlockedByPermissions,Item is blocked by user.
 BlockedByRoom,Item is blocked in this room.
 Brightness,Brightness
 Cancel,Cancel
+CannotSelfSelect,Cannot change this option by yourself.
 CannotUseOnSelf,Cannot use on yourself.
 CantChangeWhileLocked,Cannot change while locked
 Challenge,Challenge:
@@ -180,19 +181,54 @@ NotificationTitleTest,Test Notification
 OpacityLabel,Change Opacity
 OptionNeedsToBeBought,Option needs to be bought
 Page,Page
-PandoraActivityBondage,A Pandora guard puts SourceCharacter in new restraints.
-PandoraActivitySpank,A Pandora guard spanks SourceCharacter butt many times.
-PandoraActivityHose,A Pandora guard hoses SourceCharacter with cold water.
-PandoraActivityGag,A Pandora guard gags SourceCharacter.
-PandoraActivityUngag,A Pandora guard removes the gag from SourceCharacter.
-PandoraActivityHogtie,A Pandora guard chains and hogties SourceCharacter.
-PandoraActivityShibari,A Pandora guard puts SourceCharacter in shibari bondage.
-PandoraActivityNaked,A Pandora guard strips SourceCharacter and confiscates the clothes for a while.
-PandoraActivityLock,A Pandora guard adds locks on SourceCharacter restraints.
-PandoraActivityChastity,A Pandora guard locks a chastity device on SourceCharacter.
-PandoraActivityUnchaste,A Pandora guard removes the chastity device from SourceCharacter.
-PandoraActivityUnlock,A Pandora guard unlocks some restraints on SourceCharacter.
-PandoraActivityRelease,A Pandora guard removes some restraints on SourceCharacter.
+PandoraActivityBondage,A Pandora guard puts TargetCharacterName in new restraints.
+PandoraActivitySpank,A Pandora guard spanks TargetCharacterName butt many times.
+PandoraActivityHose,A Pandora guard hoses TargetCharacterName with cold water.
+PandoraActivityGag,A Pandora guard gags TargetCharacterName.
+PandoraActivityUngag,A Pandora guard removes the gag from TargetCharacterName.
+PandoraActivityHogtie,A Pandora guard chains and hogties TargetCharacterName.
+PandoraActivityShibari,A Pandora guard puts TargetCharacterName in shibari bondage.
+PandoraActivityDetain,A Pandora guard uses prison restraints on TargetCharacterName.
+PandoraActivityNaked,A Pandora guard strips TargetCharacterName and confiscates the clothes for a while.
+PandoraActivityLock,A Pandora guard adds locks on TargetCharacterName restraints.
+PandoraActivityChastity,A Pandora guard locks a chastity device on TargetCharacterName.
+PandoraActivityUnchaste,A Pandora guard removes the chastity device from TargetCharacterName.
+PandoraActivityUnlock,A Pandora guard unlocks some restraints on TargetCharacterName.
+PandoraActivityRelease,A Pandora guard removes some restraints on TargetCharacterName.
+PandoraActivityCage,A Pandora guard puts TargetCharacterName in a case.
+PandoraActivityUncage,A Pandora guard releases TargetCharacterName from the case.
+PandoraGuardActivityBondage,Pandora guard SourceCharacter puts TargetCharacterName in new restraints.
+PandoraGuardActivitySpank,Pandora guard SourceCharacter spanks TargetCharacterName butt many times.
+PandoraGuardActivityHose,Pandora guard SourceCharacter hoses TargetCharacterName with cold water.
+PandoraGuardActivityGag,Pandora guard SourceCharacter gags TargetCharacterName.
+PandoraGuardActivityUngag,Pandora guard SourceCharacter removes the gag from TargetCharacterName.
+PandoraGuardActivityHogtie,Pandora guard SourceCharacter chains and hogties TargetCharacterName.
+PandoraGuardActivityShibari,Pandora guard SourceCharacter puts TargetCharacterName in shibari bondage.
+PandoraGuardActivityDetain,Pandora guard SourceCharacter uses prison restraints on TargetCharacterName.
+PandoraGuardActivityNaked,Pandora guard SourceCharacter strips TargetCharacterName and confiscates the clothes for a while.
+PandoraGuardActivityLock,Pandora guard SourceCharacter adds locks on TargetCharacterName restraints.
+PandoraGuardActivityChastity,Pandora guard SourceCharacter locks a chastity device on TargetCharacterName.
+PandoraGuardActivityUnchaste,Pandora guard SourceCharacter removes the chastity device from TargetCharacterName.
+PandoraGuardActivityUnlock,Pandora guard SourceCharacter unlocks some restraints on TargetCharacterName.
+PandoraGuardActivityRelease,Pandora guard SourceCharacter removes some restraints on TargetCharacterName.
+PandoraGuardActivityCage,Pandora guard SourceCharacter puts TargetCharacterName in a case.
+PandoraGuardActivityUncage,Pandora guard SourceCharacter releases TargetCharacterName from the case.
+PandoraGuardActivityBondageAll,Pandora guard SourceCharacter puts all inmates in new restraints.
+PandoraGuardActivitySpankAll,Pandora guard SourceCharacter spanks all inmates one by one.
+PandoraGuardActivityHoseAll,Pandora guard SourceCharacter hoses all inmates with cold water.
+PandoraGuardActivityGagAll,Pandora guard SourceCharacter gags all inmates.
+PandoraGuardActivityUngagAll,Pandora guard SourceCharacter removes the gag from all inmates.
+PandoraGuardActivityHogtieAll,Pandora guard SourceCharacter chains and hogties all inmates.
+PandoraGuardActivityShibariAll,Pandora guard SourceCharacter puts all inmates in shibari bondage.
+PandoraGuardActivityDetainAll,Pandora guard SourceCharacter uses prison restraints on all inmates.
+PandoraGuardActivityNakedAll,Pandora guard SourceCharacter strips all inmates and confiscates the clothes for a while.
+PandoraGuardActivityLockAll,Pandora guard SourceCharacter adds locks on all inmates restraints.
+PandoraGuardActivityChastityAll,Pandora guard SourceCharacter locks a chastity device on all inmates.
+PandoraGuardActivityUnchasteAll,Pandora guard SourceCharacter removes the chastity device from all inmates.
+PandoraGuardActivityUnlockAll,Pandora guard SourceCharacter unlocks some restraints on all inmates.
+PandoraGuardActivityReleaseAll,Pandora guard SourceCharacter removes some restraints on all inmates.
+PandoraGuardActivityCageAll,Pandora guard SourceCharacter puts all inmates in cases.
+PandoraGuardActivityUncageAll,Pandora guard SourceCharacter releases all inmates from their cases.
 Picking,Picking the lock...
 PoseMenu,Pose
 PrerequisiteAddItemsToUse,Must have an arm/torso/pelvis item to use ceiling tethers.

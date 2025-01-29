@@ -154,6 +154,7 @@ Cloth,MaleTankTop1,Male Cloth Tank-Top
 Cloth,MistressTop,Mistress Top
 Cloth,NurseUniform,Nurse Uniform
 Cloth,RetroGirdle,Retro Girdle Dress
+Cloth,RibbonCorset,Ribbon Corset
 Cloth,Robe1,Robe
 Cloth,SeethroughTop,See-through Top
 Cloth,ShoulderlessTop,Shoulderless Top
@@ -182,6 +183,7 @@ ClothAccessory,BowBackAccessory,Bow Back Accessory
 ClothAccessory,Camera1,Camera
 ClothAccessory,Cape,Cape
 ClothAccessory,CatsuitCollar,Catsuit Collar
+ClothAccessory,ComboBelt,Combo Boots Belt
 ClothAccessory,FacePaint, Face Paint
 ClothAccessory,FrillyApron,Frilly Apron
 ClothAccessory,FurBolero,Fur Bolero
@@ -234,6 +236,7 @@ ClothLower,LongLeatherSkirt,Long Leather Skirt
 ClothLower,LongPleatedSkirt,Long Pleated Skirt
 ClothLower,LongSkirt1,Long Skirt
 ClothLower,MageSkirt,Witch's Skirt
+ClothLower,MidLegSkirt,Mid Leg Skirt
 ClothLower,MistressBottom,Mistress Bottom
 ClothLower,Pajama1,Pajama
 ClothLower,PantBoots,Long Latex Pants
@@ -315,6 +318,8 @@ EyeShadow,Tanuki,Tanuki
 EyeShadow,UndershadowedBlurred,Undershadowed (Blurred)
 EyeShadow,UndershadowedSolid,Undershadowed (Solid)
 EyeShadow,Wings,Wings
+FaceMarkings,,Face Markings
+FaceMarkings,FaceWritings,Face Writings
 FacialHair,,Facial Hair
 FacialHair,BigBeard,Big Beard
 FacialHair,ChinstrapBeard,Chinstrap Beard
@@ -325,6 +330,7 @@ FacialHair,MoustacheBeard,Moustache Beard
 Fluids,,Fluids
 Fluids,Fluids,Fluids
 Garters,,Garters
+Garters,ComboBelt,Combo Boots Belt
 Garters,DropBag,Drop Bag
 Garters,GarterBelt,Leather Garter Belts
 Garters,GarterBelt2,Leather Garter Belt
@@ -500,7 +506,30 @@ HairBack,HairBack60,Style 60
 HairBack,HairBack61,Style 61
 HairBack,HairBack62,Style 62
 HairBack,HairBack63,Style 63
+HairBack,HairBack64,Style 64
 HairBack,ScalyBackHair,Scaly Hair
+HairBack,HairBack65,Style 65
+HairBack,HairBack65b,Style 65b
+HairBack,HairBack66,Style 66
+HairBack,HairBack67,Style 67
+HairBack,HairBack68,Style 68
+HairBack,HairBack69,Style 69
+HairBack,HairBack69b,Style 69b
+HairBack,HairBack70,Style 70
+HairBack,HairBack70b,Style 70b
+HairBack,HairBack71,Style 71
+HairBack,HairBack72,Style 72
+HairBack,HairBack73,Style 73
+HairBack,HairBack74,Style 74
+HairBack,HairBack75,Style 75
+HairBack,HairBack76,Style 76
+HairBack,HairBack76b,Style 76b
+HairBack,HairBack77,Style 77
+HairBack,HairBack77b,Style 77b
+HairBack,HairBack77c,Style 77c
+HairBack,HairBack78,Style 78
+HairBack,HairBack78b,Style 78b
+HairBack,HairBack78c,Style 78c
 HairBack,HairNone,None
 HairFront,,Front Hair
 HairFront,HairFront1,Style 1
@@ -601,6 +630,8 @@ HairFront,HairFront61,Style 61
 HairFront,ScalyHair,Scaly Hair
 HairFront,HairFront62a,Style 62a
 HairFront,HairFront62b,Style 62b
+HairFront,HairFront63,Style 63
+HairFront,HairFront64,Style 64
 HandAccessoryLeft,,Hand Accessory (Left)
 HandAccessoryLeft,CatsuitGloves,Catsuit Gloves
 HandAccessoryLeft,Claws,Claws
@@ -708,6 +739,7 @@ ItemArms,HeavyYoke,Heavy Yoke
 ItemArms,HempRope,Hemp Rope
 ItemArms,HighSecurityStraitJacket,High Security Straitjacket
 ItemArms,HighStyleSteelCuffs,HighStyle Steel Cuffs
+ItemArms,InflatableDress,Inflatable Dress
 ItemArms,InflatableStraightLeotard,Inflatable Strait Leotard
 ItemArms,LatexArmbinder,Latex Armbinder
 ItemArms,LatexBoxtieLeotard,Latex Boxtie Leotard
@@ -764,6 +796,7 @@ ItemArms,BedMetalCuffs,Bed Metal Cuffs
 ItemBoots,,Feet
 ItemBoots,BalletHeels,Ballet Heels
 ItemBoots,BalletHeels1,Ballet Hi-Shoes
+ItemBoots,BalletMittens,Ballet Mittens
 ItemBoots,BalletWedges,Ballet Wedges
 ItemBoots,FuturisticHeels,Futuristic Shoes
 ItemBoots,FuturisticHeels2,Futuristic Heels
@@ -875,6 +908,7 @@ ItemDevices,OneBarGirl,Unsuspected Pose
 ItemDevices,PersonalCage,Personal Cage
 ItemDevices,PetBed,Pet Bed
 ItemDevices,PetBowl,Pet Bowl
+ItemDevices,PogoBall,Rubber Pogo Ball
 ItemDevices,Pole,Pole
 ItemDevices,SaddleStand,Saddle Stand
 ItemDevices,SmallDisplayCase,Small Display Case
@@ -1082,6 +1116,7 @@ ItemHood,HarnessCatMask,Cat Mask Harness
 ItemHood,HeadboxSeethrough,One-Way Glass Head Box
 ItemHood,InflatableGagMask,Inflatable Gag Mask
 ItemHood,InflatedBallHood,Inflatable Hood
+ItemHood,Kigu2Hood,Rubber Kigurumi
 ItemHood,KirugumiMask,Kigurumi Mask
 ItemHood,KittyHood,Kitty Hood
 ItemHood,LampHeadHood,Lampshade Hood
@@ -1558,6 +1593,7 @@ Necklace,NecklaceKey,Key Necklace
 Necklace,NecklaceLock,Lock Necklace
 Necklace,NecklaceRope,Rope Necklace
 Necklace,PearlNecklace1,Custom Pearl Necklace
+Necklace,SatinScarf,Satin Scarf
 Nipples,,Nipples Style
 Nipples,Nipples1,Small
 Nipples,Nipples2,Large
@@ -1657,6 +1693,7 @@ Shoes,TallerBoots,Combo Boots
 Shoes,ThighBoots, Latex ThighBoots
 Shoes,ThighHighLatexHeels,Latex Heels
 Shoes,WesternBoots,Western Boots
+Shoes,WitchShoes,Witch Shoes
 Shoes,WoollyBootsTall,Woolly Boots
 Socks,,Socks
 Socks,CowPrintedSocks,Cow Printed Socks

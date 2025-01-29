@@ -9,8 +9,9 @@ declare global {
   let CurrentScreen: CurrentScreen;
   let CharacterAppearanceReturnRoom: CurrentScreen;
   let InformationSheetPreviousScreen: CurrentScreen;
-  let Player: IPlayer;
+  // let Player: IPlayer;
   let ServerSocket: Socket;
+  let ServerURL: string;
 
   let CommonDrawAppearanceBuild: (C: unknown, callbacks: object) => void;
   declare function ServerSend<Ev extends EventNames<ClientToServerEvents>>(Message: Ev, ...args: EventParams<ClientToServerEvents, Ev>): void;

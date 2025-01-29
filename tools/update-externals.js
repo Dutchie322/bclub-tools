@@ -53,7 +53,7 @@ const assets = [
 
 const scripts = [
   'Scripts/Typedef.d.ts',
-  'Scripts/Messages.d.ts'
+  //'Scripts/Messages.d.ts'
 ];
 
 for (const file of assets) {

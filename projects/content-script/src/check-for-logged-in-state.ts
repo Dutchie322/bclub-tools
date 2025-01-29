@@ -1,3 +1,5 @@
+/// <reference path="../../../node_modules/bc-stubs/bc/Scripts/Common.d.ts"/>
+
 export function checkForLoggedInState(handshake: string) {
   window.postMessage({
     handshake,

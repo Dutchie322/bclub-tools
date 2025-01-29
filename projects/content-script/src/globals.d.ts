@@ -9,8 +9,9 @@ declare global {
   var CurrentScreen: CurrentScreen;
   var CharacterAppearanceReturnRoom: CurrentScreen;
   var InformationSheetPreviousScreen: CurrentScreen;
-  var Player: IPlayer;
+  // var Player: IPlayer;
   var ServerSocket: Socket;
+  var ServerURL: string;
 
   var CommonDrawAppearanceBuild: (C: any, callbacks: object) => void;
   declare function ServerSend<Ev extends EventNames<ClientToServerEvents>>(Message: Ev, ...args: EventParams<ClientToServerEvents, Ev>): void;
