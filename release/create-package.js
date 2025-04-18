@@ -1,26 +1,26 @@
-const fs = require('fs');
-const path = require('path');
-const JSZip = require('jszip');
+import { readFileSync, createWriteStream, readdirSync, statSync } from 'fs';
+import { parse, join, relative, resolve } from 'path';
+import JSZip from 'jszip';
 
 ['chrome', 'firefox'].forEach(browser => {
-  const package = createBasePackage();
-  package.file('manifest.json', fs.readFileSync(`${__dirname}/../dist/manifests/manifest-${browser}.json`));
-  finalizePackage(package, browser);
+  const archive = createBasePackage();
+  archive.file('manifest.json', readFileSync(`${import.meta.dirname}/../dist/manifests/manifest-${browser}.json`));
+  finalizePackage(archive, browser);
 });
 
 function createBasePackage() {
-  const package = new JSZip();
-  addAllFilesToArchive(package, 'background', __dirname + '/../dist/background/');
-  addAllFilesToArchive(package, 'content-script', __dirname + '/../dist/content-script/');
-  addAllFilesToArchive(package, 'log-viewer', __dirname + '/../dist/log-viewer/');
-  addAllFilesToArchive(package, 'options', __dirname + '/../dist/options/');
-  addAllFilesToArchive(package, 'popup', __dirname + '/../dist/popup/');
-  addFilesToArchiveRoot(package, [__dirname + '/../dist/index.html', __dirname + '/../dist/main.js']);
-  return package;
+  const archive = new JSZip();
+  addAllFilesToArchive(archive, 'background', import.meta.dirname + '/../dist/background/');
+  addAllFilesToArchive(archive, 'content-script', import.meta.dirname + '/../dist/content-script/');
+  addAllFilesToArchive(archive, 'log-viewer', import.meta.dirname + '/../dist/log-viewer/');
+  addAllFilesToArchive(archive, 'options', import.meta.dirname + '/../dist/options/');
+  addAllFilesToArchive(archive, 'popup', import.meta.dirname + '/../dist/popup/');
+  addFilesToArchiveRoot(archive, [import.meta.dirname + '/../dist/index.html', import.meta.dirname + '/../dist/main.js']);
+  return archive;
 }
 
-function finalizePackage(package, nameSuffix) {
-  package.generateNodeStream({
+function finalizePackage(archive, nameSuffix) {
+  archive.generateNodeStream({
     type: 'nodebuffer',
     streamFiles: true,
     compression: 'DEFLATE',
@@ -28,7 +28,7 @@ function finalizePackage(package, nameSuffix) {
       level: 9
     }
   })
-    .pipe(fs.createWriteStream(`${__dirname}/../dist/bclub-tools-${nameSuffix}.zip`))
+    .pipe(createWriteStream(`${import.meta.dirname}/../dist/bclub-tools-${nameSuffix}.zip`))
     .on('error', err => {
       console.error(err);
       throw err;
@@ -40,8 +40,8 @@ function finalizePackage(package, nameSuffix) {
 
 function addFilesToArchiveRoot(zip, files) {
   for (const filePath of files) {
-    let base = path.parse(filePath).base;
-    let data = fs.readFileSync(filePath);
+    let base = parse(filePath).base;
+    let data = readFileSync(filePath);
     zip.file(base, data);
   }
 }
@@ -51,9 +51,9 @@ function addAllFilesToArchive(zip, basePath, dir) {
   const allPaths = getFilePathsRecursiveSync(dir);
 
   for (const filePath of allPaths) {
-    const addPath = path.join(basePath, path.relative(dir, filePath));
+    const addPath = join(basePath, relative(dir, filePath));
 
-    let data = fs.readFileSync(filePath);
+    let data = readFileSync(filePath);
     zip.file(addPath, data);
   }
 }
@@ -61,17 +61,17 @@ function addAllFilesToArchive(zip, basePath, dir) {
 // returns a flat array of absolute paths of all files recursively contained in the dir
 function getFilePathsRecursiveSync(dir) {
   let results = [];
-  list = fs.readdirSync(dir);
+  const list = readdirSync(dir);
   let pending = list.length;
   if (!pending) {
     return results;
   }
 
   for (let file of list) {
-    file = path.resolve(dir, file);
-    const stat = fs.statSync(file);
+    file = resolve(dir, file);
+    const stat = statSync(file);
     if (stat && stat.isDirectory()) {
-      res = getFilePathsRecursiveSync(file);
+      const res = getFilePathsRecursiveSync(file);
       results = results.concat(res);
     } else {
       results.push(file);
