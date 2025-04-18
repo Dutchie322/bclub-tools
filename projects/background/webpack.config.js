@@ -1,6 +1,6 @@
-const path = require('path');
+import { resolve as _resolve } from 'path';
 
-module.exports = {
+const config = {
   entry: './src/main.ts',
   devtool: 'inline-source-map',
   module: {
@@ -13,10 +13,12 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [ '.ts', '.js' ]
+    extensions: ['.ts', '.js']
   },
   output: {
     filename: 'main.js',
-    path: path.resolve( __dirname, '..', '..', 'dist', 'background')
+    path: _resolve(import.meta.dirname, '..', '..', 'dist', 'background')
   }
 };
+
+export default config;

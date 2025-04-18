@@ -3568,10 +3568,10 @@ batch@0.6.1:
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
   integrity sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==
 
-bc-stubs@^112.0.0-Beta.1:
-  version "112.0.0-Beta.1"
-  resolved "https://registry.yarnpkg.com/bc-stubs/-/bc-stubs-112.0.0-Beta.1.tgz#b9f8e4db7c33aa4dc1d0f2aea29e6ba3cbcf362c"
-  integrity sha512-DM6OlVA3FxRLTEvpUQ6WX/c/tpNWw0O2JrW94A6KK4ghZBB8CjLKM3dnv42vD4leX3zGhzB5oh9WmhluEK2jaQ==
+bc-stubs@^115.0.0:
+  version "115.0.0"
+  resolved "https://registry.yarnpkg.com/bc-stubs/-/bc-stubs-115.0.0.tgz#3f9bfc0cf0a678a93cbf117fe8a766195ec3002d"
+  integrity sha512-a/480mJU1DAF5eyyHzPSRsDLUR2G8v9bAvJcpcm9fpeiaU0bZIdHhy179Lyrh+FDHPmzbj6ywehVnrEyhdU7mA==
   dependencies:
     socket.io-client "4.6.1"
 
@@ -3657,6 +3657,11 @@ body-parser@^1.19.0:
     raw-body "2.5.2"
     type-is "~1.6.18"
     unpipe "1.0.0"
+
+bondage-club-mod-sdk@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/bondage-club-mod-sdk/-/bondage-club-mod-sdk-1.2.0.tgz#3201611af7789f0da4059dc17ec8786eccd1b50c"
+  integrity sha512-S+li+PgX7Qo5yccS/R/eAXC4Opq8lc5AdhTPjC2XhWxDGTieUQKj3QJ4ZLgL8x0ySnK7h+DvlkRZd8+OT5JErQ==
 
 bonjour-service@^1.2.1:
   version "1.2.1"

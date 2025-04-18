@@ -1,4 +1,4 @@
-import { IStorageMap, StorageKeys, STORAGE_KEYS, GlobalStorageKeys, IGlobalStorageMap } from './IStorageMap';
+import { IStorageMap, StorageKeys, GlobalStorageKeys, IGlobalStorageMap, CHARACTER_STORAGE_KEYS, ALL_STORAGE_KEYS } from './IStorageMap';
 
 export async function retrieveGlobal<K extends GlobalStorageKeys>(key: K): Promise<IGlobalStorageMap[K]> {
   return (await chrome.storage.local.get([key]))[key] || {} as IGlobalStorageMap[K];
@@ -42,5 +42,9 @@ export function onChanged(
 }
 
 export async function clearStorage(tabId: number) {
-  await chrome.storage.local.remove(STORAGE_KEYS.map(key => `${key}_${tabId}`));
+  await chrome.storage.local.remove(ALL_STORAGE_KEYS.map(key => `${key}_${tabId}`));
+}
+
+export async function clearCharacterStorage(tabId: number) {
+  await chrome.storage.local.remove(CHARACTER_STORAGE_KEYS.map(key => `${key}_${tabId}`));
 }

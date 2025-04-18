@@ -1,3 +1,19 @@
+/**
+ * Checks to see if the current game is running the game and we are able to
+ * hook into it. In order to give the game some time to load, the process is
+ * repeated a few times before silently giving up. Doing it this way we can
+ * support the so-called "cheater" and beta versions without knowing their
+ * exact URLs as well, while not throwing errors on pages that do not serve the
+ * game (homepage, college, teacher, etc). If the game is found, a GameLoaded
+ * message is sent to the extension which will then continue with injecting the
+ * code necessary in order to hook into the game and start listening to events.
+ *
+ * This function is injected into the page using `chrome.scripting.executeScript`,
+ * which means that no imports can be used and all code must be inside the
+ * function definition.
+ *
+ * @param handshake The handshake we need to use in the message.
+ */
 export function checkForGame(handshake: string) {
   function checkRequiredElements() {
     if (!document.getElementById('MainCanvas')) {

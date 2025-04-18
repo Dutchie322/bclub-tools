@@ -1,6 +1,7 @@
 {
   "name": "bclub-tools",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -38,6 +39,7 @@
     "@angular/platform-browser": "^19.0.3",
     "@angular/platform-browser-dynamic": "^19.0.3",
     "@angular/router": "^19.0.3",
+    "bondage-club-mod-sdk": "^1.2.0",
     "fflate": "^0.8.1",
     "lz-string": "^1.5.0",
     "papaparse": "^5.4.1",
@@ -64,7 +66,7 @@
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "archiver": "^7.0.1",
-    "bc-stubs": "^112.0.0-Beta.1",
+    "bc-stubs": "^115.0.0",
     "eslint": "^9.16.0",
     "html-webpack-plugin": "^5.6.3",
     "jasmine-core": "~5.5.0",

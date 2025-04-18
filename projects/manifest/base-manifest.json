@@ -1,7 +1,7 @@
 {
   "name": "Bondage Club Tools",
   "description" : "Enriches the experience for Bondage Club.",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "icons": {
     "128": "log-viewer/assets/bclub-logo.png"
   },
@@ -20,5 +20,17 @@
     "browser_style": false,
     "open_in_tab": true,
     "page": "options/index.html"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "*://*.bondageprojects.com/*",
+        "*://*.bondageprojects.elementfx.com/*",
+        "*://*.bondage-europe.com/*"
+      ],
+      "resources": [
+        "content-script/hooks.js"
+      ]
+    }
+  ]
 }

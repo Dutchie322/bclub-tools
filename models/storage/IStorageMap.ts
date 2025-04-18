@@ -7,15 +7,19 @@ export const GLOBAL_STORAGE_KEYS = [
   'settings'
 ] as const;
 
-export const STORAGE_KEYS = [
+export const CHARACTER_STORAGE_KEYS = [
   'chatRoomCharacter',
-  'handshake',
   'onlineFriends',
   'player'
 ] as const;
 
+export const ALL_STORAGE_KEYS = [
+  ...CHARACTER_STORAGE_KEYS,
+  'handshake',
+] as const;
+
 export type GlobalStorageKeys = typeof GLOBAL_STORAGE_KEYS[number];
-export type StorageKeys = typeof STORAGE_KEYS[number];
+export type StorageKeys = typeof ALL_STORAGE_KEYS[number];
 
 export interface IGlobalStorageMap {
   'maintenance': IMaintenance;

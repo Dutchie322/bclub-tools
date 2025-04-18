@@ -1,6 +1,6 @@
 import type { Socket } from 'socket.io-client';
 import type { EventNames, EventParams } from "@socket.io/component-emitter";
-import type { ChatRoomSpace, CurrentScreen, IChatRoom, IPlayer } from '../../../models/game';
+import type { ChatRoomSpace, CurrentScreen, IChatRoom } from '../../../models/game';
 
 declare global {
   let ChatRoomData: IChatRoom;
@@ -9,7 +9,6 @@ declare global {
   let CurrentScreen: CurrentScreen;
   let CharacterAppearanceReturnRoom: CurrentScreen;
   let InformationSheetPreviousScreen: CurrentScreen;
-  // let Player: IPlayer;
   let ServerSocket: Socket;
   let ServerURL: string;
 

@@ -1,7 +1,9 @@
-const path = require('path');
+import { resolve as _resolve } from 'path';
 
-module.exports = {
-  entry: './src/main.ts',
+const mainConfig = {
+  entry: {
+    main: './src/main.ts'
+  },
   devtool: 'inline-source-map',
   module: {
     rules: [
@@ -13,10 +15,41 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [ '.ts', '.js' ]
+    extensions: ['.ts', '.js']
   },
   output: {
-    filename: 'main.js',
-    path: path.resolve( __dirname, '..', '..', 'dist', 'content-script')
+    filename: '[name].js',
+    path: _resolve(import.meta.dirname, '..', '..', 'dist', 'content-script')
   }
 };
+
+const hooksConfig = {
+  entry: {
+    hooks: './src/hooks.ts'
+  },
+  devtool: 'inline-source-map',
+  experiments: {
+    outputModule: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
+  output: {
+    filename: '[name].js',
+    path: _resolve(import.meta.dirname, '..', '..', 'dist', 'content-script'),
+    library: {
+      type: 'module'
+    }
+  }
+};
+
+export default [mainConfig, hooksConfig];

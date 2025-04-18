@@ -1,8 +1,7 @@
-const fs = require('fs');
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 
 // Make sure output directories exist.
-//ensureDirectoryExists(__dirname + '/../../dist/bclub-tools');
-ensureDirectoryExists(__dirname + '/../../dist/manifests');
+ensureDirectoryExists(import.meta.dirname + '/../../dist/manifests');
 
 const baseManifest = readJsonFile('base-manifest.json');
 const chromeManifestAdditions = readJsonFile('chrome-additions.json');
@@ -21,16 +20,16 @@ writeJsonFile('manifests/manifest-chrome.json', chromeManifest);
 writeJsonFile('manifests/manifest-firefox.json', firefoxManifest);
 
 function ensureDirectoryExists(directory) {
-  if (!fs.existsSync(directory)) {
-    fs.mkdirSync(directory, {
+  if (!existsSync(directory)) {
+    mkdirSync(directory, {
       recursive: true
     });
   }
 }
 
 function readJsonFile(fileName, optional = false) {
-  const path = __dirname + '/' + fileName;
-  if (!fs.existsSync(path)) {
+  const path = import.meta.dirname + '/' + fileName;
+  if (!existsSync(path)) {
     if (optional) {
       return;
     }
@@ -38,14 +37,14 @@ function readJsonFile(fileName, optional = false) {
     throw new Error(`File ${path} does not exist`);
   }
 
-  return JSON.parse(fs.readFileSync(path, {
+  return JSON.parse(readFileSync(path, {
     encoding: 'utf8',
     flag: 'r'
   }));
 }
 
 function writeJsonFile(fileName, object) {
-  fs.writeFileSync(__dirname + '/../../dist/' + fileName, JSON.stringify(object, undefined, 2), {
+  writeFileSync(import.meta.dirname + '/../../dist/' + fileName, JSON.stringify(object, undefined, 2), {
     encoding: 'utf8',
     flag: 'w'
   });

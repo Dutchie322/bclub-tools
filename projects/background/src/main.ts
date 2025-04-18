@@ -23,13 +23,12 @@ import {
   addOrUpdateObjectStore,
   IChatRoomSyncCharacter,
   retrieveMember,
-  IClientAccountBeep
+  IClientAccountBeep,
+  clearCharacterStorage
 } from '../../../models';
 import { checkForGame } from '../../content-script/src/check-for-game';
 import { checkForLoggedInState } from '../../content-script/src/check-for-logged-in-state';
-import { listenForUserSentEvents } from '../../content-script/src/user-input-listener';
-import { listenToServerEvents, createConnectionListener } from '../../content-script/src/server-event-listeners';
-import { characterAppearance } from '../../content-script/src/draw-listeners';
+import { importAndHook } from '../../content-script/src/import-and-hook';
 import { notifyIncomingMessage } from './notifications';
 import { writeMember, writeFriends, removeChatRoomData } from './member';
 import { writeBeepMessage } from './beep-message';
@@ -114,8 +113,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       handleServerMessage(message, sender).then(sendResponse);
       break;
     default:
-      console.error('[Bondage Club Tools] Unhandled message:');
-      console.log(message);
+      console.error('[Bondage Club Tools] Unhandled message:', JSON.stringify(message));
   }
 
   return true;
@@ -145,10 +143,11 @@ async function handleContentScriptMessage(message: any, sender: chrome.runtime.M
       };
     case 'GameLoaded':
       handshake = await retrieve(sender.tab.id, 'handshake');
-      await injectScripts(handshake, sender.tab.id);
-      break;
-    case 'Reconnecting':
-      handshake = await retrieve(sender.tab.id, 'handshake');
+      if (message.handshake !== handshake) {
+        console.warn('Invalid handshake for message GameLoaded, ignoring message');
+        return undefined;
+      }
+
       await injectScripts(handshake, sender.tab.id);
       break;
   }
@@ -156,30 +155,28 @@ async function handleContentScriptMessage(message: any, sender: chrome.runtime.M
   return undefined;
 }
 
-async function injectScripts(handshake: string, tabId: number, isReconnect = false) {
-  function injectScript<Args extends any[], Result>(func: (...args: Args) => Result, args: Args) {
-    chrome.scripting.executeScript({
-      func,
-      args,
-      target: {
-        tabId: tabId
-      },
-      world: 'MAIN'
-    }, results => {
-      console.log(`Injection results for ${func.name}:`);
-      console.log(results);
-    });
-  }
-
+async function injectScripts(handshake: string, tabId: number) {
+  const path = chrome.runtime.getURL('content-script/hooks.js')
   const settings = await retrieveGlobal('settings');
+  let results = await chrome.scripting.executeScript({
+    target: {
+      tabId
+    },
+    func: importAndHook,
+    args: [path, handshake, settings.tools.chatRoomRefreshInterval],
+    world: 'MAIN'
+  });
+  console.log(`Injection result for 'injectHookRegistration':`, results);
 
-  if (!isReconnect) {
-    injectScript(checkForLoggedInState, [handshake]);
-    injectScript(characterAppearance, [handshake]);
-    injectScript(createConnectionListener, [handshake]);
-  }
-  injectScript(listenForUserSentEvents, [handshake, settings.tools.chatRoomRefreshInterval]);
-  injectScript(listenToServerEvents, [handshake]);
+  results = await chrome.scripting.executeScript({
+    target: {
+      tabId: tabId
+    },
+    func: checkForLoggedInState,
+    args: [handshake],
+    world: 'MAIN'
+  });
+  console.log(`Injection results for 'checkForLoggedInState':`, results);
 }
 
 async function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtime.MessageSender) {
@@ -200,8 +197,7 @@ async function handleClientMessage(message: IClientMessage<any>, sender: chrome.
       await handleVariablesUpdate(sender.tab.id, message);
       break;
     default:
-      console.error('[Bondage Club Tools] Unhandled client message:');
-      console.log(message);
+      console.error('[Bondage Club Tools] Unhandled client message:', message);
       break;
   }
 }
@@ -242,14 +238,8 @@ async function handleServerMessage(message: IServerMessage<any>, sender: chrome.
     case 'LoginResponse':
       await handleLoginResponse(sender.tab.id, message);
       break;
-    case 'disconnect':
-    case 'ForceDisconnect':
-      // Not the best way to handle disconnection: leaves extension disconnected if relogged
-      // await handleDisconnect(sender.tab.id);
-      break;
     default:
-      console.error('[Bondage Club Tools] Unhandled server message:');
-      console.log(message);
+      console.error('[Bondage Club Tools] Unhandled server message:', message);
       break;
   }
 }
@@ -354,10 +344,6 @@ async function handleCommonDrawAppearanceBuild(tabId: number, message: IClientMe
   }
 }
 
-// async function handleDisconnect(tabId: number) {
-//   await cleanUpData(tabId);
-// }
-
 async function handleVariablesUpdate(tabId: number, message: IClientMessage<IVariablesUpdate>) {
   if (message.data.CurrentScreen === 'Login') {
     await cleanUpData(tabId);
@@ -387,9 +373,12 @@ async function cleanUpData(tabId: number, isTabClosed = false) {
   if (friends) {
     await Promise.all(friends.map(friend => removeChatRoomData(friend)));
   }
-  await clearStorage(tabId);
 
-  if (!isTabClosed) {
+  if (isTabClosed) {
+    await clearStorage(tabId);
+  } else {
+    await clearCharacterStorage(tabId);
+
     chrome.action.setPopup({
       tabId,
       popup: ''

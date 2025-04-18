@@ -1,7 +1,7 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import { resolve as _resolve } from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-module.exports = {
+const config = {
   entry: './src/main.ts',
   devtool: 'inline-source-map',
   module: {
@@ -19,10 +19,12 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: [ '.ts', '.js' ]
+    extensions: ['.ts', '.js']
   },
   output: {
     filename: 'main.js',
-    path: path.resolve( __dirname, '..', '..', 'dist')
+    path: _resolve(import.meta.dirname, '..', '..', 'dist')
   }
 };
+
+export default config;
