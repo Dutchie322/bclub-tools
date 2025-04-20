@@ -41,6 +41,7 @@ function createForwarder<TIncomingMessage, TOutgoingMessage>(handshake: string, 
 }
 
 function mapAppearance(appearance: IAppearance | ServerItemBundle) {
+  // TODO are the conditionals for Group and Name even necessary?
   return {
     Group: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset.Group.Name : appearance.Group,
     Name: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset.Name : appearance.Name,

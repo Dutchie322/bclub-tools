@@ -1,5 +1,5 @@
 /**
- * Checks to see if the current game is running the game and we are able to
+ * Checks to see if the current page is running the game and we are able to
  * hook into it. In order to give the game some time to load, the process is
  * repeated a few times before silently giving up. Doing it this way we can
  * support the so-called "cheater" and beta versions without knowing their

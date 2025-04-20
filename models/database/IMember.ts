@@ -8,6 +8,8 @@ export interface IMember {
   memberNumber: number;
   memberName?: string;
   nickname?: string;
+  // Stylized nicknames make searching impossible, so we store a normalized one
+  normalizedNickname?: string;
   lastSeen?: Date;
   chatRoomName?: string;
   chatRoomSpace?: string;
@@ -15,7 +17,13 @@ export interface IMember {
   creation?: Date;
   title?: string;
   dominant?: number;
+  /**
+   * @deprecated Moved to appearances store
+   */
   appearance?: string;
+  /**
+   * @deprecated Moved to appearances store
+   */
   appearanceMetaData?: IMemberAppearanceMetaData;
   description?: string;
   difficulty?: number;

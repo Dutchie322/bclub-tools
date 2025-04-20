@@ -1,10 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, tap, map, switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { Subscription, Observable, of } from 'rxjs';
-import { IMember, IMemberAppearanceMetaData, addOrUpdateObjectStore, decompress, findTitle } from 'models';
+import { Appearance, IBeepMessage, IMember, IMemberAppearanceMetaData, SharedRoom, addOrUpdateObjectStore, decompress, findTitle, retrieveAppearanceWithFallback, retrieveBeepMessages, retrieveSharedRooms } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
 import { CommonModule, NgStyle } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
@@ -12,27 +12,33 @@ import { MatListModule } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Title } from '@angular/platform-browser';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-member-info',
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    MatButtonModule,
     MatIcon,
     MatListModule,
     MatTabsModule,
     MatToolbar,
+    RouterLink
   ],
   templateUrl: './member-info.component.html',
   styleUrls: ['./member-info.component.scss']
 })
 export class MemberInfoComponent implements OnDestroy {
   private formSubscription: Subscription;
-  private playerCharacter: number;
+  public playerCharacter: number;
   private memberNumber: number;
   private titlePromise: Promise<string>;
 
   public member$: Observable<IMember | undefined>;
+  public appearance$: Observable<Appearance | undefined>;
+  public beepMessages$: Observable<IBeepMessage[]>;
+  public sharedRooms$: Observable<SharedRoom[]>;
   public isError = false;
 
   public imageContainerStyle: NgStyle['ngStyle'];
@@ -69,8 +75,7 @@ export class MemberInfoComponent implements OnDestroy {
 
             return of(undefined);
           }));
-      }
-      ),
+      }),
       tap(member => {
         if (this.isError) {
           return;
@@ -78,6 +83,33 @@ export class MemberInfoComponent implements OnDestroy {
 
         this.memberForm.patchValue({ notes: member.notes }, { emitEvent: false });
         title.setTitle(`${member.nickname || member.memberName} (${member.memberNumber}) - Bondage Club Tools`);
+      })
+    );
+
+    this.appearance$ = route.paramMap.pipe(
+      switchMap(params => {
+        const playerCharacter = +params.get('playerCharacter');
+        const memberNumber = +params.get('memberNumber');
+
+        return retrieveAppearanceWithFallback(playerCharacter, memberNumber);
+      })
+    );
+
+    this.beepMessages$ = route.paramMap.pipe(
+      switchMap(params => {
+        const playerCharacter = +params.get('playerCharacter');
+        const memberNumber = +params.get('memberNumber');
+
+        return retrieveBeepMessages(playerCharacter, memberNumber);
+      })
+    );
+
+    this.sharedRooms$ = route.paramMap.pipe(
+      switchMap(params => {
+        const playerCharacter = +params.get('playerCharacter');
+        const memberNumber = +params.get('memberNumber');
+
+        return retrieveSharedRooms(playerCharacter, memberNumber);
       })
     );
 
@@ -106,36 +138,35 @@ export class MemberInfoComponent implements OnDestroy {
   public calculateAppearanceImageStyles(metaData: IMemberAppearanceMetaData, element: EventTarget) {
     const imageElement = element as HTMLImageElement;
     const imageContainerStyle: NgStyle['ngStyle'] = {
-      height: '1000px'
+      height: '1000px',
+      display: 'flex',
+      'flex-wrap': 'wrap',
+      'justify-content': 'center',
+      'z-index': '-1'
     };
-    const imageStyle: NgStyle['ngStyle'] = {
-      position: 'relative',
-      marginLeft: '50%',
-      transform: 'translateX(-50%)'
-    };
+    const imageStyle: NgStyle['ngStyle'] = {};
 
     if (!metaData) {
       if (imageElement.height > 1000) {
         imageContainerStyle['overflow'] = 'auto';
       }
     } else {
-      imageContainerStyle['overflow'] = 'hidden';
+      imageContainerStyle['overflow-x'] = 'visible';
+      imageContainerStyle['overflow-y'] = 'clip';
 
+      const heightDiff = (1 - metaData.heightRatio) * 1000;
+      const startY = 700 + metaData.heightModifier;
+      const sourceHeight = 1000;
+      const sourceY = metaData.isInverted ? metaData.canvasHeight - (startY + sourceHeight - (heightDiff * metaData.heightRatio)) : startY - heightDiff;
+
+      let transform = `translateY(-${sourceY}px) `;
       if (metaData.isInverted) {
-        imageStyle['transform'] = 'rotate(180deg)';
+        transform += ' rotate(180deg)';
       }
 
-      const offsetY = metaData.heightRatioProportion - metaData.heightModifier;
-      const startY = 700 - offsetY;
-      const sourceHeight = 1000;
-      const sourceY = metaData.isInverted ? metaData.canvasHeight - (startY + sourceHeight) : startY;
-      // const offsetY = 1000 * (1 - metaData.heightRatio) * metaData.heightRatioProportion - metaData.heightModifier *
-      // metaData.heightRatio;
-      // const startY = 700 - offsetY / metaData.heightRatio;
-      // const sourceHeight = 1000 / metaData.heightRatio;
-      // const sourceY = metaData.isInverted ? metaData.canvasHeight - (startY + sourceHeight) : startY;
-      // sourceY += 63;
-      imageStyle['top'] = `-${sourceY}px`;
+      transform += `scale(${metaData.heightRatio})`;
+
+      imageStyle['transform'] = transform;
     }
 
     this.imageContainerStyle = imageContainerStyle;

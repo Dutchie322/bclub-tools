@@ -1,10 +1,19 @@
-<ng-container [formGroup]="memberForm" *ngIf="member$ | async; let member;">
-  <div class="character-sheet" [ngClass]="{'with-appearance': !!member.appearance, 'without-appearance': !member.appearance}">
-    <div *ngIf="member.appearance" class="character-appearance" [ngStyle]="imageContainerStyle">
-      <img #appearanceImage [src]="member.appearance || ''" [ngStyle]="imageStyle" (load)="calculateAppearanceImageStyles(member.appearanceMetaData, $event.target)" />
+@let member = member$ | async;
+@let appearance = appearance$ | async;
+
+<ng-container [formGroup]="memberForm" *ngIf="member">
+  <div class="character-sheet" [ngClass]="{'with-appearance': !!appearance, 'without-appearance': !appearance}">
+    <div *ngIf="appearance" class="character-appearance" [ngStyle]="imageContainerStyle">
+      <img #appearanceImage [src]="appearance.appearance || ''" [ngStyle]="imageStyle" (load)="calculateAppearanceImageStyles(appearance.appearanceMetaData, $event.target)" />
     </div>
+    <mat-toolbar class="navigation">
+      <a mat-button [routerLink]="['/', this.playerCharacter]">
+        <mat-icon>arrow_back_ios</mat-icon>
+        Back to overview
+      </a>
+    </mat-toolbar>
     <mat-toolbar class="character-name">
-      <h1 [ngStyle]="{ color: member.labelColor || 'inherit' }">{{ member.nickname || member.memberName }}</h1>
+      <h1 [ngStyle]="{ color: member.labelColor || 'inherit' }" [attr.title]="member.normalizedNickname">{{ member.nickname || member.memberName }}</h1>
     </mat-toolbar>
     <div class="character-data">
       <mat-list>
@@ -80,6 +89,39 @@
           </ng-template>
           <textarea formControlName="notes" class="notes"></textarea>
         </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>join_inner</mat-icon>
+            Shared Rooms
+          </ng-template>
+          <ng-template matTabContent>
+            @let sharedRooms = sharedRooms$ | async;
+
+            <ul>
+              @for (room of sharedRooms; track $index) {
+                <li><time [attr.datetime]="room.startDate">{{ room.startDate.toLocaleString() }}</time> <a [routerLink]="['/', playerCharacter, room.sessionId, room.chatRoom]">{{ room.chatRoom }}</a></li>
+              }
+            </ul>
+          </ng-template>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>chat</mat-icon>
+            Beep Messages
+          </ng-template>
+          <ng-template matTabContent>
+            @let beepMessages = beepMessages$ | async;
+
+            <ul>
+              @for (message of beepMessages; track message.id) {
+                <li>
+                  {{ message.direction === 'Incoming' ? 'Received at ' : 'Sent at ' }}<time [attr.datetime]="message.timestamp">{{ message.timestamp.toLocaleString() }}</time><br>
+                  {{ message.message }}
+                </li>
+              }
+            </ul>
+          </ng-template>
+        </mat-tab>
       </mat-tab-group>
     </div>
     <div class="relationships">
@@ -95,7 +137,9 @@
           <mat-list-item class="relationship">
             @if (member.ownership.memberNumber) {
               <ng-container ngProjectAs="[matListItemLine]">
-                <h3 matListItemTitle>{{ member.ownership.name }} ({{ member.ownership.memberNumber }})</h3>
+                <h3 matListItemTitle>{{ member.ownership.name }} ({{ member.ownership.memberNumber }})
+                  <a [routerLink]="['/', playerCharacter, 'member', member.ownership.memberNumber]" [title]="'Read about ' + member.ownership.name"><mat-icon [attr.aria-label]="'Read about ' + member.ownership.name">read_more</mat-icon></a>
+                </h3>
                 <span matListItemLine>{{ ownershipStageToName(member.ownership.stage) }} for {{ timeToDays(member.ownership.start) }} days</span>
                 <span matListItemLine>(since {{ member.ownership.start | date }})</span>
               </ng-container>
@@ -115,14 +159,16 @@
           <ng-container *ngFor="let lover of member.lovership" ngProjectAs="mat-list-item">
             <ng-container *ngIf="lover.memberNumber; else npcLover">
               <mat-list-item class="relationship">
-                <h3 matListItemTitle>{{ lover.name }} ({{ lover.memberNumber }})</h3>
+                <h3 matListItemTitle>{{ lover.name }} ({{ lover.memberNumber }})
+                  <a [routerLink]="['/', playerCharacter, 'member', lover.memberNumber]" [title]="'Read about ' + lover.name"><mat-icon [attr.aria-label]="'Read about ' + lover.name">read_more</mat-icon></a>
+                </h3>
                 <span matListItemLine>{{ lovershipStageToName(lover.stage) }} for {{ timeToDays(lover.start) }} days</span>
                 <span matListItemLine>(since {{ lover.start | date }})</span>
               </mat-list-item>
             </ng-container>
             <ng-template #npcLover>
               <mat-list-item class="relationship">
-                <span matListItemLine>{{ lover.name | slice:4 }}</span>
+                <h3 matListItemTitle>{{ lover.name | slice:4 }} (NPC)</h3>
               </mat-list-item>
             </ng-template>
           </ng-container>

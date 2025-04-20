@@ -1,14 +1,14 @@
 import { addOrUpdateObjectStore, IAccountBeep, IBeepMessage, IClientAccountBeep } from '../../../models';
 
 export async function writeBeepMessage(contextMemberNumber: number, data: IAccountBeep | IClientAccountBeep, direction: 'Incoming' | 'Outgoing') {
-  var beepMessage = {
+  const beepMessage: Omit<IBeepMessage, 'id'> = {
     contextMemberNumber,
     memberNumber: data.MemberNumber,
     memberName: data.MemberName,
     message: data.Message,
     direction,
     timestamp: new Date(),
-  } as IBeepMessage;
+  };
 
   return await addOrUpdateObjectStore('beepMessages', beepMessage);
 }

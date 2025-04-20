@@ -16,7 +16,7 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage | IEnrichedCha
   }
 
   const senderChar = data.ChatRoom.Character.find(c => c.MemberNumber === data.Sender);
-  const chatLog = {
+  const chatLog: IChatLog = {
     chatRoom: data.ChatRoom.Name,
     content: data.Content,
     dictionary: data.Dictionary,
@@ -34,7 +34,7 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage | IEnrichedCha
     },
     timestamp: new Date(data.Timestamp),
     type: data.Type
-  } as IChatLog;
+  };
 
   if (isClientWhisper(data)) {
     chatLog.target = {

@@ -28,16 +28,24 @@ export interface IChatMessageCharacter {
 }
 
 export interface IChatSender {
+  // Member number of the sender
   id: number;
+  // Account name of the sender
   name: string;
+  // Nickname of the sender
   nickname?: string;
+  // Configured colour of the sender
   color: string;
 }
 
 export interface IChatSessionPerspective {
+  // Generated ID by the server that changes with every login
   id: string;
+  // Account name of the logged in character
   name: string;
+  // Nickname of the logged in character
   nickname?: string;
+  // The member number of the logged in character
   memberNumber: number;
 }
 

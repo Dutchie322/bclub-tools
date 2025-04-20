@@ -52,16 +52,19 @@ function mapAccountQueryResultOnlineFriend(data: IAccountQueryResultOnlineFriend
 }
 
 function mapChatRoomCharacter(data: IChatRoomCharacter) {
+  const normalizedNickname = data.Nickname?.normalize('NFKC');
+
   return {
     memberName: data.Name,
     nickname: data.Nickname,
+    normalizedNickname: normalizedNickname == data.Nickname ? undefined : normalizedNickname,
     creation: new Date(data.Creation),
     title: data.Title,
     dominant: data.Reputation && data.Reputation.find(r => r.Type === 'Dominant')
       ? data.Reputation.find(r => r.Type === 'Dominant').Value
       : 0,
     description: decompress(data.Description),
-    difficulty: data.Difficulty,
+    difficulty: data.Difficulty as unknown as number, // FIXME more incorrect typings
     labelColor: data.LabelColor,
     lovership: data.Lovership ? data.Lovership.map(lover => ({
       memberNumber: lover.MemberNumber,
@@ -76,7 +79,7 @@ function mapChatRoomCharacter(data: IChatRoomCharacter) {
       stage: data.Ownership.Stage
     } : undefined,
     pronouns: data.Appearance ? data.Appearance.find(a => a.Group === 'Pronouns').Name : undefined
-  };
+  } as Partial<IMember>;
 }
 
 export async function writeFriends(player: IPlayerWithRelations) {

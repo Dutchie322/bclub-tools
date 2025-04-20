@@ -3,7 +3,7 @@
   grid-template-rows: 64px auto;
 
   &.with-appearance {
-    grid-template-columns: 500px auto 1fr auto;
+    grid-template-columns: 350px auto 1fr auto;
   }
 
   &.without-appearance {
@@ -20,7 +20,8 @@
 }
 
 .character-name {
-  grid-column: span 3 / auto;
+  grid-column: span 2 / auto;
+  padding: 0;
 
   h1 {
     line-height: 64px;
@@ -32,6 +33,7 @@
 .character-data {
   min-width: 210px;
   margin-right: 24px;
+  background: linear-gradient(90deg, rgba(255, 248, 248, 0.1) 0%, rgba(255, 248, 248, 0.7) 13%, rgba(255, 248, 248, 0.9) 30%);
 }
 
 .empty-value {
@@ -68,6 +70,10 @@
 
   .relationship {
     padding-left: 0;
+
+    mat-icon {
+      margin-bottom: -6px;
+    }
   }
 }
 

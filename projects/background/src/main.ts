@@ -24,7 +24,9 @@ import {
   IChatRoomSyncCharacter,
   retrieveMember,
   IClientAccountBeep,
-  clearCharacterStorage
+  clearCharacterStorage,
+  retrieveAppearance,
+  Appearance
 } from '../../../models';
 import { checkForGame } from '../../content-script/src/check-for-game';
 import { checkForLoggedInState } from '../../content-script/src/check-for-logged-in-state';
@@ -99,8 +101,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (!message || !message.type || !message.event) {
     return undefined;
   }
-
-  console.log('Received:', message);
 
   switch (message.type) {
     case 'content-script':
@@ -329,16 +329,39 @@ async function handleLoginResponse(tabId: number, message: IServerMessage<IPlaye
 
 async function handleCommonDrawAppearanceBuild(tabId: number, message: IClientMessage<any>) {
   const player = await retrieve(tabId, 'player');
-  const member = await retrieveMember(player.MemberNumber, message.data.MemberNumber);
-  if (member) {
-    member.appearance = message.data.ImageData;
-    member.appearanceMetaData = Object.assign({}, member.appearanceMetaData, {
+  let appearance = await retrieveAppearance(player.MemberNumber, message.data.MemberNumber);
+  if (!appearance) {
+    appearance = {
+      contextMemberNumber: player.MemberNumber,
+      memberNumber: message.data.MemberNumber,
+      appearance: message.data.ImageData,
+      appearanceMetaData: {
+        canvasHeight: message.data.CanvasHeight,
+        heightModifier: message.data.HeightModifier,
+        heightRatio: message.data.HeightRatio,
+        heightRatioProportion: message.data.HeightRatioProportion,
+        isInverted: message.data.IsInverted
+      },
+      timestamp: new Date()
+    };
+  } else {
+    appearance.appearance = message.data.ImageData;
+    appearance.appearanceMetaData = {
       canvasHeight: message.data.CanvasHeight,
       heightModifier: message.data.HeightModifier,
       heightRatio: message.data.HeightRatio,
       heightRatioProportion: message.data.HeightRatioProportion,
       isInverted: message.data.IsInverted
-    });
+    };
+    appearance.timestamp = new Date();
+  }
+
+  await addOrUpdateObjectStore('appearances', appearance);
+
+  const member = await retrieveMember(player.MemberNumber, message.data.MemberNumber);
+  if (member && member.appearance) {
+    delete member.appearance;
+    delete member.appearanceMetaData;
 
     await addOrUpdateObjectStore('members', member);
   }
