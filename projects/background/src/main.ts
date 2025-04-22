@@ -298,7 +298,7 @@ async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<I
   await store(tabId, 'chatRoomCharacter', characters);
 
   const player = await retrieve(tabId, 'player');
-  writeMember(player, message.data.Character);
+  await writeMember(player, message.data.Character);
 }
 
 async function handleChatRoomSyncMemberJoin(tabId: number, message: IServerMessage<IChatRoomSyncCharacter>) {

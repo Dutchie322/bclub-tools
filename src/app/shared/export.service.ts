@@ -1,4 +1,4 @@
-import { IChatLog, IMember } from 'models';
+import { Appearance, IBeepMessage, IChatLog, IMember } from 'models';
 import { DatabaseService } from './database.service';
 import { Injectable } from '@angular/core';
 import { Zip, ZipPassThrough, strToU8 } from 'fflate';
@@ -80,7 +80,7 @@ export class ExportService {
 
     const archive = new Zip((err, data, final) => {
       if (err) {
-        console.warn(err);
+        console.error(err);
         return;
       }
 
@@ -106,6 +106,20 @@ export class ExportService {
 
     for (const storeName of objectStoreNames) {
       switch (storeName) {
+        case 'appearances':
+          if (!options.exportAppearances) {
+            break;
+          }
+
+          update('Gathering appearances');
+          await this.exportAppearances(update, transaction, archive);
+          break;
+
+        case 'beepMessages':
+          update('Gathering beep messages');
+          await this.exportBeepMessages(update, transaction, archive);
+          break;
+
         case 'chatRoomLogs':
           update('Gathering chat logs');
           await this.exportChatLogs(update, transaction, archive);
@@ -128,6 +142,91 @@ export class ExportService {
     //   }
     // }, metadata => update(`Generating archive, processing file ${metadata.currentFile}`, metadata.percent));
     return archive;
+  }
+
+  private async exportAppearances(update: UpdateCallback, transaction: IDBTransaction, archive: Zip): Promise<void> {
+    return new Promise(resolve => {
+      transaction.objectStore('appearances').openCursor().addEventListener('success', event => {
+        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+        if (cursor) {
+          const appearance = cursor.value as Appearance;
+
+          let deflate = new ZipPassThrough(`members/${appearance.contextMemberNumber}/${appearance.memberNumber}/appearance.png`);
+          archive.add(deflate);
+          deflate.compression = 0;
+          deflate.mtime = appearance.timestamp;
+          deflate.push(decode(appearance.appearance.substring(22)), true);
+
+          deflate = new ZipPassThrough(`members/${appearance.contextMemberNumber}/${appearance.memberNumber}/appearance-meta-data.json`);
+          archive.add(deflate);
+          deflate.mtime = appearance.timestamp;
+          deflate.push(strToU8(JSON.stringify(appearance.appearanceMetaData, undefined, 2)), true);
+
+          cursor.continue();
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  private async exportBeepMessages(update: UpdateCallback, transaction: IDBTransaction, archive: Zip): Promise<void> {
+    return new Promise(resolve => {
+      const subfolders = {} as {
+        [key: number]: {
+          files: {
+            [name: string]: IBeepMessage[]
+          }
+        }
+      };
+
+      transaction.objectStore('beepMessages').openCursor().addEventListener('success', event => {
+        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+        if (cursor) {
+          const beepMessage = cursor.value as IBeepMessage;
+          delete beepMessage.id;
+
+          if (!subfolders[beepMessage.contextMemberNumber]) {
+            subfolders[beepMessage.contextMemberNumber] = {
+              files: {}
+            };
+          }
+          const subfolder = subfolders[beepMessage.contextMemberNumber];
+
+          const fileName = beepMessage.memberNumber.toString();
+          if (!subfolder.files[fileName]) {
+            subfolder.files[fileName] = [];
+          }
+
+          subfolder.files[fileName].push(beepMessage);
+
+          cursor.continue();
+        } else {
+          update('Generating beep message files');
+
+          for (const memberNumber in subfolders) {
+            if (!Object.prototype.hasOwnProperty.call(subfolders, memberNumber)) {
+              continue;
+            }
+
+            for (const fileName in subfolders[memberNumber].files) {
+              if (!Object.prototype.hasOwnProperty.call(subfolders[memberNumber].files, fileName)) {
+                continue;
+              }
+
+              const data = subfolders[memberNumber].files[fileName];
+
+              const deflate = new ZipPassThrough(`beepMessages/${memberNumber}/${fileName}.json`);
+              archive.add(deflate);
+              deflate.mtime = data[data.length - 1].timestamp;
+              deflate.push(strToU8(JSON.stringify(data, undefined, 2)), true);
+            }
+          }
+
+          resolve();
+        }
+      });
+    });
   }
 
   private async exportChatLogs(update: UpdateCallback, transaction: IDBTransaction, archive: Zip): Promise<void> {
@@ -185,6 +284,7 @@ export class ExportService {
               deflate.push(strToU8(JSON.stringify(data, undefined, 2)), true);
             }
           }
+
           resolve();
         }
       });
