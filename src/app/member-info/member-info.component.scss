@@ -73,23 +73,26 @@
     margin-top: 5px;
 
     .beep-message {
-      &.incoming {
-        background-color: var(--mat-sys-primary-container);
-        color: var(--mat-sys-on-primary-container);
-      }
-
-      &.outgoing {
-        background-color: var(--mat-sys-secondary-fixed-dim);
-        color: var(--mat-sys-on-secondary-container);
-      }
-
-      mat-card {
-        border-color: var(--mat-sys-outline);
-      }
+      @include mat.card-overrides((
+        outlined-outline-color: --mat-sys-outline
+      ));
 
       mat-icon {
         font-size: var(--mat-sys-headline-large-line-height);
       }
+
+      &.outgoing {
+        background-color: var(--mat-sys-surface-dim);
+      }
+
+      + .beep-message {
+        border-top: 0;
+      }
+    }
+
+    mat-divider {
+      margin-top: 1em;
+      margin-bottom: 1em;
     }
   }
 }

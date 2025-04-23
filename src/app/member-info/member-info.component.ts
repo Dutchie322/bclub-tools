@@ -14,6 +14,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { Title } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+
+type BeepMessageView = Partial<IBeepMessage> & { break?: boolean };
 
 @Component({
   selector: 'app-member-info',
@@ -22,6 +25,7 @@ import { MatCardModule } from '@angular/material/card';
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
+    MatDividerModule,
     MatIcon,
     MatListModule,
     MatTabsModule,
@@ -39,7 +43,7 @@ export class MemberInfoComponent implements OnDestroy {
 
   public member$: Observable<IMember | undefined>;
   public appearance$: Observable<Appearance | undefined>;
-  public beepMessages$: Observable<IBeepMessage[]>;
+  public beepMessages$: Observable<BeepMessageView[]>;
   public sharedRooms$: Observable<SharedRoom[]>;
   public isError = false;
 
@@ -104,7 +108,22 @@ export class MemberInfoComponent implements OnDestroy {
 
         return retrieveBeepMessages(playerCharacter, memberNumber);
       }),
-      map(messages => messages.reverse())
+      map(messages => messages.reverse()),
+      map(messages => {
+        let newerMessage = messages[0];
+        const results: BeepMessageView[] = [newerMessage];
+        for (let i = 1; i < messages.length; i++) {
+          const olderMessage = messages[i];
+          if (newerMessage.timestamp.valueOf() - olderMessage.timestamp.valueOf() > 4 * 3600 * 1000) {
+            results.push({ break: true });
+          }
+
+          results.push(olderMessage);
+          newerMessage = olderMessage;
+        }
+
+        return results;
+      })
     );
 
     this.sharedRooms$ = route.paramMap.pipe(
