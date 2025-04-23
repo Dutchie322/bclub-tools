@@ -32,7 +32,7 @@ import { checkForGame } from '../../content-script/src/check-for-game';
 import { checkForLoggedInState } from '../../content-script/src/check-for-logged-in-state';
 import { importAndHook } from '../../content-script/src/import-and-hook';
 import { notifyIncomingMessage } from './notifications';
-import { writeMember, writeFriends, removeChatRoomData } from './member';
+import { writeMember, removeChatRoomData } from './member';
 import { writeBeepMessage } from './beep-message';
 
 chrome.action.onClicked.addListener(() => {
@@ -98,6 +98,8 @@ chrome.runtime.onInstalled.addListener(async () => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log('Received message', message);
+
   if (!message || !message.type || !message.event) {
     return undefined;
   }
@@ -323,8 +325,6 @@ async function handleLoginResponse(tabId: number, message: IServerMessage<IPlaye
     MemberNumber: message.data.MemberNumber,
     Name: message.data.Name
   });
-
-  await writeFriends(message.data);
 }
 
 async function handleCommonDrawAppearanceBuild(tabId: number, message: IClientMessage<any>) {

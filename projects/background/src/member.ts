@@ -82,42 +82,6 @@ function mapChatRoomCharacter(data: IChatRoomCharacter) {
   } as Partial<IMember>;
 }
 
-export async function writeFriends(player: IPlayerWithRelations) {
-  if (player.FriendList) {
-    await Promise.all(player.FriendList.map(async friend => {
-      let member = await retrieveMember(player.MemberNumber, friend);
-      member = Object.assign({}, member, {
-        playerMemberNumber: player.MemberNumber,
-        playerMemberName: player.Name,
-        memberNumber: friend
-      });
-      await putValue('members', member);
-    }));
-  }
-  if (player.Lovership) {
-    await Promise.all(player.Lovership.filter(lover => lover.MemberNumber).map(async lover => {
-      let member = await retrieveMember(player.MemberNumber, lover.MemberNumber);
-      member = Object.assign({}, member, {
-        playerMemberNumber: player.MemberNumber,
-        playerMemberName: player.Name,
-        memberNumber: lover.MemberNumber,
-        memberName: lover.Name
-      });
-      await putValue('members', member);
-    }));
-  }
-  if (player.Ownership && player.Ownership.MemberNumber) {
-    let member = await retrieveMember(player.MemberNumber, player.Ownership.MemberNumber);
-    member = Object.assign({}, member, {
-      playerMemberNumber: player.MemberNumber,
-      playerMemberName: player.Name,
-      memberNumber: player.Ownership.MemberNumber,
-      memberName: player.Ownership.Name
-    });
-    await putValue('members', member);
-  }
-}
-
 export async function removeChatRoomData(member: IMember) {
   const storedMember = await retrieveMember(member.playerMemberNumber, member.memberNumber);
   delete storedMember.chatRoomName;

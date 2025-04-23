@@ -116,12 +116,12 @@
           <ng-template matTabContent>
             <div class="beep-messages">
               @let beepMessages = beepMessages$ | async;
-              @for (message of beepMessages; track message.id) {
+              @for (message of beepMessages; track $index) {
                 @if (message.break) {
                   <mat-divider />
                 } @else {
-                  @let label = message.direction === 'Incoming' ? 'Received message from ' + message.memberName : 'Sent message to ' + message.memberName;
-                  @let icon = message.direction === 'Incoming' ? 'archive' : 'outgoing_mail';
+                  @let label = message.direction === 'Incoming' ? 'Received message' : 'Sent message';
+                  @let icon = message.direction === 'Incoming' ? 'mail' : 'outgoing_mail';
 
                   <mat-card appearance="outlined" [class]="['beep-message', message.direction.toLocaleLowerCase()]">
                     <mat-card-header>
