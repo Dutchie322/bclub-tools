@@ -13,6 +13,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Title } from '@angular/platform-browser';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-member-info',
@@ -20,6 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatCardModule,
     MatIcon,
     MatListModule,
     MatTabsModule,
@@ -101,7 +103,8 @@ export class MemberInfoComponent implements OnDestroy {
         const memberNumber = +params.get('memberNumber');
 
         return retrieveBeepMessages(playerCharacter, memberNumber);
-      })
+      }),
+      map(messages => messages.reverse())
     );
 
     this.sharedRooms$ = route.paramMap.pipe(

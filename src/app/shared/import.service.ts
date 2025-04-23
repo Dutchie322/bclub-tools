@@ -318,7 +318,8 @@ export class ImportService {
 
   private async importMember(context: number, memberNumber: number, fileName: string, data: Uint8Array) {
     let member: IMember;
-    let appearance: Partial<Appearance> = {};
+    const appearance: Partial<Appearance> = {};
+    let appearanceMetaData: AppearanceMetaData & { timestamp: Date };
     const storesToUpdate = new Set<StoreNames>();
 
     switch (fileName) {
@@ -356,19 +357,19 @@ export class ImportService {
         break;
 
       case 'appearance-meta-data.json':
-        const parsed = parseJson<AppearanceMetaData & { timestamp: Date }>(ImportService.Decoder.decode(data));
+        appearanceMetaData = parseJson<AppearanceMetaData & { timestamp: Date }>(ImportService.Decoder.decode(data));
         appearance.contextMemberNumber = context;
         appearance.memberNumber = memberNumber;
         appearance.appearanceMetaData = {
-          canvasHeight: parsed.canvasHeight,
-          heightModifier: parsed.heightModifier,
-          heightRatio: parsed.heightRatio,
-          heightRatioProportion: parsed.heightRatioProportion,
-          isInverted: parsed.isInverted
+          canvasHeight: appearanceMetaData.canvasHeight,
+          heightModifier: appearanceMetaData.heightModifier,
+          heightRatio: appearanceMetaData.heightRatio,
+          heightRatioProportion: appearanceMetaData.heightRatioProportion,
+          isInverted: appearanceMetaData.isInverted
         };
 
-        if (parsed.timestamp) {
-          appearance.timestamp = parsed.timestamp;
+        if (appearanceMetaData.timestamp) {
+          appearance.timestamp = appearanceMetaData.timestamp;
         }
         storesToUpdate.add('appearances');
 

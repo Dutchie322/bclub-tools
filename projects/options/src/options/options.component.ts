@@ -162,7 +162,7 @@ export class OptionsComponent implements OnDestroy {
 
   public async downloadDatabase() {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any Apparently ng build doesn't know `showSaveFilePicker`...
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Apparently ng build doesn't know `showSaveFilePicker`...
       const handle = await (<any>window).showSaveFilePicker({
         id: 'bctools-export',
         startIn: 'downloads',

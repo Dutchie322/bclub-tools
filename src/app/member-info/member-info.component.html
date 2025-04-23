@@ -89,37 +89,47 @@
           </ng-template>
           <textarea formControlName="notes" class="notes"></textarea>
         </mat-tab>
-        <mat-tab>
+        <mat-tab *ngIf="playerCharacter !== member.memberNumber">
           <ng-template mat-tab-label>
             <mat-icon>join_inner</mat-icon>
             Shared Rooms
           </ng-template>
           <ng-template matTabContent>
-            @let sharedRooms = sharedRooms$ | async;
-
-            <ul>
-              @for (room of sharedRooms; track $index) {
-                <li><time [attr.datetime]="room.startDate">{{ room.startDate.toLocaleString() }}</time> <a [routerLink]="['/', playerCharacter, room.sessionId, room.chatRoom]">{{ room.chatRoom }}</a></li>
-              }
-            </ul>
+            <div class="shared-rooms">
+              @let sharedRooms = sharedRooms$ | async;
+              <mat-list>
+                @for (room of sharedRooms; track $index) {
+                  <mat-list-item>
+                    <span matListItemTitle><a [routerLink]="['/', playerCharacter, room.sessionId, room.chatRoom]">{{ room.chatRoom }}</a></span>
+                    <span matListItemLine><time [attr.datetime]="room.startDate">{{ room.startDate | date:'MMM d, y, h:mm a' }}</time></span>
+                  </mat-list-item>
+                }
+              </mat-list>
+            </div>
           </ng-template>
         </mat-tab>
-        <mat-tab>
+        <mat-tab *ngIf="playerCharacter !== member.memberNumber">
           <ng-template mat-tab-label>
             <mat-icon>chat</mat-icon>
             Beep Messages
           </ng-template>
           <ng-template matTabContent>
-            @let beepMessages = beepMessages$ | async;
-
-            <ul>
+            <div class="beep-messages">
+              @let beepMessages = beepMessages$ | async;
               @for (message of beepMessages; track message.id) {
-                <li>
-                  {{ message.direction === 'Incoming' ? 'Received at ' : 'Sent at ' }}<time [attr.datetime]="message.timestamp">{{ message.timestamp.toLocaleString() }}</time><br>
-                  {{ message.message }}
-                </li>
+                @let label = message.direction === 'Incoming' ? 'Received message from ' + message.memberName : 'Sent message to ' + message.memberName;
+                @let icon = message.direction === 'Incoming' ? 'archive' : 'outgoing_mail';
+
+                <mat-card appearance="outlined" [class]="['beep-message', message.direction.toLocaleLowerCase()]">
+                  <mat-card-header>
+                    <div mat-card-avatar><mat-icon inline="true" [attr.aria-label]="label" [attr.title]="label">{{ icon }}</mat-icon></div>
+                    <mat-card-title>{{ label }}</mat-card-title>
+                    <mat-card-subtitle><time [attr.datetime]="message.timestamp">{{ message.timestamp | date:'MMM d, y, h:mm a' }}</time></mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-content>{{ message.message }}</mat-card-content>
+                </mat-card>
               }
-            </ul>
+            </div>
           </ng-template>
         </mat-tab>
       </mat-tab-group>
