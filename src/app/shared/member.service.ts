@@ -67,10 +67,6 @@ export class MemberService {
     });
   }
 
-  public getTotalSize(): Observable<number> {
-    return this.databaseService.calculateTableSize('members');
-  }
-
   private sanitizeData(member: IMember) {
     if (typeof member.creation === 'number') {
       member.creation = new Date(member.creation);

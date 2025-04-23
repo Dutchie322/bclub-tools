@@ -2,7 +2,7 @@ import {
   IAccountQueryResultOnlineFriend,
   IChatRoomCharacter,
   IMember,
-  addOrUpdateObjectStore,
+  putValue,
   IPlayerWithRelations,
   decompress,
   retrieveMember,
@@ -39,7 +39,7 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
     member.lastSeen = new Date();
   }
 
-  return await addOrUpdateObjectStore('members', member);
+  return await putValue('members', member);
 }
 
 function mapAccountQueryResultOnlineFriend(data: IAccountQueryResultOnlineFriend) {
@@ -91,7 +91,7 @@ export async function writeFriends(player: IPlayerWithRelations) {
         playerMemberName: player.Name,
         memberNumber: friend
       });
-      await addOrUpdateObjectStore('members', member);
+      await putValue('members', member);
     }));
   }
   if (player.Lovership) {
@@ -103,7 +103,7 @@ export async function writeFriends(player: IPlayerWithRelations) {
         memberNumber: lover.MemberNumber,
         memberName: lover.Name
       });
-      await addOrUpdateObjectStore('members', member);
+      await putValue('members', member);
     }));
   }
   if (player.Ownership && player.Ownership.MemberNumber) {
@@ -114,7 +114,7 @@ export async function writeFriends(player: IPlayerWithRelations) {
       memberNumber: player.Ownership.MemberNumber,
       memberName: player.Ownership.Name
     });
-    await addOrUpdateObjectStore('members', member);
+    await putValue('members', member);
   }
 }
 
@@ -123,5 +123,5 @@ export async function removeChatRoomData(member: IMember) {
   delete storedMember.chatRoomName;
   delete storedMember.chatRoomSpace;
   delete storedMember.isPrivateRoom;
-  await addOrUpdateObjectStore('members', storedMember);
+  await putValue('members', storedMember);
 }

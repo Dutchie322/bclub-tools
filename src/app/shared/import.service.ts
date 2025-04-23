@@ -1,13 +1,12 @@
-import { IMember, IChatLog, StoreNames } from 'models';
-import { DatabaseService } from './database.service';
+import { IMember, IChatLog, StoreNames, Appearance, startTransaction, AppearanceMetaData, IBeepMessage, executeRequest, upsertValue, parseJson } from 'models';
 import { Injectable } from '@angular/core';
-import { AsyncUnzipInflate, Unzip, UnzipFile } from 'fflate';
+import { AsyncUnzipInflate, Unzip } from 'fflate';
 import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 const ValidStoresForJsonImport = ['members', 'chatRoomLogs'] as StoreNames[];
 
-type UpdateCallback = (text: string, progress?: boolean) => void;
+type UpdateCallback = (text: string) => void;
 export interface IImportProgressState {
   text: string;
 }
@@ -23,10 +22,7 @@ interface JsonExport {
   providedIn: 'root'
 })
 export class ImportService {
-  private static readonly DateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3,6}|)Z$/;
   private static readonly Decoder = new TextDecoder('utf8');
-
-  constructor(private databaseService: DatabaseService) {}
 
   public importDatabase(uploadedFile: File): Observable<IImportProgressState> {
     return from(this.detectFileType(uploadedFile)).pipe(
@@ -66,13 +62,8 @@ export class ImportService {
       const reader = new FileReader();
       if (fileType === 'json') {
         reader.addEventListener('load', () => {
-          const importObject = JSON.parse(reader.result as string, (__, value) => {
-            if (typeof value === 'string' && ImportService.DateTimeRegex.test(value)) {
-              return new Date(value);
-            }
-            return value;
-          });
-          resolve(importObject as JsonExport);
+          const importObject = parseJson<JsonExport>(reader.result as string);
+          resolve(importObject);
         });
         reader.readAsText(file);
       } else if (fileType === 'zip') {
@@ -86,12 +77,14 @@ export class ImportService {
   private importFromFile(fileType: ImportFileType, contents: JsonExport | ReadableStream<Uint8Array>): Observable<IImportProgressState> {
     return new Observable(subscriber => {
       function update(text: string) {
+        console.log('Update:', text);
         subscriber.next(Object.assign({}, {
           text
         }));
       }
 
       function complete() {
+        console.log('Completed');
         subscriber.complete();
       }
 
@@ -121,7 +114,7 @@ export class ImportService {
 
   private async importDatabaseFromJson(update: UpdateCallback, importObject: JsonExport) {
     update('Importing database...');
-    const transaction = await this.databaseService.transaction(ValidStoresForJsonImport, 'readwrite');
+    const transaction = await startTransaction(ValidStoresForJsonImport, 'readwrite');
 
     return new Promise<void>((resolve, reject) => {
       transaction.onerror = event => {
@@ -168,8 +161,46 @@ export class ImportService {
       console.log('Found file in zip file:', file);
 
       if (file.name.startsWith('beepMessages/')) {
-        console.log('Not implemented', file.name);
-        return;
+        const parts = file.name.split('/', 3);
+        if (parts.length !== 3 || parts[2] === '') {
+          return;
+        }
+
+        if (!parts[2].endsWith('.json')) {
+          console.warn(`Skipping unexpected file ${file.name}`);
+          return;
+        }
+
+        console.log('Valid beepMessages', parts);
+        fileReads.push(new Promise<Uint8Array>((resolve, reject) => {
+          let data = new Uint8Array(0);
+
+          update(`Reading data ${file.name}`);
+          file.ondata = (err, chunk, final) => {
+            if (err) {
+              reject(err);
+              return;
+            }
+
+            const length = data.length + chunk.length;
+            const mergedData = new Uint8Array(length);
+            mergedData.set(data, 0);
+            mergedData.set(chunk, data.length);
+
+            data = mergedData;
+
+            if (final) {
+              resolve(data);
+            }
+          };
+          file.start();
+        }).then(data => {
+          return this.importBeepMessages(data);
+        }).then(() => {
+          update(`Imported ${file.name}`);
+        })
+        .catch(console.error));
+
       } else if (file.name.startsWith('chatRoomLogs/')) {
         const parts = file.name.split('/', 3);
         if (parts.length !== 3 || parts[2] === '') {
@@ -205,8 +236,12 @@ export class ImportService {
           };
           file.start();
         }).then(data => {
-          return this.importChatLog(update, parts[2], data);
-        }).catch(console.error));
+          return this.importChatLog(data);
+        }).then(() => {
+          update(`Imported ${file.name}`);
+        })
+        .catch(console.error));
+
       } else if (file.name.startsWith('members/')) {
         const parts = file.name.split('/', 4);
         if (parts.length !== 4 || parts[3] === '') {
@@ -237,112 +272,127 @@ export class ImportService {
           };
           file.start();
         }).then(data => {
-          return this.importMember(update, parseInt(parts[1], 10), parseInt(parts[2], 10), parts[3], file, data);
+          return this.importMember(parseInt(parts[1], 10), parseInt(parts[2], 10), parts[3], data);
+        }).then(() => {
+          update(`Imported ${file.name}`);
         }).catch(console.error));
       }
     });
     archive.register(AsyncUnzipInflate);
-    const read = async () => {
-      const { done, value } = await reader.read();
-      if (done) {
-        archive.push(new Uint8Array(), true);
-        return;
-      }
-      archive.push(value);
-      read();
-    };
-    read();
-
-    await Promise.all(fileReads);
-    update('Done importing.');
-  }
-
-  private async importChatLog(update: UpdateCallback, fileName: string, data: Uint8Array) {
-    const text = ImportService.Decoder.decode(data);
-    const json = JSON.parse(text, (_, value) => {
-      if (typeof value === 'string' && ImportService.DateTimeRegex.test(value)) {
-        return new Date(value);
-      }
-      return value;
-    }) as IChatLog[];
-
-    const transaction = await this.databaseService.transaction('chatRoomLogs', 'readwrite');
-
-    return new Promise<void>((resolve, reject) => {
-      transaction.onerror = event => {
-        reject(event);
+    return new Promise<void>(resolve => {
+      const read = async () => {
+        const { done, value } = await reader.read();
+        if (done) {
+          archive.push(new Uint8Array(), true);
+          resolve();
+          return;
+        }
+        archive.push(value);
+        read();
       };
-
-      let count = 0;
-      for (const chatLog of json) {
-        const request = transaction.objectStore('chatRoomLogs').add(chatLog);
-        request.addEventListener('success', () => {
-          count++;
-          if (count === json.length) {
-            update(`Imported ${fileName}`, true);
-            resolve();
-          }
-        });
-      }
+      read();
+    }).then(() => {
+      return Promise.all(fileReads);
+    }).then(() => {
+      update('Done importing.');
     });
   }
 
-  private async importMember(update: UpdateCallback, context: number, memberNumber: number, fileName: string, file: UnzipFile, data1: Uint8Array) {
+  private async importBeepMessages(data: Uint8Array) {
+    const beepMessages = parseJson<IBeepMessage[]>(ImportService.Decoder.decode(data));
+    const transaction = await startTransaction('beepMessages', 'readwrite');
+
+    for (const beepMessage of beepMessages) {
+      await executeRequest(transaction, transaction => transaction.objectStore('beepMessages').add(beepMessage));
+    }
+  }
+
+  private async importChatLog(data: Uint8Array) {
+    const chatLogs = parseJson<IChatLog[]>(ImportService.Decoder.decode(data));
+    const transaction = await startTransaction('chatRoomLogs', 'readwrite');
+
+    for (const chatLog of chatLogs) {
+      await executeRequest(transaction, transaction => transaction.objectStore('chatRoomLogs').add(chatLog));
+    }
+  }
+
+  private async importMember(context: number, memberNumber: number, fileName: string, data: Uint8Array) {
     let member: IMember;
+    let appearance: Partial<Appearance> = {};
+    const storesToUpdate = new Set<StoreNames>();
+
     switch (fileName) {
       case 'data.json':
-        member = JSON.parse(ImportService.Decoder.decode(data1), (_, value) => {
-          if (typeof value === 'string' && ImportService.DateTimeRegex.test(value)) {
-            return new Date(value);
+        member = parseJson<IMember>(ImportService.Decoder.decode(data));
+        storesToUpdate.add('members');
+
+        if (member.appearanceMetaData) {
+          appearance.contextMemberNumber = context;
+          appearance.memberNumber = memberNumber;
+          appearance.appearanceMetaData = {
+            canvasHeight: member.appearanceMetaData.canvasHeight,
+            heightModifier: member.appearanceMetaData.heightModifier,
+            heightRatio: member.appearanceMetaData.heightRatio,
+            heightRatioProportion: member.appearanceMetaData.heightRatioProportion,
+            isInverted: member.appearanceMetaData.isInverted
+          };
+
+          if (member.lastSeen) {
+            appearance.timestamp = member.lastSeen;
           }
-          return value;
-        }) as IMember;
+
+          delete member.appearanceMetaData;
+          storesToUpdate.add('appearances');
+        }
 
         break;
 
       case 'appearance.png':
-        member = {
-          playerMemberNumber: context,
-          memberNumber,
-          appearance: 'data:image/png;base64,' + this.toBase64(data1)
-        } as IMember;
+        appearance.contextMemberNumber = context;
+        appearance.memberNumber = memberNumber;
+        appearance.appearance = 'data:image/png;base64,' + ImportService.toBase64(data);
+        storesToUpdate.add('appearances');
+
+        break;
+
+      case 'appearance-meta-data.json':
+        const parsed = parseJson<AppearanceMetaData & { timestamp: Date }>(ImportService.Decoder.decode(data));
+        appearance.contextMemberNumber = context;
+        appearance.memberNumber = memberNumber;
+        appearance.appearanceMetaData = {
+          canvasHeight: parsed.canvasHeight,
+          heightModifier: parsed.heightModifier,
+          heightRatio: parsed.heightRatio,
+          heightRatioProportion: parsed.heightRatioProportion,
+          isInverted: parsed.isInverted
+        };
+
+        if (parsed.timestamp) {
+          appearance.timestamp = parsed.timestamp;
+        }
+        storesToUpdate.add('appearances');
 
         break;
 
       default:
         console.warn(`Skipping unexpected file ${fileName}`);
-        return;
+        return Promise.resolve();
     }
 
-    update(`Importing member`);
-    const transaction = await this.databaseService.transaction('members', 'readwrite');
+    const transaction = await startTransaction([...storesToUpdate], 'readwrite');
+    const promises = [];
+    if (storesToUpdate.has('members')) {
+      promises.push(upsertValue(transaction, 'members', [context, memberNumber], member));
+    }
 
-    return new Promise<void>((resolve, reject) => {
-      transaction.onerror = event => {
-        reject(event);
-      };
-      const request = transaction.objectStore('members').get([context, memberNumber]);
-      request.addEventListener('success', event => {
-        const storedMember = (event.target as IDBRequest<IMember>).result;
-        if (!storedMember) {
-          const request = transaction.objectStore('members').add(member);
-          request.addEventListener('success', () => {
-            update(`Imported member`, true);
-            resolve();
-          });
-        } else {
-          member = Object.assign(member, storedMember);
-          const request = transaction.objectStore('members').put(member);
-          request.addEventListener('success', () => {
-            update(`Updated member`, true);
-            resolve();
-          });
-        }
-      });
-    });
+    if (storesToUpdate.has('appearances')) {
+      promises.push(upsertValue(transaction, 'appearances', [context, memberNumber], appearance));
+    }
+
+    return Promise.all(promises);
   }
 
-  private toBase64(bytes: Uint8Array): string {
+  public static toBase64(bytes: Uint8Array): string {
     let binary = '';
     const len = bytes.byteLength;
     for (let i = 0; i < len; i++) {

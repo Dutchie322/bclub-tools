@@ -15,13 +15,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Subscription, Observable, combineLatest, ReplaySubject } from 'rxjs';
-import { tap, map, switchMap, debounceTime } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 import { storeGlobal, ISettings, retrieveGlobal, executeForAllGameTabs, IMember } from 'models';
 import { DatabaseService } from 'src/app/shared/database.service';
-import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { humanFileSize } from 'src/app/shared/utils/human-file-size';
-import { MemberService } from 'src/app/shared/member.service';
 import { ExportService, IExportProgressState } from 'src/app/shared/export.service';
 import { ImportService, IImportProgressState } from 'src/app/shared/import.service';
 import { MaintenanceService } from 'src/app/shared/maintenance.service';
@@ -76,12 +74,10 @@ export class OptionsComponent implements OnDestroy {
       chatRoomRefreshInterval: new UntypedFormControl(0)
     })
   });
-  public databaseSize$: Observable<string>;
   public exportProgress?: IExportProgressState;
   public importProgress?: IImportProgressState;
   public databaseOperationInProgress: boolean;
-
-  private refreshDatabaseSize$ = new ReplaySubject<void>(1);
+  public estimatedUsage: Promise<{ usage: string, quota: string }>;
 
   public get notificationControls(): UntypedFormGroup {
     return this.settingsForm.get('notifications') as UntypedFormGroup;
@@ -92,12 +88,10 @@ export class OptionsComponent implements OnDestroy {
   }
 
   constructor(
-    private chatLogsService: ChatLogsService,
     private databaseService: DatabaseService,
     private exportService: ExportService,
     private importService: ImportService,
     private maintenanceService: MaintenanceService,
-    private memberService: MemberService,
     private snackBar: MatSnackBar
   ) {
     retrieveGlobal('settings').then(settings => {
@@ -120,16 +114,7 @@ export class OptionsComponent implements OnDestroy {
       tap(settings => executeForAllGameTabs(tab => chrome.tabs.sendMessage(tab.id, settings)))
     ).subscribe();
 
-    this.databaseSize$ = this.refreshDatabaseSize$.pipe(
-      switchMap(() =>
-        combineLatest({ chatLogs: this.chatLogsService.getTotalSize(), members: this.memberService.getTotalSize()}).pipe(
-          debounceTime(100),
-          map(values => values.chatLogs + values.members),
-          map(value => humanFileSize(value))
-        )
-      )
-    );
-    this.refreshDatabaseSize$.next();
+    this.updateUsage();
   }
 
   ngOnDestroy() {
@@ -177,7 +162,7 @@ export class OptionsComponent implements OnDestroy {
 
   public async downloadDatabase() {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any Apparently ng build doesn't know `showSaveFilePicker`...
       const handle = await (<any>window).showSaveFilePicker({
         id: 'bctools-export',
         startIn: 'downloads',
@@ -234,7 +219,7 @@ export class OptionsComponent implements OnDestroy {
         complete: () => {
           console.log('upload complete', NgZone.isInAngularZone())
           this.importProgress = undefined;
-          this.refreshDatabaseSize$.next();
+          this.updateUsage();
         }
       });
     });
@@ -248,58 +233,72 @@ export class OptionsComponent implements OnDestroy {
   }
 
   public async clearAppearances() {
-    if (confirm('Are you sure you want to delete all appearances?')) {
-      console.log('Clearing appearances...');
-      const transaction = await this.databaseService.transaction('members', 'readwrite');
-      transaction.onerror = event => {
-        console.error(event);
-      };
-      const cursorRequest = transaction.objectStore('members').openCursor();
-      cursorRequest.addEventListener('success', event => {
-        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
-        if (!cursor) {
-          console.log('Appearances cleared.');
-          return;
-        }
-
-        const member = cursor.value as IMember;
-        delete member.appearance;
-        delete member.appearanceMetaData;
-        cursor.update(member);
-        cursor.continue();
-      });
-      cursorRequest.addEventListener('error', event => {
-        console.error(event);
-      });
+    if (!confirm('Are you sure you want to delete all appearances?')) {
+      return;
     }
+
+    console.log('Clearing appearances...');
+    const transaction = await this.databaseService.transaction('members', 'readwrite');
+    transaction.onerror = event => {
+      console.error(event);
+    };
+    const cursorRequest = transaction.objectStore('members').openCursor();
+    cursorRequest.addEventListener('success', event => {
+      const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+      if (!cursor) {
+        console.log('Appearances cleared.');
+        this.updateUsage();
+        return;
+      }
+
+      const member = cursor.value as IMember;
+      delete member.appearance;
+      delete member.appearanceMetaData;
+      cursor.update(member);
+      cursor.continue();
+    });
+    cursorRequest.addEventListener('error', event => {
+      console.error(event);
+    });
   }
 
   public async clearDatabase() {
-    if (confirm('Are you sure you want to delete everything?')) {
-      console.log('Clearing database...');
-      const objectStoreNames = await this.databaseService.objectStoreNames;
-      const transaction = await this.databaseService.transaction(objectStoreNames, 'readwrite');
-      transaction.onerror = event => {
-        console.error(event);
-      };
-      let count = 0;
-      objectStoreNames.forEach(storeName => {
-        console.log(`Clearing ${storeName}...`);
-        transaction.objectStore(storeName).clear().onsuccess = () => {
-          count++;
-          console.log(`Done ${storeName}`);
-          if (count === objectStoreNames.length) {
-            console.log('Done with all');
-            this.refreshDatabaseSize$.next();
-          }
-        };
-      });
+    if (!confirm('Are you sure you want to delete everything?')) {
+      return
     }
+
+    console.log('Clearing database...');
+    const objectStoreNames = await this.databaseService.objectStoreNames;
+    const transaction = await this.databaseService.transaction(objectStoreNames, 'readwrite');
+    transaction.onerror = event => {
+      console.error(event);
+    };
+    let count = 0;
+    objectStoreNames.forEach(storeName => {
+      console.log(`Clearing ${storeName}...`);
+      transaction.objectStore(storeName).clear().onsuccess = () => {
+        count++;
+        console.log(`Done ${storeName}`);
+        if (count === objectStoreNames.length) {
+          console.log('Done with all');
+        this.updateUsage();
+        }
+      };
+    });
   }
 
   private showSavedNotice() {
     this.snackBar.open('Preferences saved', undefined, {
       duration: 2000,
+    });
+  }
+
+  private updateUsage() {
+    setTimeout(() => {
+      this.estimatedUsage = navigator.storage.estimate().then(estimated => ({
+        usage: humanFileSize(estimated.usage),
+        quota: humanFileSize(estimated.quota)
+      }));
     });
   }
 }

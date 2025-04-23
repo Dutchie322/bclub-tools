@@ -47,7 +47,8 @@
   <mat-list>
     <h2 matSubheader>Data</h2>
     <mat-list-item>
-      Total size of database: {{ databaseSize$ | async }}
+      @let estimated = estimatedUsage | async;
+      Estimated space usage: {{ estimated?.usage }}
     </mat-list-item>
     <mat-list-item *ngIf="exportProgress === undefined">
       <button mat-button
@@ -57,16 +58,13 @@
               >Export database</button>
       <label>
         <mat-checkbox formControlName="exportAppearances">
-          Include appearances (can be a lot of data, slows down export)
+          Include images (can be a lot of data, slows down export)
         </mat-checkbox>
       </label>
     </mat-list-item>
     <mat-list-item *ngIf="exportProgress !== undefined">
       <p matLine>{{ exportProgress.text }}...</p>
-      <mat-progress-bar matLine
-                        mode="determinate"
-                        [value]="exportProgress.percentage"
-                        ></mat-progress-bar>
+      <mat-progress-bar matLine mode="indeterminate"></mat-progress-bar>
     </mat-list-item>
     <mat-list-item *ngIf="importProgress === undefined">
       <button mat-button
@@ -77,9 +75,7 @@
     </mat-list-item>
     <mat-list-item *ngIf="importProgress !== undefined">
       <p matLine>{{ importProgress.text }}...</p>
-      <mat-progress-bar matLine
-                        mode="indeterminate"
-                        ></mat-progress-bar>
+      <mat-progress-bar matLine mode="indeterminate"></mat-progress-bar>
     </mat-list-item>
     <mat-divider></mat-divider>
   </mat-list>

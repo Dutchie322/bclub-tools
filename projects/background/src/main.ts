@@ -20,7 +20,7 @@ import {
   IStoredPlayer,
   IPlayerWithRelations,
   IAccountQueryOnlineFriendsResult,
-  addOrUpdateObjectStore,
+  putValue,
   IChatRoomSyncCharacter,
   retrieveMember,
   IClientAccountBeep,
@@ -356,14 +356,14 @@ async function handleCommonDrawAppearanceBuild(tabId: number, message: IClientMe
     appearance.timestamp = new Date();
   }
 
-  await addOrUpdateObjectStore('appearances', appearance);
+  await putValue('appearances', appearance);
 
   const member = await retrieveMember(player.MemberNumber, message.data.MemberNumber);
   if (member && member.appearance) {
     delete member.appearance;
     delete member.appearanceMetaData;
 
-    await addOrUpdateObjectStore('members', member);
+    await putValue('members', member);
   }
 }
 

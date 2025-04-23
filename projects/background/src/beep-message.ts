@@ -1,4 +1,4 @@
-import { addOrUpdateObjectStore, IAccountBeep, IBeepMessage, IClientAccountBeep } from '../../../models';
+import { putValue, IAccountBeep, IBeepMessage, IClientAccountBeep } from '../../../models';
 
 export async function writeBeepMessage(contextMemberNumber: number, data: IAccountBeep | IClientAccountBeep, direction: 'Incoming' | 'Outgoing') {
   const beepMessage: Omit<IBeepMessage, 'id'> = {
@@ -10,5 +10,5 @@ export async function writeBeepMessage(contextMemberNumber: number, data: IAccou
     timestamp: new Date(),
   };
 
-  return await addOrUpdateObjectStore('beepMessages', beepMessage);
+  return await putValue('beepMessages', beepMessage);
 }

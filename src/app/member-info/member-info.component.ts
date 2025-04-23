@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, tap, map, switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { Subscription, Observable, of } from 'rxjs';
-import { Appearance, IBeepMessage, IMember, IMemberAppearanceMetaData, SharedRoom, addOrUpdateObjectStore, decompress, findTitle, retrieveAppearanceWithFallback, retrieveBeepMessages, retrieveSharedRooms } from 'models';
+import { Appearance, IBeepMessage, IMember, IMemberAppearanceMetaData, SharedRoom, putValue, decompress, findTitle, retrieveAppearanceWithFallback, retrieveBeepMessages, retrieveSharedRooms } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
 import { CommonModule, NgStyle } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
@@ -64,7 +64,7 @@ export class MemberInfoComponent implements OnDestroy {
 
         return memberService.retrieveMember(this.playerCharacter, this.memberNumber).pipe(
           catchError(err => {
-            console.error(err);
+            console.warn(err);
             this.snackBar.open(err, undefined, {
               verticalPosition: 'top'
             });
@@ -118,7 +118,7 @@ export class MemberInfoComponent implements OnDestroy {
       switchMap(values => memberService.retrieveMember(this.playerCharacter, this.memberNumber).pipe(
         map(member => ({ ...member, notes: values.notes } as IMember)),
       )),
-      mergeMap(member => addOrUpdateObjectStore('members', member)),
+      mergeMap(member => putValue('members', member)),
       tap(member => {
         this.snackBar.open(`Notes for ${member.memberName} saved`, undefined, {
           duration: 2000,
@@ -142,17 +142,20 @@ export class MemberInfoComponent implements OnDestroy {
       display: 'flex',
       'flex-wrap': 'wrap',
       'justify-content': 'center',
-      'z-index': '-1'
     };
     const imageStyle: NgStyle['ngStyle'] = {};
 
     if (!metaData) {
       if (imageElement.height > 1000) {
         imageContainerStyle['overflow'] = 'auto';
+        setTimeout(() => {
+          imageElement.parentElement.scrollTop = 700;
+        });
       }
     } else {
       imageContainerStyle['overflow-x'] = 'visible';
       imageContainerStyle['overflow-y'] = 'clip';
+      imageContainerStyle['z-index'] = '-1';
 
       const heightDiff = (1 - metaData.heightRatio) * 1000;
       const startY = 700 + metaData.heightModifier;

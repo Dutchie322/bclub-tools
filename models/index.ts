@@ -5,5 +5,6 @@ export * from './internal';
 export * from './presentation';
 export * from './server-messages';
 export * from './storage';
+export * from './utils/json';
 export * from './web-extension';
 export * from './IVariablesUpdate';

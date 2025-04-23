@@ -84,8 +84,4 @@ export class ChatLogsService {
       });
     });
   }
-
-  public getTotalSize(): Observable<number> {
-    return this.databaseService.calculateTableSize('chatRoomLogs');
-  }
 }

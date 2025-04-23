@@ -2,7 +2,7 @@ import {
   IEnrichedChatRoomMessage,
   IChatLog,
   IEnrichedChatRoomChat,
-  addOrUpdateObjectStore,
+  putValue,
   hasSourceCharacter,
   hasTargetCharacter,
   hasCharacterReference,
@@ -71,7 +71,7 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage | IEnrichedCha
     }
   }
 
-  return await addOrUpdateObjectStore('chatRoomLogs', chatLog);
+  return await putValue('chatRoomLogs', chatLog);
 }
 
 function createChatLogCharacter(char: IChatRoomCharacter): IChatMessageCharacter {

@@ -23,9 +23,9 @@ export interface IExportProgressState {
 })
 export class ExportService {
 
-  constructor(private databaseService: DatabaseService) {}
+  constructor(private databaseService: DatabaseService) { }
 
-  public exportDatabase(options: ExportOptions): Observable<IExportProgressState | Blob> {
+  public exportDatabase(options: ExportOptions): Observable<IExportProgressState> {
     return new Observable(subscriber => {
       const state = {
         progress: 0,
@@ -67,7 +67,7 @@ export class ExportService {
     }
 
     return Promise.all(objectStoreNames.map(storeName =>
-        this.databaseService.read(storeName, objectStore => objectStore.count())))
+      this.databaseService.read(storeName, objectStore => objectStore.count())))
       .then(counts => ({
         total: counts.reduce((prev, cur) => prev + cur, 0)
       }));
@@ -134,13 +134,7 @@ export class ExportService {
 
     update('Generating archive');
     archive.end();
-    // return archive.generateAsync({
-    //   type: 'blob',
-    //   compression: 'DEFLATE',
-    //   compressionOptions: {
-    //     level: 1
-    //   }
-    // }, metadata => update(`Generating archive, processing file ${metadata.currentFile}`, metadata.percent));
+
     return archive;
   }
 
@@ -160,7 +154,10 @@ export class ExportService {
           deflate = new ZipPassThrough(`members/${appearance.contextMemberNumber}/${appearance.memberNumber}/appearance-meta-data.json`);
           archive.add(deflate);
           deflate.mtime = appearance.timestamp;
-          deflate.push(strToU8(JSON.stringify(appearance.appearanceMetaData, undefined, 2)), true);
+          deflate.push(strToU8(JSON.stringify({
+            ...appearance.appearanceMetaData,
+            timestamp: appearance.timestamp
+          }, undefined, 2)), true);
 
           cursor.continue();
         } else {

@@ -1,151 +1,127 @@
+import { upgradeDatabase } from "./upgrades";
+
 export type StoreNames = 'appearances' | 'beepMessages' | 'chatRoomLogs' | 'members';
 
-///////////////////////////////////////////////////////////////////////////////
-// Database changelog
-//
-// Version 5 (included in v0.6.0):
-// - Removed type_idx from members
-// - Fixed timestamp_idx and type_idx removal from chatRoomLogs
-// - Added beepMessages object store
-//
-// Version 6 (included in v0.7.0):
-// - Added appearances object store
-// - Added senderMemberNumber_idx to chatRoomLogs
-// - Removed chatRoom_idx, senderName_idx and sessionId_idx from chatRoomLogs
-///////////////////////////////////////////////////////////////////////////////
-
+/**
+ * Opens a connection to the database, performs upgrades as needed and listens
+ * to blocked and error events while wrapping the operation in a convenient
+ * promise.
+ *
+ * @returns The database connection
+ */
 export function openDatabase() {
   return new Promise<IDBDatabase>((resolve, reject) => {
-    const openRequest = indexedDB.open('bclub-tools', 6);
+    const request = indexedDB.open('bclub-tools', 6);
 
-    openRequest.addEventListener('blocked', () => {
+    request.addEventListener('blocked', () => {
       alert('Could not open database, make sure all tabs are closed and reload.');
       reject(new Error('Open database request blocked'));
     });
 
-    openRequest.addEventListener('error', event => {
-      const request = event.target as IDBOpenDBRequest;
+    request.addEventListener('error', () => {
       console.error('Error while opening database:', request.error);
       reject(request.error);
     });
 
-    openRequest.addEventListener('upgradeneeded', event => {
-      const request = event.target as IDBOpenDBRequest;
+    request.addEventListener('upgradeneeded', () => {
       upgradeDatabase(request.result, request.transaction);
     });
 
-    openRequest.addEventListener('success', event => {
-      const db = (event.target as IDBOpenDBRequest).result;
-      addDatabaseEventHandlers(db);
+    request.addEventListener('success', () => {
+      const db = request.result;
+      db.addEventListener('versionchange', () => {
+        db.close();
+        alert('Database is outdated, please reload the page.');
+      });
 
       resolve(db);
     });
   });
 }
 
-function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
-  // chatRoomLogs
-  let chatRoomLogsStore: IDBObjectStore;
-  if (!db.objectStoreNames.contains('chatRoomLogs')) {
-    chatRoomLogsStore = db.createObjectStore('chatRoomLogs', {
-      autoIncrement: true,
-      keyPath: 'id'
-    });
-    // Used to show shared rooms
-    chatRoomLogsStore.createIndex('senderMemberNumber_idx', ['session.memberNumber', 'sender.id', 'session.id', 'chatRoom']);
-    // Used to show overview of player characters
-    chatRoomLogsStore.createIndex('sessionMemberNumber_idx', 'session.memberNumber');
-    // Used to show chat rooms a character has been in, as well as showing the logs of a room
-    chatRoomLogsStore.createIndex('member_session_chatRoom_idx', ['chatRoom', 'session.id', 'session.memberNumber']);
-  } else {
-    chatRoomLogsStore = transaction.objectStore('chatRoomLogs');
-    if (chatRoomLogsStore.indexNames.contains('timestamp_idx')) {
-      chatRoomLogsStore.deleteIndex('timestamp_idx');
-    }
-    if (chatRoomLogsStore.indexNames.contains('type_idx')) {
-      chatRoomLogsStore.deleteIndex('type_idx');
-    }
-    if (chatRoomLogsStore.indexNames.contains('chatRoom_idx')) {
-      chatRoomLogsStore.deleteIndex('chatRoom_idx');
-    }
-    if (chatRoomLogsStore.indexNames.contains('sessionId_idx')) {
-      chatRoomLogsStore.deleteIndex('sessionId_idx');
-    }
-    if (chatRoomLogsStore.indexNames.contains('senderName_idx')) {
-      chatRoomLogsStore.deleteIndex('senderName_idx');
-    }
-    if (!chatRoomLogsStore.indexNames.contains('senderMemberNumber_idx')) {
-      console.time('createIndex');
-      chatRoomLogsStore.createIndex('senderMemberNumber_idx', ['session.memberNumber', 'sender.id', 'session.id', 'chatRoom']);
-      console.time('createIndex');
-    }
-  }
-
-  // members
-  let memberStore: IDBObjectStore;
-  if (!db.objectStoreNames.contains('members')) {
-    memberStore = db.createObjectStore('members', {
-      autoIncrement: false,
-      keyPath: ['playerMemberNumber', 'memberNumber']
-    });
-    memberStore.createIndex('memberName_idx', ['playerMemberNumber', 'memberName']);
-  } else {
-    memberStore = transaction.objectStore('members');
-    if (memberStore.indexNames.contains('type_idx')) {
-      memberStore.deleteIndex('type_idx');
-    }
-  }
-
-  // appearances
-  let appearanceStore: IDBObjectStore;
-  if (!db.objectStoreNames.contains('appearances')) {
-    appearanceStore = db.createObjectStore('appearances', {
-      autoIncrement: false,
-      keyPath: ['contextMemberNumber', 'memberNumber']
-    });
-  }
-
-  // beepMessages
-  let beepMessagesStore: IDBObjectStore;
-  if (!db.objectStoreNames.contains('beepMessages')) {
-    beepMessagesStore = db.createObjectStore('beepMessages', {
-      autoIncrement: true,
-      keyPath: 'id'
-    });
-    // Used to retrieve beep message exchanges with a specific person
-    beepMessagesStore.createIndex('context_member_idx', ['contextMemberNumber', 'memberNumber']);
-  }
-}
-
-function addDatabaseEventHandlers(db: IDBDatabase) {
-  db.addEventListener('versionchange', () => {
-    db.close();
-    alert('Database is outdated, please reload the page.');
-  });
-}
-
+/**
+ * Opens the database and creates a transaction for a database operation,
+ * wrapped in a promise. Also attaches an error handler that simply logs any
+ * error that happens inside the transaction.
+ *
+ * @param storeNames The name(s) of the object store to create a transaction for
+ * @param mode Readonly or readwrite transaction
+ * @returns The newly created transaction
+ */
 export async function startTransaction(storeNames: StoreNames | StoreNames[], mode: IDBTransactionMode) {
   const db = await openDatabase();
-  return db.transaction(storeNames, mode);
+  const transaction = db.transaction(storeNames, mode);
+  transaction.addEventListener('error', () => {
+    console.error('Error in transaction', transaction.error);
+  });
+
+  return transaction;
 }
 
-export async function addOrUpdateObjectStore<T>(storeName: StoreNames, value: T): Promise<T> {
-  const transaction = await startTransaction(storeName, 'readwrite');
-
-  return new Promise<T>((resolve, reject) => {
-    transaction.addEventListener('error', () => {
-      console.error(`Error during transaction for store ${storeName}`, transaction.error);
-      reject(transaction.error);
+/**
+ * Executes `action` on the given `transaction` and returns the result of
+ * `action`. Wraps it all in a promise, with errors causing the promise to be
+ * rejected and logging the error.
+ *
+ * @param transaction The current transaction
+ * @param action The action to perform
+ * @returns The result of `action`
+ */
+export function executeRequest<T = any>(transaction: IDBTransaction, action: (transaction: IDBTransaction) => IDBRequest<T>): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const request = action(transaction);
+    request.addEventListener('success', () => {
+      resolve(request.result);
     });
-
-    const store = transaction.objectStore(storeName);
-    const request = store.put(value);
     request.addEventListener('error', () => {
-      console.error(`Error while writing to store ${storeName}`, request.error);
+      console.error('Error during request', request.error);
       reject(request.error);
     });
-    request.addEventListener('success', () => {
-      resolve(value);
-    });
   });
+}
+
+/**
+ * Creates a transaction and performs the `action`. Mostly a convenience
+ * function.
+ *
+ * @param storeNames The name(s) of the object store to create a transaction for
+ * @param mode Readonly or readwrite transaction
+ * @param action The action to perform with the opened transaction
+ * @returns The result of `action`
+ */
+export async function executeInTransaction<T = any>(storeNames: StoreNames | StoreNames[], mode: IDBTransactionMode, action: (transaction: IDBTransaction) => IDBRequest<T>): Promise<T> {
+  const transaction = await startTransaction(storeNames, mode);
+  return executeRequest(transaction, action);
+}
+
+/**
+ * Performs a key lookup using the specified `query` and either assigns the
+ * properties from the partial `value` to the object already in the database or
+ * inserts the `value` as-is if there was nothing found for the given `query`.
+ *
+ * Note that the `query` is only used for lookup, and assumes the store uses
+ * in-line keys which means that any update has to contain the key values in
+ * the `value` as well.
+ *
+ * @param transaction The current transaction
+ * @param storeName The name of the object store to update
+ * @param query The identifying key to search for
+ * @param value The value to insert or partial update
+ * @returns The value as it is in the database after the operation
+ */
+export async function upsertValue<T, U = Partial<T>>(transaction: IDBTransaction, storeName: StoreNames, query: IDBValidKey | IDBKeyRange, value: U): Promise<T | U> {
+  const storedValue = await executeRequest(transaction, t => t.objectStore(storeName).get(query) as IDBRequest<T>);
+  if (storedValue) {
+    const newValue = Object.assign(value, storedValue);
+    await executeRequest(transaction, t => t.objectStore(storeName).put(newValue));
+    return newValue;
+  } else {
+    await executeRequest(transaction, t => t.objectStore(storeName).add(value));
+    return value;
+  }
+}
+
+export async function putValue<T>(storeName: StoreNames, value: T): Promise<T> {
+  await executeInTransaction(storeName, 'readwrite', t => t.objectStore(storeName).put(value));
+  return value;
 }
