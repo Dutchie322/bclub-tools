@@ -75,10 +75,10 @@ function mapCharacter(character: IChatRoomCharacter | ServerAccountDataSynced) {
   };
 }
 
-export function getEvents(handshake: string, searchInterval: number) {
+export function getSentEvents(handshake: string, searchInterval: number) {
   // TODO: clean up the types
   return {
-    AccountBeep: (event: string, incomingData: IClientAccountBeep) => {
+    AccountBeep: (incomingData: IClientAccountBeep) => {
       if (incomingData.BeepType || typeof incomingData.Message !== 'string') {
         // Ignore leashes and telemetry from mods
         return;
@@ -104,11 +104,11 @@ export function getEvents(handshake: string, searchInterval: number) {
       window.postMessage({
         handshake,
         type: 'client',
-        event,
+        event: 'AccountBeep',
         data,
       } as IClientMessage<IClientAccountBeep>, '*');
     },
-    ChatRoomChat: (event: string, incomingData: IChatRoomChat) => {
+    ChatRoomChat: (incomingData: IChatRoomChat) => {
       if (!ChatRoomData || incomingData.Type === 'Hidden') {
         // A chat room message without chat room data is useless to us.
         // However, this seems to happen when other mods are installed, so we
@@ -145,18 +145,18 @@ export function getEvents(handshake: string, searchInterval: number) {
       window.postMessage({
         handshake,
         type: 'client',
-        event,
+        event: 'ChatRoomChat',
         data,
       } as IClientMessage<IEnrichedChatRoomChat>, '*');
     },
-    ChatRoomLeave: (event: string, _: any) => {
+    ChatRoomLeave: (_: any) => {
       window.postMessage({
         handshake,
         type: 'client',
-        event
+        event: 'ChatRoomLeave'
       } as IClientMessage<void>, '*');
     },
-    ChatRoomSearch: (_: string, incomingData: ServerChatRoomSearchRequest) => {
+    ChatRoomSearch: (incomingData: ServerChatRoomSearchRequest) => {
       lastExecutedSearch = incomingData;
 
       configureNextRefresh(searchInterval);
@@ -164,14 +164,21 @@ export function getEvents(handshake: string, searchInterval: number) {
   };
 };
 
-export function forwardUserSentEvent(events: ReturnType<typeof getEvents>, args: [ev: string, ...args: any[]]) {
-  try {
-    if (!events[args[0]]) {
-      return;
-    }
-
-    events[args[0]].apply(this, args);
-  } catch (e) {
-    console.warn('[Bondage Club Tools] Could not handle message, game is not affected:', args, 'Error:', e);
+export function forwardUserSentEvent(handshake: string, searchInterval: number) {
+  const sentEvents = getSentEvents(handshake, searchInterval);
+  function handleEvent(eventName: string): eventName is keyof typeof sentEvents {
+    return typeof sentEvents[eventName] !== 'undefined';
   }
+
+  ServerSocket.prependAnyOutgoing((eventName: string, ...args: any[]) => {
+    try {
+      if (!handleEvent(eventName)) {
+        return;
+      }
+
+      sentEvents[eventName].apply(sentEvents, args);
+    } catch (e) {
+      console.warn('[Bondage Club Tools] Could not handle message, game is not affected:', args, 'Error:', e);
+    }
+  });
 }
