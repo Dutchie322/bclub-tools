@@ -4,7 +4,7 @@ export interface IMember {
   /**
    * @deprecated Functionality removed
    */
-  type: string;
+  type?: string;
   memberNumber: number;
   memberName?: string;
   nickname?: string;

@@ -7,27 +7,27 @@ export interface INotificationSettings {
   /**
    * @deprecated Provided by the game itself nowadays
    */
-  beeps: boolean;
+  beeps?: boolean;
   /**
    * @deprecated Requires spamming the browser console with an error constantly
    */
-  friendOnline: boolean;
+  friendOnline?: boolean;
   /**
    * @deprecated Requires spamming the browser console with an error constantly
    */
-  friendOffline: boolean;
+  friendOffline?: boolean;
   /**
    * @deprecated Provided by the game itself nowadays
    */
-  actions: boolean;
+  actions?: boolean;
   /**
    * @deprecated Provided by the game itself nowadays
    */
-  mentions: boolean;
+  mentions?: boolean;
   /**
    * @deprecated Provided by the game itself nowadays
    */
-  whispers: boolean;
+  whispers?: boolean;
   keywords: string[];
 }
 
@@ -35,14 +35,14 @@ export interface IToolsSettings {
   /**
    * @deprecated No longer used, replaced by chatRoomRefreshInterval
    */
-  chatRoomRefresh: boolean;
+  chatRoomRefresh?: boolean;
   chatRoomRefreshInterval: number;
   /**
    * @deprecated Functionality removed
    */
-  fpsCounter: boolean;
+  fpsCounter?: boolean;
   /**
    * @deprecated Functionality removed
    */
-  wardrobeSize: number;
+  wardrobeSize?: number;
 }

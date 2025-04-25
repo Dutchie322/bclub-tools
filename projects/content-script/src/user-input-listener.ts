@@ -47,8 +47,8 @@ function getName(character: IChatRoomCharacter | IPlayer | ServerAccountDataSync
 
 function mapAppearance(appearance: IAppearance | ServerItemBundle) {
   return {
-    Group: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset.Group.Name : appearance.Group,
-    Name: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset.Name : appearance.Name,
+    Group: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset!.Group.Name : appearance.Group,
+    Name: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset!.Name : appearance.Name,
     Color: appearance.Color,
     Difficulty: appearance.Difficulty,
     Property: appearance.Property,
@@ -75,16 +75,19 @@ function mapCharacter(character: IChatRoomCharacter | ServerAccountDataSynced) {
   };
 }
 
-export function getSentEvents(handshake: string, searchInterval: number) {
-  // TODO: clean up the types
-  return {
-    AccountBeep: (incomingData: IClientAccountBeep) => {
-      if (incomingData.BeepType || typeof incomingData.Message !== 'string') {
+export function getEventMappers(searchInterval: number) {
+  type MappedClientToServerEvents = {
+    [K in keyof ClientToServerEvents]?: (...args: Parameters<ClientToServerEvents[K]>) => false | undefined | {}
+  };
+  const sentEvents = {
+    // Store sent beep messages.
+    AccountBeep(data) {
+      if (data.BeepType || typeof data.Message !== 'string') {
         // Ignore leashes and telemetry from mods
-        return;
+        return false;
       }
 
-      let message = incomingData.Message;
+      let message = data.Message;
       if (message.includes("\uf124")) {
         // Remove FBC/WCE metadata
         message = message.split("\uf124")[0];
@@ -92,24 +95,18 @@ export function getSentEvents(handshake: string, searchInterval: number) {
       message = message.trim();
       if (!message) {
         // Sanity check
-        return;
+        return false;
       }
 
-      const data = {
-        MemberName: incomingData.MemberName || Player.FriendNames.get(incomingData.MemberNumber),
-        MemberNumber: incomingData.MemberNumber,
+      return {
+        MemberName: Player.FriendNames?.get(data.MemberNumber),
+        MemberNumber: data.MemberNumber,
         Message: message
       };
-
-      window.postMessage({
-        handshake,
-        type: 'client',
-        event: 'AccountBeep',
-        data,
-      } as IClientMessage<IClientAccountBeep>, '*');
     },
-    ChatRoomChat: (incomingData: IChatRoomChat) => {
-      if (!ChatRoomData || incomingData.Type === 'Hidden') {
+    // Store sent whispers.
+    ChatRoomChat(data) {
+      if (!ChatRoomData || data.Type === 'Hidden') {
         // A chat room message without chat room data is useless to us.
         // However, this seems to happen when other mods are installed, so we
         // will actively ignore these. Also to avoid (potentially, because we
@@ -117,14 +114,14 @@ export function getSentEvents(handshake: string, searchInterval: number) {
         // database with internal messages from other mods, we will also ignore
         // messages with type Hidden as this seems to be used by several mods
         // out there.
-        return;
+        return false;
       }
 
-      const data = {
-        Content: incomingData.Content,
-        Dictionary: incomingData.Dictionary,
-        Target: incomingData.Target,
-        Type: incomingData.Type,
+      return {
+        Content: data.Content,
+        Dictionary: data.Dictionary,
+        Target: data.Target,
+        Type: data.Type,
         ChatRoom: {
           Background: ChatRoomData.Background,
           Description: ChatRoomData.Description,
@@ -136,47 +133,54 @@ export function getSentEvents(handshake: string, searchInterval: number) {
         PlayerName: Player.Name,
         PlayerNickname: Player.Nickname,
         MemberNumber: Player.MemberNumber,
-        TargetName: incomingData.Target
-          ? getName(ChatRoomData.Character.find(c => c.MemberNumber === incomingData.Target))
+        TargetName: data.Target
+          ? getName(ChatRoomData.Character.find(c => c.MemberNumber === data.Target)!)
           : undefined,
         Timestamp: new Date()
-      } as IEnrichedChatRoomChat;
-
-      window.postMessage({
-        handshake,
-        type: 'client',
-        event: 'ChatRoomChat',
-        data,
-      } as IClientMessage<IEnrichedChatRoomChat>, '*');
+      };
     },
-    ChatRoomLeave: (_: any) => {
-      window.postMessage({
-        handshake,
-        type: 'client',
-        event: 'ChatRoomLeave'
-      } as IClientMessage<void>, '*');
+    // Let the extension know we left the room.
+    ChatRoomLeave() {
+      return {};
     },
-    ChatRoomSearch: (incomingData: ServerChatRoomSearchRequest) => {
-      lastExecutedSearch = incomingData;
+    // Not a mapping function, rather store the latest search query.
+    ChatRoomSearch(data) {
+      lastExecutedSearch = data;
 
       configureNextRefresh(searchInterval);
+
+      return false as const;
     }
-  };
+  } satisfies MappedClientToServerEvents;
+
+  return sentEvents;
 };
 
-export function forwardUserSentEvent(handshake: string, searchInterval: number) {
-  const sentEvents = getSentEvents(handshake, searchInterval);
-  function handleEvent(eventName: string): eventName is keyof typeof sentEvents {
-    return typeof sentEvents[eventName] !== 'undefined';
-  }
+export function forwardUserSentEvents(handshake: string, searchInterval: number) {
+  const eventMappers = getEventMappers(searchInterval);
+  ServerSocket.prependAnyOutgoing(<K extends keyof ClientToServerEvents>(eventName: K, ...args: Parameters<ClientToServerEvents[K]>) => {
+    function isEventHandled(eventName: string): eventName is keyof typeof eventMappers {
+      return eventMappers.hasOwnProperty(eventName);
+    }
 
-  ServerSocket.prependAnyOutgoing((eventName: string, ...args: any[]) => {
     try {
-      if (!handleEvent(eventName)) {
+      if (!isEventHandled(eventName)) {
         return;
       }
 
-      sentEvents[eventName].apply(sentEvents, args);
+      type MappedType = ReturnType<typeof eventMappers[typeof eventName]>;
+      const mappedData: MappedType = eventMappers[eventName].apply(eventMappers, args);
+
+      if (mappedData === false) {
+        return;
+      }
+
+      window.postMessage({
+        handshake,
+        type: 'client',
+        event: eventName,
+        data: mappedData,
+      } as IClientMessage<MappedType>, '*');
     } catch (e) {
       console.warn('[Bondage Club Tools] Could not handle message, game is not affected:', args, 'Error:', e);
     }

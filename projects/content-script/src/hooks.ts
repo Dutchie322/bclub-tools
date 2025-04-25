@@ -1,7 +1,7 @@
 import bcModSdk from 'bondage-club-mod-sdk';
 import { sendCharacterAppearance } from './draw-listeners';
 import { listenToServerEvents } from './server-event-listeners';
-import { forwardUserSentEvent } from './user-input-listener';
+import { forwardUserSentEvents } from './user-input-listener';
 
 ///////////////////////////////////////////////////////////////////////////////
 // This file runs in the MAIN world. It's injected by the extension after
@@ -46,7 +46,7 @@ export function registerHooks(handshake: string, searchInterval: number) {
     // update the listeners.
     setTimeout(() => {
       listenToServerEvents(handshake);
-      forwardUserSentEvent(handshake, searchInterval);
+      forwardUserSentEvents(handshake, searchInterval);
     });
 
     return next(args);
@@ -55,5 +55,5 @@ export function registerHooks(handshake: string, searchInterval: number) {
   // Hook into ServerSocket on first run because ServerInit() has already been
   // called by the time this code runs.
   listenToServerEvents(handshake);
-  forwardUserSentEvent(handshake, searchInterval);
+  forwardUserSentEvents(handshake, searchInterval);
 }

@@ -9,7 +9,7 @@ declare global {
   var CurrentScreen: CurrentScreen;
   var CharacterAppearanceReturnRoom: CurrentScreen;
   var InformationSheetPreviousScreen: CurrentScreen;
-  var ServerSocket: Socket;
+  var ServerSocket: Socket; // Socket<ServerToClientEvents, ClientToServerEvents>;
   var ServerURL: string;
 
   var CommonDrawAppearanceBuild: (C: any, callbacks: object) => void;

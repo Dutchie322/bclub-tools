@@ -19,7 +19,7 @@ let handshake: string;
  * occurs when calling chrome.runtime.sendMessage() because that usually means
  * the extension has been updated, removed or... crashed.
  */
-function pageToBackendListener({ data }) {
+function pageToBackendListener({ data }: { data: any }) {
   if (!data || !data.handshake || !data.type || !data.event) {
     return;
   }

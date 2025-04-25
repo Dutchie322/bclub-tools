@@ -24,7 +24,7 @@ export function openDatabase() {
     });
 
     request.addEventListener('upgradeneeded', () => {
-      upgradeDatabase(request.result, request.transaction);
+      upgradeDatabase(request.result, request.transaction!);
     });
 
     request.addEventListener('success', () => {
@@ -109,7 +109,7 @@ export async function executeInTransaction<T = any>(storeNames: StoreNames | Sto
  * @param value The value to insert or partial update
  * @returns The value as it is in the database after the operation
  */
-export async function upsertValue<T, U = Partial<T>>(transaction: IDBTransaction, storeName: StoreNames, query: IDBValidKey | IDBKeyRange, value: U): Promise<T | U> {
+export async function upsertValue<T, U extends Partial<T>>(transaction: IDBTransaction, storeName: StoreNames, query: IDBValidKey | IDBKeyRange, value: U): Promise<T | U> {
   const storedValue = await executeRequest(transaction, t => t.objectStore(storeName).get(query) as IDBRequest<T>);
   if (storedValue) {
     const newValue = Object.assign(value, storedValue);

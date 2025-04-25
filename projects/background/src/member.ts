@@ -61,7 +61,7 @@ function mapChatRoomCharacter(data: IChatRoomCharacter) {
     creation: new Date(data.Creation),
     title: data.Title,
     dominant: data.Reputation && data.Reputation.find(r => r.Type === 'Dominant')
-      ? data.Reputation.find(r => r.Type === 'Dominant').Value
+      ? data.Reputation.find(r => r.Type === 'Dominant')!.Value
       : 0,
     description: decompress(data.Description),
     difficulty: data.Difficulty as unknown as number, // FIXME more incorrect typings
@@ -78,7 +78,7 @@ function mapChatRoomCharacter(data: IChatRoomCharacter) {
       start: data.Ownership.Start ? new Date(data.Ownership.Start) : undefined,
       stage: data.Ownership.Stage
     } : undefined,
-    pronouns: data.Appearance ? data.Appearance.find(a => a.Group === 'Pronouns').Name : undefined
+    pronouns: data.Appearance ? data.Appearance.find(a => a.Group === 'Pronouns')?.Name : undefined
   } as Partial<IMember>;
 }
 

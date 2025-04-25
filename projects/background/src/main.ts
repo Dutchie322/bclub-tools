@@ -25,8 +25,7 @@ import {
   retrieveMember,
   IClientAccountBeep,
   clearCharacterStorage,
-  retrieveAppearance,
-  Appearance
+  retrieveAppearance
 } from '../../../models';
 import { checkForGame } from '../../content-script/src/check-for-game';
 import { checkForLoggedInState } from '../../content-script/src/check-for-logged-in-state';
@@ -91,7 +90,7 @@ chrome.runtime.onInstalled.addListener(async () => {
   // Inject content scripts in applicable tabs
   executeForAllGameTabs(tab => {
     chrome.scripting.executeScript({
-      target: { tabId: tab.id },
+      target: { tabId: tab.id! },
       files: ['content-script/main.js']
     });
   });
@@ -125,17 +124,18 @@ chrome.tabs.onRemoved.addListener(tabId => cleanUpData(tabId, true));
 
 async function handleContentScriptMessage(message: any, sender: chrome.runtime.MessageSender) {
   let handshake: string;
+  const tabId = sender.tab!.id!;
 
   switch (message.event) {
     case 'GameStart':
       handshake = self.crypto.randomUUID();
-      await store(sender.tab.id, 'handshake', handshake);
+      await store(tabId, 'handshake', handshake);
 
       chrome.scripting.executeScript({
         func: checkForGame,
         args: [handshake],
         target: {
-          tabId: sender.tab.id
+          tabId
         },
         world: 'MAIN'
       });
@@ -144,13 +144,13 @@ async function handleContentScriptMessage(message: any, sender: chrome.runtime.M
         handshake
       };
     case 'GameLoaded':
-      handshake = await retrieve(sender.tab.id, 'handshake');
+      handshake = await retrieve(tabId, 'handshake');
       if (message.handshake !== handshake) {
         console.warn('Invalid handshake for message GameLoaded, ignoring message');
         return undefined;
       }
 
-      await injectScripts(handshake, sender.tab.id);
+      await injectScripts(handshake, tabId);
       break;
   }
 
@@ -182,21 +182,22 @@ async function injectScripts(handshake: string, tabId: number) {
 }
 
 async function handleClientMessage(message: IClientMessage<any>, sender: chrome.runtime.MessageSender) {
+  const tabId = sender.tab!.id!;
   switch (message.event) {
     case 'AccountBeep':
-      await handleClientAccountBeep(sender.tab.id, message);
+      await handleClientAccountBeep(tabId, message);
       break;
     case 'ChatRoomChat':
       await handleChatRoomChat(message);
       break;
     case 'ChatRoomLeave':
-      await handleChatRoomLeave(sender.tab.id);
+      await handleChatRoomLeave(tabId);
       break;
     case 'CommonDrawAppearanceBuild':
-      await handleCommonDrawAppearanceBuild(sender.tab.id, message);
+      await handleCommonDrawAppearanceBuild(tabId, message);
       break;
     case 'VariablesUpdate':
-      await handleVariablesUpdate(sender.tab.id, message);
+      await handleVariablesUpdate(tabId, message);
       break;
     default:
       console.error('[Bondage Club Tools] Unhandled client message:', message);
@@ -205,40 +206,41 @@ async function handleClientMessage(message: IClientMessage<any>, sender: chrome.
 }
 
 async function handleServerMessage(message: IServerMessage<any>, sender: chrome.runtime.MessageSender) {
+  const tabId = sender.tab!.id!;
   switch (message.event) {
     case 'AccountBeep':
       if (!message.data.BeepType) {
-        await handleAccountBeep(sender.tab.id, message);
+        await handleAccountBeep(tabId, message);
       }
       break;
     case 'AccountQueryResult':
       if (message.data.Query === 'OnlineFriends') {
-        await handleAccountQueryOnlineFriendsResult(sender.tab.id, message);
+        await handleAccountQueryOnlineFriendsResult(tabId, message);
       }
       break;
     case 'ChatRoomMessage':
-      await handleChatRoomMessage(sender.tab.id, message);
+      await handleChatRoomMessage(tabId, message);
       break;
     case 'ChatRoomSearchResponse':
-      await handleChatRoomSearchResponse(sender.tab.id, message);
+      await handleChatRoomSearchResponse(tabId, message);
       break;
     case 'ChatRoomSync':
-      await handleChatRoomSync(sender.tab.id, message);
+      await handleChatRoomSync(tabId, message);
       break;
     case 'ChatRoomSyncCharacter':
-      await handleChatRoomSyncSingle(sender.tab.id, message);
+      await handleChatRoomSyncSingle(tabId, message);
       break;
     case 'ChatRoomSyncMemberJoin':
-      await handleChatRoomSyncMemberJoin(sender.tab.id, message);
+      await handleChatRoomSyncMemberJoin(tabId, message);
       break;
     case 'ChatRoomSyncMemberLeave':
-      await handleChatRoomSyncMemberLeave(sender.tab.id, message);
+      await handleChatRoomSyncMemberLeave(tabId, message);
       break;
     case 'ChatRoomSyncSingle':
-      await handleChatRoomSyncSingle(sender.tab.id, message);
+      await handleChatRoomSyncSingle(tabId, message);
       break;
     case 'LoginResponse':
-      await handleLoginResponse(sender.tab.id, message);
+      await handleLoginResponse(tabId, message);
       break;
     default:
       console.error('[Bondage Club Tools] Unhandled server message:', message);

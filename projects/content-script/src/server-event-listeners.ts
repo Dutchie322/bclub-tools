@@ -6,7 +6,6 @@ import {
   IServerMessage,
   IChatRoomSync,
   IChatRoomSyncSingle,
-  IAccountQueryResult,
   IChatRoomCharacter,
   ILoginResponse,
   IPlayerWithRelations,
@@ -17,7 +16,7 @@ import {
 function createForwarder<TIncomingMessage, TOutgoingMessage>(handshake: string, event: string, mapData?: (data: TIncomingMessage) => TOutgoingMessage | false) {
   const postFn = window.postMessage;
   ServerSocket.listeners(event).unshift((incomingData: TIncomingMessage) => {
-    let data: false | TOutgoingMessage = false;
+    let data: false | undefined | TOutgoingMessage = false;
     try {
       data = mapData ? mapData(incomingData) : undefined;
     } catch (e) {
@@ -43,8 +42,8 @@ function createForwarder<TIncomingMessage, TOutgoingMessage>(handshake: string, 
 function mapAppearance(appearance: IAppearance | ServerItemBundle) {
   // TODO are the conditionals for Group and Name even necessary?
   return {
-    Group: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset.Group.Name : appearance.Group,
-    Name: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset.Name : appearance.Name,
+    Group: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset!.Group.Name : appearance.Group,
+    Name: (appearance as IAppearance).Asset ? (appearance as IAppearance).Asset!.Name : appearance.Name,
     Color: appearance.Color,
     Difficulty: appearance.Difficulty,
     Property: appearance.Property,
@@ -107,7 +106,7 @@ export function listenToServerEvents(handshake: string) {
       Private: data.Private
     };
   });
-  createForwarder<IAccountQueryResult, any>(handshake, 'AccountQueryResult', data => {
+  createForwarder<ServerAccountQueryResponse, any>(handshake, 'AccountQueryResult', data => {
     if (data.Query !== 'OnlineFriends') {
       return false;
     }
@@ -136,10 +135,10 @@ export function listenToServerEvents(handshake: string) {
       Sender: data.Sender,
       Type: data.Type,
       ChatRoom: {
-        Background: ChatRoomData.Background,
-        Description: ChatRoomData.Description,
-        Name: ChatRoomData.Name,
-        Character: ChatRoomData.Character.map(mapCharacter)
+        Background: ChatRoomData?.Background,
+        Description: ChatRoomData?.Description,
+        Name: ChatRoomData?.Name,
+        Character: ChatRoomData?.Character.map(mapCharacter)
       },
       SessionId: Player.CharacterID,
       PlayerName: Player.Name,

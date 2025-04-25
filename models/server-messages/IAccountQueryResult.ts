@@ -1,7 +1,5 @@
 import { ChatRoomSpace } from 'models';
 
-export type IAccountQueryResult = IAccountQueryOnlineFriendsResult | IAccountQueryEmailResult;
-
 export interface IAccountQueryOnlineFriendsResult {
   Query: 'OnlineFriends';
   Result: IAccountQueryResultOnlineFriend[];

@@ -30,10 +30,10 @@ export function onChanged(
   callback: (changes: TabStorageChange, areaName: string) => void) {
   chrome.storage.onChanged.addListener((changes, areaName) => {
     const tabChanges: TabStorageChange = {};
-    const suffix = `_${tabId}`;
+    const suffix = `_${tabId}` as const;
     Object.keys(changes)
       .filter(key => key.endsWith(suffix))
-      .forEach(key => tabChanges[key.substr(0, key.length - suffix.length)] = changes[key]);
+      .forEach(key => tabChanges[key.substring(0, key.length - suffix.length)] = changes[key]);
 
     if (Object.keys(changes).length > 0) {
       callback(tabChanges, areaName);
