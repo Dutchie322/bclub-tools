@@ -2,11 +2,8 @@
 
 import {
   IChatRoomCharacter,
-  IChatRoomChat,
   IClientMessage,
-  IEnrichedChatRoomChat,
   IAppearance,
-  IClientAccountBeep,
   IPlayer
 } from '../../../models';
 
@@ -141,6 +138,8 @@ export function getEventMappers(searchInterval: number) {
     },
     // Let the extension know we left the room.
     ChatRoomLeave() {
+      // Should be undefined, but without strict mode it will collapse all
+      // typings to `any`. Not useful.
       return {};
     },
     // Not a mapping function, rather store the latest search query.
@@ -158,7 +157,7 @@ export function getEventMappers(searchInterval: number) {
 
 export function forwardUserSentEvents(handshake: string, searchInterval: number) {
   const eventMappers = getEventMappers(searchInterval);
-  ServerSocket.prependAnyOutgoing(<K extends keyof ClientToServerEvents>(eventName: K, ...args: Parameters<ClientToServerEvents[K]>) => {
+  ServerSocket.prependAnyOutgoing((eventName: string, ...args: any[]) => {
     function isEventHandled(eventName: string): eventName is keyof typeof eventMappers {
       return eventMappers.hasOwnProperty(eventName);
     }

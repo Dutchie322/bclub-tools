@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { debounceTime, tap, map, switchMap, mergeMap, catchError } from 'rxjs/operators';
+import { debounceTime, tap, map, switchMap, mergeMap, catchError, filter } from 'rxjs/operators';
 import { Subscription, Observable, of } from 'rxjs';
 import { Appearance, IBeepMessage, IMember, IMemberAppearanceMetaData, SharedRoom, putValue, decompress, findTitle, retrieveAppearanceWithFallback, retrieveBeepMessages, retrieveSharedRooms } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
@@ -70,7 +70,6 @@ export class MemberInfoComponent implements OnDestroy {
 
         return memberService.retrieveMember(this.playerCharacter, this.memberNumber).pipe(
           catchError(err => {
-            console.warn(err);
             this.snackBar.open(err, undefined, {
               verticalPosition: 'top'
             });
@@ -108,6 +107,7 @@ export class MemberInfoComponent implements OnDestroy {
 
         return retrieveBeepMessages(playerCharacter, memberNumber);
       }),
+      filter(messages => messages.length > 0),
       map(messages => messages.reverse()),
       map(messages => {
         let newerMessage = messages[0];
@@ -161,7 +161,7 @@ export class MemberInfoComponent implements OnDestroy {
   public calculateAppearanceImageStyles(metaData: IMemberAppearanceMetaData, element: EventTarget) {
     const imageElement = element as HTMLImageElement;
     const imageContainerStyle: NgStyle['ngStyle'] = {
-      height: '1000px',
+      height: '1100px',
       display: 'flex',
       'flex-wrap': 'wrap',
       'justify-content': 'center',
