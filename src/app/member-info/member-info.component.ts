@@ -132,7 +132,8 @@ export class MemberInfoComponent implements OnDestroy {
         const memberNumber = +params.get('memberNumber');
 
         return retrieveSharedRooms(playerCharacter, memberNumber);
-      })
+      }),
+      map(rooms => rooms.sort((a, b) => b.startDate.valueOf() - a.startDate.valueOf()))
     );
 
     this.formSubscription = this.memberForm.valueChanges.pipe(
