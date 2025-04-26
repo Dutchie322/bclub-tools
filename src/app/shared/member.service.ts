@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { executeRequest, IMember, startTransaction } from 'models';
+import { IMember, startTransaction } from 'models';
 import { Observable } from 'rxjs';
 
 export type MemberOverviewItem = {
