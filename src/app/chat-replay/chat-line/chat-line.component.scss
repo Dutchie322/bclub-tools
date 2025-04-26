@@ -6,7 +6,11 @@ time {
 .line {
   font-size: 1rem;
   overflow: auto; /** Prevent Zalgo bleeding all over the place **/
-  display: flex; /** Remove space in front of some rendered messages **/
+  display: flex; /** Remove space in front of some rendered messages, indents message when using multiple lines **/
+
+  .content {
+    white-space: pre-wrap;
+  }
 }
 
 .sender {
