@@ -46,6 +46,7 @@ export class MemberInfoComponent implements OnDestroy {
   public beepMessages$: Observable<BeepMessageView[]>;
   public sharedRooms$: Observable<SharedRoom[]>;
   public isError = false;
+  public selectedTab: number;
 
   public imageContainerStyle: NgStyle['ngStyle'];
   public imageStyle: NgStyle['ngStyle'];
@@ -86,6 +87,7 @@ export class MemberInfoComponent implements OnDestroy {
           return;
         }
 
+        this.selectedTab = 0;
         this.memberForm.patchValue({ notes: member.notes }, { emitEvent: false });
         title.setTitle(`${member.nickname || member.memberName} (${member.memberNumber}) - Bondage Club Tools`);
       })
