@@ -9,7 +9,8 @@ time {
   display: flex; /** Remove space in front of some rendered messages, indents message when using multiple lines **/
 
   .content {
-    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: normal;
   }
 }
 

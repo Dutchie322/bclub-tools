@@ -56,9 +56,7 @@ export function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
       chatRoomLogsStore.deleteIndex('senderName_idx');
     }
     if (!chatRoomLogsStore.indexNames.contains('senderMemberNumber_idx')) {
-      console.time('createIndex');
       chatRoomLogsStore.createIndex('senderMemberNumber_idx', ['session.memberNumber', 'sender.id', 'session.id', 'chatRoom']);
-      console.time('createIndex');
     }
   }
 

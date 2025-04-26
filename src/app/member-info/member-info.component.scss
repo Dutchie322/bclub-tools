@@ -71,8 +71,12 @@
 
   .beep-messages {
     margin-top: 5px;
+    line-height: initial;
 
     .beep-message {
+      overflow-wrap: anywhere;
+      word-break: normal;
+
       @include mat.card-overrides((
         outlined-outline-color: --mat-sys-outline
       ));
