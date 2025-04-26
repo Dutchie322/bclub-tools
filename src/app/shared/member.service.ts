@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DatabaseService } from './database.service';
-import { IMember } from 'models';
+import { executeRequest, IMember, startTransaction } from 'models';
 import { Observable } from 'rxjs';
 
 export type MemberOverviewItem = {
   memberName: string,
+  memberNickname?: string,
+  memberNormalizedNickname?: string,
   memberNumber: number,
   lastSeen: Date
 };
@@ -13,10 +14,8 @@ export type MemberOverviewItem = {
   providedIn: 'root'
 })
 export class MemberService {
-  public constructor(private databaseService: DatabaseService) {}
-
   public async findMembersWithName(memberNumber: number) {
-    const transaction = await this.databaseService.transaction('members');
+    const transaction = await startTransaction('members', 'readonly');
     return new Promise<MemberOverviewItem[]>(resolve => {
       const members: MemberOverviewItem[] = [];
       const request = transaction.objectStore('members').openCursor(IDBKeyRange.bound([memberNumber, 0], [memberNumber, Infinity]));
@@ -29,7 +28,9 @@ export class MemberService {
           const member = cursor.value as IMember;
           if (member.memberName) {
             members.push({
-              memberName: member.nickname || member.memberName,
+              memberName: member.memberName,
+              memberNickname: member.nickname,
+              memberNormalizedNickname: member.normalizedNickname,
               memberNumber: member.memberNumber,
               lastSeen: member.lastSeen
             });
@@ -44,7 +45,7 @@ export class MemberService {
 
   public retrieveMember(playerMemberNumber: number, memberNumber: number) {
     return new Observable<IMember>(subscriber => {
-      this.databaseService.transaction('members').then(transaction => {
+      startTransaction('members', 'readonly').then(transaction => {
         const request = transaction.objectStore('members').get([playerMemberNumber, memberNumber]);
 
         request.addEventListener('success', event => {

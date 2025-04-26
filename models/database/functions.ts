@@ -1,6 +1,7 @@
 import { upgradeDatabase } from "./upgrades";
 
 export type StoreNames = 'appearances' | 'beepMessages' | 'chatRoomLogs' | 'members';
+type TransactionModes = Exclude<IDBTransactionMode, 'versionchange'>;
 
 /**
  * Opens a connection to the database, performs upgrades as needed and listens
@@ -48,7 +49,7 @@ export function openDatabase() {
  * @param mode Readonly or readwrite transaction
  * @returns The newly created transaction
  */
-export async function startTransaction(storeNames: StoreNames | StoreNames[], mode: IDBTransactionMode) {
+export async function startTransaction(storeNames: StoreNames | StoreNames[], mode: TransactionModes) {
   const db = await openDatabase();
   const transaction = db.transaction(storeNames, mode);
   transaction.addEventListener('error', () => {
@@ -89,7 +90,7 @@ export function executeRequest<T = any>(transaction: IDBTransaction, action: (tr
  * @param action The action to perform with the opened transaction
  * @returns The result of `action`
  */
-export async function executeInTransaction<T = any>(storeNames: StoreNames | StoreNames[], mode: IDBTransactionMode, action: (transaction: IDBTransaction) => IDBRequest<T>): Promise<T> {
+export async function executeInTransaction<T = any>(storeNames: StoreNames | StoreNames[], mode: TransactionModes, action: (transaction: IDBTransaction) => IDBRequest<T>): Promise<T> {
   const transaction = await startTransaction(storeNames, mode);
   return executeRequest(transaction, action);
 }

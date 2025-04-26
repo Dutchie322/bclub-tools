@@ -116,10 +116,14 @@ export class ChatSessionsComponent implements OnDestroy {
       };
       let match = true;
       if (anyFilter['memberName']) {
-        match = match && data.memberName.toLocaleUpperCase().indexOf(anyFilter['memberName']) !== -1;
+        match = match && (
+          data.memberName.toLocaleUpperCase().indexOf(anyFilter['memberName']) > -1 ||
+          data.memberNickname?.toLocaleUpperCase().indexOf(anyFilter['memberName']) > -1 ||
+          data.memberNormalizedNickname?.toLocaleUpperCase().indexOf(anyFilter['memberName']) > -1
+        );
       }
       if (anyFilter['memberNumber']) {
-        match = match && data.memberNumber.toString().indexOf(anyFilter['memberNumber']) !== -1;
+        match = match && data.memberNumber.toString().indexOf(anyFilter['memberNumber']) > -1;
       }
       if (anyFilter['lastSeenRange'] && anyFilter['lastSeenRange'].start) {
         match = match && data.lastSeen && data.lastSeen > anyFilter['lastSeenRange'].start;
