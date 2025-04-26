@@ -243,14 +243,13 @@
   optionalDependencies:
     lmdb "3.2.6"
 
-"@angular/cdk@^19.0.2":
-  version "19.0.2"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-19.0.2.tgz#0529cd283879950366236562502ef63d750b8641"
-  integrity sha512-eDjHJJWpgnzC3pR6N0gCdh51Q1ffoh6mql06YSqprj005aNKBjmCMnpU4bPPzdGSkKsjwAZWGUNWg4RS+R+iZQ==
+"@angular/cdk@^19.2.11":
+  version "19.2.11"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-19.2.11.tgz#ff59eb4a0193e7dab1d02dec5f572df0802467d9"
+  integrity sha512-G568yWIJlnsuS563WxvCofmxc1405+wRQvDGQ32+qWOblJScFkHgr4jeDkZGcyt/r8OudaW0H0/rNeg1dzdnIQ==
   dependencies:
-    tslib "^2.3.0"
-  optionalDependencies:
     parse5 "^7.1.2"
+    tslib "^2.3.0"
 
 "@angular/cli@^19.2.9":
   version "19.2.9"
@@ -322,10 +321,10 @@
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-19.2.8.tgz#37d5864bb04538201b000a97c879e4984318f57c"
   integrity sha512-J2/IyHZJDNevQALvNNyUvs9KmCdofSfhOaXTRDp3R1JyVQBcW20tvxZFojBGdpJT8kwegL9zJccoovnC8coF5w==
 
-"@angular/material@^19.0.2":
-  version "19.0.2"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-19.0.2.tgz#c6aeaa31dbd3f9dfa9e3d0ec87651b283704e573"
-  integrity sha512-IKU6znBKgD0xHEGo5WD3JWNK+WjamMCzAvSa72w4Evo2N6PWN+dAkbCMYxugW7dOfwoT8DvUnjIWclC+RRCl0A==
+"@angular/material@^19.2.11":
+  version "19.2.11"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-19.2.11.tgz#3df6c22aa9ac738f2ca2bdba33d4f4c6fb25547d"
+  integrity sha512-0OWwv55Il25mit7oGTloMeKVi0v/q1tr13wUJj0KJOcvICA6JCEW6VEc9zqYmkMPstDCx96cSJgPKxkHjKYyqg==
   dependencies:
     tslib "^2.3.0"
 

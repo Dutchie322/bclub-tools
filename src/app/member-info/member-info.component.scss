@@ -59,6 +59,8 @@
   .notes {
     height: 600px;
     width: calc(100% - 6px);
+    font-family: inherit;
+    font-size: inherit;
   }
 
   .shared-rooms {
