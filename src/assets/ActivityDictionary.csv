@@ -162,6 +162,7 @@ Label-ChatOther-ItemButt-Grope,Grope Butt
 Label-ChatOther-ItemButt-Inject,Inject Butt
 Label-ChatOther-ItemButt-Kick,Kick Butt
 Label-ChatOther-ItemButt-Kiss,Kiss Butt
+Label-ChatOther-ItemButt-MassageHands,Massage Butt
 Label-ChatOther-ItemButt-MasturbateFist,Fist Ass
 Label-ChatOther-ItemButt-MasturbateHand,Finger Ass
 Label-ChatOther-ItemButt-MasturbateItem,Masturbate Butt
@@ -504,6 +505,7 @@ Label-ChatSelf-ItemBreast-Wiggle,Shake Breasts
 Label-ChatSelf-ItemButt-Caress,Caress Butt
 Label-ChatSelf-ItemButt-Grope,Grope Butt
 Label-ChatSelf-ItemButt-Inject,Inject Butt
+Label-ChatSelf-ItemButt-MassageHands,Massage Butt
 Label-ChatSelf-ItemButt-MasturbateFist,Fist Ass
 Label-ChatSelf-ItemButt-MasturbateHand,Finger Ass
 Label-ChatSelf-ItemButt-MasturbateItem,Masturbate Butt
@@ -766,6 +768,7 @@ ChatOther-ItemButt-Grope,SourceCharacter gropes TargetCharacter's butt.
 ChatOther-ItemButt-Inject,SourceCharacter injects TargetCharacter's butt.
 ChatOther-ItemButt-Kick,SourceCharacter kicks TargetCharacter on TargetPronounPossessive butt.
 ChatOther-ItemButt-Kiss,SourceCharacter kisses TargetCharacter's butt.
+ChatOther-ItemButt-MassageHands,SourceCharacter massages TargetCharacter's butt.
 ChatOther-ItemButt-MasturbateFist,SourceCharacter uses PronounPossessive fist to masturbate TargetCharacter's ass.
 ChatOther-ItemButt-MasturbateHand,SourceCharacter uses PronounPossessive fingers to masturbate TargetCharacter's ass.
 ChatOther-ItemButt-MasturbateItem,SourceCharacter masturbates TargetCharacter's butt with PronounPossessive ActivityAsset.
@@ -1105,6 +1108,7 @@ ChatSelf-ItemBreast-Wiggle,SourceCharacter shakes PronounPossessive breasts arou
 ChatSelf-ItemButt-Caress,SourceCharacter caresses PronounPossessive butt.
 ChatSelf-ItemButt-Grope,SourceCharacter gropes PronounPossessive butt.
 ChatSelf-ItemButt-Inject,SourceCharacter injects PronounPossessive butt.
+ChatSelf-ItemButt-MassageHands,SourceCharacter massages PronounPossessive butt.
 ChatSelf-ItemButt-MasturbateFist,SourceCharacter fists and masturbates PronounPossessive ass.
 ChatSelf-ItemButt-MasturbateHand,SourceCharacter fingers and masturbates PronounPossessive ass.
 ChatSelf-ItemButt-MasturbateItem,SourceCharacter masturbates PronounPossessive own butt with PronounPossessive ActivityAsset.

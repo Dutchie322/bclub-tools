@@ -300,6 +300,79 @@ BodyMarkingsFacePaintsSelect6,Apply
 BodyMarkingsFacePaintsSelect7,Apply
 BodyMarkingsFacePaintsSelect8,Apply
 BodyMarkingsFacePaintsSelect9,Apply
+BodyMarkingsSplattersModuleForehead1,Forehead 1
+BodyMarkingsSplattersModuleForehead2,Forehead 2
+BodyMarkingsSplattersModuleForehead3,Forehead 3
+BodyMarkingsSplattersModuleFace1,Face 1
+BodyMarkingsSplattersModuleFace2,Face 2
+BodyMarkingsSplattersModuleFace3,Face 3
+BodyMarkingsSplattersModuleChest1,Chest 1
+BodyMarkingsSplattersModuleChest2,Chest 2
+BodyMarkingsSplattersModuleChest3,Chest 3
+BodyMarkingsSplattersModuleChest4,Chest 4
+BodyMarkingsSplattersModuleTummy1,Tummy 1
+BodyMarkingsSplattersModuleTummy2,Tummy 2
+BodyMarkingsSplattersModuleTummy3,Tummy 3
+BodyMarkingsSplattersModuleTummy4,Tummy 4
+BodyMarkingsSplattersModuleInternal1,Internal Mouth
+BodyMarkingsSplattersModuleInternal2,Internal Front
+BodyMarkingsSplattersModuleInternal3,Internal Back
+BodyMarkingsSplattersModuleNippleDrip,Nipple Drip
+BodyMarkingsSplattersOptiona0,No
+BodyMarkingsSplattersOptiona1,Yes
+BodyMarkingsSplattersOptionb0,No
+BodyMarkingsSplattersOptionb1,Yes
+BodyMarkingsSplattersOptionc0,No
+BodyMarkingsSplattersOptionc1,Yes
+BodyMarkingsSplattersOptiond0,No
+BodyMarkingsSplattersOptiond1,Yes
+BodyMarkingsSplattersOptione0,No
+BodyMarkingsSplattersOptione1,Yes
+BodyMarkingsSplattersOptionf0,No
+BodyMarkingsSplattersOptionf1,Yes
+BodyMarkingsSplattersOptiong0,No
+BodyMarkingsSplattersOptiong1,Yes
+BodyMarkingsSplattersOptionh0,No
+BodyMarkingsSplattersOptionh1,Yes
+BodyMarkingsSplattersOptioni0,No
+BodyMarkingsSplattersOptioni1,Yes
+BodyMarkingsSplattersOptionj0,No
+BodyMarkingsSplattersOptionj1,Yes
+BodyMarkingsSplattersOptionk0,No
+BodyMarkingsSplattersOptionk1,Yes
+BodyMarkingsSplattersOptionl0,No
+BodyMarkingsSplattersOptionl1,Yes
+BodyMarkingsSplattersOptionm0,No
+BodyMarkingsSplattersOptionm1,Yes
+BodyMarkingsSplattersOptionn0,No
+BodyMarkingsSplattersOptionn1,Yes
+BodyMarkingsSplattersOptiono0,No
+BodyMarkingsSplattersOptiono1,Yes
+BodyMarkingsSplattersOptionp0,No
+BodyMarkingsSplattersOptionp1,Yes
+BodyMarkingsSplattersOptionq0,No
+BodyMarkingsSplattersOptionq1,Yes
+BodyMarkingsSplattersOptionr0,No
+BodyMarkingsSplattersOptionr1,Yes
+BodyMarkingsSplattersSelectBase,Select Mark
+BodyMarkingsSplattersSelectForehead1,Apply
+BodyMarkingsSplattersSelectForehead2,Apply
+BodyMarkingsSplattersSelectForehead3,Apply
+BodyMarkingsSplattersSelectFace1,Apply
+BodyMarkingsSplattersSelectFace2,Apply
+BodyMarkingsSplattersSelectFace3,Apply
+BodyMarkingsSplattersSelectChest1,Apply
+BodyMarkingsSplattersSelectChest2,Apply
+BodyMarkingsSplattersSelectChest3,Apply
+BodyMarkingsSplattersSelectChest4,Apply
+BodyMarkingsSplattersSelectTummy1,Apply
+BodyMarkingsSplattersSelectTummy2,Apply
+BodyMarkingsSplattersSelectTummy3,Apply
+BodyMarkingsSplattersSelectTummy4,Apply
+BodyMarkingsSplattersSelectInternal1,Apply
+BodyMarkingsSplattersSelectInternal2,Apply
+BodyMarkingsSplattersSelectInternal3,Apply
+BodyMarkingsSplattersSelectNippleDrip,Apply
 BodyUpperFlatMediumDefault,Default
 BodyUpperFlatMediumSelect,Select body overlay.
 BodyUpperFlatSmallDefault,Default
@@ -682,6 +755,12 @@ ClothAccessoryWombTattoosSelectViper,Apply
 ClothAccessoryWombTattoosSelectWaves,Apply
 ClothAccessoryWombTattoosSelectWingSmall,Apply
 ClothAccessoryWombTattoosSelectZoom,Apply
+ClothAccessoryHoodedCloakModuleHood,Hood Position
+ClothAccessoryHoodedCloakSelect,Select a hooded cloak style:
+ClothAccessoryHoodedCloakSelectHood,Hood
+ClothAccessoryHoodedCloakOptionh0,Down
+ClothAccessoryHoodedCloakOptionh1,Over Head
+ClothAccessoryHoodedCloakOptionh2,Over Eyes
 ClothCheerleaderTopTextLabel,Change Text:
 ClothChineseDress2Pink,Style 3
 ClothChineseDress2Purple,Style 2
@@ -708,6 +787,14 @@ ClothCustomTShirtOptiont17,Hogtied
 ClothCustomTShirtOptiont18,Bondage College 2
 ClothCustomTShirtOptiont19,S.Tiyana's White C-Pad
 ClothCustomTShirtOptiont2,BTG
+ClothCustomTShirtOptiont20,Gangriels
+ClothCustomTShirtOptiont21,Den of Sin
+ClothCustomTShirtOptiont22,Slave Helpline
+ClothCustomTShirtOptiont23,Demon's Bar
+ClothCustomTShirtOptiont24,Azure Corp
+ClothCustomTShirtOptiont25,Shibari Crew
+ClothCustomTShirtOptiont26,Bull's Eye Spankmeter
+ClothCustomTShirtOptiont27,Keys?!
 ClothCustomTShirtOptiont3,Dominant
 ClothCustomTShirtOptiont4,Bonk!
 ClothCustomTShirtOptiont5,Old School XGame
@@ -784,6 +871,13 @@ ClothLatexTankTopSelectReverseHood,Set front hood style
 ClothLatexTankTopSetl1,SourceCharacter adds a front hood to DestinationCharacter latex tank top.
 ClothLatexTankTopSetl2,SourceCharacter pulls up the front hood on DestinationCharacter latex tank top.
 ClothLatexTankTopSetm1,SourceCharacter adds a hood to DestinationCharacter latex tank top.
+ClothLowerBusinessTrousersZipped,Pants Zipped
+ClothLowerBusinessTrousersUnzipped,Pants Unzipped
+ClothLowerBusinessTrousersDown,Pants Down
+ClothLowerBusinessTrousersSelect,Customize the state of the pants
+ClothLowerBusinessTrousersSetZipped,SourceCharacter puts zipped up pants on DestinationCharacter.
+ClothLowerBusinessTrousersSetUnzipped,SourceCharacter unzips DestinationCharacter pants.
+ClothLowerBusinessTrousersSetDown,SourceCharacter opens DestinationCharacter pants and pulls them down.
 ClothLowerPantBootsModuleBoot,Boot
 ClothLowerPantBootsModuleStripe,Stripe
 ClothLowerPantBootsOptionb0,No Boot
@@ -797,6 +891,29 @@ ClothLowerPantBootsSetb0,SourceCharacter removes pants from DestinationCharacter
 ClothLowerPantBootsSetb1,SourceCharacter adds pants to DestinationCharacter boots.
 ClothLowerPantBootsSets0,SourceCharacter removes the stripes on DestinationCharacter boots.
 ClothLowerPantBootsSets1,SourceCharacter reveals the stripes on DestinationCharacter boots.
+ClothMeshTopModuleSleeves,Sleeves
+ClothMeshTopModuleTop,Top
+ClothMeshTopOptions0,Sleeves
+ClothMeshTopOptions1,No Sleeves
+ClothMeshTopOptiont0,Full
+ClothMeshTopOptiont1,Crop
+ClothMeshTopOptiont2,Short Crop
+ClothMeshTopOptiont3,Bolero
+ClothMeshTopOptiont4,Leotard
+ClothMeshTopOptiont5,Ripped
+ClothMeshTopOptiont6,None
+ClothMeshTopSelectBase,Select Mesh Top Options
+ClothMeshTopSelectSleeves,Select Sleeves
+ClothMeshTopSelectTop,Select Top
+ClothMeshTopSets0,SourceCharacter attaches sleeves to DestinationCharacterName AssetName.
+ClothMeshTopSets1,SourceCharacter detaches the sleeves of DestinationCharacterName AssetName.
+ClothMeshTopSett0,SourceCharacter switches to DestinationCharacterName AssetName to a full shirt.
+ClothMeshTopSett1,SourceCharacter switches to DestinationCharacterName AssetName to a crop top.
+ClothMeshTopSett2,SourceCharacter switches to DestinationCharacterName AssetName to a short crop top.
+ClothMeshTopSett3,SourceCharacter switches to DestinationCharacterName AssetName to a bolero top.
+ClothMeshTopSett4,SourceCharacter switches to DestinationCharacterName AssetName to a leotard top.
+ClothMeshTopSett5,SourceCharacter switches to DestinationCharacterName AssetName to a ripped top.
+ClothMeshTopSett6,SourceCharacter switches to DestinationCharacterName AssetName to a none top.
 ClothPriorityTypeNormal,Revealed
 ClothPriorityTypeTucked,Tucked in
 ClothRetroGirdleGarters,With Garters.
@@ -831,9 +948,11 @@ ClothTShirt2Select,Select your design
 ClothTShirt2Smile,Smiley
 ClothTShirt2Tick,Check
 ClubCardGameStart,SourceCharacter has started the Club Card game.
+ClubCardGameEnd,Congratulations! SourceCharacter has won the Club Card game.
 ClubCardNewPlayerSlot0,SourceCharacter will not play Club Card.
 ClubCardNewPlayerSlot1,SourceCharacter chose to be the first player.
 ClubCardNewPlayerSlot2,SourceCharacter chose to be the second player.
+ClubCardAdminResetGame,SourceCharacter has reset the club card game.
 CoffinSetClosed,SourceCharacter closes the lid on DestinationCharacter coffin.
 CoffinSetOpen,SourceCharacter opens the lid on DestinationCharacter coffin.
 CoffinTypeClosed,Closed
@@ -866,6 +985,7 @@ CupholderGagSetNoCup,SourceCharacter removes the cup from DestinationCharacter c
 CupholderGagSetTip,SourceCharacter tips over the cup on DestinationCharacter cup holder gag.
 CushionTypeHold,Hold cushion
 CushionTypeKneel,Kneel on cushion
+CushionTypeKneelingSpread,Kneel spreads on cushion
 CustomTagText,Save text
 Decrease,Decrease
 DeflateIt,Deflate it
@@ -1586,6 +1706,32 @@ HairBackHairBack78bOptionR2,None
 HairBackHairBack78bSelectBase,Select Option
 HairBackHairBack78bSelectLeft,Select Style
 HairBackHairBack78bSelectRight,Select Style
+HairBackHairBack80Select,Select Type.
+HairBackHairBack80SetBoth,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack80SetLeftOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack80SetRightOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack80Both,Both
+HairBackHairBack80LeftOnly,Left Only
+HairBackHairBack80RightOnly,Right Only
+HairBackHairBack82Select,Select Type.
+HairBackHairBack82SetLong,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack82SetMedium,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack82Long,Long
+HairBackHairBack82Medium,Medium
+HairBackHairBack83Select,Select Type.
+HairBackHairBack83SetBoth,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack83SetLeftOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack83SetRightOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack83Both,Both
+HairBackHairBack83LeftOnly,Left Only
+HairBackHairBack83RightOnly,Right Only
+HairBackHairBack84Select,Select Type.
+HairBackHairBack84SetBoth,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack84SetLeftOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack84SetRightOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack84Both,Both
+HairBackHairBack84LeftOnly,Left Only
+HairBackHairBack84RightOnly,Right Only
 HandAccessoryLeftRingsModuleIndex,Index
 HandAccessoryLeftRingsModuleMiddle,Middle finger
 HandAccessoryLeftRingsModulePinkie,Pinkie
@@ -3447,6 +3593,10 @@ ItemMiscTeddyBearSetKitty,SourceCharacter gives TargetCharacter a cute kitty ted
 ItemMiscTeddyBearSetPony,SourceCharacter gives TargetCharacter a cute Pony teddy.
 ItemMiscTeddyBearSetPup,SourceCharacter gives TargetCharacter a cute puppy teddy.
 ItemMiscTimerPadlockIntro,You can restart the timer but cannot unlock
+ItemMouth2BigMouthSetDefault,SourceCharacter puts a default lips in DestinationCharacterName mouth.
+ItemMouth2BigMouthSetGrin,SourceCharacter puts a grin lips in DestinationCharacterName mouth.
+ItemMouth2BigMouthSetOpen,SourceCharacter puts a wide open lips in DestinationCharacterName mouth.
+ItemMouth2BigMouthSetSerious,SourceCharacter puts a serious lips in DestinationCharacterName mouth.
 ItemMouth2FuturisticMuzzleModuleHarness,Straps
 ItemMouth2FuturisticMuzzleModuleNose,Mask
 ItemMouth2FuturisticMuzzleModuleSymbol,Icon
@@ -4031,6 +4181,11 @@ ItemNeckBonedNeckCorsetRing,Ring
 ItemNeckBonedNeckCorsetSelect,Select ring configuration
 ItemNeckBonedNeckCorsetSetNoRing,SourceCharacter removes the ring from DestinationCharacter collar.
 ItemNeckBonedNeckCorsetSetRing,SourceCharacter attaches a ring to DestinationCharacter collar.
+ItemNeckChainCollarLockBodyHeart,Heart Padlock
+ItemNeckChainCollarLockBodyPlain,Plain Padlock
+ItemNeckChainCollarSelect,Select Lock Body configuration
+ItemNeckChainCollarSetLockBodyHeart,SourceCharacter sets the Heart Lock Body on DestinationCharacter collar.
+ItemNeckChainCollarSetLockBodyPlain,SourceCharacter sets the Plain Lock Body on DestinationCharacter collar.
 ItemNeckExtendablePostureCollarModuleCover,Eye cover
 ItemNeckExtendablePostureCollarModuleGag,Gag
 ItemNeckExtendablePostureCollarModuleHood,Hood
@@ -4098,6 +4253,10 @@ ItemNeckPetSuitShockCollarSelectMedium,Medium
 ItemNeckPetSuitShockCollarSelectShockModule,Select Shock Module
 ItemNeckPetSuitShockCollarSets0,SourceCharacter sets DestinationCharacter AssetName to disable shock module.
 ItemNeckPetSuitShockCollarSets1,SourceCharacter sets DestinationCharacter AssetName to enable shock module.
+ItemNeckRestraintsChokeChainHanging,Hanging
+ItemNeckRestraintsChokeChainHeld,Held
+ItemNeckRestraintsChokeChainSetHanging,SourceCharacter let go of DestinationCharacter choke chain
+ItemNeckRestraintsChokeChainSetHeld,SourceCharacter grabs DestinationCharacter choke chain
 ItemNeckRestraintsCollarLeashHanging,Hanging
 ItemNeckRestraintsCollarLeashHeld,Held
 ItemNeckRestraintsCollarLeashSetHanging,SourceCharacter let go of DestinationCharacter leash
@@ -5556,7 +5715,7 @@ ItemHandheldAnimeGirlWandStaff,A (spanker) staff
 ItemHandheldAnimeGirlWandSetStaff,SourceCharacter transform the Power Staff into Wand
 ItemHandheldAnimeGirlWandWand,A (kinky) wand
 ItemHandheldAnimeGirlWandSetWand,SourceCharacter transform the Power Staff into Staff
-ItemDevicesCementSelectBase,Pole, material and bucket menu:
+ItemDevicesCementSelectBase,"Pole, material and bucket menu:"
 ItemDevicesCementModulePole,Pole and ratchets
 ItemDevicesCementSelectPole,Choose restraint lenght:
 ItemDevicesCementOptionp0,None
@@ -5709,6 +5868,7 @@ ItemHoodRubberMaskOptiong13,Wig M
 ItemHoodRubberMaskOptiong14,Wig N
 ItemHoodRubberMaskOptiong15,Wig O
 ItemHoodRubberMaskOptiong16,Wig P
+ItemHoodRubberMaskOptiong17,Wig Q
 ItemHoodRubberMaskModuleEyes,Eyes
 ItemHoodRubberMaskSelectEyes,Eye expression menu
 ItemHoodRubberMaskOptione0,Normal
@@ -5762,6 +5922,7 @@ ItemHoodRubberMaskSetg13,SourceCharacter puts the wig M on the DestinationCharac
 ItemHoodRubberMaskSetg14,SourceCharacter puts the wig N on the DestinationCharacter head.
 ItemHoodRubberMaskSetg15,SourceCharacter puts the wig O on the DestinationCharacter head.
 ItemHoodRubberMaskSetg16,SourceCharacter puts the wig P on the DestinationCharacter head.
+ItemHoodRubberMaskSetg17,SourceCharacter puts the wig Q on the DestinationCharacter head.
 ItemHoodRubberMaskSete0,SourceCharacter chooses a normal eyes in DestinationCharacter mask.
 ItemHoodRubberMaskSete1,SourceCharacter chooses a closed eyes in DestinationCharacter mask.
 ItemHoodRubberMaskSete2,SourceCharacter chooses a wide open eyes in DestinationCharacter mask.
@@ -5803,6 +5964,7 @@ MaskRubberMaskOptiong13,Wig M
 MaskRubberMaskOptiong14,Wig N
 MaskRubberMaskOptiong15,Wig O
 MaskRubberMaskOptiong16,Wig P
+MaskRubberMaskOptiong17,Wig Q
 MaskRubberMaskModuleEyes,Eyes
 MaskRubberMaskSelectEyes,Eye expression menu
 MaskRubberMaskOptione0,Normal
@@ -5943,6 +6105,16 @@ HairFrontHairFront62bSelectBase,Select Options
 HairFrontHairFront62bSelectStyle,Select Style
 HairFrontHairFront62bSelectStrands,Select Strands
 HairFrontHairFront62bSelectExtra,Select Extras
+HairFrontHairFront67Select,Select Accessory.
+HairFrontHairFront67SetBraid,SourceCharacter changes DestinationCharacter hair.
+HairFrontHairFront67SetNoBraid,SourceCharacter changes DestinationCharacter hair.
+HairFrontHairFront67Braid,Braid
+HairFrontHairFront67NoBraid,No Braid
+HairFrontHairFront71Select,Select Accessory.
+HairFrontHairFront71SetBasic,SourceCharacter changes DestinationCharacter hair.
+HairFrontHairFront71SetTranslucent,SourceCharacter changes DestinationCharacter hair.
+HairFrontHairFront71Basic,Basic
+HairFrontHairFront71Translucent,Translucent
 PremiumMuzzleMouthSetCrossStraps,SourceCharacter adds extra straps to DestinationCharacter muzzle
 PremiumMuzzleMouthSetNormal,SourceCharacter turns DestinationCharacter muzzle back to normal.
 PremiumMuzzleMouthSetExtraMuzzle,SourceCharacter attaches an extra panel over DestinationCharacter muzzle.
@@ -5988,16 +6160,16 @@ ItemFeetKneeOvernighterSetThigh,SourceCharacter thighens the Under Knee Overnigh
 ItemFeetHeelBindersSelectBase,Choose a extended restraint:
 ItemFeetHeelBindersModuleRestraints,Current condition
 ItemFeetHeelBindersSelectRestraints,Feet Binders menu:
-ItemFeetHeelBindersOptionr0,Just cuffs
-ItemFeetHeelBindersOptionr1,Long chain link
+ItemFeetHeelBindersOptionr0,Long chain link
+ItemFeetHeelBindersOptionr1,Just cuffs
 ItemFeetHeelBindersOptionr2,Chain around ankles
 ItemFeetHeelBindersOptionr3,Link strap limiter
 ItemFeetHeelBindersOptionr4,Metal bar
 ItemFeetHeelBindersOptionr5,Spread bar
 ItemFeetHeelBindersOptionr6,Spread bar suspension
 ItemFeetHeelBindersOptionr7,Grounded spread bar
-ItemFeetHeelBindersSetr0,SourceCharacter removes any bind accessory from DestinationCharacterName ankle cuffs.
-ItemFeetHeelBindersSetr1,SourceCharacter links the DestinationCharacterName ankle cuffs with a long chain. 
+ItemFeetHeelBindersSetr0,SourceCharacter links the DestinationCharacterName ankle cuffs with a long chain.
+ItemFeetHeelBindersSetr1,SourceCharacter removes any bind accessory from DestinationCharacterName ankle cuffs.
 ItemFeetHeelBindersSetr2,SourceCharacter tightens the chain around DestinationCharacterName ankles.
 ItemFeetHeelBindersSetr3,SourceCharacter links DestinationCharacterName ankle cuffs with a short leather strap.
 ItemFeetHeelBindersSetr4,SourceCharacter links DestinationCharacterName ankle cuffs with a metal bar.
@@ -6138,3 +6310,530 @@ GartersComboBeltModuleChain,Add-Remove
 GartersComboBeltSelectChain,Chains garters menu:
 GartersComboBeltOptionc0,Add
 GartersComboBeltOptionc1,Remove
+ItemBootsHeellessHoofSelect,Iron Ballet device option menu:
+ItemBootsHeellessHoofHoofs,Just shoes
+ItemBootsHeellessHoofIronBallet,With Iron Ballet
+ItemBootsHeellessHoofSetHoofs,SourceCharacter removes the Iron Ballet device from DestinationCharacter feet.
+ItemBootsHeellessHoofSetIronBallet,SourceCharacter installs the Iron Ballet device on DestinationCharacter feet.
+ShoesHeellessHoofSelect,Cosmetic padlock option menu:
+ShoesHeellessHoofNormal,Normal
+ShoesHeellessHoofPadlock,With padlocks
+ItemDevicesExclusiveWaitressSelectBase,Welcome to Exclusive Waitress customization main menu.
+ItemDevicesExclusiveWaitressModuleBar,Lower body
+ItemDevicesExclusiveWaitressSelectBar,Lower body display mode:
+ItemDevicesExclusiveWaitressOptionc0,Thighs exposed
+ItemDevicesExclusiveWaitressOptionc1,Window mode
+ItemDevicesExclusiveWaitressOptionc2,Closed
+ItemDevicesExclusiveWaitressModuleOmb,Sunshade
+ItemDevicesExclusiveWaitressSelectOmb,Sunshade option:
+ItemDevicesExclusiveWaitressOptionb0,No sunshade
+ItemDevicesExclusiveWaitressOptionb1,Sunshade enabled
+ItemDevicesExclusiveWaitressModuleFollow,Service mode
+ItemDevicesExclusiveWaitressSelectFollow,Service mode type:
+ItemDevicesExclusiveWaitressOptionf0,Autonomous mode
+ItemDevicesExclusiveWaitressOptionf1,Lock & leashed
+ItemDevicesExclusiveWaitressOptionf2,Lock & grounded
+ItemDevicesExclusiveWaitressOptionf3,Autonomous LED Off
+ItemDevicesExclusiveWaitressOptionf4,Lock & leashed LED Off
+ItemDevicesExclusiveWaitressOptionf5,Lock & grounded LED Off
+ItemDevicesExclusiveWaitressModuleObjectL,Left side table
+ItemDevicesExclusiveWaitressSelectObjectL,Choose an object or food on the left: -screen faced-
+ItemDevicesExclusiveWaitressOptionl0,Empty
+ItemDevicesExclusiveWaitressOptionl1,Menu
+ItemDevicesExclusiveWaitressOptionl2,Poker cards
+ItemDevicesExclusiveWaitressOptionl3,Club cards
+ItemDevicesExclusiveWaitressOptionl4,Coffee cup
+ItemDevicesExclusiveWaitressOptionl5,Iced tea
+ItemDevicesExclusiveWaitressOptionl6,Juice glass
+ItemDevicesExclusiveWaitressOptionl7,Soda can
+ItemDevicesExclusiveWaitressOptionl8,Whiskey glass
+ItemDevicesExclusiveWaitressOptionl9,Long neck beer
+ItemDevicesExclusiveWaitressOptionl10,Beer glass
+ItemDevicesExclusiveWaitressOptionl11,Marguerita glass
+ItemDevicesExclusiveWaitressOptionl12,Champagne glass
+ItemDevicesExclusiveWaitressOptionl13,Sake cup
+ItemDevicesExclusiveWaitressOptionl14,Penauts
+ItemDevicesExclusiveWaitressOptionl15,Banana Split
+ItemDevicesExclusiveWaitressOptionl16,Sundae
+ItemDevicesExclusiveWaitressOptionl17,Fries
+ItemDevicesExclusiveWaitressOptionl18,Burger
+ItemDevicesExclusiveWaitressOptionl19,Origiri
+ItemDevicesExclusiveWaitressOptionl20,Hot dog
+ItemDevicesExclusiveWaitressOptionl21,Taco
+ItemDevicesExclusiveWaitressOptionl22,Bill and changes
+ItemDevicesExclusiveWaitressOptionl23,Ashtray
+ItemDevicesExclusiveWaitressModuleObjectM,Front table
+ItemDevicesExclusiveWaitressSelectObjectM,Choose an object or food in front:
+ItemDevicesExclusiveWaitressOptionm0,Empty
+ItemDevicesExclusiveWaitressOptionm1,Welcome sign
+ItemDevicesExclusiveWaitressOptionm2,Cards and chips
+ItemDevicesExclusiveWaitressOptionm3,Club cards
+ItemDevicesExclusiveWaitressOptionm4,Old coffee pot
+ItemDevicesExclusiveWaitressOptionm5,Two iced tea
+ItemDevicesExclusiveWaitressOptionm6,Two juice glasses
+ItemDevicesExclusiveWaitressOptionm7,A bunch of soda can
+ItemDevicesExclusiveWaitressOptionm8,Whiskey bottle
+ItemDevicesExclusiveWaitressOptionm9,A bunch of long neck
+ItemDevicesExclusiveWaitressOptionm10,Beer bottles
+ItemDevicesExclusiveWaitressOptionm11,Two margueritas
+ItemDevicesExclusiveWaitressOptionm12,Champagne bucket
+ItemDevicesExclusiveWaitressOptionm13,Sake bottle
+ItemDevicesExclusiveWaitressOptionm14,Penauts
+ItemDevicesExclusiveWaitressOptionm15,Banana Split
+ItemDevicesExclusiveWaitressOptionm16,Two sundaes
+ItemDevicesExclusiveWaitressOptionm17,Fries
+ItemDevicesExclusiveWaitressOptionm18,Two burgers
+ItemDevicesExclusiveWaitressOptionm19,Two origiri
+ItemDevicesExclusiveWaitressOptionm20,Two hot dogs
+ItemDevicesExclusiveWaitressOptionm21,Some tacos
+ItemDevicesExclusiveWaitressOptionm22,Tips pot
+ItemDevicesExclusiveWaitressOptionm23,No smoking sign
+ItemDevicesExclusiveWaitressModuleObjectR,Right side table
+ItemDevicesExclusiveWaitressSelectObjectR,Choose an object or food on the right: -screen faced-
+ItemDevicesExclusiveWaitressOptionr0,Empty
+ItemDevicesExclusiveWaitressOptionr1,Menu
+ItemDevicesExclusiveWaitressOptionr2,Poker cards
+ItemDevicesExclusiveWaitressOptionr3,Club cards
+ItemDevicesExclusiveWaitressOptionr4,Coffee cup
+ItemDevicesExclusiveWaitressOptionr5,Iced tea
+ItemDevicesExclusiveWaitressOptionr6,Juice glass
+ItemDevicesExclusiveWaitressOptionr7,Soda can
+ItemDevicesExclusiveWaitressOptionr8,Whiskey glass
+ItemDevicesExclusiveWaitressOptionr9,Long neck beer
+ItemDevicesExclusiveWaitressOptionr10,Beer glass
+ItemDevicesExclusiveWaitressOptionr11,Marguerita glass
+ItemDevicesExclusiveWaitressOptionr12,Champagne glass
+ItemDevicesExclusiveWaitressOptionr13,Sake cup
+ItemDevicesExclusiveWaitressOptionr14,Penauts
+ItemDevicesExclusiveWaitressOptionr15,Banana Split
+ItemDevicesExclusiveWaitressOptionr16,Sundae
+ItemDevicesExclusiveWaitressOptionr17,Fries
+ItemDevicesExclusiveWaitressOptionr18,Burger
+ItemDevicesExclusiveWaitressOptionr19,Origiri
+ItemDevicesExclusiveWaitressOptionr20,Hot dog
+ItemDevicesExclusiveWaitressOptionr21,Taco
+ItemDevicesExclusiveWaitressOptionr22,Bill and changes
+ItemDevicesExclusiveWaitressOptionr23,Ashtray
+ItemDevicesExclusiveWaitressSetc0,SourceCharacter exposes the DestinationCharacter legs opening the EW's hatch.
+ItemDevicesExclusiveWaitressSetc1,SourceCharacter closes the EW's with window glass leaving the DestinationCharacter legs visible.
+ItemDevicesExclusiveWaitressSetc2,SourceCharacter closes the EW's with metal hatch. DestinationCharacter legs aren't visible anymore.
+ItemDevicesExclusiveWaitressSetb0,SourceCharacter removes the EW's sunshade behind DestinationCharacter.
+ItemDevicesExclusiveWaitressSetb1,SourceCharacter installs the EW's sunshade behind DestinationCharacter.
+ItemDevicesExclusiveWaitressSetf0,SourceCharacter allows DestinationCharacter operate EW device in the autonomous mode (LED ON).
+ItemDevicesExclusiveWaitressSetf1,SourceCharacter set EW device in follow mode. Now DestinationCharacter can be leashed and dragged anywhere (LED ON).
+ItemDevicesExclusiveWaitressSetf2,SourceCharacter disables the EW's levitate system. DestinationCharacter is grounded now (LED ON).
+ItemDevicesExclusiveWaitressSetf3,SourceCharacter allows DestinationCharacter operate EW device in the autonomous mode (LED OFF).
+ItemDevicesExclusiveWaitressSetf4,SourceCharacter set EW device in follow mode. Now DestinationCharacter can be leashed and dragged anywhere (LED OFF).
+ItemDevicesExclusiveWaitressSetf5,SourceCharacter disables the EW's levitate system. DestinationCharacter is grounded now (LED OFF).
+ItemDevicesExclusiveWaitressSetl0,DestinationCharacterName is clearing the table on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl1,DestinationCharacterName puts a menu on the table on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl2,DestinationCharacterName puts some poker cards and chips on the table on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl3,DestinationCharacterName puts a Club Card deck on the table on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl4,DestinationCharacterName serves a coffee cup on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl5,DestinationCharacterName serves a iced tea glass on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl6,DestinationCharacterName serves a juice glass on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl7,DestinationCharacterName serves a soda on on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl8,DestinationCharacterName serves a whiskey glass on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl9,DestinationCharacterName serves a long neck beer on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl10,DestinationCharacterName serves a beer glass on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl11,DestinationCharacterName serves a marguerita glass on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl12,DestinationCharacterName serves a champagne glass on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl13,DestinationCharacterName serves a sake cup on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl14,DestinationCharacterName serves a penauts pot on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl15,DestinationCharacterName serves a banana split on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl16,DestinationCharacterName serves a sundae on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl17,DestinationCharacterName serves a plate of fries on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl18,DestinationCharacterName serves a burguer on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl19,DestinationCharacterName serves a origiri on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl20,DestinationCharacterName serves a hot dog on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl21,DestinationCharacterName serves a taco on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl22,DestinationCharacterName puts the bill and some changes on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetl23,DestinationCharacterName puts a ashtray on TargetPronounPossessive right side.
+ItemDevicesExclusiveWaitressSetm0,DestinationCharacterName is clearing the table on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm1,DestinationCharacterName puts a menu on the table on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm2,DestinationCharacterName puts some poker card decks and chips on the table on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm3,DestinationCharacterName puts some Club Card decks on the table on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm4,DestinationCharacterName puts a old coffee pot on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm5,DestinationCharacterName serves two iced tea cups on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm6,DestinationCharacterName serves two juice glasses on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm7,DestinationCharacterName serves a bunch of sodas on on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm8,DestinationCharacterName serves a whiskey bottle on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm9,DestinationCharacterName serves a lot of long neck beer on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm10,DestinationCharacterName serves two beer bottles on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm11,DestinationCharacterName serves two marguerita glasses on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm12,DestinationCharacterName serves a champagne bucket on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm13,DestinationCharacterName serves a sake bottle on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm14,DestinationCharacterName serves a bigger penauts pot on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm15,DestinationCharacterName serves a banana split on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm16,DestinationCharacterName serves two sundaes on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm17,DestinationCharacterName serves a bigger plate of fries on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm18,DestinationCharacterName serves two burguers on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm19,DestinationCharacterName serves two origiri on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm20,DestinationCharacterName serves two hot dogs on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm21,DestinationCharacterName serves a bunch of tacos on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetm22,DestinationCharacterName puts a TargetPronounPossessive tips pot on TargetPronounPossessive front: "Tips for good service!"
+ItemDevicesExclusiveWaitressSetm23,DestinationCharacterName puts no smoking sign on TargetPronounPossessive front.
+ItemDevicesExclusiveWaitressSetr0,DestinationCharacterName is clearing the table on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr1,DestinationCharacterName puts a menu on the table on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr2,DestinationCharacterName puts some poker cards and chips on the table on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr3,DestinationCharacterName puts a Club Card deck on the table on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr4,DestinationCharacterName serves a coffee cup on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr5,DestinationCharacterName serves a iced tea glass on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr6,DestinationCharacterName serves a juice glass on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr7,DestinationCharacterName serves a soda on on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr8,DestinationCharacterName serves a whiskey glass on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr9,DestinationCharacterName serves a long neck beer on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr10,DestinationCharacterName serves a beer glass on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr11,DestinationCharacterName serves a marguerita glass on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr12,DestinationCharacterName serves a champagne glass on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr13,DestinationCharacterName serves a sake cup on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr14,DestinationCharacterName serves a penauts pot on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr15,DestinationCharacterName serves a banana split on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr16,DestinationCharacterName serves a sundae on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr17,DestinationCharacterName serves a plate of fries on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr18,DestinationCharacterName serves a burguer on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr19,DestinationCharacterName serves a origiri on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr20,DestinationCharacterName serves a hot dog on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr21,DestinationCharacterName serves a taco on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr22,DestinationCharacterName puts the bill and some changes on TargetPronounPossessive left side.
+ItemDevicesExclusiveWaitressSetr23,DestinationCharacterName puts a ashtray on TargetPronounPossessive left side.
+ItemMouthAOMGagSelect,Always open mouth gag options: -straps can be padlocked-
+ItemMouthAOMGagLips,Just lips
+ItemMouthAOMGagStraps,With straps
+ItemMouthAOMGagSetLips,SourceCharacter removes the AOM straps on the DestinationCharacter face.
+ItemMouthAOMGagSetStraps,SourceCharacter installs the AOM straps on the DestinationCharacter face.
+ItemMouth2AOMGagSelect,Always open mouth gag options: -straps can be padlocked-
+ItemMouth2AOMGagLips,Just lips
+ItemMouth2AOMGagStraps,With straps
+ItemMouth2AOMGagSetLips,SourceCharacter removes the AOM straps on the DestinationCharacter face.
+ItemMouth2AOMGagSetStraps,SourceCharacter installs the AOM straps on the DestinationCharacter face.
+ItemMouth3AOMGagSelect,Always open mouth gag options: -straps can be padlocked-
+ItemMouth3AOMGagLips,Just lips
+ItemMouth3AOMGagStraps,With straps
+ItemMouth3AOMGagSetLips,SourceCharacter removes the AOM straps on the DestinationCharacter face.
+ItemMouth3AOMGagSetStraps,SourceCharacter installs the AOM straps on the DestinationCharacter face.
+ItemHoodCreepyIronMaskSelectBase,Creepy Iron Mask main menu:
+ItemHoodCreepyIronMaskModuleMode,Mask style
+ItemHoodCreepyIronMaskSelectMode,Mask menu:
+ItemHoodCreepyIronMaskOptionm0,Just mask
+ItemHoodCreepyIronMaskOptionm1,Semi-hood
+ItemHoodCreepyIronMaskOptionm2,Full hood
+ItemHoodCreepyIronMaskModuleBlindfold,Blindfold
+ItemHoodCreepyIronMaskSelectBlindfold,Metal blindfold option:
+ItemHoodCreepyIronMaskOptionb0,None
+ItemHoodCreepyIronMaskOptionb1,Perforated
+ItemHoodCreepyIronMaskOptionb2,Full
+ItemHoodCreepyIronMaskModuleSpike,Collar spikes
+ItemHoodCreepyIronMaskSelectSpike,Collar spikes option:
+ItemHoodCreepyIronMaskOptions0,None
+ItemHoodCreepyIronMaskOptions1,Equip spikes
+ItemHoodCreepyIronMaskModuleNose,Nose guard
+ItemHoodCreepyIronMaskSelectNose,Nose guard option:
+ItemHoodCreepyIronMaskOptionn0,None
+ItemHoodCreepyIronMaskOptionn1,Add nose guard
+ItemHoodCreepyIronMaskModuleSpeech,Speech
+ItemHoodCreepyIronMaskSelectSpeech,Speech option:
+ItemHoodCreepyIronMaskOptionp0,Loose
+ItemHoodCreepyIronMaskOptionp1,Tight
+ItemHoodCreepyIronMaskSetm0,SourceCharacter puts the Creepy Iron Mask on DestinationCharacterName head.
+ItemHoodCreepyIronMaskSetm1,SourceCharacter locks DestinationCharacterName head with the Creepy Iron Hood version.
+ItemHoodCreepyIronMaskSetm2,SourceCharacter locks DestinationCharacterName head with the Creepy Iron Hood version.
+ItemHoodCreepyIronMaskSetb0,SourceCharacter removes a metal blindfold from DestinationCharacterName Creepy Iron Mask.
+ItemHoodCreepyIronMaskSetb1,SourceCharacter equips a perforated metal blindfold on DestinationCharacterName Creepy Iron Mask.
+ItemHoodCreepyIronMaskSetb2,SourceCharacter equips a full metal blindfold on DestinationCharacterName Creepy Iron Mask.
+ItemHoodCreepyIronMaskSets0,SourceCharacter removes a spiked collar from DestinationCharacterName neck.
+ItemHoodCreepyIronMaskSets1,SourceCharacter equips a spiked collar on DestinationCharacterName neck.
+ItemHoodCreepyIronMaskSetn0,SourceCharacter removes a nose guard from DestinationCharacterName Creepy Iron Mask.
+ItemHoodCreepyIronMaskSetn1,SourceCharacter equips a nose guard on DestinationCharacterName Creepy Iron Mask.
+ItemHoodCreepyIronMaskSetp0,SourceCharacter loosens DestinationCharacterName Creepy Iron Mask.
+ItemHoodCreepyIronMaskSetp1,SourceCharacter tightens DestinationCharacterName Creepy Iron Mask.
+ItemMouthHorrorMuzzleSelect,Horror Muzzle style option menu:
+ItemMouthHorrorMuzzleNone,Plain
+ItemMouthHorrorMuzzleRivets,With rivets
+ItemMouthHorrorMuzzleSetNone,SourceCharacter puts on DestinationCharacter mouth a plain Horror Muzzle.
+ItemMouthHorrorMuzzleSetRivets,SourceCharacter puts on DestinationCharacter mouth a Horror Muzzle with rivets.
+ItemMouth2HorrorMuzzleSelect,Horror Muzzle style option menu:
+ItemMouth2HorrorMuzzleNone,Plain
+ItemMouth2HorrorMuzzleRivets,With rivets
+ItemMouth2HorrorMuzzleSetNone,SourceCharacter puts on DestinationCharacter mouth a plain Horror Muzzle.
+ItemMouth2HorrorMuzzleSetRivets,SourceCharacter puts on DestinationCharacter mouth a Horror Muzzle with rivets.
+ItemMouth3HorrorMuzzleSelect,Horror Muzzle style option menu:
+ItemMouth3HorrorMuzzleNone,Plain
+ItemMouth3HorrorMuzzleRivets,With rivets
+ItemMouth3HorrorMuzzleSetNone,SourceCharacter puts on DestinationCharacter mouth a plain Horror Muzzle.
+ItemMouth3HorrorMuzzleSetRivets,SourceCharacter puts on DestinationCharacter mouth a Horror Muzzle with rivets.
+GlassesRoundSunglassesSelect,Select a style:
+GlassesRoundSunglassesNormal,Behind hair
+GlassesRoundSunglassesOver,Over hair
+ItemMouthAsylumMuzzleSelect,Asylum Muzzle options:
+ItemMouthAsylumMuzzleNormal,Single layer
+ItemMouthAsylumMuzzlePadded,Plus padded layer
+ItemMouthAsylumMuzzleSetNormal,SourceCharacter removes padded layer under the DestinationCharacter Asylum Muzzle.
+ItemMouthAsylumMuzzleSetPadded,SourceCharacter adds a padded layer under the DestinationCharacter Asylum Muzzle.
+ItemMouth2AsylumMuzzleSelect,Asylum Muzzle options:
+ItemMouth2AsylumMuzzleNormal,Single layer
+ItemMouth2AsylumMuzzlePadded,Plus padded layer
+ItemMouth2AsylumMuzzleSetNormal,SourceCharacter removes padded layer under the DestinationCharacter Asylum Muzzle.
+ItemMouth2AsylumMuzzleSetPadded,SourceCharacter adds a padded layer under the DestinationCharacter Asylum Muzzle.
+ItemMouth3AsylumMuzzleSelect,Asylum Muzzle options:
+ItemMouth3AsylumMuzzleNormal,Single layer
+ItemMouth3AsylumMuzzlePadded,Plus padded layer
+ItemMouth3AsylumMuzzleSetNormal,SourceCharacter removes padded layer under the DestinationCharacter Asylum Muzzle.
+ItemMouth3AsylumMuzzleSetPadded,SourceCharacter adds a padded layer under the DestinationCharacter Asylum Muzzle.
+ItemHeadAsylumBlindfoldSelect,Asylum Blindfold options:
+ItemHeadAsylumBlindfoldNormal,Single layer
+ItemHeadAsylumBlindfoldPadded,Plus padded layer
+ItemHeadAsylumBlindfoldSetNormal,SourceCharacter removes padded layer under the DestinationCharacter Asylum Blindfold.
+ItemHeadAsylumBlindfoldSetPadded,SourceCharacter adds a padded layer under the DestinationCharacter Asylum Blindfold.
+ItemNeckAsylumCollarSelect,Asylum Blindfold options:
+ItemNeckAsylumCollarNormal,Single layer
+ItemNeckAsylumCollarPadded,Plus padded layer
+ItemNeckAsylumCollarSetNormal,SourceCharacter removes padded layer under the DestinationCharacter Asylum Collar.
+ItemNeckAsylumCollarSetPadded,SourceCharacter adds a padded layer under the DestinationCharacter Asylum Collar.
+ItemHandheldKyosensuSelect,Choose your Kyo-sensu paper art:
+ItemHandheldKyosensuType1,Cherry blossoms
+ItemHandheldKyosensuType2,Lightning bolt
+ItemHandheldKyosensuType3,Sun
+ItemHandheldKyosensuType4,Wave art
+ItemHandheldKyosensuType5,Moon
+ItemHandheldKyosensuType6,Flowers
+ItemHandheldKyosensuSetType1,SourceCharacter chooses a cherry blossooms art for DestinationCharacter Kyo-sensu fan.
+ItemHandheldKyosensuSetType2,SourceCharacter chooses a lightning bolt art for DestinationCharacter Kyo-sensu fan.
+ItemHandheldKyosensuSetType3,SourceCharacter chooses a sun art for DestinationCharacter Kyo-sensu fan.
+ItemHandheldKyosensuSetType4,SourceCharacter chooses a wave art for DestinationCharacter Kyo-sensu fan.
+ItemHandheldKyosensuSetType5,SourceCharacter chooses a moon art for DestinationCharacter Kyo-sensu fan.
+ItemHandheldKyosensuSetType6,SourceCharacter chooses a flowers art for DestinationCharacter Kyo-sensu fan.
+ItemHandheldUchiwaSelect,Choose your Uchiwa paper art:
+ItemHandheldUchiwaType1,Cherry blossoms
+ItemHandheldUchiwaType2,Lightning bolt
+ItemHandheldUchiwaType3,Sun
+ItemHandheldUchiwaType4,Wave art
+ItemHandheldUchiwaType5,Moon
+ItemHandheldUchiwaType6,Flowers
+ItemHandheldUchiwaSetType1,SourceCharacter chooses a cherry blossooms art for DestinationCharacter Uchiwa fan.
+ItemHandheldUchiwaSetType2,SourceCharacter chooses a lightning bolt art for DestinationCharacter Uchiwa fan.
+ItemHandheldUchiwaSetType3,SourceCharacter chooses a sun art for DestinationCharacter Uchiwa fan.
+ItemHandheldUchiwaSetType4,SourceCharacter chooses a wave art for DestinationCharacter Uchiwa fan.
+ItemHandheldUchiwaSetType5,SourceCharacter chooses a moon art for DestinationCharacter Uchiwa fan.
+ItemHandheldUchiwaSetType6,SourceCharacter chooses a flowers art for DestinationCharacter Uchiwa fan.
+ItemDevicesLeatherCageSelectBase,Leather cage main menu:
+ItemDevicesLeatherCageModuleFace,Belts
+ItemDevicesLeatherCageSelectFace,Belts options:
+ItemDevicesLeatherCageOptionf0,Normal
+ItemDevicesLeatherCageOptionf1,Face exposed
+ItemDevicesLeatherCageModuleSuspension,Supension cage
+ItemDevicesLeatherCageSelectSuspension,Suspension options:
+ItemDevicesLeatherCageOptions0,Cage on the ground
+ItemDevicesLeatherCageOptions1,Cage suspended
+ItemDevicesLeatherCageModuleCuff,Security increase
+ItemDevicesLeatherCageSelectCuff,Security options:
+ItemDevicesLeatherCageOptionc0,Normal
+ItemDevicesLeatherCageOptionc1,Collar cuff added
+ItemDevicesLeatherCageSetf0,SourceCharacter places some leather belts in front from DestinationCharacterName face.
+ItemDevicesLeatherCageSetf1,SourceCharacter removes leather belts in front from DestinationCharacterName face.
+ItemDevicesLeatherCageSets0,SourceCharacter lowers the DestinationCharacterName cage to the ground.
+ItemDevicesLeatherCageSets1,SourceCharacter suspends the DestinationCharacterName cage.
+ItemDevicesLeatherCageSetc0,SourceCharacter removes the cage's collar from DestinationCharacterName neck.
+ItemDevicesLeatherCageSetc1,SourceCharacter locks DestinationCharacterName neck with cage's cuff collar.
+ItemTorsoSteelBeltSelectBase,Steel belt main menu:
+ItemTorsoSteelBeltModuleBelt,Layer position
+ItemTorsoSteelBeltSelectBelt,Belt layer options:
+ItemTorsoSteelBeltOptionb0,Under clothes
+ItemTorsoSteelBeltOptionb1,Over clothes
+ItemTorsoSteelBeltModuleHandcuffs,Cuffs attachment
+ItemTorsoSteelBeltSelectHandcuffs,Double cuffs attachment options:
+ItemTorsoSteelBeltOptionh0,Just steel belt
+ItemTorsoSteelBeltOptionh1,Hands cuffed in front
+ItemTorsoSteelBeltOptionh2,Hands cuffed on back
+ItemTorsoSteelBeltOptionh3,Strict mode
+ItemTorsoSteelBeltSetb0,SourceCharacter put the Steel belt under DestinationCharacter clothes.
+ItemTorsoSteelBeltSetb1,SourceCharacter put the Steel belt over DestinationCharacter clothes.
+ItemTorsoSteelBeltSeth0,SourceCharacter unlocks DestinationCharacter from the Steel Belt handcuffs.
+ItemTorsoSteelBeltSeth1,SourceCharacter puts a pair of handcuffs on DestinationCharacter fists and arms.
+ItemTorsoSteelBeltSeth2,SourceCharacter puts a pair of handcuffs on DestinationCharacter fists and arms on TargetPronounPossessive back.
+ItemTorsoSteelBeltSeth3,SourceCharacter puts a pair of strict handcuffs on DestinationCharacter fists and arms on TargetPronounPossessive back.
+ItemTorso2SteelBeltSelectBase,Steel belt main menu:
+ItemTorso2SteelBeltModuleBelt,Layer position
+ItemTorso2SteelBeltSelectBelt,Belt layer options:
+ItemTorso2SteelBeltOptionb0,Under clothes
+ItemTorso2SteelBeltOptionb1,Over clothes
+ItemTorso2SteelBeltModuleHandcuffs,Cuffs attachment
+ItemTorso2SteelBeltSelectHandcuffs,Double cuffs attachment options:
+ItemTorso2SteelBeltOptionh0,Just steel belt
+ItemTorso2SteelBeltOptionh1,Hands cuffed in front
+ItemTorso2SteelBeltOptionh2,Hands cuffed on back
+ItemTorso2SteelBeltOptionh3,Strict mode
+ItemTorso2SteelBeltSetb0,SourceCharacter put the Steel belt under DestinationCharacter clothes.
+ItemTorso2SteelBeltSetb1,SourceCharacter put the Steel belt over DestinationCharacter clothes.
+ItemTorso2SteelBeltSeth0,SourceCharacter unlocks DestinationCharacter from the Steel Belt handcuffs.
+ItemTorso2SteelBeltSeth1,SourceCharacter puts a pair of handcuffs on DestinationCharacter fists and arms.
+ItemTorso2SteelBeltSeth2,SourceCharacter puts a pair of handcuffs on DestinationCharacter fists and arms on TargetPronounPossessive back.
+ItemTorso2SteelBeltSeth3,SourceCharacter puts a pair of strict handcuffs on DestinationCharacter fists and arms on TargetPronounPossessive back.
+ItemArmsSteelBeltSelectBase,Steel belt main menu:
+ItemArmsSteelBeltModuleBelt,Layer position
+ItemArmsSteelBeltSelectBelt,Belt layer options:
+ItemArmsSteelBeltOptionb0,Under clothes
+ItemArmsSteelBeltOptionb1,Over clothes
+ItemArmsSteelBeltModuleHandcuffs,Cuffs attachment
+ItemArmsSteelBeltSelectHandcuffs,Double cuffs attachment options:
+ItemArmsSteelBeltOptionh0,Just steel belt
+ItemArmsSteelBeltOptionh1,Hands cuffed in front
+ItemArmsSteelBeltOptionh2,Hands cuffed on back
+ItemArmsSteelBeltOptionh3,Strict mode
+ItemArmsSteelBeltSetb0,SourceCharacter put the Steel belt under DestinationCharacter clothes.
+ItemArmsSteelBeltSetb1,SourceCharacter put the Steel belt over DestinationCharacter clothes.
+ItemArmsSteelBeltSeth0,SourceCharacter unlocks DestinationCharacter from the Steel Belt handcuffs.
+ItemArmsSteelBeltSeth1,SourceCharacter puts a pair of handcuffs on DestinationCharacter fists and arms.
+ItemArmsSteelBeltSeth2,SourceCharacter puts a pair of handcuffs on DestinationCharacter fists and arms on TargetPronounPossessive back.
+ItemArmsSteelBeltSeth3,SourceCharacter puts a pair of strict handcuffs on DestinationCharacter fists and arms on TargetPronounPossessive back.
+ShoesHoofBootsSelect,Ankle straps option menu:
+ShoesHoofBootsNormal,No straps
+ShoesHoofBootsLocked,Ankle straps
+ItemBootsHoofBootsSelect,Ankle straps option menu:
+ItemBootsHoofBootsNormal,No straps
+ItemBootsHoofBootsStraps,Ankle straps
+ItemBootsHoofBootsSetNormal,SourceCharacter removes the Hoof's ankle straps from DestinationCharacter feet.
+ItemBootsHoofBootsSetStraps,SourceCharacter secures the Hoof Boots on the DestinationCharacter ankles with straps.
+GartersButterflyGarterSelectBase,Butterfly Garters main menu:
+GartersButterflyGarterModuleRightLeg,Right Leg
+GartersButterflyGarterSelectRightLeg,Garter option:
+GartersButterflyGarterOptionr0,Wear garter
+GartersButterflyGarterOptionr1,Remove garter
+GartersButterflyGarterModuleLeftLeg,Left Leg
+GartersButterflyGarterSelectLeftLeg,Garter option:
+GartersButterflyGarterOptionl0,Wear garter
+GartersButterflyGarterOptionl1,Remove garter
+ItemAddonCeilingNeckCuffSelect,Select chain length:
+ItemAddonCeilingNeckCuffLoose,Loose chain
+ItemAddonCeilingNeckCuffStrict,Shortened chain
+ItemAddonCeilingNeckCuffSetLoose,SourceCharacter puts a longer chain on the DestinationCharacter neck cuff.
+ItemAddonCeilingNeckCuffSetStrict,SourceCharacter shortens the DestinationCharacter chain's neck cuff.
+ItemNeckRestraintsMCuffCollarSelectBase,Metal cuff collar attachments main menu:
+ItemNeckRestraintsMCuffCollarModuleHandcuffs,Handcuffs
+ItemNeckRestraintsMCuffCollarSelectHandcuffs,Handcuffs option:
+ItemNeckRestraintsMCuffCollarOptionh0,No Handcuffs
+ItemNeckRestraintsMCuffCollarOptionh1,Attach handcuffs
+ItemNeckRestraintsMCuffCollarModuleLeash,Leash
+ItemNeckRestraintsMCuffCollarSelectLeash,Leash option:
+ItemNeckRestraintsMCuffCollarOptionl0,No leash
+ItemNeckRestraintsMCuffCollarOptionl1,Attach Leash
+ItemNeckRestraintsMCuffCollarSeth0,SourceCharacter removes a wrist handcuffs and linked chain from the DestinationCharacter neck cuff device.
+ItemNeckRestraintsMCuffCollarSeth1,SourceCharacter installs a chain link to the DestinationCharacter neck and lock TargetPronounPossessive wrists with handcuffs.
+ItemNeckRestraintsMCuffCollarSetl0,SourceCharacter removes leash from the DestinationCharacter neck cuff device.
+ItemNeckRestraintsMCuffCollarSetl1,SourceCharacter attaches a chain leash to the DestinationCharacter neck cuff device.
+ItemHoodHalloIIISelectBase,Glow in the dark: Clover Masks!
+ItemHoodHalloIIIModuleMask,Mask type
+ItemHoodHalloIIISelectMask,Choose your favorite mask to watch TV:
+ItemHoodHalloIIIOptionm0,Pumpkin
+ItemHoodHalloIIIOptionm1,Skull
+ItemHoodHalloIIIOptionm2,Witch
+ItemHoodHalloIIIModuleHood,Accessory hood
+ItemHoodHalloIIISelectHood,Hood add-on options:
+ItemHoodHalloIIIOptionh0,No hood
+ItemHoodHalloIIIOptionh1,Normal hood
+ItemHoodHalloIIIOptionh2,Sealed hood
+ItemHoodHalloIIISetm0,SourceCharacter chooses the pumpkin mask for DestinationCharacter.
+ItemHoodHalloIIISetm1,SourceCharacter chooses the skull mask for DestinationCharacter.
+ItemHoodHalloIIISetm2,SourceCharacter chooses the witch mask for DestinationCharacter.
+ItemHoodHalloIIISeth0,SourceCharacter removes the hood from DestinationCharacter head.
+ItemHoodHalloIIISeth1,SourceCharacter adds a normal hood on the DestinationCharacter head.
+ItemHoodHalloIIISeth2,SourceCharacter adds a sealed hood on the DestinationCharacter head: There will be no more TV for TargetPronounPossessive.
+ItemTorsoBarrelCorsetSelectBase,Choose your Barrel Corset preferences:
+ItemTorsoBarrelCorsetModulePriority,Position
+ItemTorsoBarrelCorsetSelectPriority,About corset positioning:
+ItemTorsoBarrelCorsetOptionz0,Under clothes
+ItemTorsoBarrelCorsetOptionz1,Corset full exposed
+ItemTorsoBarrelCorsetModuleTightness,Restriction
+ItemTorsoBarrelCorsetSelectTightness,Restraint options:
+ItemTorsoBarrelCorsetOptions0,Default-Slow effect
+ItemTorsoBarrelCorsetOptions1,Tight thighs-Freeze
+ItemTorsoBarrelCorsetModuleNeckCollar,Neck collar addon
+ItemTorsoBarrelCorsetSelectNeckCollar,Neck collar options:
+ItemTorsoBarrelCorsetOptiony0,None
+ItemTorsoBarrelCorsetOptiony1,Just neck collar
+ItemTorsoBarrelCorsetOptiony2,Neck collar plus straps
+ItemTorsoBarrelCorsetModuleBellyBelt,Belly Belt
+ItemTorsoBarrelCorsetSelectBellyBelt,Belly belt add options:
+ItemTorsoBarrelCorsetOptionw0,None
+ItemTorsoBarrelCorsetOptionw1,Equipped
+ItemTorsoBarrelCorsetModuleLegBelts,Leg Belts
+ItemTorsoBarrelCorsetSelectLegBelts,Leg belts add options:
+ItemTorsoBarrelCorsetOptionx0,None
+ItemTorsoBarrelCorsetOptionx1,Equipped
+ItemTorsoBarrelCorsetSetz0,SourceCharacter puts the Barrel corset under the DestinationCharacter clothes.
+ItemTorsoBarrelCorsetSetz1,SourceCharacter exposes the Barrel corset over the DestinationCharacter body.
+ItemTorsoBarrelCorsetSets0,SourceCharacter loosens the Barrel corset from the DestinationCharacter body.
+ItemTorsoBarrelCorsetSets1,SourceCharacter thighens the Barrel corset on the DestinationCharacter body.
+ItemTorsoBarrelCorsetSety0,SourceCharacter removes any neck corset addon from the DestinationCharacter neck.
+ItemTorsoBarrelCorsetSety1,SourceCharacter adds a Barrel corset collar on the DestinationCharacter neck.
+ItemTorsoBarrelCorsetSety2,SourceCharacter adds a Barrel corset collar and secure straps on the DestinationCharacter body.
+ItemTorsoBarrelCorsetSetw0,SourceCharacter removes a belt from the DestinationCharacter belly.
+ItemTorsoBarrelCorsetSetw1,SourceCharacter equips a belt on the DestinationCharacter belly.
+ItemTorsoBarrelCorsetSetx0,SourceCharacter removes a pair of belts from the DestinationCharacter thigh.
+ItemTorsoBarrelCorsetSetx1,SourceCharacter equips a pair of belts on the DestinationCharacter thigh.
+ItemTorso2BarrelCorsetSelectBase,Choose your Barrel Corset preferences:
+ItemTorso2BarrelCorsetModulePriority,Position
+ItemTorso2BarrelCorsetSelectPriority,About corset positioning:
+ItemTorso2BarrelCorsetOptionz0,Under clothes
+ItemTorso2BarrelCorsetOptionz1,Corset full exposed
+ItemTorso2BarrelCorsetModuleTightness,Restriction
+ItemTorso2BarrelCorsetSelectTightness,Restraint options:
+ItemTorso2BarrelCorsetOptions0,Default-Slow effect
+ItemTorso2BarrelCorsetOptions1,Tight thighs-Freeze
+ItemTorso2BarrelCorsetModuleNeckCollar,Neck collar addon
+ItemTorso2BarrelCorsetSelectNeckCollar,Neck collar options:
+ItemTorso2BarrelCorsetOptiony0,None
+ItemTorso2BarrelCorsetOptiony1,Just neck collar
+ItemTorso2BarrelCorsetOptiony2,Neck collar plus straps
+ItemTorso2BarrelCorsetModuleBellyBelt,Belly Belt
+ItemTorso2BarrelCorsetSelectBellyBelt,Belly belt add options:
+ItemTorso2BarrelCorsetOptionw0,None
+ItemTorso2BarrelCorsetOptionw1,Equipped
+ItemTorso2BarrelCorsetModuleLegBelts,Leg Belts
+ItemTorso2BarrelCorsetSelectLegBelts,Leg belts add options:
+ItemTorso2BarrelCorsetOptionx0,None
+ItemTorso2BarrelCorsetOptionx1,Equipped
+ItemTorso2BarrelCorsetSetz0,SourceCharacter puts the Barrel corset under the DestinationCharacter clothes.
+ItemTorso2BarrelCorsetSetz1,SourceCharacter exposes the Barrel corset over the DestinationCharacter body.
+ItemTorso2BarrelCorsetSets0,SourceCharacter loosens the Barrel corset from the DestinationCharacter body.
+ItemTorso2BarrelCorsetSets1,SourceCharacter thighens the Barrel corset on the DestinationCharacter body.
+ItemTorso2BarrelCorsetSety0,SourceCharacter removes any neck corset addon from the DestinationCharacter neck.
+ItemTorso2BarrelCorsetSety1,SourceCharacter adds a Barrel corset collar on the DestinationCharacter neck.
+ItemTorso2BarrelCorsetSety2,SourceCharacter adds a Barrel corset collar and secure straps on the DestinationCharacter body.
+ItemTorso2BarrelCorsetSetw0,SourceCharacter removes a belt from the DestinationCharacter belly.
+ItemTorso2BarrelCorsetSetw1,SourceCharacter equips a belt on the DestinationCharacter belly.
+ItemTorso2BarrelCorsetSetx0,SourceCharacter removes a pair of belts from the DestinationCharacter thigh.
+ItemTorso2BarrelCorsetSetx1,SourceCharacter equips a pair of belts on the DestinationCharacter thigh.
+ItemLegsBarrelCorsetSelectBase,Choose your Barrel Corset preferences:
+ItemLegsBarrelCorsetModulePriority,Position
+ItemLegsBarrelCorsetSelectPriority,About corset positioning:
+ItemLegsBarrelCorsetOptionz0,Under clothes
+ItemLegsBarrelCorsetOptionz1,Corset full exposed
+ItemLegsBarrelCorsetModuleTightness,Restriction
+ItemLegsBarrelCorsetSelectTightness,Restraint options:
+ItemLegsBarrelCorsetOptions0,Default-Slow effect
+ItemLegsBarrelCorsetOptions1,Tight thighs-Freeze
+ItemLegsBarrelCorsetModuleNeckCollar,Neck collar addon
+ItemLegsBarrelCorsetSelectNeckCollar,Neck collar options:
+ItemLegsBarrelCorsetOptiony0,None
+ItemLegsBarrelCorsetOptiony1,Just neck collar
+ItemLegsBarrelCorsetOptiony2,Neck collar plus straps
+ItemLegsBarrelCorsetModuleBellyBelt,Belly Belt
+ItemLegsBarrelCorsetSelectBellyBelt,Belly belt add options:
+ItemLegsBarrelCorsetOptionw0,None
+ItemLegsBarrelCorsetOptionw1,Equipped
+ItemLegsBarrelCorsetModuleLegBelts,Leg Belts
+ItemLegsBarrelCorsetSelectLegBelts,Leg belts add options:
+ItemLegsBarrelCorsetOptionx0,None
+ItemLegsBarrelCorsetOptionx1,Equipped
+ItemLegsBarrelCorsetSetz0,SourceCharacter puts the Barrel corset under the DestinationCharacter clothes.
+ItemLegsBarrelCorsetSetz1,SourceCharacter exposes the Barrel corset over the DestinationCharacter body.
+ItemLegsBarrelCorsetSets0,SourceCharacter loosens the Barrel corset from the DestinationCharacter body.
+ItemLegsBarrelCorsetSets1,SourceCharacter thighens the Barrel corset on the DestinationCharacter body.
+ItemLegsBarrelCorsetSety0,SourceCharacter removes any neck corset addon from the DestinationCharacter neck.
+ItemLegsBarrelCorsetSety1,SourceCharacter adds a Barrel corset collar on the DestinationCharacter neck.
+ItemLegsBarrelCorsetSety2,SourceCharacter adds a Barrel corset collar and secure straps on the DestinationCharacter body.
+ItemLegsBarrelCorsetSetw0,SourceCharacter removes a belt from the DestinationCharacter belly.
+ItemLegsBarrelCorsetSetw1,SourceCharacter equips a belt on the DestinationCharacter belly.
+ItemLegsBarrelCorsetSetx0,SourceCharacter removes a pair of belts from the DestinationCharacter thigh.
+ItemLegsBarrelCorsetSetx1,SourceCharacter equips a pair of belts on the DestinationCharacter thigh.

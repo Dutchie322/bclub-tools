@@ -1,8 +1,8 @@
-const fs = require('fs');
-const request = require('https').request;
-const EOL = require('os').EOL;
-const basename = require('path').basename;
-const argv = require('process').argv;
+import { writeFile } from 'fs';
+import { request } from 'https';
+import { EOL } from 'os';
+import { basename } from 'path';
+import { argv } from 'process';
 
 const args = argv.slice(2);
 
@@ -35,7 +35,7 @@ function downloadFile(file, destination) {
       data += chunk;
     });
     incomingMessage.on('end', () => {
-      fs.writeFile(destination, data.toString().replace(/\r?\n/g, EOL), errorHandler);
+      writeFile(destination, data.toString().replace(/\r?\n/g, EOL), errorHandler);
       console.log(`Done ${destination}.`);
     });
   });

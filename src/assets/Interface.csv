@@ -52,7 +52,10 @@ CantChangeWhileLocked,Cannot change while locked
 Challenge,Challenge:
 ChatRoomHelp,Type /help for a list of commands
 ChatRoomLeashNotFriend,You are not on that member's friendlist; ask TargetPronounObject to friend you before leashing TargetPronounObject.
-ChatRoomSpaceAsylum,<i>Asylum</i>
+ChatRoomSpaceX,Mixed
+ChatRoomSpaceM,Male-only
+ChatRoomSpaceF,Female-only
+ChatRoomSpaceAsylum,Asylum
 ChooseStruggleMethod,Choose struggling method...
 ChatRoomStruggleButton,Struggle in chat room
 ChatRoomStruggleStart,SourceCharacter struggles to remove PronounPossessive PrevAsset
@@ -180,6 +183,8 @@ NotificationTitleLarp,LARP - Your turn
 NotificationTitleTest,Test Notification
 OpacityLabel,Change Opacity
 OptionNeedsToBeBought,Option needs to be bought
+OwnerBlockChangePose,Blocked by owner rule
+OwnerProposeSub,<b>You've asked TargetCharacterName to become your submissive. Don't forget to friend them if they accept!</b>
 Page,Page
 PandoraActivityBondage,A Pandora guard puts TargetCharacterName in new restraints.
 PandoraActivitySpank,A Pandora guard spanks TargetCharacterName butt many times.
@@ -299,11 +304,12 @@ PrerequisiteUnZipSuitForItem,Unzip the suit first.
 PrettyArrayJoin,", "
 PrettyArrayJoinFinal,", and "
 PrevExpressions,View previous expressions
-PreviewIconAllowedLimited,Allowed Limited Item
+PreviewIconAllowedLimited,Allowed limited item
 PreviewIconBlindHeavy,Heavily blinds
 PreviewIconBlindLight,Lightly blinds
 PreviewIconBlindNormal,Blinds
 PreviewIconBlock,Restrains hands
+PreviewIconBlocked,Blocked item
 PreviewIconBuyGroup,Buygroup member
 PreviewIconDeafHeavy,Heavily deafens
 PreviewIconDeafLight,Lightly deafens
@@ -359,7 +365,7 @@ RequireSelfBondage6,Requires self-bondage 6.
 RequireSelfBondage7,Requires self-bondage 7.
 RequireSelfBondage8,Requires self-bondage 8.
 RequireSelfBondage9,Requires self-bondage 9.
-RulesMenu,Active Rules
+RulesMenu,Active owner/lover rules
 RulesMenuBlockChange,Cannot change:
 RulesMenuBlockFamilyKey,Blocked: Family keys
 RulesMenuBlockKey,Blocked: Normal keys
