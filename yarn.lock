@@ -7400,10 +7400,10 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-ng-mocks@^14.13.1:
-  version "14.13.1"
-  resolved "https://registry.yarnpkg.com/ng-mocks/-/ng-mocks-14.13.1.tgz#9fef8cc902a0d9d3250550d83514f9c65d4cd366"
-  integrity sha512-eyfnjXeC108SqVD09i/cBwCpKkK0JjBoAg8jp7oQS2HS081K3WJTttFpgLGeLDYKmZsZ6nYpI+HHNQ3OksaJ7A==
+ng-mocks@^14.13.4:
+  version "14.13.4"
+  resolved "https://registry.yarnpkg.com/ng-mocks/-/ng-mocks-14.13.4.tgz#bb53f7b75e0937fcfc8a2177a234a0937143f326"
+  integrity sha512-OFpzcx9vzeMqpVaBaukH8gvHRhor8iAkc8pOWakSPwxD3DuoHyDrjb/odgjI3Jq+Iaerqb3js1I4Sluu+0rLSQ==
 
 nice-try@^1.0.4:
   version "1.0.5"
