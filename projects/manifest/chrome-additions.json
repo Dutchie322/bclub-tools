@@ -24,6 +24,7 @@
   "host_permissions": [
     "*://*.bondageprojects.com/*",
     "*://*.bondageprojects.elementfx.com/*",
-    "*://*.bondage-europe.com/*"
+    "*://*.bondage-europe.com/*",
+    "*://*.bondage-asia.com/*"
   ]
 }

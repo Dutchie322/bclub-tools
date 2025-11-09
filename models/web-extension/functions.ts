@@ -2,7 +2,8 @@ export function executeForAllGameTabs(action: (tab: chrome.tabs.Tab) => void) {
   [
     '*://*.bondageprojects.com/*',
     '*://*.bondageprojects.elementfx.com/*',
-    '*://*.bondage-europe.com/*'
+    '*://*.bondage-europe.com/*',
+    '*://*.bondage-asia.com/*'
   ].forEach(url => {
     chrome.tabs.query({
       url

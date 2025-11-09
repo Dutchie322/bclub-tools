@@ -19,7 +19,8 @@
     "unlimitedStorage",
     "*://*.bondageprojects.com/*",
     "*://*.bondageprojects.elementfx.com/*",
-    "*://*.bondage-europe.com/*"
+    "*://*.bondage-europe.com/*",
+    "*://*.bondage-asia.com/*"
   ],
   "browser_specific_settings": {
     "gecko": {
