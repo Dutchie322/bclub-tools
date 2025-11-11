@@ -10,7 +10,8 @@
       "matches": [
         "*://*.bondageprojects.com/*",
         "*://*.bondageprojects.elementfx.com/*",
-        "*://*.bondage-europe.com/*"
+        "*://*.bondage-europe.com/*",
+        "*://*.bondage-asia.com/*"
       ],
       "run_at": "document_idle",
       "js": ["content-script/main.js"]
@@ -26,7 +27,8 @@
       "matches": [
         "*://*.bondageprojects.com/*",
         "*://*.bondageprojects.elementfx.com/*",
-        "*://*.bondage-europe.com/*"
+        "*://*.bondage-europe.com/*",
+        "*://*.bondage-asia.com/*"
       ],
       "resources": [
         "content-script/hooks.js"
