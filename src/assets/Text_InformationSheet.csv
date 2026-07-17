@@ -1,111 +1,26 @@
 Name,Name:
 Nickname,Nickname:
 Title,Title:
-TitleNone,None
-TitleMistress,Mistress
-TitleMaster,Master
-TitleClubSlave,Club Slave
-TitleHeadMaid,Head Maid
-TitleMaid,Maid
-TitleBondageMaid,Bondage Maid
-TitleMasterKidnapper,Master Kidnapper
-TitleKidnapper,Kidnapper
-TitlePatient,Patient
-TitlePermanentPatient,Permanent Patient
-TitleEscapedPatient,Escaped Patient
-TitleNurse,Nurse
-TitleDoctor,Doctor
-TitleLadyLuck,Lady Luck
-TitleLordFortune,Lord Fortune
-TitlePatron,Patron
-TitleCollegeStudent,College Student
-TitleNawashi,Nawashi
-TitleHoudini,Houdini
-TitleAnimeGirl,Superheroine
-TitleAnimeBoy,Superhero
-TitlePonyFoal,Foal
-TitlePonyFarm,Farm Horse
-TitlePonyCold,Cold Blood Horse
-TitlePonyWarm,Warm Blood Horse
-TitlePonyHot,Hot Blood Horse
-TitlePonyWild,Wild Mustang
-TitlePonyUnicorn,Shining Unicorn
-TitlePonyPegasus,Flying Pegasus
-TitlePonyAlicorn,Majestic Alicorn
-TitleInfilrationMole,Mole
-TitleInfilrationInfiltrator,Infiltrator
-TitleInfilrationAgent,Agent
-TitleInfilrationOperative,Operative
-TitleInfilrationSuperspy,Superspy
-TitleMagicSchoolWizard,Wizard
-TitleMagicSchoolMagus,Magus
-TitleMagicSchoolMagician,Magician
-TitleMagicSchoolSorcerer,Sorcerer
-TitleMagicSchoolSage,Sage
-TitleMagicSchoolOracle,Oracle
-TitleMagicSchoolWitch,Witch
-TitleMagicSchoolWarlock,Warlock
-TitleLittleOne,Little One
-TitleBaby,Baby
-TitleDL,Diaper Lover
-TitleBondageBaby,Bondage Baby
-TitleDuchess,Duchess
-TitleDuke,Duke
-TitleSwitch,Switch
-TitlePrincess,Princess
-TitlePrince,Prince
-TitleMissy,Missy
-TitleSissy,Sissy
-TitleTomboy,Tomboy
-TitleFemboy,Femboy
-TitlePet,Pet
-TitleBrat,Brat
-TitleKitten,Kitten
-TitlePuppy,Puppy
-TitleFoxy,Foxy
-TitleBunny,Bunny
-TitleDoll,Doll
-TitleDemon,Demon
-TitleAngel,Angel
-TitleAlien,Alien
-TitleSuccubus,Succubus
-TitleIncubus,Incubus
-TitleGoodGirl,Good Girl
-TitleGoodSlaveGirl,Good Slave Girl
-TitleGoodBoy,Good Boy
-TitleGoodSlaveBoy,Good Slave Boy
-TitleGoodSlave,Good Slave
-TitleDrone,Drone
-TitleMistree,Mistree
-TitleGoodOne,Good One
-TitleLiege,Liege
-TitleConcubus,Concubus
-TitleMajesty,Majesty
-TitleCaptain,Captain
-TitleAdmiral,Admiral
-TitleDominatrix,Dominatrix
-TitleMaiestas,Wizard
-TitleVincula,Magician
-TitleAmplector,Sage
-TitleCorporis,Witch
 Pronouns,Pronouns:
 MemberNumber,Member Number:
 NoMemberNumber,-
 Relationships,- Relationships -
 Lover,Lover:
 Owner,Owner:
-LoverNone,None
-OwnerNone,None
+None,None
+Unowned,Unowned
 OwnerGGTS,GGTS
 Money,Money:
 MemberFor,Member for
+JoinDate,Join Date
 Birthday,Bondage Club Birthday! 
 FriendsFor,Friends for
-TrialFor,On trial for
-CollaredFor,Collared for
-DatingFor,Dating for
-EngagedFor,Engaged for
-MarriedFor,Married for
+For,for
+TrialBy,On trial by
+CollaredBy,Collared by
+DatingWith,Dating with
+EngagedWith,Engaged with
+MarriedWith,Married with
 Days,day(s)
 Unknown,Unknown
 Reputation,- Reputation -
@@ -164,10 +79,10 @@ RelationshipPoor,(Poor)
 RelationshipBad,(Bad)
 RelationshipHorrible,(Horrible)
 RelationshipAtrocious,(Atrocious)
-ItemPermission,Permission:
-PermissionLevel0,"Everyone, no exceptions"
-PermissionLevel1,"Everyone, except blacklist"
-PermissionLevel2,"Owner, Lovers, whitelist & Dominants"
-PermissionLevel3,"Owner, Lovers and whitelist only"
-PermissionLevel4,Owner and Lovers only
-PermissionLevel5,Owner only
+AllowedInteractions,Allowed interactions:
+AllowedInteraction0,"Everyone, no exceptions"
+AllowedInteraction1,"Everyone, except blacklist"
+AllowedInteraction2,"Owner, Lovers, whitelist & Dominants"
+AllowedInteraction3,"Owner, Lovers and whitelist only"
+AllowedInteraction4,Owner and Lovers only
+AllowedInteraction5,Owner only

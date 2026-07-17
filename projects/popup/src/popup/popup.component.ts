@@ -18,7 +18,8 @@ import {
   IReputation,
   IMember,
   retrieveGlobal,
-  storeGlobal
+  storeGlobal,
+  findPronouns
 } from 'models';
 import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { IPlayerCharacter } from 'src/app/shared/models';
@@ -79,7 +80,11 @@ export class PopupComponent implements AfterViewInit {
       retrieve(tabId, 'player').then(player => this.player = player);
       retrieve(tabId, 'onlineFriends').then(friends => this.onlineFriends.data = friends || []);
       retrieve(tabId, 'chatRoomCharacter').then(characters => {
-        this.characters.data = characters;
+        this.characters.data = characters.map(character => {
+          const value = character.Appearance.find(a => a.Group === 'Pronouns').Name;
+          (character as any).pronouns$ = findPronouns(value);
+          return character;
+        });
         if (this.characters.data.length == 0) {
           this.selectedTabIndex = 1;
         }
@@ -92,7 +97,11 @@ export class PopupComponent implements AfterViewInit {
 
         this.ngZone.run(() => {
           if (changes.chatRoomCharacter) {
-            this.characters.data = changes.chatRoomCharacter.newValue;
+            this.characters.data = changes.chatRoomCharacter.newValue.map(character => {
+              const value = character.Appearance.find(a => a.Group === 'Pronouns').Name;
+              (character as any).pronouns$ = findPronouns(value);
+              return character;
+            });
             if (this.characters.data.length == 0) {
               this.selectedTabIndex = 1;
             }
@@ -187,18 +196,6 @@ export class PopupComponent implements AfterViewInit {
 
   public characterName(character: IChatRoomCharacter) {
     return character.Nickname ? character.Nickname : character.Name;
-  }
-
-  public characterPronouns(character: IChatRoomCharacter) {
-    const value = character.Appearance.find(a => a.Group === 'Pronouns').Name;
-    switch (value) {
-      case 'SheHer':
-        return 'She/Her';
-      case 'HeHim':
-        return 'He/Him';
-      default:
-        return value;
-    }
   }
 
   public dominantReputationToText(reputation: IReputation[]) {

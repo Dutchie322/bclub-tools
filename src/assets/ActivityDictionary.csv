@@ -9,6 +9,7 @@ ActivityBite,Bite
 ActivityWhisper,Sexy Whisper
 ActivityTickle,Tickle
 ActivityCaress,Caress
+ActivityClean,Clean
 ActivityPet,Pet
 ActivityCuddle,Cuddle
 ActivityRub,Body Rub
@@ -35,6 +36,8 @@ ActivityReverseSuckItem,Reverse Suck
 ActivityHandGag,Hand Gag
 ActivityRestHead,Rest Head
 ActivitySpankItem,Spank
+ActivitySqueezeItem,Squeeze
+ActivityBrushItem,Brush
 ActivityTickleItem,Tickle
 ActivityRubItem,Rub
 ActivityRollItem,Roll
@@ -63,6 +66,8 @@ ActivityEatItem,Eat
 ActivityScratch,Scratch
 ActivityThrowItem,Throw Item
 ActivityCollarGrab,Grab Collar
+ActivityDeepThroat,Deep Throat
+ActivitySuckPenetrateItem,Suck
 OrgasmFailResist0,"SourceCharacter is tormented by the vibrations, struggling to keep PronounPossessive cool."
 OrgasmFailResist1,"SourceCharacter struggles against the intense vibrations, hardly able to control PronounPossessiveself."
 OrgasmFailResist2,SourceCharacter resists the stimulation until it finally cuts off abruptly.
@@ -237,9 +242,11 @@ Label-ChatOther-ItemHands-PoliteKiss,Polite Kiss on Hand
 Label-ChatOther-ItemHands-Scratch,Scratch
 Label-ChatOther-ItemHands-Spank,Spank Hand
 Label-ChatOther-ItemHands-SpankItem,Spank Hands
+Label-ChatOther-ItemHands-SqueezeItem,Squeeze
 Label-ChatOther-ItemHands-Suck,Suck Fingers
 Label-ChatOther-ItemHands-TakeCare,Polish Nails
 Label-ChatOther-ItemHands-BrothersHandshake,Brothers Handshake
+Label-ChatOther-ItemHead-BrushItem,Brush Hair
 Label-ChatOther-ItemHead-Bite,Bite Hair
 Label-ChatOther-ItemHead-Caress,Caress Face
 Label-ChatOther-ItemHead-GaggedKiss,Gag Kiss Forehead
@@ -277,7 +284,8 @@ Label-ChatOther-ItemLegs-SpankItem,Spank Legs
 Label-ChatOther-ItemLegs-Tickle,Tickle Thighs
 Label-ChatOther-ItemLegs-TickleItem,Tickle Thigh
 Label-ChatOther-ItemMouth-Bite,Bite Lips
-Label-ChatOther-ItemMouth-Caress,Clean Mouth
+Label-ChatOther-ItemMouth-Caress,Caress Cheek
+Label-ChatOther-ItemMouth-Clean,Clean Mouth
 Label-ChatOther-ItemMouth-EatItem,Eat
 Label-ChatOther-ItemMouth-FrenchKiss,French Kiss
 Label-ChatOther-ItemMouth-GaggedKiss,Gag Kiss on Cheek
@@ -285,6 +293,7 @@ Label-ChatOther-ItemMouth-GagKiss,Kiss on Gag
 Label-ChatOther-ItemMouth-HandGag,Clamp Hand over Mouth
 Label-ChatOther-ItemMouth-Kiss,Kiss Lips
 Label-ChatOther-ItemMouth-Lick,Lick Lips
+Label-ChatOther-ItemMouth-MasturbateHand,Finger Mouth
 Label-ChatOther-ItemMouth-Nibble,Nibble Lips
 Label-ChatOther-ItemMouth-PenetrateFast,Fast Penetration
 Label-ChatOther-ItemMouth-PenetrateSlow,Slow Penetration
@@ -388,6 +397,8 @@ Label-ChatOther-ItemPenis-Slap,Slap Penis
 Label-ChatOther-ItemPenis-SpankItem,Spank Penis
 Label-ChatOther-ItemPenis-ReverseSuckItem,Suck On
 Label-ChatOther-ItemPenis-TickleItem,Tickle Penis
+Label-ChatOther-ItemPenis-SuckPenetrateItem,Suck On
+Label-ChatOther-ItemPenis-DeepThroat,Deep Throat
 Label-ChatOther-ItemTorso-Bite,Bite Back
 Label-ChatOther-ItemTorso-Caress,Caress Back
 Label-ChatOther-ItemTorso-GaggedKiss,Gag Kiss Back
@@ -410,6 +421,7 @@ Label-ChatOther-ItemTorso-TickleItem,Tickle Back
 Label-ChatOther-ItemTorso-ThrowItem,Throw on Back
 Label-ChatOther-ItemVulva-ReversePenetrateAss,Take in Ass
 Label-ChatOther-ItemVulva-Caress,Caress Pussy
+Label-ChatOther-ItemVulva-DeepThroat,Deepthroat
 Label-ChatOther-ItemVulva-ReversePenetratePussy,Take in Pussy
 Label-ChatOther-ItemVulva-GaggedKiss,Push Gag in Pussy
 Label-ChatOther-ItemVulva-Kick,Kick Pussy
@@ -428,6 +440,7 @@ Label-ChatOther-ItemVulva-Scratch,Scratch
 Label-ChatOther-ItemVulva-ShockItem,Shock Vulva
 Label-ChatOther-ItemVulva-Slap,Slap Pussy Lips
 Label-ChatOther-ItemVulva-SpankItem,Spank Pussy
+Label-ChatOther-ItemVulva-SuckPenetrateItem,Suck On
 Label-ChatOther-ItemVulva-ReverseSuckItem,Suck On
 Label-ChatOther-ItemVulva-TickleItem,Tickle Vulva
 Label-ChatOther-ItemVulvaPiercings-Caress,Caress Clitoris
@@ -559,9 +572,11 @@ Label-ChatSelf-ItemHands-PoliteKiss,Small Kiss on Hand
 Label-ChatSelf-ItemHands-Scratch,Scratch
 Label-ChatSelf-ItemHands-Spank,Spank Hand with the Other
 Label-ChatSelf-ItemHands-SpankItem,Spank Hands
+Label-ChatSelf-ItemHands-SqueezeItem,Squeeze
 Label-ChatSelf-ItemHands-Suck,Suck Fingers
 Label-ChatSelf-ItemHands-TakeCare,Polish Nails
 Label-ChatSelf-ItemHands-Wiggle,Wiggle Fingers
+Label-ChatSelf-ItemHead-BrushItem,Brush Hair
 Label-ChatSelf-ItemHead-Caress,Caress Face
 Label-ChatSelf-ItemHead-Nod,Nod
 Label-ChatSelf-ItemHead-Pet,Pet Head
@@ -590,10 +605,12 @@ Label-ChatSelf-ItemLegs-Tickle,Tickle Thighs
 Label-ChatSelf-ItemLegs-TickleItem,Tickle Thigh
 Label-ChatSelf-ItemLegs-Wiggle,Rub Thighs Together
 Label-ChatSelf-ItemMouth-Bite,Bite Lips
-Label-ChatSelf-ItemMouth-Caress,Clean Mouth
+Label-ChatSelf-ItemMouth-Caress,Caress Cheek
+Label-ChatSelf-ItemMouth-Clean,Clean Mouth
 Label-ChatSelf-ItemMouth-EatItem,Eat
 Label-ChatSelf-ItemMouth-HandGag,Clamp Hand over Mouth
 Label-ChatSelf-ItemMouth-Lick,Lick Lips
+Label-ChatSelf-ItemMouth-MasturbateHand,Finger Mouth
 Label-ChatSelf-ItemMouth-MoanGag,Moan
 Label-ChatSelf-ItemMouth-MoanGagAngry,Scream Furiously
 Label-ChatSelf-ItemMouth-MoanGagGiggle,Giggle
@@ -833,6 +850,7 @@ ChatOther-ItemGlans-ShockItem,SourceCharacter shocks TargetCharacter's glans wit
 ChatOther-ItemGlans-Slap,SourceCharacter slaps TargetCharacter's glans.
 ChatOther-ItemGlans-SpankItem,SourceCharacter hits TargetCharacter's glans with PronounPossessive ActivityAsset.
 ChatOther-ItemGlans-TickleItem,SourceCharacter tickles TargetCharacter's glans with PronounPossessive ActivityAsset.
+ChatOther-ItemHands-SqueezeItem,SourceCharacter squeezes TargetCharacter's ActivityAsset.
 ChatOther-ItemHands-Bite,SourceCharacter bites TargetCharacter's hand.
 ChatOther-ItemHands-Caress,SourceCharacter caresses TargetCharacter's hand.
 ChatOther-ItemHands-GaggedKiss,SourceCharacter touches PronounPossessive gag to TargetCharacter's hand.
@@ -844,8 +862,9 @@ ChatOther-ItemHands-Scratch,SourceCharacter scratches over TargetCharacter's han
 ChatOther-ItemHands-Spank,SourceCharacter spanks TargetCharacter's hand.
 ChatOther-ItemHands-Suck,SourceCharacter sucks on TargetCharacter's fingers.
 ChatOther-ItemHands-TakeCare,SourceCharacter cleans and polishes TargetCharacter's nails.
-ChatOther-ItemHands-BrothersHandshake,SourceCharacter does his secret brothers handshake with TargetCharacter.
+ChatOther-ItemHands-BrothersHandshake,SourceCharacter does PronounPossessive secret brothers handshake with TargetCharacter.
 ChatOther-ItemHead-Bite,SourceCharacter bites TargetCharacter's hair.
+ChatOther-ItemHead-BrushItem,SourceCharacter brushes TargetCharacter's hair.
 ChatOther-ItemHead-Caress,SourceCharacter caresses TargetCharacter's face.
 ChatOther-ItemHead-GaggedKiss,SourceCharacter gives a gagged kiss on TargetCharacter's forehead.
 ChatOther-ItemHead-Kiss,SourceCharacter kisses TargetCharacter on the forehead.
@@ -882,7 +901,8 @@ ChatOther-ItemLegs-SpankItem,SourceCharacter hits TargetCharacter's thigh with P
 ChatOther-ItemLegs-Tickle,SourceCharacter tickles TargetCharacter's thigh.
 ChatOther-ItemLegs-TickleItem,SourceCharacter tickles TargetCharacter's thigh with PronounPossessive ActivityAsset.
 ChatOther-ItemMouth-Bite,SourceCharacter bites TargetCharacter's lips.
-ChatOther-ItemMouth-Caress,SourceCharacter caresses and cleans TargetCharacter's mouth.
+ChatOther-ItemMouth-Caress,SourceCharacter caresses TargetCharacter's cheek.
+ChatOther-ItemMouth-Clean,SourceCharacter cleans TargetCharacter's mouth.
 ChatOther-ItemMouth-EatItem,SourceCharacter puts some ActivityAsset into TargetCharacter's mouth.
 ChatOther-ItemMouth-FrenchKiss,SourceCharacter shares a long French kiss with TargetCharacter.
 ChatOther-ItemMouth-GaggedKiss,SourceCharacter gives a gagged kiss on TargetCharacter's cheek.
@@ -890,6 +910,7 @@ ChatOther-ItemMouth-GagKiss,SourceCharacter gives TargetCharacter a kiss on Targ
 ChatOther-ItemMouth-HandGag,SourceCharacter clamps PronounPossessive hand over TargetCharacter's mouth.
 ChatOther-ItemMouth-Kiss,SourceCharacter kisses TargetCharacter's lips.
 ChatOther-ItemMouth-Lick,SourceCharacter licks TargetCharacter's lips.
+ChatOther-ItemMouth-MasturbateHand,SourceCharacter shoves PronounPossessive fingers in TargetCharacter's mouth.
 ChatOther-ItemMouth-Nibble,SourceCharacter nibbles TargetCharacter's lips.
 ChatOther-ItemMouth-PenetrateFast,SourceCharacter roughly penetrates TargetCharacter's mouth with PronounPossessive ActivityAsset.
 ChatOther-ItemMouth-PenetrateSlow,SourceCharacter slowly penetrates TargetCharacter's mouth with PronounPossessive ActivityAsset.
@@ -920,7 +941,7 @@ ChatOther-ItemNeck-ShockItem,SourceCharacter shocks TargetCharacter's neck with 
 ChatOther-ItemNeck-Step,SourceCharacter gently places PronounPossessive foot over TargetCharacter's neck.
 ChatOther-ItemNeck-Tickle,SourceCharacter tickles TargetCharacter's neck.
 ChatOther-ItemNeck-TickleItem,SourceCharacter tickles TargetCharacter's neck with PronounPossessive ActivityAsset.
-ChatOther-ItemNeck-CollarGrab,SourceCharacter grabs TargetCharacter's collar and pulls TargetPronounObject closer.
+ChatOther-ItemNeck-CollarGrab,SourceCharacter grabs TargetCharacter's collar and pulls PronounObject closer.
 ChatOther-ItemNipples-Bite,SourceCharacter bites TargetCharacter's nipple.
 ChatOther-ItemNipples-Caress,SourceCharacter caresses TargetCharacter's nipples.
 ChatOther-ItemNipples-GaggedKiss,SourceCharacter presses PronounPossessive gag to TargetCharacter's nipple.
@@ -991,6 +1012,8 @@ ChatOther-ItemPenis-Slap,SourceCharacter slaps TargetCharacter's penis.
 ChatOther-ItemPenis-SpankItem,SourceCharacter hits TargetCharacter's penis with PronounPossessive ActivityAsset.
 ChatOther-ItemPenis-ReverseSuckItem,SourceCharacter eagerly sucks TargetCharacter's ActivityAsset.
 ChatOther-ItemPenis-TickleItem,SourceCharacter tickles TargetCharacter's penis with PronounPossessive ActivityAsset.
+ChatOther-ItemPenis-SuckPenetrateItem,SourceCharacter sucks on TargetCharacter's ActivityAsset.
+ChatOther-ItemPenis-DeepThroat,SourceCharacter deep throats TargetCharacter's ActivityAsset.
 ChatOther-ItemTorso-Bite,SourceCharacter bites TargetCharacter's back.
 ChatOther-ItemTorso-Caress,SourceCharacter caresses TargetCharacter's back.
 ChatOther-ItemTorso-GaggedKiss,SourceCharacter gives a gagged kiss on TargetCharacter's back.
@@ -1013,6 +1036,7 @@ ChatOther-ItemTorso-TickleItem,SourceCharacter tickles TargetCharacter's back wi
 ChatOther-ItemTorso-ThrowItem,SourceCharacter throws ActivityAsset on TargetCharacter's back.
 ChatOther-ItemVulva-ReversePenetrateAss,SourceCharacter fucks TargetCharacter's ActivityAsset with PronounPossessive ass.
 ChatOther-ItemVulva-Caress,SourceCharacter caresses TargetCharacter's pussy with PronounPossessive fingers.
+ChatOther-ItemVulva-DeepThroat,SourceCharacter deepthroats TargetCharacter's ActivityAsset.
 ChatOther-ItemVulva-ReversePenetratePussy,SourceCharacter fucks TargetCharacter's ActivityAsset with PronounPossessive pussy.
 ChatOther-ItemVulva-GaggedKiss,SourceCharacter pushes PronounPossessive gag into TargetCharacter's vagina.
 ChatOther-ItemVulva-Kick,SourceCharacter kicks TargetCharacter on TargetPronounPossessive pussy.
@@ -1031,6 +1055,7 @@ ChatOther-ItemVulva-Scratch,SourceCharacter scratches over TargetCharacter's vul
 ChatOther-ItemVulva-ShockItem,SourceCharacter shocks TargetCharacter's vulva with PronounPossessive ActivityAsset.
 ChatOther-ItemVulva-Slap,SourceCharacter slaps TargetCharacter's pussy lips.
 ChatOther-ItemVulva-SpankItem,SourceCharacter hits TargetCharacter's pussy with PronounPossessive ActivityAsset.
+ChatOther-ItemVulva-SuckPenetrateItem,SourceCharacter sucks on TargetCharacter's ActivityAsset.
 ChatOther-ItemVulva-ReverseSuckItem,SourceCharacter eagerly sucks TargetCharacter's ActivityAsset.
 ChatOther-ItemVulva-TickleItem,SourceCharacter tickles TargetCharacter's vulva with PronounPossessive ActivityAsset.
 ChatOther-ItemVulvaPiercings-Caress,SourceCharacter caresses TargetCharacter's clitoris with PronounPossessive fingers.
@@ -1117,7 +1142,7 @@ ChatSelf-ItemButt-RollItem,SourceCharacter rolls a ActivityAsset over PronounPos
 ChatSelf-ItemButt-RubItem,SourceCharacter rubs PronounPossessive own butt with PronounPossessive ActivityAsset.
 ChatSelf-ItemButt-Scratch,SourceCharacter scratches PronounPossessive butt.
 ChatSelf-ItemButt-ShockItem,SourceCharacter shocks PronounPossessive own butt with PronounPossessive ActivityAsset.
-ChatSelf-ItemButt-Spank,SourceCharacter spanks herself on the butt.
+ChatSelf-ItemButt-Spank,SourceCharacter spanks PronounSelf on the butt.
 ChatSelf-ItemButt-SpankItem,SourceCharacter hits PronounPossessive butt with PronounPossessive ActivityAsset.
 ChatSelf-ItemButt-TickleItem,SourceCharacter tickles PronounPossessive own butt with PronounPossessive ActivityAsset.
 ChatSelf-ItemButt-Wiggle,SourceCharacter wiggles PronounPossessive butt.
@@ -1161,15 +1186,17 @@ ChatSelf-ItemHands-Nibble,SourceCharacter nibbles PronounPossessive own hand.
 ChatSelf-ItemHands-PoliteKiss,SourceCharacter gives a small kiss on PronounPossessive hand.
 ChatSelf-ItemHands-Scratch,SourceCharacter scratches PronounPossessive hand.
 ChatSelf-ItemHands-Spank,SourceCharacter spanks PronounPossessive first hand with the second one.
+ChatSelf-ItemHands-SqueezeItem,SourceCharacter squeezes PronounPossessive ActivityAsset.
 ChatSelf-ItemHands-Suck,SourceCharacter sucks on PronounPossessive fingers.
 ChatSelf-ItemHands-TakeCare,SourceCharacter cleans and polishes PronounPossessive nails.
 ChatSelf-ItemHands-Wiggle,SourceCharacter wiggles PronounPossessive fingers
+ChatSelf-ItemHead-BrushItem,SourceCharacter brushes PronounPossessive hair.
 ChatSelf-ItemHead-Caress,SourceCharacter caresses PronounPossessive face.
 ChatSelf-ItemHead-Nod,SourceCharacter nods.
-ChatSelf-ItemHead-Pet,SourceCharacter pets herself on the head.
+ChatSelf-ItemHead-Pet,SourceCharacter pets PronounSelf on the head.
 ChatSelf-ItemHead-Pull,SourceCharacter pulls on PronounPossessive own hair.
 ChatSelf-ItemHead-Scratch,SourceCharacter scratches PronounPossessive head.
-ChatSelf-ItemHead-Slap,SourceCharacter slaps herself on the face.
+ChatSelf-ItemHead-Slap,SourceCharacter slaps PronounSelf on the face.
 ChatSelf-ItemHead-TakeCare,SourceCharacter brushes PronounPossessive hair.
 ChatSelf-ItemHead-ThrowItem,SourceCharacter throws ActivityAsset on PronounPossessive own head.
 ChatSelf-ItemHead-Wiggle,SourceCharacter shakes PronounPossessive head.
@@ -1192,10 +1219,12 @@ ChatSelf-ItemLegs-Tickle,SourceCharacter tickles PronounPossessive thighs.
 ChatSelf-ItemLegs-TickleItem,SourceCharacter tickles PronounPossessive own thigh with PronounPossessive ActivityAsset.
 ChatSelf-ItemLegs-Wiggle,SourceCharacter rubs PronounPossessive thighs together.
 ChatSelf-ItemMouth-Bite,SourceCharacter bites PronounPossessive lips.
-ChatSelf-ItemMouth-Caress,SourceCharacter caresses and wipes PronounPossessive mouth clean.
+ChatSelf-ItemMouth-Caress,SourceCharacter caresses PronounPossessive own cheek.
+ChatSelf-ItemMouth-Clean,SourceCharacter wipes PronounPossessive mouth clean.
 ChatSelf-ItemMouth-EatItem,SourceCharacter eats some ActivityAsset.
 ChatSelf-ItemMouth-HandGag,SourceCharacter clamps PronounPossessive hand over PronounPossessive mouth.
 ChatSelf-ItemMouth-Lick,SourceCharacter licks PronounPossessive lips.
+ChatSelf-ItemMouth-MasturbateHand,SourceCharacter fingers PronounPossessive mouth.
 ChatSelf-ItemMouth-MoanGag,SourceCharacter moans into PronounPossessive gag.
 ChatSelf-ItemMouth-MoanGagAngry,SourceCharacter screams furiously into PronounPossessive gag.
 ChatSelf-ItemMouth-MoanGagGiggle,SourceCharacter giggles into PronounPossessive gag.
@@ -1210,7 +1239,7 @@ ChatSelf-ItemMouth-SipItem,SourceCharacter takes a sip from PronounPossessive Ac
 ChatSelf-ItemMouth-TickleItem,SourceCharacter tickles PronounPossessive own mouth with PronounPossessive ActivityAsset.
 ChatSelf-ItemMouth-ThrowItem,SourceCharacter throws ActivityAsset into PronounPossessive own mouth.
 ChatSelf-ItemNeck-Caress,SourceCharacter caresses PronounPossessive neck.
-ChatSelf-ItemNeck-Choke,SourceCharacter chokes herself.
+ChatSelf-ItemNeck-Choke,SourceCharacter chokes PronounSelf.
 ChatSelf-ItemNeck-Inject,SourceCharacter injects PronounPossessive neck.
 ChatSelf-ItemNeck-MassageHands,SourceCharacter massages PronounPossessive neck.
 ChatSelf-ItemNeck-RollItem,SourceCharacter rolls a ActivityAsset over PronounPossessive own neck.

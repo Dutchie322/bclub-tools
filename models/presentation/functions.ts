@@ -54,7 +54,7 @@ export async function renderContent(chatLog: IChatLog): Promise<string> {
         metadata.TargetCharacter = await getChatMessageCharacter(chatLog, 'TargetCharacter', entry.MemberNumber);
       }
     } else if (hasAssetReference(entry)) {
-      substitutions.push([entry.Tag, findAssetName(entry.AssetName, entry.GroupName).toLowerCase()]);
+      substitutions.push([entry.Tag, findAssetName(entry.GroupName, entry.AssetName).toLowerCase()]);
     } else if (hasFocusGroup(entry)) {
       metadata.FocusGroup = {
         Name: entry.FocusGroupName,
@@ -223,19 +223,28 @@ export function findAssetGroupDescription(group: string): string {
   return group;
 }
 
-export function findAssetName(item: string, group?: string): string {
-  let filtered = AssetNameCache.filter(asset => asset.ItemName === item);
+export function findAssetName(group: string, item: string): string {
+  let filtered = AssetNameCache;
   if (group) {
     const filteredByGroup = filtered.filter(asset => asset.GroupName === group);
     if (filteredByGroup.length > 0) {
       filtered = filteredByGroup;
     }
   }
+
+  filtered = filtered.filter(asset => asset.ItemName === item);
+
   return filtered[0] ? filtered[0].Description : item;
 }
 
 export function findInterfaceText(content: string): string {
   return InterfaceTextCache[content]?.trim() || content;
+}
+
+export async function findPronouns(pronounsCode: string): Promise<string> {
+  await loadAndCacheDictionariesForMemberInfo();
+
+  return findAssetName('Pronouns', pronounsCode);
 }
 
 export async function findTitle(titleCode: string): Promise<string> {
@@ -278,7 +287,10 @@ function loadAndCacheDictionariesForMemberInfo() {
         for (const text of data) {
           InformationSheetTextCache[text[0]] = text[1];
         }
-      })
+      }),
+      loadDictionary('Female3DCG', data => {
+        AssetNameCache.push(...data.map(mapAsset));
+      }),
     ]);
   }
 

@@ -33,6 +33,10 @@ AddTimerTime,Add
 AddTimerTimeMinutes,Add TimerTime minutes to the Timer
 AdjustTightness,Tighten / Loosen
 AlreadySet,Option already set
+AppCopyDone,Your appearance data has been copied to your clipboard.  Paste it somewhere else to save it.
+AppPasteDone,Your pasted appearance is loaded.
+AppPasteError,Your pasted appearance cannot be loaded.
+AppPasteBlocked,You cannot change your appearance.
 Beep,Beep
 BeepFrom,Beep from
 BeepFromOwner,Beep from your owner in your private room
@@ -77,10 +81,11 @@ CraftingDescription,Description: CraftDescription
 CraftingMember,Crafter: MemberName (MemberNumber)
 CraftingName,Name: CraftName
 CraftingPrivate,Private: CraftPrivate
-CraftingProperty,Property: CraftProperty
+CraftingProperty,Effects: CraftProperty
 CurrentMode,Current Mode:
 Decoding,Decoding the lock...
 Delete,Delete
+Add,Add
 DialogGroupNameItemGlans,Glans
 DialogGroupNameItemPenis,Penis
 DialogMenuActivity,Sexual activities
@@ -135,6 +140,8 @@ ExtendedItemUnlockBeforeChange,Remove locks before changing
 FacialExpression,Facial expression
 Hacking,Hacking the item...
 Hours,hours
+Days,days
+Random,Random
 InAsylum,in the Asylum
 InRoom,in room
 Intensity,Intensity:
@@ -143,10 +150,10 @@ Intensity0,Item intensity: Low
 Intensity1,Item intensity: Medium
 Intensity2,Item intensity: High
 Intensity3,Item intensity: Maximum
-LayeringAsset,Configure total priority
+LayeringAsset,Configure {asset} priority
 LayeringExit,Exit
 LayeringHide,Hide hidden layers
-LayeringLayer,Configure layer-specific priority
+LayeringLayer,Layer priority
 LayeringLock,Item configuration locked
 LayeringReset,Reset layering
 LayeringShow,Show hidden layers
@@ -235,6 +242,23 @@ PandoraGuardActivityReleaseAll,Pandora guard SourceCharacter removes some restra
 PandoraGuardActivityCageAll,Pandora guard SourceCharacter puts all inmates in cases.
 PandoraGuardActivityUncageAll,Pandora guard SourceCharacter releases all inmates from their cases.
 Picking,Picking the lock...
+ScreenLoading,"Loading, please wait"
+StableActivityStand,SourceCharacter tries to stand properly. The exercise receives: StablePerformance points. StableResult
+StableActivityTrot,SourceCharacter tries to walks in a trot. The exercise receives: StablePerformance points. StableResult
+StableActivityGallop,SourceCharacter tries to runs at a gallop. The exercise receives: StablePerformance points. StableResult
+StableActivityPassage,SourceCharacter tries to steps a passage. The exercise receives: StablePerformance points. StableResult
+StableActivityPirouette,SourceCharacter tries to dance a pirouette. The exercise receives: StablePerformance points. StableResult
+StableResult10,Excellent
+StableResult9,Very good
+StableResult8,Good
+StableResult7,Fairly good
+StableResult6,Satisfactory
+StableResult5,Marginal
+StableResult4,Insufficient
+StableResult3,Fairly Bad
+StableResult2,Bad
+StableResult1,Very bad
+StableResult0,Not executed
 PoseMenu,Pose
 PrerequisiteAddItemsToUse,Must have an arm/torso/pelvis item to use ceiling tethers.
 PrerequisiteCannotAllFours,Cannot change to the AllFours pose.
@@ -256,7 +280,6 @@ PrerequisiteCannotHogtied,Cannot change to the Hogtied pose.
 PrerequisiteCannotKneel,Cannot change to the Kneel pose.
 PrerequisiteCannotKneelingSpread,Cannot change to the KneelingSpread pose.
 PrerequisiteCannotLegsClosed,Cannot change to the LegsClosed pose.
-PrerequisiteCannotLegsOpen,Cannot change to the LegsOpen pose.
 PrerequisiteCannotOverTheHead,Cannot change to the OverTheHead pose.
 PrerequisiteCannotSelfSelect,Cannot use this option when wearing the item
 PrerequisiteCannotSpread,Cannot change to the Spread pose.
@@ -265,6 +288,7 @@ PrerequisiteCannotSuspension,Cannot change to the Suspension pose.
 PrerequisiteCannotTapedHands,Cannot change to the TapedHands pose.
 PrerequisiteCannotYoked,Cannot change to the Yoked pose.
 PrerequisiteCantCloseOnShaft,Cannot close on shaft.
+PrerequisiteCantHaveErection,Cannot have an erection.
 PrerequisiteMustBeAbleToKneel,Must be able to kneel.
 PrerequisiteMustBeArmCuffedFirst,Must be wearing a set of arm cuffs first.
 PrerequisiteMustBeFeetCuffedFirst,Must be wearing a set of ankle cuffs first.
@@ -301,6 +325,11 @@ PrerequisiteRemoveRestraintsFirst,Remove some restraints first.
 PrerequisiteRemoveShacklesFirst,Must remove shackles first.
 PrerequisiteRemoveSuspensionForItem,Remove the suspension first.
 PrerequisiteUnZipSuitForItem,Unzip the suit first.
+PrerequisiteCantBeLimp,Penis may not be limp.
+PrerequisiteOwnerBlockedRemotes,The use of remotes is forbidden by your owner.
+PrerequisiteCantAttachMittens,Item does not support mitten attachment.
+PrerequisiteInternalError,Internal error: missing character or item.
+PrerequisiteIllegalExpression,Illegal expression "{Expression}".
 PrettyArrayJoin,", "
 PrettyArrayJoinFinal,", and "
 PrevExpressions,View previous expressions
@@ -341,30 +370,25 @@ ProgressKeysController,Alternate keys A and S or X and Y on a controller
 PronounObjectHeHim,him
 PronounObjectSheHer,her
 PronounObjectTheyThem,them
+PronounObjectItIt,it
 PronounPossessiveHeHim,his
 PronounPossessiveSheHer,her
 PronounPossessiveTheyThem,their
+PronounPossessiveItIt,its
 PronounSelfHeHim,himself
 PronounSelfSheHer,herself
 PronounSelfTheyThem,themself
+PronounSelfItIt,itself
 PronounSubjectHeHim,he
 PronounSubjectSheHer,she
 PronounSubjectTheyThem,they
+PronounSubjectItIt,it
 ReceivedBeep,Received at
 RemoveItemWithTimer,Remove item when the lock timer runs out
 Removing,Removing...
 RequireBondageLevel,Need Bondage ReqLevel
 RequirePlayer,Requires the player character
-RequireSelfBondage1,Requires self-bondage 1.
-RequireSelfBondage10,Requires self-bondage 10.
-RequireSelfBondage2,Requires self-bondage 2.
-RequireSelfBondage3,Requires self-bondage 3.
-RequireSelfBondage4,Requires self-bondage 4.
-RequireSelfBondage5,Requires self-bondage 5.
-RequireSelfBondage6,Requires self-bondage 6.
-RequireSelfBondage7,Requires self-bondage 7.
-RequireSelfBondage8,Requires self-bondage 8.
-RequireSelfBondage9,Requires self-bondage 9.
+RequireSelfBondage,Requires self-bondage ReqLevel.
 RulesMenu,Active owner/lover rules
 RulesMenuBlockChange,Cannot change:
 RulesMenuBlockFamilyKey,Blocked: Family keys
@@ -389,6 +413,7 @@ SelectLock,Select a lock to use on the GroupName.
 SelectLocked,This looks like its locked by a AssetName.
 SelectLockedUnknown,This looks like its locked by something.
 SentBeep,Sent at
+ServerBeepUnknownName,Unknown ($target)
 ServerBan,TargetCharacterName was banned by SourceCharacter.
 ServerDemoteAdmin,TargetCharacterName was demoted from administration by SourceCharacter.
 ServerDisconnect,SourceCharacter disconnected.
@@ -484,15 +509,34 @@ Tightness,Tightness:
 TryLoosen,Try to loosen the item
 TimerLeft,Time left:
 TimerUnknown,Unknown time left
+TimerHidden,Timer hidden
 Unlocked,Unlocked
 Unlocking,Unlocking...
 Using0,Using none of your skill...
 Using25,Using 25% of your skill...
 Using50,Using 50% of your skill...
 Using75,Using 75% of your skill...
+Using100,Using all of your skill...
 WinkFacialExpressions,Wink/Blink
 WillRemoveItemWithTimer,The item will be removed when the lock timer runs out
 WontRemoveItemWithTimer,The item will stay when the lock timer runs out
+YourRoom,Your private room
 ZoneBlocked,This zone is out of reach from another item
 ZoneBlockedOwner,Your owner doesn't allow you to access that zone
 ZoneBlockedRange,You're too far to reach DialogCharacterObject's body and items.
+DurationFormatYear,$value$y
+DurationFormatMonth,$value$m
+DurationFormatWeek,$value$w
+DurationFormatDay,$value$d
+DurationFormatHour,$value$h
+DurationFormatMinute,$value$min
+DurationFormatSecond,$value$s
+DurationFormatYearFull,$value$ year(s)
+DurationFormatMonthFull,$value$ month(s)
+DurationFormatWeekFull,$value$ week(s)
+DurationFormatDayFull,$value$ day(s)
+DurationFormatHourFull,$value$ hour(s)
+DurationFormatMinuteFull,$value$ minute(s)
+DurationFormatSecondFull,$value$ second(s)
+CommaDelimiter,", "
+DurationFormatError,Duration error

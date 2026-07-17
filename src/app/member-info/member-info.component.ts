@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, tap, map, switchMap, mergeMap, catchError, filter } from 'rxjs/operators';
 import { Subscription, Observable, of } from 'rxjs';
-import { Appearance, IBeepMessage, IMember, IMemberAppearanceMetaData, SharedRoom, putValue, decompress, findTitle, retrieveAppearanceWithFallback, retrieveBeepMessages, retrieveSharedRooms } from 'models';
+import { Appearance, IBeepMessage, IMember, IMemberAppearanceMetaData, SharedRoom, putValue, decompress, findTitle, retrieveAppearanceWithFallback, retrieveBeepMessages, retrieveSharedRooms, findPronouns } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
 import { CommonModule, NgStyle } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
@@ -39,6 +39,7 @@ export class MemberInfoComponent implements OnDestroy {
   private formSubscription: Subscription;
   public playerCharacter: number;
   private memberNumber: number;
+  private pronounsPromise: Promise<string>;
   private titlePromise: Promise<string>;
 
   public member$: Observable<IMember | undefined>;
@@ -219,15 +220,11 @@ export class MemberInfoComponent implements OnDestroy {
   }
 
   public pronouns(member: IMember) {
-    const value = member.pronouns;
-    switch (value) {
-      case 'SheHer':
-        return 'She/Her';
-      case 'HeHim':
-        return 'He/Him';
-      default:
-        return value;
+    if (!this.pronounsPromise) {
+      this.pronounsPromise = findPronouns(member.pronouns || 'SheHer');
     }
+
+    return this.pronounsPromise;
   }
 
   public title(member: IMember) {

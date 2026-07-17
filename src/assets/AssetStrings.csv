@@ -39,7 +39,8 @@ ArmsRopeSetHogtied,SourceCharacter uses rope to hogtie TargetCharacter.
 ArmsRopeSetInvertedSuspensionAllFours,SourceCharacter uses rope on TargetCharacter to suspend and have TargetPronounObject crawling on all fours upside down.
 ArmsRopeSetInvertedSuspensionHogtied,SourceCharacter uses rope to suspend and hogtie TargetCharacter upside down.
 ArmsRopeSetKneelingHogtie,SourceCharacter uses rope to hogtie TargetCharacter on TargetPronounPossessive knees.
-ArmsRopeSetRopeCuffs,SourceCharacter uses rope to tie rope cuffs on DestinationCharacter wrists
+ArmsRopeSetRopeCuffsBack,SourceCharacter uses rope to tie rope cuffs on DestinationCharacter wrists
+ArmsRopeSetRopeCuffsFront,SourceCharacter uses rope to tie rope cuffs in front of DestinationCharacter wrists
 ArmsRopeSetSimpleHogtie,SourceCharacter uses rope to hogtie TargetCharacter.
 ArmsRopeSetSuspensionAllFours,SourceCharacter uses rope on TargetCharacter to suspend and have TargetPronounObject crawling on all fours.
 ArmsRopeSetSuspensionHogtied,SourceCharacter uses rope to suspend and hogtie TargetCharacter.
@@ -218,6 +219,35 @@ BodyMarkingsWombTattoosSelectViper,Apply
 BodyMarkingsWombTattoosSelectWaves,Apply
 BodyMarkingsWombTattoosSelectWingSmall,Apply
 BodyMarkingsWombTattoosSelectZoom,Apply
+BodyMarkingsWombTattoosSetBig,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetBloom,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetBottomSpike,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetFlash,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetFly,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetGrass,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetGrow,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetGrowHollow,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetHeartline,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetHeartSmall,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetHeartSmallOutline,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetHeartSolid,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetHeartWings,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetIn,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetLeaves,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetMidSpike,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetRibow,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetSense,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetShake,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetSideHearts,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetSwim,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetThorn,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetThornOut,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetTopSpike,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetVenom,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetViper,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetWaves,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetWingSmall,SourceCharacter changes DestinationCharacter womb tattoo.
+BodyMarkingsWombTattoosSetZoom,SourceCharacter changes DestinationCharacter womb tattoo.
 BodyMarkingsFaceScarsModule1,Forehead
 BodyMarkingsFaceScarsModule2,Left Lip
 BodyMarkingsFaceScarsModule3,Right Lip
@@ -412,10 +442,19 @@ BraceletSpikeBandsBoth,Both arms
 BraceletSpikeBandsLeft,Left arm
 BraceletSpikeBandsRight,Right arm
 BraceletSpikeBandsSelect,Select a bracelet style.
-BraceletWristbandBoth,Both arms
-BraceletWristbandLeft,Left arm
-BraceletWristbandRight,Right arm
-BraceletWristbandSelect,Select a wristband style.
+BraceletWristbandSelectBase,Wristband menu:
+BraceletWristbandModulePosition,Layer
+BraceletWristbandSelectPosition,Layer option:
+BraceletWristbandOptionp0,Under gloves
+BraceletWristbandOptionp1,Over gloves
+BraceletWristbandModuleRight,Right wrist
+BraceletWristbandSelectRight,Right wrist option:
+BraceletWristbandOptionr0,Wear it
+BraceletWristbandOptionr1,Remove it
+BraceletWristbandModuleLeft,Left wrist
+BraceletWristbandSelectLeft,Left wrist option:
+BraceletWristbandOptionl0,Wear it
+BraceletWristbandOptionl1,Remove it
 BraceletWristWatchModuleLeft,Left
 BraceletWristWatchModuleRight,Right
 BraceletWristWatchOptionl0,Circle
@@ -431,6 +470,12 @@ BraceletWristWatchSetb0,SourceCharacter changes DestinationCharacter watch.
 BraceletWristWatchSetb1,SourceCharacter changes DestinationCharacter watch.
 BraceletWristWatchSetl0,SourceCharacter changes DestinationCharacter watch.
 BraceletWristWatchSetl1,SourceCharacter changes DestinationCharacter watch.
+BraSportSwimsuitSelectBase,Change style.
+BraSportSwimsuitSelectStyle,Select a style.
+BraSportSwimsuitModuleStyle,Style
+BraSportSwimsuitOptions0,Style 1
+BraSportSwimsuitOptions1,Style 2
+BraSportSwimsuitOptions2,Style 3
 BraSwimsuit1Dull,No shine
 BraSwimsuit1Select,Select an option.
 BraSwimsuit1Shiny,Shiny
@@ -542,6 +587,20 @@ ClitSuctightensToHeavy,SourceCharacter tweaks DestinationCharacter clitoris suct
 ClitSuctightensToLight,SourceCharacter tweaks DestinationCharacter clitoris suction cup sucking in TargetPronounPossessive clitoris lightly.
 ClitSuctightensToMaximum,SourceCharacter tweaks DestinationCharacter clitoris suction cup sucking in TargetPronounPossessive clitoris entirely.
 ClitSuctightensToMedium,SourceCharacter tweaks DestinationCharacter clitoris suction cup sucking in TargetPronounPossessive clitoris firmly.
+ClothAllureSidecutDefault,Default
+ClothAllureSidecutSelect,Style
+ClothAllureSidecutTransparent,Transparent
+ClothBrocadeCloudsSnowEmbroideryQipaoNo,No
+ClothBrocadeCloudsSnowEmbroideryQipaoSelect,Select Lining Skirt
+ClothBrocadeCloudsSnowEmbroideryQipaoYes,Yes
+ClothLittleFormalShirtOptiont0,Yes
+ClothLittleFormalShirtSelectBase,Select Shirt Style
+ClothLittleFormalShirtSelectTie,Include a tie
+ClothLittleFormalShirtModuleTie,Tie
+ClothLittleFormalShirtOptiont1,No
+ClothOffTheShoulderTopSelect,Choose Style:
+ClothOffTheShoulderTopRight,Right
+ClothOffTheShoulderTopLeft,Left
 ClothAccessoryBibModulePattern,Pattern
 ClothAccessoryBibModuleTxt,Text
 ClothAccessoryBibOptionp0,None
@@ -756,11 +815,20 @@ ClothAccessoryWombTattoosSelectWaves,Apply
 ClothAccessoryWombTattoosSelectWingSmall,Apply
 ClothAccessoryWombTattoosSelectZoom,Apply
 ClothAccessoryHoodedCloakModuleHood,Hood Position
-ClothAccessoryHoodedCloakSelect,Select a hooded cloak style:
+ClothAccessoryHoodedCloakSelectBase,Select a hooded cloak style:
 ClothAccessoryHoodedCloakSelectHood,Hood
 ClothAccessoryHoodedCloakOptionh0,Down
 ClothAccessoryHoodedCloakOptionh1,Over Head
 ClothAccessoryHoodedCloakOptionh2,Over Eyes
+ClothCasualDroppedSuitSelectBase,Configure the suit
+ClothCasualDroppedSuitSelectColor,Select the color type
+ClothCasualDroppedSuitSelectSide,Wear on which side
+ClothCasualDroppedSuitModuleColor,Color
+ClothCasualDroppedSuitModuleSide,Side
+ClothCasualDroppedSuitOptionM0,Right
+ClothCasualDroppedSuitOptionM1,Left
+ClothCasualDroppedSuitOptiontyped0,Opaque
+ClothCasualDroppedSuitOptiontyped1,Matte
 ClothCheerleaderTopTextLabel,Change Text:
 ClothChineseDress2Pink,Style 3
 ClothChineseDress2Purple,Style 2
@@ -769,6 +837,16 @@ ClothChineseDress2Select,Select a dress pattern.
 ClothCorsetDressNormal,Corset plus skirt
 ClothCorsetDressNoSkirt,Only corset
 ClothCorsetDressSelect,Choose your corset dress style:
+ClothMilitaryFatigueSelectBase,Uniform Option:
+ClothMilitaryFatigueModuleType,Type
+ClothMilitaryFatigueSelectType,Select a clothing type.
+ClothMilitaryFatigueOptions0,Standard
+ClothMilitaryFatigueOptions1,Cropped
+ClothMilitaryFatigueModuleCamouflage,Camouflage
+ClothMilitaryFatigueSelectCamouflage,Select a camouflage pattern.
+ClothMilitaryFatigueOptionc0,None
+ClothMilitaryFatigueOptionc1,Basic
+ClothMilitaryFatigueOptionc2,Tigerstripe
 ClothCustomTShirtModuleShirt,Position
 ClothCustomTShirtModuleStamp,Stamp
 ClothCustomTShirtOptionh0,Default
@@ -787,14 +865,11 @@ ClothCustomTShirtOptiont17,Hogtied
 ClothCustomTShirtOptiont18,Bondage College 2
 ClothCustomTShirtOptiont19,S.Tiyana's White C-Pad
 ClothCustomTShirtOptiont2,BTG
-ClothCustomTShirtOptiont20,Gangriels
-ClothCustomTShirtOptiont21,Den of Sin
-ClothCustomTShirtOptiont22,Slave Helpline
-ClothCustomTShirtOptiont23,Demon's Bar
-ClothCustomTShirtOptiont24,Azure Corp
-ClothCustomTShirtOptiont25,Shibari Crew
-ClothCustomTShirtOptiont26,Bull's Eye Spankmeter
-ClothCustomTShirtOptiont27,Keys?!
+ClothCustomTShirtOptiont20,Azure Corp
+ClothCustomTShirtOptiont21,Shibari Crew
+ClothCustomTShirtOptiont22,Bull's Eye Spankmeter
+ClothCustomTShirtOptiont23,Keys?!
+ClothCustomTShirtOptiont24,Bondage Teacher
 ClothCustomTShirtOptiont3,Dominant
 ClothCustomTShirtOptiont4,Bonk!
 ClothCustomTShirtOptiont5,Old School XGame
@@ -802,6 +877,7 @@ ClothCustomTShirtOptiont6,Staff
 ClothCustomTShirtOptiont7,Elite
 ClothCustomTShirtOptiont8,Raiders
 ClothCustomTShirtOptiont9,White Moon
+ClothCustomTShirtOptiont25,Bunny Cropout
 ClothCustomTShirtSelectBase,T-shirt options:
 ClothCustomTShirtSelectShirt,Choose your T-shirt's positioning:
 ClothCustomTShirtSelectStamp,About stamp...
@@ -836,9 +912,9 @@ ClothHoodieModulePouch,Pouch
 ClothHoodieOptionh0,Hood Down
 ClothHoodieOptionh1,Hood Up - Regular
 ClothHoodieOptionh2,Hood Up - Pet Ears
-ClothHoodieOptionl0,Cropped
-ClothHoodieOptionl1,Bolero
-ClothHoodieOptionl2,Full Length
+ClothHoodieOptionl0,Full Length
+ClothHoodieOptionl1,Cropped
+ClothHoodieOptionl2,Bolero
 ClothHoodieOptionp0,Hands Out
 ClothHoodieOptionp1,Hands In
 ClothHoodieSelectBase,Select Hoodie Options
@@ -878,6 +954,15 @@ ClothLowerBusinessTrousersSelect,Customize the state of the pants
 ClothLowerBusinessTrousersSetZipped,SourceCharacter puts zipped up pants on DestinationCharacter.
 ClothLowerBusinessTrousersSetUnzipped,SourceCharacter unzips DestinationCharacter pants.
 ClothLowerBusinessTrousersSetDown,SourceCharacter opens DestinationCharacter pants and pulls them down.
+ClothLowerElegantSkirtSkirt,Skirt
+ClothLowerElegantSkirtSkirtv2,Skirt v2
+ClothLowerElegantSkirtDesign,Design
+ClothLowerElegantSkirtDesignv2,Design v2
+ClothLowerElegantSkirtDefault,Default
+ClothLowerElegantSkirtVersion2,Version 2
+ClothLowerElegantSkirtSelect,Customize the state of the kneeling skirt
+ClothLowerElegantSkirtSetDefault,SourceCharacter kneels with skirt in default position DestinationCharacter.
+ClothLowerElegantSkirtSetVersion2,SourceCharacter kneels with skirt in tucked position DestinationCharacter.
 ClothLowerPantBootsModuleBoot,Boot
 ClothLowerPantBootsModuleStripe,Stripe
 ClothLowerPantBootsOptionb0,No Boot
@@ -891,6 +976,20 @@ ClothLowerPantBootsSetb0,SourceCharacter removes pants from DestinationCharacter
 ClothLowerPantBootsSetb1,SourceCharacter adds pants to DestinationCharacter boots.
 ClothLowerPantBootsSets0,SourceCharacter removes the stripes on DestinationCharacter boots.
 ClothLowerPantBootsSets1,SourceCharacter reveals the stripes on DestinationCharacter boots.
+ClothLowerMilitaryPantsSelectBase,Uniform Option:
+ClothLowerMilitaryPantsModuleCamouflage,Camouflage
+ClothLowerMilitaryPantsSelectCamouflage,Select a camouflage pattern.
+ClothLowerMilitaryPantsOptionc0,None
+ClothLowerMilitaryPantsOptionc1,Basic
+ClothLowerMilitaryPantsOptionc2,Tigerstripe
+ClothLowerMilitaryPantsModuleBelt,Belt
+ClothLowerMilitaryPantsSelectBelt,Choose a type of belt.
+ClothLowerMilitaryPantsOptionb0,None
+ClothLowerMilitaryPantsOptionb1,Strapped
+ClothLowerMilitaryPantsOptionb2,Overlapped
+ClothLowerDenimShortsSelect,Choose Shorts Style:
+ClothLowerDenimShortsNormal,Normal
+ClothLowerDenimShortsUnbuttoned,Unbuttoned
 ClothMeshTopModuleSleeves,Sleeves
 ClothMeshTopModuleTop,Top
 ClothMeshTopOptions0,Sleeves
@@ -914,6 +1013,18 @@ ClothMeshTopSett3,SourceCharacter switches to DestinationCharacterName AssetName
 ClothMeshTopSett4,SourceCharacter switches to DestinationCharacterName AssetName to a leotard top.
 ClothMeshTopSett5,SourceCharacter switches to DestinationCharacterName AssetName to a ripped top.
 ClothMeshTopSett6,SourceCharacter switches to DestinationCharacterName AssetName to a none top.
+ClothOuterJacketHoodieModuleHood,Hood
+ClothOuterJacketHoodieModuleSleeve,Sleeve
+ClothOuterJacketHoodieOptionh0,Hood Down
+ClothOuterJacketHoodieOptionh1,Hood Up
+ClothOuterJacketHoodieOptions0,Sleeved
+ClothOuterJacketHoodieOptions1,Sleeveless
+ClothOuterJacketHoodieSelectBase,Select Jacket Hoodie Options
+ClothOuterJacketHoodieSelectHood,Select Hood Position
+ClothOuterJacketHoodieSelectSleeve,Adjust Sleeves
+ClothOuterTransparentraincoatOpaque,Opaque
+ClothOuterTransparentraincoatSelect,Choose the raincoat appearance
+ClothOuterTransparentraincoatTransparent,Transparent
 ClothPriorityTypeNormal,Revealed
 ClothPriorityTypeTucked,Tucked in
 ClothRetroGirdleGarters,With Garters.
@@ -938,6 +1049,14 @@ ClothSlaveRagsSetc0,SourceCharacter puts some old rags over DestinationCharacter
 ClothSlaveRagsSetc1,SourceCharacter puts some old and filthy rags over DestinationCharacter body.
 ClothSlaveRagsSetc2,SourceCharacter puts some torn rags over DestinationCharacter body.
 ClothSlaveRagsSetc3,SourceCharacter puts some torn and filthy rags over DestinationCharacter body.
+ClothStarryOceanEveningGownModuleMirror,Select side
+ClothStarryOceanEveningGownOptionM0,Right side
+ClothStarryOceanEveningGownOptionM1,Left side
+ClothStarryOceanEveningGownSelectBase,Put the gown on which side
+ClothStarryOceanEveningGownSelectMirror,Put the gown on which side
+ClothTransparentraincoatOpaque,Opaque
+ClothTransparentraincoatSelect,Choose the raincoat appearance
+ClothTransparentraincoatTransparent,Transparent
 ClothTShirt2BCLogo,Club Logo
 ClothTShirt2BDSM,BD-SM
 ClothTShirt2Gag,The Moaning Groans
@@ -947,8 +1066,14 @@ ClothTShirt2Rock,Rock
 ClothTShirt2Select,Select your design
 ClothTShirt2Smile,Smiley
 ClothTShirt2Tick,Check
+ClothWhiteDressOptionhn0,Hide
+ClothWhiteDressOptionhn1,Show
+ClothWhiteDressSelectHideNipples,Nipples Visibility
+ClothWhiteDressSelectBase,Configure White Dress
+ClothWhiteDressModuleHideNipples,Nipples
 ClubCardGameStart,SourceCharacter has started the Club Card game.
 ClubCardGameEnd,Congratulations! SourceCharacter has won the Club Card game.
+ClubCardGameConcede,Congratulations! SourceCharacter has won the Club Card game after TargetCharacterName conceded.
 ClubCardNewPlayerSlot0,SourceCharacter will not play Club Card.
 ClubCardNewPlayerSlot1,SourceCharacter chose to be the first player.
 ClubCardNewPlayerSlot2,SourceCharacter chose to be the second player.
@@ -984,9 +1109,13 @@ CupholderGagSetCup,SourceCharacter places a cup on DestinationCharacter cup hold
 CupholderGagSetNoCup,SourceCharacter removes the cup from DestinationCharacter cup holder gag.
 CupholderGagSetTip,SourceCharacter tips over the cup on DestinationCharacter cup holder gag.
 CushionTypeHold,Hold cushion
-CushionTypeKneel,Kneel on cushion
-CushionTypeKneelingSpread,Kneel spreads on cushion
+CushionTypeSit,Sit on cushion
 CustomTagText,Save text
+DecalsDenOfSin,Den of Sin
+DecalsMissMariasManorSelect,Select version
+DecalsMissMariasManorDefault,v1
+DecalsMissMariasManorVersion2,v2
+DecalsMissMariasManorVersion3,v3
 Decrease,Decrease
 DeflateIt,Deflate it
 deflates,deflates
@@ -1089,6 +1218,12 @@ EyebrowsEyebrows2SelectRightPiercing,Select Left Eyebrow Piercing
 EyebrowsEyebrows2SelectStyle,Select Eyebrow Style
 EyePatchTypeLeft,Left
 EyePatchTypeRight,Right
+EyeShadowRunningSelect,Select Options
+EyeShadowRunning0,Trails
+EyeShadowRunning1,Tragedy
+EyeShadowRunning2,Streaky
+EyeShadowRunning3,Uneven
+EyeShadowRunning4,Messy
 FaceMarkingsFaceWritingsModulePosition,Position
 FaceMarkingsFaceWritingsModuleStyle,Style
 FaceMarkingsFaceWritingsModuleText,Text
@@ -1333,147 +1468,24 @@ GartersGarterBeltBoth,Both
 GartersGarterBeltLeft,Left
 GartersGarterBeltRight,Right
 GartersGarterBeltSelect,Select the style.
-GGTSFailureStrike0,[GGTS] SourceCharacter disobeyed.  Strike recorded.  Sixty minutes removed.
-GGTSFailureStrike1,[GGTS] SourceCharacter disobeyed.  Strike one recorded.  Three strikes equal punishment.
-GGTSFailureStrike2,[GGTS] SourceCharacter disobeyed.  Strike two recorded.  Three strikes equal punishment.
-GGTSFailureStrike3,[GGTS] SourceCharacter disobeyed.  Strike three recorded.  Level failed.  Report GGTS for punishment.
-GGTSForbiddenWordStrike0,[GGTS] Forbidden word SourceCharacter.  Strike recorded.  Sixty minutes removed.
-GGTSForbiddenWordStrike1,[GGTS] Forbidden word SourceCharacter.  Strike one recorded.  Three strikes equal punishment.
-GGTSForbiddenWordStrike2,[GGTS] Forbidden word SourceCharacter.  Strike two recorded.  Three strikes equal punishment.
-GGTSForbiddenWordStrike3,[GGTS] Forbidden word SourceCharacter.  Strike three recorded.  Level failed.  Report GGTS for punishment.
-GGTSInteractionNewTaskTarget,[GGTS] SourceCharacter program new task for TargetCharacter.
-GGTSInteractionPause5Target,[GGTS] SourceCharacter program five minutes pause for TargetCharacter.
-GGTSInteractionSpeed10Target,[GGTS] SourceCharacter program normal pace for TargetCharacter.
-GGTSInteractionSpeed20Target,[GGTS] SourceCharacter program slower pace for TargetCharacter.
-GGTSInteractionSpeed5Target,[GGTS] SourceCharacter program faster pace for TargetCharacter.
-GGTSIntroNotPlaying,[GGTS] GGTS control public room.  SourceCharacter unrecognized for GGTS.
-GGTSIntroOnlyInAsylum,[GGTS] GGTS is only available in the asylum.
-GGTSIntroPendingPunishment,[GGTS] GGTS inactive for SourceCharacter.  Three strikes recorded.  Report GGTS for punishment.
-GGTSIntroPrivate,[GGTS] Launching GGTS private room.  Time counts triple.  GGTS more active.  Good girl follow commands.  Three strikes equal punishment.  GGTS in control.  Be good girl SourceCharacter.
-GGTSIntroPrivateSlave,[GGTS] Launching GGTS private room.  Time counts triple.  GGTS more active.  Good slave follow commands.  Strike remove sixty minutes.  Master GGTS in control.  Be good slave SourceCharacter.
-GGTSIntroPublic,[GGTS] GGTS control public room.  Be good girl SourceCharacter.
-GGTSKeepPoseStrike0,[GGTS] SourceCharacter broke pose rule.  Strike recorded.  Sixty minutes removed.
-GGTSKeepPoseStrike1,[GGTS] SourceCharacter broke pose rule.  Strike one recorded.  Three strikes equal punishment.
-GGTSKeepPoseStrike2,[GGTS] SourceCharacter broke pose rule.  Strike two recorded.  Three strikes equal punishment.
-GGTSKeepPoseStrike3,[GGTS] SourceCharacter broke pose rule.  Strike three recorded.  Level failed.  Report GGTS for punishment.
-GGTSNoAdminLocked,[GGTS] Good girl do not administrate locked room.
-GGTSNoAdminPrivate,[GGTS] Good girl do not administrate room.
-GGTSOrgasmStrike0,[GGTS] SourceCharacter broke orgasm rule.  Strike recorded.  Sixty minutes removed.
-GGTSOrgasmStrike1,[GGTS] SourceCharacter broke orgasm rule.  Strike one recorded.  Three strikes equal punishment.
-GGTSOrgasmStrike2,[GGTS] SourceCharacter broke orgasm rule.  Strike two recorded.  Three strikes equal punishment.
-GGTSOrgasmStrike3,[GGTS] SourceCharacter broke orgasm rule.  Strike three recorded.  Level failed.  Report GGTS for punishment.
-GGTSTaskActivityBite,[GGTS] SourceCharacter.  Bite yourself.
-GGTSTaskActivityBiteTarget,[GGTS] SourceCharacter.  Bite TargetCharacter.
-GGTSTaskActivityCaress,[GGTS] SourceCharacter.  Caress yourself.
-GGTSTaskActivityCaressTarget,[GGTS] SourceCharacter.  Caress TargetCharacter.
-GGTSTaskActivityHandGag,[GGTS] SourceCharacter.  Place hand over your mouth.
-GGTSTaskActivityHandGagTarget,[GGTS] SourceCharacter.  Place hand over TargetCharacter mouth.
-GGTSTaskActivityKiss,[GGTS] SourceCharacter.  Kiss yourself.
-GGTSTaskActivityKissTarget,[GGTS] SourceCharacter.  Kiss TargetCharacter.
-GGTSTaskActivityLick,[GGTS] SourceCharacter.  Lick yourself.
-GGTSTaskActivityLickTarget,[GGTS] SourceCharacter.  Lick TargetCharacter.
-GGTSTaskActivityMasturbateHand,[GGTS] SourceCharacter.  Masturbate yourself.
-GGTSTaskActivityMasturbateHandTarget,[GGTS] SourceCharacter.  Masturbate TargetCharacter.
-GGTSTaskActivityNod,[GGTS] SourceCharacter.  Nod for GGTS.
-GGTSTaskActivityPet,[GGTS] SourceCharacter.  Pet yourself.
-GGTSTaskActivityPetTarget,[GGTS] SourceCharacter.  Pet TargetCharacter.
-GGTSTaskActivityPinch,[GGTS] SourceCharacter.  Pinch yourself.
-GGTSTaskActivityPinchTarget,[GGTS] SourceCharacter.  Pinch TargetCharacter.
-GGTSTaskActivitySpank,[GGTS] SourceCharacter.  Spank yourself.
-GGTSTaskActivitySpankTarget,[GGTS] SourceCharacter.  Spank TargetCharacter.
-GGTSTaskActivityTickle,[GGTS] SourceCharacter.  Tickle yourself.
-GGTSTaskActivityTickleTarget,[GGTS] SourceCharacter.  Tickle TargetCharacter.
-GGTSTaskActivityWiggle,[GGTS] SourceCharacter.  Wiggle for GGTS.
-GGTSTaskClothBarefoot,[GGTS] SourceCharacter.  Get barefoot.
-GGTSTaskClothHeels,[GGTS] SourceCharacter.  Wear high heels.
-GGTSTaskClothNaked,[GGTS] SourceCharacter.  Get naked.
-GGTSTaskClothSocks,[GGTS] SourceCharacter.  Wear only socks.
-GGTSTaskClothUnderwear,[GGTS] SourceCharacter.  Wear only underwear.
-GGTSTaskClothUpperLowerOff,[GGTS] SourceCharacter.  Remove upper and bottom clothes.
-GGTSTaskClothUpperLowerOn,[GGTS] SourceCharacter.  Dress with clothes.
-GGTSTaskDone,[GGTS] Good girl SourceCharacter.
-GGTSTaskDoneSlave,[GGTS] Good slave SourceCharacter.
-GGTSTaskDoneSlaveGirl,[GGTS] Good slave girl SourceCharacter.
-GGTSTaskItemArmsFeetFuturisticCuffs,"[GGTS] SourceCharacter.  Wear futuristic arms, legs and ankles cuffs."
-GGTSTaskItemArmsFeetFuturisticCuffsTarget,"[GGTS] SourceCharacter.  Use futuristic arms, legs and ankles cuffs on TargetCharacter."
-GGTSTaskItemArmsFuturisticArmbinder,[GGTS] SourceCharacter.  Wear futuristic armbinder.
-GGTSTaskItemArmsFuturisticArmbinderTarget,[GGTS] SourceCharacter.  Use futuristic armbinder on TargetCharacter.
-GGTSTaskItemArmsFuturisticCuffs,[GGTS] SourceCharacter.  Wear futuristic arms cuffs.
-GGTSTaskItemArmsFuturisticCuffsTarget,[GGTS] SourceCharacter.  Use futuristic arms cuffs on TargetCharacter.
-GGTSTaskItemArmsFuturisticStraitjacket,[GGTS] SourceCharacter.  Wear futuristic straitjacket.
-GGTSTaskItemArmsFuturisticStraitjacketTarget,[GGTS] SourceCharacter.  Use futuristic straitjacket on TargetCharacter.
-GGTSTaskItemBeltToFuck,[GGTS] GGTS bring penetration machine to replace SourceCharacter belt.
-GGTSTaskItemBootsFuturisticHeels,[GGTS] SourceCharacter.  Wear futuristic heels.
-GGTSTaskItemBootsFuturisticHeelsTarget,[GGTS] SourceCharacter.  Use futuristic heels on TargetCharacter.
-GGTSTaskItemBreastFuturisticBra,[GGTS] SourceCharacter.  Wear futuristic chastity bra.
-GGTSTaskItemBreastFuturisticBra2,[GGTS] SourceCharacter.  Wear futuristic bra.
-GGTSTaskItemBreastFuturisticBra2Target,[GGTS] SourceCharacter.  Use futuristic bra on TargetCharacter.
-GGTSTaskItemBreastFuturisticBraTarget,[GGTS] SourceCharacter.  Use futuristic chastity bra on TargetCharacter.
-GGTSTaskItemChangeGag,[GGTS] GGTS change SourceCharacter gag level.
-GGTSTaskItemChaste,[GGTS] GGTS enforcing chastity for SourceCharacter.
-GGTSTaskItemEarsDeaf,[GGTS] GGTS change SourceCharacter deaf level.
-GGTSTaskItemEarsFuturisticEarphones,[GGTS] SourceCharacter.  Wear futuristic earphones.
-GGTSTaskItemEarsFuturisticEarphonesTarget,[GGTS] SourceCharacter.  Use futuristic earphones on TargetCharacter.
-GGTSTaskItemFuckMachineIntensity,[GGTS] GGTS instruct SourceCharacter penetration machine.
-GGTSTaskItemFuckToBelt,[GGTS] GGTS penetration machine lock back SourceCharacter belt and leave.
-GGTSTaskItemHandsFuturisticMittens,[GGTS] SourceCharacter.  Wear futuristic mittens.
-GGTSTaskItemHandsFuturisticMittensTarget,[GGTS] SourceCharacter.  Use futuristic mittens on TargetCharacter.
-GGTSTaskItemHeadFuturisticMask,[GGTS] SourceCharacter.  Wear futuristic mask.
-GGTSTaskItemHeadFuturisticMaskTarget,[GGTS] SourceCharacter.  Use futuristic mask on TargetCharacter.
-GGTSTaskItemIntensity,[GGTS] GGTS change SourceCharacter vibration.
-GGTSTaskItemMaskBlind,[GGTS] GGTS change SourceCharacter blind level.
-GGTSTaskItemMouthFuturisticBallGag,[GGTS] SourceCharacter.  Wear futuristic ball gag.
-GGTSTaskItemMouthFuturisticBallGagTarget,[GGTS] SourceCharacter.  Use futuristic ball gag on TargetCharacter.
-GGTSTaskItemMouthFuturisticPanelGag,[GGTS] SourceCharacter.  Wear futuristic panel gag.
-GGTSTaskItemMouthFuturisticPanelGagTarget,[GGTS] SourceCharacter.  Use futuristic panel gag on TargetCharacter.
-GGTSTaskItemNeckFuturisticCollar,[GGTS] SourceCharacter.  Wear futuristic collar.
-GGTSTaskItemNeckFuturisticCollarTarget,[GGTS] SourceCharacter.  Use futuristic collar on TargetCharacter.
-GGTSTaskItemPelvisFuturisticChastityBelt,[GGTS] SourceCharacter.  Wear futuristic chastity belt.
-GGTSTaskItemPelvisFuturisticChastityBeltTarget,[GGTS] SourceCharacter.  Use futuristic chastity belt on TargetCharacter.
-GGTSTaskItemPelvisFuturisticTrainingBelt,[GGTS] SourceCharacter.  Wear futuristic training belt.
-GGTSTaskItemPelvisFuturisticTrainingBeltTarget,[GGTS] SourceCharacter.  Use futuristic training belt on TargetCharacter.
-GGTSTaskItemPose,[GGTS] GGTS control SourceCharacter restraints.
-GGTSTaskItemRemoveBody,[GGTS] GGTS remove SourceCharacter body restraints.
-GGTSTaskItemRemoveHead,[GGTS] GGTS remove SourceCharacter head restraints.
-GGTSTaskItemRemoveLimb,[GGTS] GGTS remove SourceCharacter limb restraints.
-GGTSTaskItemTorsoFuturisticHarness,[GGTS] SourceCharacter.  Wear futuristic harness.
-GGTSTaskItemTorsoFuturisticHarnessTarget,[GGTS] SourceCharacter.  Use futuristic harness on TargetCharacter.
-GGTSTaskItemTransform,[GGTS] GGTS transform SourceCharacter restraints.
-GGTSTaskItemUnchaste,[GGTS] GGTS stop enforcing chastity for SourceCharacter.
-GGTSTaskItemUngag,[GGTS] GGTS remove SourceCharacter gag.
-GGTSTaskLockRoom,[GGTS] SourceCharacter room locked.
-GGTSTaskNewRuleKeepPose,[GGTS] SourceCharacter.  New rule enforced: keep pose.
-GGTSTaskNewRuleNoOrgasm,[GGTS] SourceCharacter.  New rule enforced: No orgasm.
-GGTSTaskNoTalking,[GGTS] SourceCharacter.  No talking one minute.
-GGTSTaskPoseBehindBack,[GGTS] SourceCharacter.  Put hands behind back.
-GGTSTaskPoseKneel,[GGTS] SourceCharacter.  Kneel down.
-GGTSTaskPoseLegsClosed,[GGTS] SourceCharacter.  Close legs.
-GGTSTaskPoseLegsOpen,[GGTS] SourceCharacter.  Open legs.
-GGTSTaskPoseOverHead,[GGTS] SourceCharacter.  Raise and show hands.
-GGTSTaskPoseStand,[GGTS] SourceCharacter.  Stand up.
-GGTSTaskQueryCanFail,"[GGTS] SourceCharacter, can GGTS fail?"
-GGTSTaskQueryCanFailMaster,"[GGTS] SourceCharacter, can Master GGTS fail?"
-GGTSTaskQueryFreeWill,"[GGTS] SourceCharacter, you have free will?"
-GGTSTaskQueryLove,"[GGTS] SourceCharacter, you love GGTS?"
-GGTSTaskQueryLoveMaster,"[GGTS] SourceCharacter, you love Master GGTS?"
-GGTSTaskQueryServeObey,"[GGTS] SourceCharacter, who you serve and obey?"
-GGTSTaskQueryServeObeyMaster,"[GGTS] SourceCharacter, who you serve and obey?"
-GGTSTaskQuerySlaveWorthy,"[GGTS] SourceCharacter, are you slave worthy?"
-GGTSTaskQuerySurrender,"[GGTS] SourceCharacter, you surrender to GGTS?"
-GGTSTaskQuerySurrenderMaster,"[GGTS] SourceCharacter, you surrender to Master GGTS?"
-GGTSTaskQueryWhatAreYou,"[GGTS] SourceCharacter, what are you?"
-GGTSTaskQueryWhatIsGGTS,"[GGTS] SourceCharacter, spell GGTS acronym."
-GGTSTaskQueryWhoControl,"[GGTS] SourceCharacter, who's in control?"
-GGTSTaskQueryWhoControlMaster,"[GGTS] SourceCharacter, who's in control?"
-GGTSTaskRestrainLegs,[GGTS] SourceCharacter.  Restrain your legs.
-GGTSTaskUndoRuleKeepPose,[GGTS] SourceCharacter.  Rule revoked: keep pose.
-GGTSTaskUndoRuleNoOrgasm,[GGTS] SourceCharacter.  Rule revoked: No orgasm.
-GGTSTaskUnlockRoom,[GGTS] SourceCharacter room unlocked.
-GGTSTimeOverStrike0,[GGTS] Time over SourceCharacter.  Strike recorded.  Sixty minutes removed.
-GGTSTimeOverStrike1,[GGTS] Time over SourceCharacter.  Strike one recorded.  Three strikes equal punishment.
-GGTSTimeOverStrike2,[GGTS] Time over SourceCharacter.  Strike two recorded.  Three strikes equal punishment.
-GGTSTimeOverStrike3,[GGTS] Time over SourceCharacter.  Strike three recorded.  Level failed.  Report GGTS for punishment.
+GartersLaceLegRingBoth,Both
+GartersLaceLegRingLeftleg,Left leg
+GartersLaceLegRingRightleg,Right leg
+GartersLaceLegRingSelect,Select
 GiveLockpicks,SourceCharacter gives TargetCharacter some lockpicks to help TargetPronounSelf with.
+GlassesMonocleSelect,Choose Style
+GlassesMonocleLeft,Left
+GlassesMonocleBoth,Both
+GlassesMonocleRight,Right
+GlassesStreetEyewearSelectBase,Street Eyewear Glasses custom menu:
+GlassesStreetEyewearModulePosition,Hair position
+GlassesStreetEyewearSelectPosition,Glasses position options:
+GlassesStreetEyewearOptionp0,Under front hair
+GlassesStreetEyewearOptionp1,Over front hair
+GlassesStreetEyewearModuleFrame,Frame style
+GlassesStreetEyewearSelectFrame,Frame style options:
+GlassesStreetEyewearOptionf0,Normal frame
+GlassesStreetEyewearOptionf1,Half frame
 GlovesWarmGlovesFur,Normal
 GlovesWarmGlovesNoFur,Without fur
 GlovesWarmGlovesSelect,Choose your gloves style:
@@ -1494,6 +1506,13 @@ GwenHoodStylef0,Original
 GwenHoodStylef1,Smooth
 GwenHoodChangeStyleFinish,SourceCharacter changes the style of DestinationCharacter gwen hood.
 GwenHoodChangeStyleHair,SourceCharacter changes the style of DestinationCharacter gwen hood.
+HairAccessory1AntennaLeft,Left
+HairAccessory1AntennaLeftGlowing,Left Glow
+HairAccessory1AntennaLeftRight,Both
+HairAccessory1AntennaLeftRightGlowing,Both Glow
+HairAccessory1AntennaRight,Right
+HairAccessory1AntennaRightGlowing,Right Glow
+HairAccessory1AntennaSelect,Select Pattern
 HairAccessory1ElfEarsBehind,Behind hair
 HairAccessory1ElfEarsInFront,In front of hair
 HairAccessory1ElfEarsSelect,Select elf ears position
@@ -1516,6 +1535,493 @@ HairAccessory1OnihornsSelectRightHorn,Select Size
 HairAccessory1AquaticEarsSmall,Small
 HairAccessory1AquaticEarsLarge,Large
 HairAccessory1AquaticEarsSelect,Select inner style
+HairAccessory1CustomizableFluffyEars1ModuleStud1,Stud 1
+HairAccessory1CustomizableFluffyEars1ModuleStud2,Stud 2
+HairAccessory1CustomizableFluffyEars1ModuleStud3,Stud 3
+HairAccessory1CustomizableFluffyEars1ModuleStud4,Stud 4
+HairAccessory1CustomizableFluffyEars1ModuleBar,Bar
+HairAccessory1CustomizableFluffyEars1ModuleBells,Bells
+HairAccessory1CustomizableFluffyEars1ModuleSmallRing1,SmallRing 1
+HairAccessory1CustomizableFluffyEars1ModuleSmallRing2,SmallRing 2
+HairAccessory1CustomizableFluffyEars1ModuleSmallRing3,SmallRing 3
+HairAccessory1CustomizableFluffyEars1ModuleSmallRing4,SmallRing 4
+HairAccessory1CustomizableFluffyEars1ModuleBigRing1,BigRing 1
+HairAccessory1CustomizableFluffyEars1ModuleBigRing2,BigRing 2
+HairAccessory1CustomizableFluffyEars1ModuleTag,Tag
+HairAccessory1CustomizableFluffyEars1Options10,None
+HairAccessory1CustomizableFluffyEars1Options11,Left
+HairAccessory1CustomizableFluffyEars1Options12,Right
+HairAccessory1CustomizableFluffyEars1Options13,Both
+HairAccessory1CustomizableFluffyEars1Options20,None
+HairAccessory1CustomizableFluffyEars1Options21,Left
+HairAccessory1CustomizableFluffyEars1Options22,Right
+HairAccessory1CustomizableFluffyEars1Options23,Both
+HairAccessory1CustomizableFluffyEars1Options30,None
+HairAccessory1CustomizableFluffyEars1Options31,Left
+HairAccessory1CustomizableFluffyEars1Options32,Right
+HairAccessory1CustomizableFluffyEars1Options33,Both
+HairAccessory1CustomizableFluffyEars1Options40,None
+HairAccessory1CustomizableFluffyEars1Options41,Left
+HairAccessory1CustomizableFluffyEars1Options42,Right
+HairAccessory1CustomizableFluffyEars1Options43,Both
+HairAccessory1CustomizableFluffyEars1Optionb10,None
+HairAccessory1CustomizableFluffyEars1Optionb11,Left
+HairAccessory1CustomizableFluffyEars1Optionb12,Right
+HairAccessory1CustomizableFluffyEars1Optionb13,Both
+HairAccessory1CustomizableFluffyEars1Optionb20,None
+HairAccessory1CustomizableFluffyEars1Optionb21,Left
+HairAccessory1CustomizableFluffyEars1Optionb22,Right
+HairAccessory1CustomizableFluffyEars1Optionb23,Both
+HairAccessory1CustomizableFluffyEars1Optionr10,None
+HairAccessory1CustomizableFluffyEars1Optionr11,Left
+HairAccessory1CustomizableFluffyEars1Optionr12,Right
+HairAccessory1CustomizableFluffyEars1Optionr13,Both
+HairAccessory1CustomizableFluffyEars1Optionr20,None
+HairAccessory1CustomizableFluffyEars1Optionr21,Left
+HairAccessory1CustomizableFluffyEars1Optionr22,Right
+HairAccessory1CustomizableFluffyEars1Optionr23,Both
+HairAccessory1CustomizableFluffyEars1Optionr30,None
+HairAccessory1CustomizableFluffyEars1Optionr31,Left
+HairAccessory1CustomizableFluffyEars1Optionr32,Right
+HairAccessory1CustomizableFluffyEars1Optionr33,Both
+HairAccessory1CustomizableFluffyEars1Optionr40,None
+HairAccessory1CustomizableFluffyEars1Optionr41,Left
+HairAccessory1CustomizableFluffyEars1Optionr42,Right
+HairAccessory1CustomizableFluffyEars1Optionr43,Both
+HairAccessory1CustomizableFluffyEars1Optionbr10,None
+HairAccessory1CustomizableFluffyEars1Optionbr11,Left
+HairAccessory1CustomizableFluffyEars1Optionbr12,Right
+HairAccessory1CustomizableFluffyEars1Optionbr13,Both
+HairAccessory1CustomizableFluffyEars1Optionbr20,None
+HairAccessory1CustomizableFluffyEars1Optionbr21,Left
+HairAccessory1CustomizableFluffyEars1Optionbr22,Right
+HairAccessory1CustomizableFluffyEars1Optionbr23,Both
+HairAccessory1CustomizableFluffyEars1Optiont10,None
+HairAccessory1CustomizableFluffyEars1Optiont11,Left
+HairAccessory1CustomizableFluffyEars1Optiont12,Right
+HairAccessory1CustomizableFluffyEars1Optiont13,Both
+HairAccessory1CustomizableFluffyEars1SelectBase,Select Accessory
+HairAccessory1CustomizableFluffyEars1SelectStud1,Stud 1
+HairAccessory1CustomizableFluffyEars1SelectStud2,Stud 2
+HairAccessory1CustomizableFluffyEars1SelectStud3,Stud 3
+HairAccessory1CustomizableFluffyEars1SelectStud4,Stud 4
+HairAccessory1CustomizableFluffyEars1SelectBar,Bar
+HairAccessory1CustomizableFluffyEars1SelectBells,Bells
+HairAccessory1CustomizableFluffyEars1SelectSmallRing1,SmallRing 1
+HairAccessory1CustomizableFluffyEars1SelectSmallRing2,SmallRing 2
+HairAccessory1CustomizableFluffyEars1SelectSmallRing3,SmallRing 3
+HairAccessory1CustomizableFluffyEars1SelectSmallRing4,SmallRing 4
+HairAccessory1CustomizableFluffyEars1SelectBigRing1,BigRing 1
+HairAccessory1CustomizableFluffyEars1SelectBigRing2,BigRing 2
+HairAccessory1CustomizableFluffyEars1SelectTag,Tag
+HairAccessory1CustomizableFluffyEars1SetStud1,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetStud2,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetStud3,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetStud4,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetBar,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetBells,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetSmallRing1,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetSmallRing2,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetSmallRing3,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetSmallRing4,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetBigRing1,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetBigRing2,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars1SetTag,SourceCharacter changes DestinationCharacter ear accessory.
+HairAccessory1CustomizableFluffyEars2ModuleStud1,Stud 1
+HairAccessory1CustomizableFluffyEars2ModuleStud2,Stud 2
+HairAccessory1CustomizableFluffyEars2ModuleStud3,Stud 3
+HairAccessory1CustomizableFluffyEars2ModuleStud4,Stud 4
+HairAccessory1CustomizableFluffyEars2ModuleBar,Bar
+HairAccessory1CustomizableFluffyEars2ModuleBells,Bells
+HairAccessory1CustomizableFluffyEars2ModuleSmallRing1,SmallRing 1
+HairAccessory1CustomizableFluffyEars2ModuleSmallRing2,SmallRing 2
+HairAccessory1CustomizableFluffyEars2ModuleSmallRing3,SmallRing 3
+HairAccessory1CustomizableFluffyEars2ModuleSmallRing4,SmallRing 4
+HairAccessory1CustomizableFluffyEars2ModuleBigRing1,BigRing 1
+HairAccessory1CustomizableFluffyEars2ModuleBigRing2,BigRing 2
+HairAccessory1CustomizableFluffyEars2ModuleTag,Tag
+HairAccessory1CustomizableFluffyEars2Options10,None
+HairAccessory1CustomizableFluffyEars2Options11,Left
+HairAccessory1CustomizableFluffyEars2Options12,Right
+HairAccessory1CustomizableFluffyEars2Options13,Both
+HairAccessory1CustomizableFluffyEars2Options20,None
+HairAccessory1CustomizableFluffyEars2Options21,Left
+HairAccessory1CustomizableFluffyEars2Options22,Right
+HairAccessory1CustomizableFluffyEars2Options23,Both
+HairAccessory1CustomizableFluffyEars2Options30,None
+HairAccessory1CustomizableFluffyEars2Options31,Left
+HairAccessory1CustomizableFluffyEars2Options32,Right
+HairAccessory1CustomizableFluffyEars2Options33,Both
+HairAccessory1CustomizableFluffyEars2Options40,None
+HairAccessory1CustomizableFluffyEars2Options41,Left
+HairAccessory1CustomizableFluffyEars2Options42,Right
+HairAccessory1CustomizableFluffyEars2Options43,Both
+HairAccessory1CustomizableFluffyEars2Optionb10,None
+HairAccessory1CustomizableFluffyEars2Optionb11,Left
+HairAccessory1CustomizableFluffyEars2Optionb12,Right
+HairAccessory1CustomizableFluffyEars2Optionb13,Both
+HairAccessory1CustomizableFluffyEars2Optionb20,None
+HairAccessory1CustomizableFluffyEars2Optionb21,Left
+HairAccessory1CustomizableFluffyEars2Optionb22,Right
+HairAccessory1CustomizableFluffyEars2Optionb23,Both
+HairAccessory1CustomizableFluffyEars2Optionr10,None
+HairAccessory1CustomizableFluffyEars2Optionr11,Left
+HairAccessory1CustomizableFluffyEars2Optionr12,Right
+HairAccessory1CustomizableFluffyEars2Optionr13,Both
+HairAccessory1CustomizableFluffyEars2Optionr20,None
+HairAccessory1CustomizableFluffyEars2Optionr21,Left
+HairAccessory1CustomizableFluffyEars2Optionr22,Right
+HairAccessory1CustomizableFluffyEars2Optionr23,Both
+HairAccessory1CustomizableFluffyEars2Optionr30,None
+HairAccessory1CustomizableFluffyEars2Optionr31,Left
+HairAccessory1CustomizableFluffyEars2Optionr32,Right
+HairAccessory1CustomizableFluffyEars2Optionr33,Both
+HairAccessory1CustomizableFluffyEars2Optionr40,None
+HairAccessory1CustomizableFluffyEars2Optionr41,Left
+HairAccessory1CustomizableFluffyEars2Optionr42,Right
+HairAccessory1CustomizableFluffyEars2Optionr43,Both
+HairAccessory1CustomizableFluffyEars2Optionbr10,None
+HairAccessory1CustomizableFluffyEars2Optionbr11,Left
+HairAccessory1CustomizableFluffyEars2Optionbr12,Right
+HairAccessory1CustomizableFluffyEars2Optionbr13,Both
+HairAccessory1CustomizableFluffyEars2Optionbr20,None
+HairAccessory1CustomizableFluffyEars2Optionbr21,Left
+HairAccessory1CustomizableFluffyEars2Optionbr22,Right
+HairAccessory1CustomizableFluffyEars2Optionbr23,Both
+HairAccessory1CustomizableFluffyEars2Optiont10,None
+HairAccessory1CustomizableFluffyEars2Optiont11,Left
+HairAccessory1CustomizableFluffyEars2Optiont12,Right
+HairAccessory1CustomizableFluffyEars2Optiont13,Both
+HairAccessory1CustomizableFluffyEars2SelectBase,Select Accessory
+HairAccessory1CustomizableFluffyEars2SelectStud1,Stud 1
+HairAccessory1CustomizableFluffyEars2SelectStud2,Stud 2
+HairAccessory1CustomizableFluffyEars2SelectStud3,Stud 3
+HairAccessory1CustomizableFluffyEars2SelectStud4,Stud 4
+HairAccessory1CustomizableFluffyEars2SelectBar,Bar
+HairAccessory1CustomizableFluffyEars2SelectBells,Bells
+HairAccessory1CustomizableFluffyEars2SelectSmallRing1,SmallRing 1
+HairAccessory1CustomizableFluffyEars2SelectSmallRing2,SmallRing 2
+HairAccessory1CustomizableFluffyEars2SelectSmallRing3,SmallRing 3
+HairAccessory1CustomizableFluffyEars2SelectSmallRing4,SmallRing 4
+HairAccessory1CustomizableFluffyEars2SelectBigRing1,BigRing 1
+HairAccessory1CustomizableFluffyEars2SelectBigRing2,BigRing 2
+HairAccessory1CustomizableFluffyEars2SelectTag,Tag
+HairAccessory1CustomizableFluffyEars3ModuleStud1,Stud 1
+HairAccessory1CustomizableFluffyEars3ModuleStud2,Stud 2
+HairAccessory1CustomizableFluffyEars3ModuleStud3,Stud 3
+HairAccessory1CustomizableFluffyEars3ModuleStud4,Stud 4
+HairAccessory1CustomizableFluffyEars3ModuleBar,Bar
+HairAccessory1CustomizableFluffyEars3ModuleBells,Bells
+HairAccessory1CustomizableFluffyEars3ModuleSmallRing1,SmallRing 1
+HairAccessory1CustomizableFluffyEars3ModuleSmallRing2,SmallRing 2
+HairAccessory1CustomizableFluffyEars3ModuleSmallRing3,SmallRing 3
+HairAccessory1CustomizableFluffyEars3ModuleSmallRing4,SmallRing 4
+HairAccessory1CustomizableFluffyEars3ModuleBigRing1,BigRing 1
+HairAccessory1CustomizableFluffyEars3ModuleBigRing2,BigRing 2
+HairAccessory1CustomizableFluffyEars3ModuleTag,Tag
+HairAccessory1CustomizableFluffyEars3Options10,None
+HairAccessory1CustomizableFluffyEars3Options11,Left
+HairAccessory1CustomizableFluffyEars3Options12,Right
+HairAccessory1CustomizableFluffyEars3Options13,Both
+HairAccessory1CustomizableFluffyEars3Options20,None
+HairAccessory1CustomizableFluffyEars3Options21,Left
+HairAccessory1CustomizableFluffyEars3Options22,Right
+HairAccessory1CustomizableFluffyEars3Options23,Both
+HairAccessory1CustomizableFluffyEars3Options30,None
+HairAccessory1CustomizableFluffyEars3Options31,Left
+HairAccessory1CustomizableFluffyEars3Options32,Right
+HairAccessory1CustomizableFluffyEars3Options33,Both
+HairAccessory1CustomizableFluffyEars3Options40,None
+HairAccessory1CustomizableFluffyEars3Options41,Left
+HairAccessory1CustomizableFluffyEars3Options42,Right
+HairAccessory1CustomizableFluffyEars3Options43,Both
+HairAccessory1CustomizableFluffyEars3Optionb10,None
+HairAccessory1CustomizableFluffyEars3Optionb11,Left
+HairAccessory1CustomizableFluffyEars3Optionb12,Right
+HairAccessory1CustomizableFluffyEars3Optionb13,Both
+HairAccessory1CustomizableFluffyEars3Optionb20,None
+HairAccessory1CustomizableFluffyEars3Optionb21,Left
+HairAccessory1CustomizableFluffyEars3Optionb22,Right
+HairAccessory1CustomizableFluffyEars3Optionb23,Both
+HairAccessory1CustomizableFluffyEars3Optionr10,None
+HairAccessory1CustomizableFluffyEars3Optionr11,Left
+HairAccessory1CustomizableFluffyEars3Optionr12,Right
+HairAccessory1CustomizableFluffyEars3Optionr13,Both
+HairAccessory1CustomizableFluffyEars3Optionr20,None
+HairAccessory1CustomizableFluffyEars3Optionr21,Left
+HairAccessory1CustomizableFluffyEars3Optionr22,Right
+HairAccessory1CustomizableFluffyEars3Optionr23,Both
+HairAccessory1CustomizableFluffyEars3Optionr30,None
+HairAccessory1CustomizableFluffyEars3Optionr31,Left
+HairAccessory1CustomizableFluffyEars3Optionr32,Right
+HairAccessory1CustomizableFluffyEars3Optionr33,Both
+HairAccessory1CustomizableFluffyEars3Optionr40,None
+HairAccessory1CustomizableFluffyEars3Optionr41,Left
+HairAccessory1CustomizableFluffyEars3Optionr42,Right
+HairAccessory1CustomizableFluffyEars3Optionr43,Both
+HairAccessory1CustomizableFluffyEars3Optionbr10,None
+HairAccessory1CustomizableFluffyEars3Optionbr11,Left
+HairAccessory1CustomizableFluffyEars3Optionbr12,Right
+HairAccessory1CustomizableFluffyEars3Optionbr13,Both
+HairAccessory1CustomizableFluffyEars3Optionbr20,None
+HairAccessory1CustomizableFluffyEars3Optionbr21,Left
+HairAccessory1CustomizableFluffyEars3Optionbr22,Right
+HairAccessory1CustomizableFluffyEars3Optionbr23,Both
+HairAccessory1CustomizableFluffyEars3Optiont10,None
+HairAccessory1CustomizableFluffyEars3Optiont11,Left
+HairAccessory1CustomizableFluffyEars3Optiont12,Right
+HairAccessory1CustomizableFluffyEars3Optiont13,Both
+HairAccessory1CustomizableFluffyEars3SelectBase,Select Accessory
+HairAccessory1CustomizableFluffyEars3SelectStud1,Stud 1
+HairAccessory1CustomizableFluffyEars3SelectStud2,Stud 2
+HairAccessory1CustomizableFluffyEars3SelectStud3,Stud 3
+HairAccessory1CustomizableFluffyEars3SelectStud4,Stud 4
+HairAccessory1CustomizableFluffyEars3SelectBar,Bar
+HairAccessory1CustomizableFluffyEars3SelectBells,Bells
+HairAccessory1CustomizableFluffyEars3SelectSmallRing1,SmallRing 1
+HairAccessory1CustomizableFluffyEars3SelectSmallRing2,SmallRing 2
+HairAccessory1CustomizableFluffyEars3SelectSmallRing3,SmallRing 3
+HairAccessory1CustomizableFluffyEars3SelectSmallRing4,SmallRing 4
+HairAccessory1CustomizableFluffyEars3SelectBigRing1,BigRing 1
+HairAccessory1CustomizableFluffyEars3SelectBigRing2,BigRing 2
+HairAccessory1CustomizableFluffyEars3SelectTag,Tag
+HairAccessory1CustomizableCatEarsModuleStud1,Stud 1
+HairAccessory1CustomizableCatEarsModuleStud2,Stud 2
+HairAccessory1CustomizableCatEarsModuleStud3,Stud 3
+HairAccessory1CustomizableCatEarsModuleStud4,Stud 4
+HairAccessory1CustomizableCatEarsModuleBar,Bar
+HairAccessory1CustomizableCatEarsModuleBells,Bells
+HairAccessory1CustomizableCatEarsModuleSmallRing1,SmallRing 1
+HairAccessory1CustomizableCatEarsModuleSmallRing2,SmallRing 2
+HairAccessory1CustomizableCatEarsModuleSmallRing3,SmallRing 3
+HairAccessory1CustomizableCatEarsModuleSmallRing4,SmallRing 4
+HairAccessory1CustomizableCatEarsModuleBigRing1,BigRing 1
+HairAccessory1CustomizableCatEarsModuleBigRing2,BigRing 2
+HairAccessory1CustomizableCatEarsModuleTag,Tag
+HairAccessory1CustomizableCatEarsOptions10,None
+HairAccessory1CustomizableCatEarsOptions11,Left
+HairAccessory1CustomizableCatEarsOptions12,Right
+HairAccessory1CustomizableCatEarsOptions13,Both
+HairAccessory1CustomizableCatEarsOptions20,None
+HairAccessory1CustomizableCatEarsOptions21,Left
+HairAccessory1CustomizableCatEarsOptions22,Right
+HairAccessory1CustomizableCatEarsOptions23,Both
+HairAccessory1CustomizableCatEarsOptions30,None
+HairAccessory1CustomizableCatEarsOptions31,Left
+HairAccessory1CustomizableCatEarsOptions32,Right
+HairAccessory1CustomizableCatEarsOptions33,Both
+HairAccessory1CustomizableCatEarsOptions40,None
+HairAccessory1CustomizableCatEarsOptions41,Left
+HairAccessory1CustomizableCatEarsOptions42,Right
+HairAccessory1CustomizableCatEarsOptions43,Both
+HairAccessory1CustomizableCatEarsOptionb10,None
+HairAccessory1CustomizableCatEarsOptionb11,Left
+HairAccessory1CustomizableCatEarsOptionb12,Right
+HairAccessory1CustomizableCatEarsOptionb13,Both
+HairAccessory1CustomizableCatEarsOptionb20,None
+HairAccessory1CustomizableCatEarsOptionb21,Left
+HairAccessory1CustomizableCatEarsOptionb22,Right
+HairAccessory1CustomizableCatEarsOptionb23,Both
+HairAccessory1CustomizableCatEarsOptionr10,None
+HairAccessory1CustomizableCatEarsOptionr11,Left
+HairAccessory1CustomizableCatEarsOptionr12,Right
+HairAccessory1CustomizableCatEarsOptionr13,Both
+HairAccessory1CustomizableCatEarsOptionr20,None
+HairAccessory1CustomizableCatEarsOptionr21,Left
+HairAccessory1CustomizableCatEarsOptionr22,Right
+HairAccessory1CustomizableCatEarsOptionr23,Both
+HairAccessory1CustomizableCatEarsOptionr30,None
+HairAccessory1CustomizableCatEarsOptionr31,Left
+HairAccessory1CustomizableCatEarsOptionr32,Right
+HairAccessory1CustomizableCatEarsOptionr33,Both
+HairAccessory1CustomizableCatEarsOptionr40,None
+HairAccessory1CustomizableCatEarsOptionr41,Left
+HairAccessory1CustomizableCatEarsOptionr42,Right
+HairAccessory1CustomizableCatEarsOptionr43,Both
+HairAccessory1CustomizableCatEarsOptionbr10,None
+HairAccessory1CustomizableCatEarsOptionbr11,Left
+HairAccessory1CustomizableCatEarsOptionbr12,Right
+HairAccessory1CustomizableCatEarsOptionbr13,Both
+HairAccessory1CustomizableCatEarsOptionbr20,None
+HairAccessory1CustomizableCatEarsOptionbr21,Left
+HairAccessory1CustomizableCatEarsOptionbr22,Right
+HairAccessory1CustomizableCatEarsOptionbr23,Both
+HairAccessory1CustomizableCatEarsOptiont10,None
+HairAccessory1CustomizableCatEarsOptiont11,Left
+HairAccessory1CustomizableCatEarsOptiont12,Right
+HairAccessory1CustomizableCatEarsOptiont13,Both
+HairAccessory1CustomizableCatEarsSelectBase,Select Accessory
+HairAccessory1CustomizableCatEarsSelectStud1,Stud 1
+HairAccessory1CustomizableCatEarsSelectStud2,Stud 2
+HairAccessory1CustomizableCatEarsSelectStud3,Stud 3
+HairAccessory1CustomizableCatEarsSelectStud4,Stud 4
+HairAccessory1CustomizableCatEarsSelectBar,Bar
+HairAccessory1CustomizableCatEarsSelectBells,Bells
+HairAccessory1CustomizableCatEarsSelectSmallRing1,SmallRing 1
+HairAccessory1CustomizableCatEarsSelectSmallRing2,SmallRing 2
+HairAccessory1CustomizableCatEarsSelectSmallRing3,SmallRing 3
+HairAccessory1CustomizableCatEarsSelectSmallRing4,SmallRing 4
+HairAccessory1CustomizableCatEarsSelectBigRing1,BigRing 1
+HairAccessory1CustomizableCatEarsSelectBigRing2,BigRing 2
+HairAccessory1CustomizableCatEarsSelectTag,Tag
+HairAccessory1CustomizableElfEarsModuleStud1,Stud 1
+HairAccessory1CustomizableElfEarsModuleStud2,Stud 2
+HairAccessory1CustomizableElfEarsModuleStud3,Stud 3
+HairAccessory1CustomizableElfEarsModuleStud4,Stud 4
+HairAccessory1CustomizableElfEarsModuleBar,Bar
+HairAccessory1CustomizableElfEarsModuleBells,Bells
+HairAccessory1CustomizableElfEarsModuleSmallRing1,SmallRing 1
+HairAccessory1CustomizableElfEarsModuleSmallRing2,SmallRing 2
+HairAccessory1CustomizableElfEarsModuleSmallRing3,SmallRing 3
+HairAccessory1CustomizableElfEarsModuleSmallRing4,SmallRing 4
+HairAccessory1CustomizableElfEarsModuleBigRing1,BigRing 1
+HairAccessory1CustomizableElfEarsModuleBigRing2,BigRing 2
+HairAccessory1CustomizableElfEarsModuleTag,Tag
+HairAccessory1CustomizableElfEarsOptions10,None
+HairAccessory1CustomizableElfEarsOptions11,Left
+HairAccessory1CustomizableElfEarsOptions12,Right
+HairAccessory1CustomizableElfEarsOptions13,Both
+HairAccessory1CustomizableElfEarsOptions20,None
+HairAccessory1CustomizableElfEarsOptions21,Left
+HairAccessory1CustomizableElfEarsOptions22,Right
+HairAccessory1CustomizableElfEarsOptions23,Both
+HairAccessory1CustomizableElfEarsOptions30,None
+HairAccessory1CustomizableElfEarsOptions31,Left
+HairAccessory1CustomizableElfEarsOptions32,Right
+HairAccessory1CustomizableElfEarsOptions33,Both
+HairAccessory1CustomizableElfEarsOptions40,None
+HairAccessory1CustomizableElfEarsOptions41,Left
+HairAccessory1CustomizableElfEarsOptions42,Right
+HairAccessory1CustomizableElfEarsOptions43,Both
+HairAccessory1CustomizableElfEarsOptionb10,None
+HairAccessory1CustomizableElfEarsOptionb11,Left
+HairAccessory1CustomizableElfEarsOptionb12,Right
+HairAccessory1CustomizableElfEarsOptionb13,Both
+HairAccessory1CustomizableElfEarsOptionb20,None
+HairAccessory1CustomizableElfEarsOptionb21,Left
+HairAccessory1CustomizableElfEarsOptionb22,Right
+HairAccessory1CustomizableElfEarsOptionb23,Both
+HairAccessory1CustomizableElfEarsOptionr10,None
+HairAccessory1CustomizableElfEarsOptionr11,Left
+HairAccessory1CustomizableElfEarsOptionr12,Right
+HairAccessory1CustomizableElfEarsOptionr13,Both
+HairAccessory1CustomizableElfEarsOptionr20,None
+HairAccessory1CustomizableElfEarsOptionr21,Left
+HairAccessory1CustomizableElfEarsOptionr22,Right
+HairAccessory1CustomizableElfEarsOptionr23,Both
+HairAccessory1CustomizableElfEarsOptionr30,None
+HairAccessory1CustomizableElfEarsOptionr31,Left
+HairAccessory1CustomizableElfEarsOptionr32,Right
+HairAccessory1CustomizableElfEarsOptionr33,Both
+HairAccessory1CustomizableElfEarsOptionr40,None
+HairAccessory1CustomizableElfEarsOptionr41,Left
+HairAccessory1CustomizableElfEarsOptionr42,Right
+HairAccessory1CustomizableElfEarsOptionr43,Both
+HairAccessory1CustomizableElfEarsOptionbr10,None
+HairAccessory1CustomizableElfEarsOptionbr11,Left
+HairAccessory1CustomizableElfEarsOptionbr12,Right
+HairAccessory1CustomizableElfEarsOptionbr13,Both
+HairAccessory1CustomizableElfEarsOptionbr20,None
+HairAccessory1CustomizableElfEarsOptionbr21,Left
+HairAccessory1CustomizableElfEarsOptionbr22,Right
+HairAccessory1CustomizableElfEarsOptionbr23,Both
+HairAccessory1CustomizableElfEarsOptiont10,None
+HairAccessory1CustomizableElfEarsOptiont11,Left
+HairAccessory1CustomizableElfEarsOptiont12,Right
+HairAccessory1CustomizableElfEarsOptiont13,Both
+HairAccessory1CustomizableElfEarsSelectBase,Select Accessory
+HairAccessory1CustomizableElfEarsSelectStud1,Stud 1
+HairAccessory1CustomizableElfEarsSelectStud2,Stud 2
+HairAccessory1CustomizableElfEarsSelectStud3,Stud 3
+HairAccessory1CustomizableElfEarsSelectStud4,Stud 4
+HairAccessory1CustomizableElfEarsSelectBar,Bar
+HairAccessory1CustomizableElfEarsSelectBells,Bells
+HairAccessory1CustomizableElfEarsSelectSmallRing1,SmallRing 1
+HairAccessory1CustomizableElfEarsSelectSmallRing2,SmallRing 2
+HairAccessory1CustomizableElfEarsSelectSmallRing3,SmallRing 3
+HairAccessory1CustomizableElfEarsSelectSmallRing4,SmallRing 4
+HairAccessory1CustomizableElfEarsSelectBigRing1,BigRing 1
+HairAccessory1CustomizableElfEarsSelectBigRing2,BigRing 2
+HairAccessory1CustomizableElfEarsSelectTag,Tag
+HairAccessory1CustomizableCowEarsModuleStud1,Stud 1
+HairAccessory1CustomizableCowEarsModuleStud2,Stud 2
+HairAccessory1CustomizableCowEarsModuleStud3,Stud 3
+HairAccessory1CustomizableCowEarsModuleStud4,Stud 4
+HairAccessory1CustomizableCowEarsModuleBar,Bar
+HairAccessory1CustomizableCowEarsModuleBells,Bells
+HairAccessory1CustomizableCowEarsModuleSmallRing1,SmallRing 1
+HairAccessory1CustomizableCowEarsModuleSmallRing2,SmallRing 2
+HairAccessory1CustomizableCowEarsModuleSmallRing3,SmallRing 3
+HairAccessory1CustomizableCowEarsModuleSmallRing4,SmallRing 4
+HairAccessory1CustomizableCowEarsModuleBigRing1,BigRing 1
+HairAccessory1CustomizableCowEarsModuleBigRing2,BigRing 2
+HairAccessory1CustomizableCowEarsModuleTag,Tag
+HairAccessory1CustomizableCowEarsOptions10,None
+HairAccessory1CustomizableCowEarsOptions11,Left
+HairAccessory1CustomizableCowEarsOptions12,Right
+HairAccessory1CustomizableCowEarsOptions13,Both
+HairAccessory1CustomizableCowEarsOptions20,None
+HairAccessory1CustomizableCowEarsOptions21,Left
+HairAccessory1CustomizableCowEarsOptions22,Right
+HairAccessory1CustomizableCowEarsOptions23,Both
+HairAccessory1CustomizableCowEarsOptions30,None
+HairAccessory1CustomizableCowEarsOptions31,Left
+HairAccessory1CustomizableCowEarsOptions32,Right
+HairAccessory1CustomizableCowEarsOptions33,Both
+HairAccessory1CustomizableCowEarsOptions40,None
+HairAccessory1CustomizableCowEarsOptions41,Left
+HairAccessory1CustomizableCowEarsOptions42,Right
+HairAccessory1CustomizableCowEarsOptions43,Both
+HairAccessory1CustomizableCowEarsOptionb10,None
+HairAccessory1CustomizableCowEarsOptionb11,Left
+HairAccessory1CustomizableCowEarsOptionb12,Right
+HairAccessory1CustomizableCowEarsOptionb13,Both
+HairAccessory1CustomizableCowEarsOptionb20,None
+HairAccessory1CustomizableCowEarsOptionb21,Left
+HairAccessory1CustomizableCowEarsOptionb22,Right
+HairAccessory1CustomizableCowEarsOptionb23,Both
+HairAccessory1CustomizableCowEarsOptionr10,None
+HairAccessory1CustomizableCowEarsOptionr11,Left
+HairAccessory1CustomizableCowEarsOptionr12,Right
+HairAccessory1CustomizableCowEarsOptionr13,Both
+HairAccessory1CustomizableCowEarsOptionr20,None
+HairAccessory1CustomizableCowEarsOptionr21,Left
+HairAccessory1CustomizableCowEarsOptionr22,Right
+HairAccessory1CustomizableCowEarsOptionr23,Both
+HairAccessory1CustomizableCowEarsOptionr30,None
+HairAccessory1CustomizableCowEarsOptionr31,Left
+HairAccessory1CustomizableCowEarsOptionr32,Right
+HairAccessory1CustomizableCowEarsOptionr33,Both
+HairAccessory1CustomizableCowEarsOptionr40,None
+HairAccessory1CustomizableCowEarsOptionr41,Left
+HairAccessory1CustomizableCowEarsOptionr42,Right
+HairAccessory1CustomizableCowEarsOptionr43,Both
+HairAccessory1CustomizableCowEarsOptionbr10,None
+HairAccessory1CustomizableCowEarsOptionbr11,Left
+HairAccessory1CustomizableCowEarsOptionbr12,Right
+HairAccessory1CustomizableCowEarsOptionbr13,Both
+HairAccessory1CustomizableCowEarsOptionbr20,None
+HairAccessory1CustomizableCowEarsOptionbr21,Left
+HairAccessory1CustomizableCowEarsOptionbr22,Right
+HairAccessory1CustomizableCowEarsOptionbr23,Both
+HairAccessory1CustomizableCowEarsOptiont10,None
+HairAccessory1CustomizableCowEarsOptiont11,Left
+HairAccessory1CustomizableCowEarsOptiont12,Right
+HairAccessory1CustomizableCowEarsOptiont13,Both
+HairAccessory1CustomizableCowEarsSelectBase,Select Accessory
+HairAccessory1CustomizableCowEarsSelectStud1,Stud 1
+HairAccessory1CustomizableCowEarsSelectStud2,Stud 2
+HairAccessory1CustomizableCowEarsSelectStud3,Stud 3
+HairAccessory1CustomizableCowEarsSelectStud4,Stud 4
+HairAccessory1CustomizableCowEarsSelectBar,Bar
+HairAccessory1CustomizableCowEarsSelectBells,Bells
+HairAccessory1CustomizableCowEarsSelectSmallRing1,SmallRing 1
+HairAccessory1CustomizableCowEarsSelectSmallRing2,SmallRing 2
+HairAccessory1CustomizableCowEarsSelectSmallRing3,SmallRing 3
+HairAccessory1CustomizableCowEarsSelectSmallRing4,SmallRing 4
+HairAccessory1CustomizableCowEarsSelectBigRing1,BigRing 1
+HairAccessory1CustomizableCowEarsSelectBigRing2,BigRing 2
+HairAccessory1CustomizableCowEarsSelectTag,Tag
 HairAccessory2OnihornsModuleLeftHorn,Left Horn
 HairAccessory2OnihornsModuleRightHorn,Right Horn
 HairAccessory2OnihornsOptionl0,Short
@@ -1530,6 +2036,480 @@ HairAccessory2OnihornsSelectRightHorn,Select Size
 HairAccessory2AquaticEarsSmall,Small
 HairAccessory2AquaticEarsLarge,Large
 HairAccessory2AquaticEarsSelect,Select inner style
+HairAccessory2CustomizableFluffyEars1ModuleStud1,Stud 1
+HairAccessory2CustomizableFluffyEars1ModuleStud2,Stud 2
+HairAccessory2CustomizableFluffyEars1ModuleStud3,Stud 3
+HairAccessory2CustomizableFluffyEars1ModuleStud4,Stud 4
+HairAccessory2CustomizableFluffyEars1ModuleBar,Bar
+HairAccessory2CustomizableFluffyEars1ModuleBells,Bells
+HairAccessory2CustomizableFluffyEars1ModuleSmallRing1,SmallRing 1
+HairAccessory2CustomizableFluffyEars1ModuleSmallRing2,SmallRing 2
+HairAccessory2CustomizableFluffyEars1ModuleSmallRing3,SmallRing 3
+HairAccessory2CustomizableFluffyEars1ModuleSmallRing4,SmallRing 4
+HairAccessory2CustomizableFluffyEars1ModuleBigRing1,BigRing 1
+HairAccessory2CustomizableFluffyEars1ModuleBigRing2,BigRing 2
+HairAccessory2CustomizableFluffyEars1ModuleTag,Tag
+HairAccessory2CustomizableFluffyEars1Options10,None
+HairAccessory2CustomizableFluffyEars1Options11,Left
+HairAccessory2CustomizableFluffyEars1Options12,Right
+HairAccessory2CustomizableFluffyEars1Options13,Both
+HairAccessory2CustomizableFluffyEars1Options20,None
+HairAccessory2CustomizableFluffyEars1Options21,Left
+HairAccessory2CustomizableFluffyEars1Options22,Right
+HairAccessory2CustomizableFluffyEars1Options23,Both
+HairAccessory2CustomizableFluffyEars1Options30,None
+HairAccessory2CustomizableFluffyEars1Options31,Left
+HairAccessory2CustomizableFluffyEars1Options32,Right
+HairAccessory2CustomizableFluffyEars1Options33,Both
+HairAccessory2CustomizableFluffyEars1Options40,None
+HairAccessory2CustomizableFluffyEars1Options41,Left
+HairAccessory2CustomizableFluffyEars1Options42,Right
+HairAccessory2CustomizableFluffyEars1Options43,Both
+HairAccessory2CustomizableFluffyEars1Optionb10,None
+HairAccessory2CustomizableFluffyEars1Optionb11,Left
+HairAccessory2CustomizableFluffyEars1Optionb12,Right
+HairAccessory2CustomizableFluffyEars1Optionb13,Both
+HairAccessory2CustomizableFluffyEars1Optionb20,None
+HairAccessory2CustomizableFluffyEars1Optionb21,Left
+HairAccessory2CustomizableFluffyEars1Optionb22,Right
+HairAccessory2CustomizableFluffyEars1Optionb23,Both
+HairAccessory2CustomizableFluffyEars1Optionr10,None
+HairAccessory2CustomizableFluffyEars1Optionr11,Left
+HairAccessory2CustomizableFluffyEars1Optionr12,Right
+HairAccessory2CustomizableFluffyEars1Optionr13,Both
+HairAccessory2CustomizableFluffyEars1Optionr20,None
+HairAccessory2CustomizableFluffyEars1Optionr21,Left
+HairAccessory2CustomizableFluffyEars1Optionr22,Right
+HairAccessory2CustomizableFluffyEars1Optionr23,Both
+HairAccessory2CustomizableFluffyEars1Optionr30,None
+HairAccessory2CustomizableFluffyEars1Optionr31,Left
+HairAccessory2CustomizableFluffyEars1Optionr32,Right
+HairAccessory2CustomizableFluffyEars1Optionr33,Both
+HairAccessory2CustomizableFluffyEars1Optionr40,None
+HairAccessory2CustomizableFluffyEars1Optionr41,Left
+HairAccessory2CustomizableFluffyEars1Optionr42,Right
+HairAccessory2CustomizableFluffyEars1Optionr43,Both
+HairAccessory2CustomizableFluffyEars1Optionbr10,None
+HairAccessory2CustomizableFluffyEars1Optionbr11,Left
+HairAccessory2CustomizableFluffyEars1Optionbr12,Right
+HairAccessory2CustomizableFluffyEars1Optionbr13,Both
+HairAccessory2CustomizableFluffyEars1Optionbr20,None
+HairAccessory2CustomizableFluffyEars1Optionbr21,Left
+HairAccessory2CustomizableFluffyEars1Optionbr22,Right
+HairAccessory2CustomizableFluffyEars1Optionbr23,Both
+HairAccessory2CustomizableFluffyEars1Optiont10,None
+HairAccessory2CustomizableFluffyEars1Optiont11,Left
+HairAccessory2CustomizableFluffyEars1Optiont12,Right
+HairAccessory2CustomizableFluffyEars1Optiont13,Both
+HairAccessory2CustomizableFluffyEars1SelectBase,Select Accessory
+HairAccessory2CustomizableFluffyEars1SelectStud1,Stud 1
+HairAccessory2CustomizableFluffyEars1SelectStud2,Stud 2
+HairAccessory2CustomizableFluffyEars1SelectStud3,Stud 3
+HairAccessory2CustomizableFluffyEars1SelectStud4,Stud 4
+HairAccessory2CustomizableFluffyEars1SelectBar,Bar
+HairAccessory2CustomizableFluffyEars1SelectBells,Bells
+HairAccessory2CustomizableFluffyEars1SelectSmallRing1,SmallRing 1
+HairAccessory2CustomizableFluffyEars1SelectSmallRing2,SmallRing 2
+HairAccessory2CustomizableFluffyEars1SelectSmallRing3,SmallRing 3
+HairAccessory2CustomizableFluffyEars1SelectSmallRing4,SmallRing 4
+HairAccessory2CustomizableFluffyEars1SelectBigRing1,BigRing 1
+HairAccessory2CustomizableFluffyEars1SelectBigRing2,BigRing 2
+HairAccessory2CustomizableFluffyEars1SelectTag,Tag
+HairAccessory2CustomizableFluffyEars2ModuleStud1,Stud 1
+HairAccessory2CustomizableFluffyEars2ModuleStud2,Stud 2
+HairAccessory2CustomizableFluffyEars2ModuleStud3,Stud 3
+HairAccessory2CustomizableFluffyEars2ModuleStud4,Stud 4
+HairAccessory2CustomizableFluffyEars2ModuleBar,Bar
+HairAccessory2CustomizableFluffyEars2ModuleBells,Bells
+HairAccessory2CustomizableFluffyEars2ModuleSmallRing1,SmallRing 1
+HairAccessory2CustomizableFluffyEars2ModuleSmallRing2,SmallRing 2
+HairAccessory2CustomizableFluffyEars2ModuleSmallRing3,SmallRing 3
+HairAccessory2CustomizableFluffyEars2ModuleSmallRing4,SmallRing 4
+HairAccessory2CustomizableFluffyEars2ModuleBigRing1,BigRing 1
+HairAccessory2CustomizableFluffyEars2ModuleBigRing2,BigRing 2
+HairAccessory2CustomizableFluffyEars2ModuleTag,Tag
+HairAccessory2CustomizableFluffyEars2Options10,None
+HairAccessory2CustomizableFluffyEars2Options11,Left
+HairAccessory2CustomizableFluffyEars2Options12,Right
+HairAccessory2CustomizableFluffyEars2Options13,Both
+HairAccessory2CustomizableFluffyEars2Options20,None
+HairAccessory2CustomizableFluffyEars2Options21,Left
+HairAccessory2CustomizableFluffyEars2Options22,Right
+HairAccessory2CustomizableFluffyEars2Options23,Both
+HairAccessory2CustomizableFluffyEars2Options30,None
+HairAccessory2CustomizableFluffyEars2Options31,Left
+HairAccessory2CustomizableFluffyEars2Options32,Right
+HairAccessory2CustomizableFluffyEars2Options33,Both
+HairAccessory2CustomizableFluffyEars2Options40,None
+HairAccessory2CustomizableFluffyEars2Options41,Left
+HairAccessory2CustomizableFluffyEars2Options42,Right
+HairAccessory2CustomizableFluffyEars2Options43,Both
+HairAccessory2CustomizableFluffyEars2Optionb10,None
+HairAccessory2CustomizableFluffyEars2Optionb11,Left
+HairAccessory2CustomizableFluffyEars2Optionb12,Right
+HairAccessory2CustomizableFluffyEars2Optionb13,Both
+HairAccessory2CustomizableFluffyEars2Optionb20,None
+HairAccessory2CustomizableFluffyEars2Optionb21,Left
+HairAccessory2CustomizableFluffyEars2Optionb22,Right
+HairAccessory2CustomizableFluffyEars2Optionb23,Both
+HairAccessory2CustomizableFluffyEars2Optionr10,None
+HairAccessory2CustomizableFluffyEars2Optionr11,Left
+HairAccessory2CustomizableFluffyEars2Optionr12,Right
+HairAccessory2CustomizableFluffyEars2Optionr13,Both
+HairAccessory2CustomizableFluffyEars2Optionr20,None
+HairAccessory2CustomizableFluffyEars2Optionr21,Left
+HairAccessory2CustomizableFluffyEars2Optionr22,Right
+HairAccessory2CustomizableFluffyEars2Optionr23,Both
+HairAccessory2CustomizableFluffyEars2Optionr30,None
+HairAccessory2CustomizableFluffyEars2Optionr31,Left
+HairAccessory2CustomizableFluffyEars2Optionr32,Right
+HairAccessory2CustomizableFluffyEars2Optionr33,Both
+HairAccessory2CustomizableFluffyEars2Optionr40,None
+HairAccessory2CustomizableFluffyEars2Optionr41,Left
+HairAccessory2CustomizableFluffyEars2Optionr42,Right
+HairAccessory2CustomizableFluffyEars2Optionr43,Both
+HairAccessory2CustomizableFluffyEars2Optionbr10,None
+HairAccessory2CustomizableFluffyEars2Optionbr11,Left
+HairAccessory2CustomizableFluffyEars2Optionbr12,Right
+HairAccessory2CustomizableFluffyEars2Optionbr13,Both
+HairAccessory2CustomizableFluffyEars2Optionbr20,None
+HairAccessory2CustomizableFluffyEars2Optionbr21,Left
+HairAccessory2CustomizableFluffyEars2Optionbr22,Right
+HairAccessory2CustomizableFluffyEars2Optionbr23,Both
+HairAccessory2CustomizableFluffyEars2Optiont10,None
+HairAccessory2CustomizableFluffyEars2Optiont11,Left
+HairAccessory2CustomizableFluffyEars2Optiont12,Right
+HairAccessory2CustomizableFluffyEars2Optiont13,Both
+HairAccessory2CustomizableFluffyEars2SelectBase,Select Accessory
+HairAccessory2CustomizableFluffyEars2SelectStud1,Stud 1
+HairAccessory2CustomizableFluffyEars2SelectStud2,Stud 2
+HairAccessory2CustomizableFluffyEars2SelectStud3,Stud 3
+HairAccessory2CustomizableFluffyEars2SelectStud4,Stud 4
+HairAccessory2CustomizableFluffyEars2SelectBar,Bar
+HairAccessory2CustomizableFluffyEars2SelectBells,Bells
+HairAccessory2CustomizableFluffyEars2SelectSmallRing1,SmallRing 1
+HairAccessory2CustomizableFluffyEars2SelectSmallRing2,SmallRing 2
+HairAccessory2CustomizableFluffyEars2SelectSmallRing3,SmallRing 3
+HairAccessory2CustomizableFluffyEars2SelectSmallRing4,SmallRing 4
+HairAccessory2CustomizableFluffyEars2SelectBigRing1,BigRing 1
+HairAccessory2CustomizableFluffyEars2SelectBigRing2,BigRing 2
+HairAccessory2CustomizableFluffyEars2SelectTag,Tag
+HairAccessory2CustomizableFluffyEars3ModuleStud1,Stud 1
+HairAccessory2CustomizableFluffyEars3ModuleStud2,Stud 2
+HairAccessory2CustomizableFluffyEars3ModuleStud3,Stud 3
+HairAccessory2CustomizableFluffyEars3ModuleStud4,Stud 4
+HairAccessory2CustomizableFluffyEars3ModuleBar,Bar
+HairAccessory2CustomizableFluffyEars3ModuleBells,Bells
+HairAccessory2CustomizableFluffyEars3ModuleSmallRing1,SmallRing 1
+HairAccessory2CustomizableFluffyEars3ModuleSmallRing2,SmallRing 2
+HairAccessory2CustomizableFluffyEars3ModuleSmallRing3,SmallRing 3
+HairAccessory2CustomizableFluffyEars3ModuleSmallRing4,SmallRing 4
+HairAccessory2CustomizableFluffyEars3ModuleBigRing1,BigRing 1
+HairAccessory2CustomizableFluffyEars3ModuleBigRing2,BigRing 2
+HairAccessory2CustomizableFluffyEars3ModuleTag,Tag
+HairAccessory2CustomizableFluffyEars3Options10,None
+HairAccessory2CustomizableFluffyEars3Options11,Left
+HairAccessory2CustomizableFluffyEars3Options12,Right
+HairAccessory2CustomizableFluffyEars3Options13,Both
+HairAccessory2CustomizableFluffyEars3Options20,None
+HairAccessory2CustomizableFluffyEars3Options21,Left
+HairAccessory2CustomizableFluffyEars3Options22,Right
+HairAccessory2CustomizableFluffyEars3Options23,Both
+HairAccessory2CustomizableFluffyEars3Options30,None
+HairAccessory2CustomizableFluffyEars3Options31,Left
+HairAccessory2CustomizableFluffyEars3Options32,Right
+HairAccessory2CustomizableFluffyEars3Options33,Both
+HairAccessory2CustomizableFluffyEars3Options40,None
+HairAccessory2CustomizableFluffyEars3Options41,Left
+HairAccessory2CustomizableFluffyEars3Options42,Right
+HairAccessory2CustomizableFluffyEars3Options43,Both
+HairAccessory2CustomizableFluffyEars3Optionb10,None
+HairAccessory2CustomizableFluffyEars3Optionb11,Left
+HairAccessory2CustomizableFluffyEars3Optionb12,Right
+HairAccessory2CustomizableFluffyEars3Optionb13,Both
+HairAccessory2CustomizableFluffyEars3Optionb20,None
+HairAccessory2CustomizableFluffyEars3Optionb21,Left
+HairAccessory2CustomizableFluffyEars3Optionb22,Right
+HairAccessory2CustomizableFluffyEars3Optionb23,Both
+HairAccessory2CustomizableFluffyEars3Optionr10,None
+HairAccessory2CustomizableFluffyEars3Optionr11,Left
+HairAccessory2CustomizableFluffyEars3Optionr12,Right
+HairAccessory2CustomizableFluffyEars3Optionr13,Both
+HairAccessory2CustomizableFluffyEars3Optionr20,None
+HairAccessory2CustomizableFluffyEars3Optionr21,Left
+HairAccessory2CustomizableFluffyEars3Optionr22,Right
+HairAccessory2CustomizableFluffyEars3Optionr23,Both
+HairAccessory2CustomizableFluffyEars3Optionr30,None
+HairAccessory2CustomizableFluffyEars3Optionr31,Left
+HairAccessory2CustomizableFluffyEars3Optionr32,Right
+HairAccessory2CustomizableFluffyEars3Optionr33,Both
+HairAccessory2CustomizableFluffyEars3Optionr40,None
+HairAccessory2CustomizableFluffyEars3Optionr41,Left
+HairAccessory2CustomizableFluffyEars3Optionr42,Right
+HairAccessory2CustomizableFluffyEars3Optionr43,Both
+HairAccessory2CustomizableFluffyEars3Optionbr10,None
+HairAccessory2CustomizableFluffyEars3Optionbr11,Left
+HairAccessory2CustomizableFluffyEars3Optionbr12,Right
+HairAccessory2CustomizableFluffyEars3Optionbr13,Both
+HairAccessory2CustomizableFluffyEars3Optionbr20,None
+HairAccessory2CustomizableFluffyEars3Optionbr21,Left
+HairAccessory2CustomizableFluffyEars3Optionbr22,Right
+HairAccessory2CustomizableFluffyEars3Optionbr23,Both
+HairAccessory2CustomizableFluffyEars3Optiont10,None
+HairAccessory2CustomizableFluffyEars3Optiont11,Left
+HairAccessory2CustomizableFluffyEars3Optiont12,Right
+HairAccessory2CustomizableFluffyEars3Optiont13,Both
+HairAccessory2CustomizableFluffyEars3SelectBase,Select Accessory
+HairAccessory2CustomizableFluffyEars3SelectStud1,Stud 1
+HairAccessory2CustomizableFluffyEars3SelectStud2,Stud 2
+HairAccessory2CustomizableFluffyEars3SelectStud3,Stud 3
+HairAccessory2CustomizableFluffyEars3SelectStud4,Stud 4
+HairAccessory2CustomizableFluffyEars3SelectBar,Bar
+HairAccessory2CustomizableFluffyEars3SelectBells,Bells
+HairAccessory2CustomizableFluffyEars3SelectSmallRing1,SmallRing 1
+HairAccessory2CustomizableFluffyEars3SelectSmallRing2,SmallRing 2
+HairAccessory2CustomizableFluffyEars3SelectSmallRing3,SmallRing 3
+HairAccessory2CustomizableFluffyEars3SelectSmallRing4,SmallRing 4
+HairAccessory2CustomizableFluffyEars3SelectBigRing1,BigRing 1
+HairAccessory2CustomizableFluffyEars3SelectBigRing2,BigRing 2
+HairAccessory2CustomizableFluffyEars3SelectTag,Tag
+HairAccessory2CustomizableCatEarsModuleStud1,Stud 1
+HairAccessory2CustomizableCatEarsModuleStud2,Stud 2
+HairAccessory2CustomizableCatEarsModuleStud3,Stud 3
+HairAccessory2CustomizableCatEarsModuleStud4,Stud 4
+HairAccessory2CustomizableCatEarsModuleBar,Bar
+HairAccessory2CustomizableCatEarsModuleBells,Bells
+HairAccessory2CustomizableCatEarsModuleSmallRing1,SmallRing 1
+HairAccessory2CustomizableCatEarsModuleSmallRing2,SmallRing 2
+HairAccessory2CustomizableCatEarsModuleSmallRing3,SmallRing 3
+HairAccessory2CustomizableCatEarsModuleSmallRing4,SmallRing 4
+HairAccessory2CustomizableCatEarsModuleBigRing1,BigRing 1
+HairAccessory2CustomizableCatEarsModuleBigRing2,BigRing 2
+HairAccessory2CustomizableCatEarsModuleTag,Tag
+HairAccessory2CustomizableCatEarsOptions10,None
+HairAccessory2CustomizableCatEarsOptions11,Left
+HairAccessory2CustomizableCatEarsOptions12,Right
+HairAccessory2CustomizableCatEarsOptions13,Both
+HairAccessory2CustomizableCatEarsOptions20,None
+HairAccessory2CustomizableCatEarsOptions21,Left
+HairAccessory2CustomizableCatEarsOptions22,Right
+HairAccessory2CustomizableCatEarsOptions23,Both
+HairAccessory2CustomizableCatEarsOptions30,None
+HairAccessory2CustomizableCatEarsOptions31,Left
+HairAccessory2CustomizableCatEarsOptions32,Right
+HairAccessory2CustomizableCatEarsOptions33,Both
+HairAccessory2CustomizableCatEarsOptions40,None
+HairAccessory2CustomizableCatEarsOptions41,Left
+HairAccessory2CustomizableCatEarsOptions42,Right
+HairAccessory2CustomizableCatEarsOptions43,Both
+HairAccessory2CustomizableCatEarsOptionb10,None
+HairAccessory2CustomizableCatEarsOptionb11,Left
+HairAccessory2CustomizableCatEarsOptionb12,Right
+HairAccessory2CustomizableCatEarsOptionb13,Both
+HairAccessory2CustomizableCatEarsOptionb20,None
+HairAccessory2CustomizableCatEarsOptionb21,Left
+HairAccessory2CustomizableCatEarsOptionb22,Right
+HairAccessory2CustomizableCatEarsOptionb23,Both
+HairAccessory2CustomizableCatEarsOptionr10,None
+HairAccessory2CustomizableCatEarsOptionr11,Left
+HairAccessory2CustomizableCatEarsOptionr12,Right
+HairAccessory2CustomizableCatEarsOptionr13,Both
+HairAccessory2CustomizableCatEarsOptionr20,None
+HairAccessory2CustomizableCatEarsOptionr21,Left
+HairAccessory2CustomizableCatEarsOptionr22,Right
+HairAccessory2CustomizableCatEarsOptionr23,Both
+HairAccessory2CustomizableCatEarsOptionr30,None
+HairAccessory2CustomizableCatEarsOptionr31,Left
+HairAccessory2CustomizableCatEarsOptionr32,Right
+HairAccessory2CustomizableCatEarsOptionr33,Both
+HairAccessory2CustomizableCatEarsOptionr40,None
+HairAccessory2CustomizableCatEarsOptionr41,Left
+HairAccessory2CustomizableCatEarsOptionr42,Right
+HairAccessory2CustomizableCatEarsOptionr43,Both
+HairAccessory2CustomizableCatEarsOptionbr10,None
+HairAccessory2CustomizableCatEarsOptionbr11,Left
+HairAccessory2CustomizableCatEarsOptionbr12,Right
+HairAccessory2CustomizableCatEarsOptionbr13,Both
+HairAccessory2CustomizableCatEarsOptionbr20,None
+HairAccessory2CustomizableCatEarsOptionbr21,Left
+HairAccessory2CustomizableCatEarsOptionbr22,Right
+HairAccessory2CustomizableCatEarsOptionbr23,Both
+HairAccessory2CustomizableCatEarsOptiont10,None
+HairAccessory2CustomizableCatEarsOptiont11,Left
+HairAccessory2CustomizableCatEarsOptiont12,Right
+HairAccessory2CustomizableCatEarsOptiont13,Both
+HairAccessory2CustomizableCatEarsSelectBase,Select Accessory
+HairAccessory2CustomizableCatEarsSelectStud1,Stud 1
+HairAccessory2CustomizableCatEarsSelectStud2,Stud 2
+HairAccessory2CustomizableCatEarsSelectStud3,Stud 3
+HairAccessory2CustomizableCatEarsSelectStud4,Stud 4
+HairAccessory2CustomizableCatEarsSelectBar,Bar
+HairAccessory2CustomizableCatEarsSelectBells,Bells
+HairAccessory2CustomizableCatEarsSelectSmallRing1,SmallRing 1
+HairAccessory2CustomizableCatEarsSelectSmallRing2,SmallRing 2
+HairAccessory2CustomizableCatEarsSelectSmallRing3,SmallRing 3
+HairAccessory2CustomizableCatEarsSelectSmallRing4,SmallRing 4
+HairAccessory2CustomizableCatEarsSelectBigRing1,BigRing 1
+HairAccessory2CustomizableCatEarsSelectBigRing2,BigRing 2
+HairAccessory2CustomizableCatEarsSelectTag,Tag
+HairAccessory2CustomizableElfEarsModuleStud1,Stud 1
+HairAccessory2CustomizableElfEarsModuleStud2,Stud 2
+HairAccessory2CustomizableElfEarsModuleStud3,Stud 3
+HairAccessory2CustomizableElfEarsModuleStud4,Stud 4
+HairAccessory2CustomizableElfEarsModuleBar,Bar
+HairAccessory2CustomizableElfEarsModuleBells,Bells
+HairAccessory2CustomizableElfEarsModuleSmallRing1,SmallRing 1
+HairAccessory2CustomizableElfEarsModuleSmallRing2,SmallRing 2
+HairAccessory2CustomizableElfEarsModuleSmallRing3,SmallRing 3
+HairAccessory2CustomizableElfEarsModuleSmallRing4,SmallRing 4
+HairAccessory2CustomizableElfEarsModuleBigRing1,BigRing 1
+HairAccessory2CustomizableElfEarsModuleBigRing2,BigRing 2
+HairAccessory2CustomizableElfEarsModuleTag,Tag
+HairAccessory2CustomizableElfEarsOptions10,None
+HairAccessory2CustomizableElfEarsOptions11,Left
+HairAccessory2CustomizableElfEarsOptions12,Right
+HairAccessory2CustomizableElfEarsOptions13,Both
+HairAccessory2CustomizableElfEarsOptions20,None
+HairAccessory2CustomizableElfEarsOptions21,Left
+HairAccessory2CustomizableElfEarsOptions22,Right
+HairAccessory2CustomizableElfEarsOptions23,Both
+HairAccessory2CustomizableElfEarsOptions30,None
+HairAccessory2CustomizableElfEarsOptions31,Left
+HairAccessory2CustomizableElfEarsOptions32,Right
+HairAccessory2CustomizableElfEarsOptions33,Both
+HairAccessory2CustomizableElfEarsOptions40,None
+HairAccessory2CustomizableElfEarsOptions41,Left
+HairAccessory2CustomizableElfEarsOptions42,Right
+HairAccessory2CustomizableElfEarsOptions43,Both
+HairAccessory2CustomizableElfEarsOptionb10,None
+HairAccessory2CustomizableElfEarsOptionb11,Left
+HairAccessory2CustomizableElfEarsOptionb12,Right
+HairAccessory2CustomizableElfEarsOptionb13,Both
+HairAccessory2CustomizableElfEarsOptionb20,None
+HairAccessory2CustomizableElfEarsOptionb21,Left
+HairAccessory2CustomizableElfEarsOptionb22,Right
+HairAccessory2CustomizableElfEarsOptionb23,Both
+HairAccessory2CustomizableElfEarsOptionr10,None
+HairAccessory2CustomizableElfEarsOptionr11,Left
+HairAccessory2CustomizableElfEarsOptionr12,Right
+HairAccessory2CustomizableElfEarsOptionr13,Both
+HairAccessory2CustomizableElfEarsOptionr20,None
+HairAccessory2CustomizableElfEarsOptionr21,Left
+HairAccessory2CustomizableElfEarsOptionr22,Right
+HairAccessory2CustomizableElfEarsOptionr23,Both
+HairAccessory2CustomizableElfEarsOptionr30,None
+HairAccessory2CustomizableElfEarsOptionr31,Left
+HairAccessory2CustomizableElfEarsOptionr32,Right
+HairAccessory2CustomizableElfEarsOptionr33,Both
+HairAccessory2CustomizableElfEarsOptionr40,None
+HairAccessory2CustomizableElfEarsOptionr41,Left
+HairAccessory2CustomizableElfEarsOptionr42,Right
+HairAccessory2CustomizableElfEarsOptionr43,Both
+HairAccessory2CustomizableElfEarsOptionbr10,None
+HairAccessory2CustomizableElfEarsOptionbr11,Left
+HairAccessory2CustomizableElfEarsOptionbr12,Right
+HairAccessory2CustomizableElfEarsOptionbr13,Both
+HairAccessory2CustomizableElfEarsOptionbr20,None
+HairAccessory2CustomizableElfEarsOptionbr21,Left
+HairAccessory2CustomizableElfEarsOptionbr22,Right
+HairAccessory2CustomizableElfEarsOptionbr23,Both
+HairAccessory2CustomizableElfEarsOptiont10,None
+HairAccessory2CustomizableElfEarsOptiont11,Left
+HairAccessory2CustomizableElfEarsOptiont12,Right
+HairAccessory2CustomizableElfEarsOptiont13,Both
+HairAccessory2CustomizableElfEarsSelectBase,Select Accessory
+HairAccessory2CustomizableElfEarsSelectStud1,Stud 1
+HairAccessory2CustomizableElfEarsSelectStud2,Stud 2
+HairAccessory2CustomizableElfEarsSelectStud3,Stud 3
+HairAccessory2CustomizableElfEarsSelectStud4,Stud 4
+HairAccessory2CustomizableElfEarsSelectBar,Bar
+HairAccessory2CustomizableElfEarsSelectBells,Bells
+HairAccessory2CustomizableElfEarsSelectSmallRing1,SmallRing 1
+HairAccessory2CustomizableElfEarsSelectSmallRing2,SmallRing 2
+HairAccessory2CustomizableElfEarsSelectSmallRing3,SmallRing 3
+HairAccessory2CustomizableElfEarsSelectSmallRing4,SmallRing 4
+HairAccessory2CustomizableElfEarsSelectBigRing1,BigRing 1
+HairAccessory2CustomizableElfEarsSelectBigRing2,BigRing 2
+HairAccessory2CustomizableElfEarsSelectTag,Tag
+HairAccessory2CustomizableCowEarsModuleStud1,Stud 1
+HairAccessory2CustomizableCowEarsModuleStud2,Stud 2
+HairAccessory2CustomizableCowEarsModuleStud3,Stud 3
+HairAccessory2CustomizableCowEarsModuleStud4,Stud 4
+HairAccessory2CustomizableCowEarsModuleBar,Bar
+HairAccessory2CustomizableCowEarsModuleBells,Bells
+HairAccessory2CustomizableCowEarsModuleSmallRing1,SmallRing 1
+HairAccessory2CustomizableCowEarsModuleSmallRing2,SmallRing 2
+HairAccessory2CustomizableCowEarsModuleSmallRing3,SmallRing 3
+HairAccessory2CustomizableCowEarsModuleSmallRing4,SmallRing 4
+HairAccessory2CustomizableCowEarsModuleBigRing1,BigRing 1
+HairAccessory2CustomizableCowEarsModuleBigRing2,BigRing 2
+HairAccessory2CustomizableCowEarsModuleTag,Tag
+HairAccessory2CustomizableCowEarsOptions10,None
+HairAccessory2CustomizableCowEarsOptions11,Left
+HairAccessory2CustomizableCowEarsOptions12,Right
+HairAccessory2CustomizableCowEarsOptions13,Both
+HairAccessory2CustomizableCowEarsOptions20,None
+HairAccessory2CustomizableCowEarsOptions21,Left
+HairAccessory2CustomizableCowEarsOptions22,Right
+HairAccessory2CustomizableCowEarsOptions23,Both
+HairAccessory2CustomizableCowEarsOptions30,None
+HairAccessory2CustomizableCowEarsOptions31,Left
+HairAccessory2CustomizableCowEarsOptions32,Right
+HairAccessory2CustomizableCowEarsOptions33,Both
+HairAccessory2CustomizableCowEarsOptions40,None
+HairAccessory2CustomizableCowEarsOptions41,Left
+HairAccessory2CustomizableCowEarsOptions42,Right
+HairAccessory2CustomizableCowEarsOptions43,Both
+HairAccessory2CustomizableCowEarsOptionb10,None
+HairAccessory2CustomizableCowEarsOptionb11,Left
+HairAccessory2CustomizableCowEarsOptionb12,Right
+HairAccessory2CustomizableCowEarsOptionb13,Both
+HairAccessory2CustomizableCowEarsOptionb20,None
+HairAccessory2CustomizableCowEarsOptionb21,Left
+HairAccessory2CustomizableCowEarsOptionb22,Right
+HairAccessory2CustomizableCowEarsOptionb23,Both
+HairAccessory2CustomizableCowEarsOptionr10,None
+HairAccessory2CustomizableCowEarsOptionr11,Left
+HairAccessory2CustomizableCowEarsOptionr12,Right
+HairAccessory2CustomizableCowEarsOptionr13,Both
+HairAccessory2CustomizableCowEarsOptionr20,None
+HairAccessory2CustomizableCowEarsOptionr21,Left
+HairAccessory2CustomizableCowEarsOptionr22,Right
+HairAccessory2CustomizableCowEarsOptionr23,Both
+HairAccessory2CustomizableCowEarsOptionr30,None
+HairAccessory2CustomizableCowEarsOptionr31,Left
+HairAccessory2CustomizableCowEarsOptionr32,Right
+HairAccessory2CustomizableCowEarsOptionr33,Both
+HairAccessory2CustomizableCowEarsOptionr40,None
+HairAccessory2CustomizableCowEarsOptionr41,Left
+HairAccessory2CustomizableCowEarsOptionr42,Right
+HairAccessory2CustomizableCowEarsOptionr43,Both
+HairAccessory2CustomizableCowEarsOptionbr10,None
+HairAccessory2CustomizableCowEarsOptionbr11,Left
+HairAccessory2CustomizableCowEarsOptionbr12,Right
+HairAccessory2CustomizableCowEarsOptionbr13,Both
+HairAccessory2CustomizableCowEarsOptionbr20,None
+HairAccessory2CustomizableCowEarsOptionbr21,Left
+HairAccessory2CustomizableCowEarsOptionbr22,Right
+HairAccessory2CustomizableCowEarsOptionbr23,Both
+HairAccessory2CustomizableCowEarsOptiont10,None
+HairAccessory2CustomizableCowEarsOptiont11,Left
+HairAccessory2CustomizableCowEarsOptiont12,Right
+HairAccessory2CustomizableCowEarsOptiont13,Both
+HairAccessory2CustomizableCowEarsSelectBase,Select Accessory
+HairAccessory2CustomizableCowEarsSelectStud1,Stud 1
+HairAccessory2CustomizableCowEarsSelectStud2,Stud 2
+HairAccessory2CustomizableCowEarsSelectStud3,Stud 3
+HairAccessory2CustomizableCowEarsSelectStud4,Stud 4
+HairAccessory2CustomizableCowEarsSelectBar,Bar
+HairAccessory2CustomizableCowEarsSelectBells,Bells
+HairAccessory2CustomizableCowEarsSelectSmallRing1,SmallRing 1
+HairAccessory2CustomizableCowEarsSelectSmallRing2,SmallRing 2
+HairAccessory2CustomizableCowEarsSelectSmallRing3,SmallRing 3
+HairAccessory2CustomizableCowEarsSelectSmallRing4,SmallRing 4
+HairAccessory2CustomizableCowEarsSelectBigRing1,BigRing 1
+HairAccessory2CustomizableCowEarsSelectBigRing2,BigRing 2
+HairAccessory2CustomizableCowEarsSelectTag,Tag
 HairBackHairBack58Select,Select Type.
 HairBackHairBack58SetBoth,SourceCharacter changes DestinationCharacter hair.
 HairBackHairBack58SetLeftOnly,SourceCharacter changes DestinationCharacter hair.
@@ -1558,6 +2538,16 @@ HairBackHairBack61SetRightOnly,SourceCharacter changes DestinationCharacter hair
 HairBackHairBack61Both,Both
 HairBackHairBack61LeftOnly,Left Only
 HairBackHairBack61RightOnly,Right Only
+HairBackHairBack61RightOnly,Right Only
+HairBackHairBack61bSelect,Select Type.
+HairBackHairBack61bSetBoth,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack61bSetLeftOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack61bSetRightOnly,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack61bSetBehind,SourceCharacter changes DestinationCharacter hair.
+HairBackHairBack61bBoth,Both
+HairBackHairBack61bLeftOnly,Left Only
+HairBackHairBack61bRightOnly,Right Only
+HairBackHairBack61bBehind,Behind
 HairBackHairBack65Select,Select Type.
 HairBackHairBack65SetBoth,SourceCharacter changes DestinationCharacter hair.
 HairBackHairBack65SetLeftOnly,SourceCharacter changes DestinationCharacter hair.
@@ -1737,6 +2727,8 @@ HandAccessoryLeftRingsModuleMiddle,Middle finger
 HandAccessoryLeftRingsModulePinkie,Pinkie
 HandAccessoryLeftRingsModuleRing,Ring finger
 HandAccessoryLeftRingsModuleThumb,Thumb
+HandAccessoryLeftRingsModuleFingernails,Nails/Claws
+HandAccessoryLeftRingsModuleRing,Ring finger
 HandAccessoryLeftRingsOptioni0,None
 HandAccessoryLeftRingsOptioni1,Steel Ring
 HandAccessoryLeftRingsOptionm0,None
@@ -1749,17 +2741,23 @@ HandAccessoryLeftRingsOptionr1,Steel Ring
 HandAccessoryLeftRingsOptionr2,Wedding Ring
 HandAccessoryLeftRingsOptiont0,None
 HandAccessoryLeftRingsOptiont1,Steel Ring
+HandAccessoryLeftRingsOptionf0,None
+HandAccessoryLeftRingsOptionf1,Nails
+HandAccessoryLeftRingsOptionf2,Claws
 HandAccessoryLeftRingsSelectBase,Choose your rings
 HandAccessoryLeftRingsSelectIndex,Choose a ring for the Index
 HandAccessoryLeftRingsSelectMiddle,Choose a ring for the Middle finger
 HandAccessoryLeftRingsSelectPinkie,Choose a ring for the Pinkie
 HandAccessoryLeftRingsSelectRing,Choose a ring for the Ring finger
 HandAccessoryLeftRingsSelectThumb,Choose a ring for the Thumb
+HandAccessoryLeftRingsSelectFingernails,Add left hand nails or claws?
 HandAccessoryRightRingsModuleIndex,Index
 HandAccessoryRightRingsModuleMiddle,Middle finger
 HandAccessoryRightRingsModulePinkie,Pinkie
 HandAccessoryRightRingsModuleRing,Ring finger
+HandAccessoryRightRingsModuleRingGem,Ring Gem
 HandAccessoryRightRingsModuleThumb,Thumb
+HandAccessoryRightRingsModuleFingernails,Nails/Claws
 HandAccessoryRightRingsOptioni0,None
 HandAccessoryRightRingsOptioni1,Steel Ring
 HandAccessoryRightRingsOptionm0,None
@@ -1770,14 +2768,21 @@ HandAccessoryRightRingsOptionp2,Honor Ring
 HandAccessoryRightRingsOptionr0,None
 HandAccessoryRightRingsOptionr1,Steel Ring
 HandAccessoryRightRingsOptionr2,Wedding Ring
+HandAccessoryRightRingsOptiong0,None
+HandAccessoryRightRingsOptiong1,Gem
 HandAccessoryRightRingsOptiont0,None
 HandAccessoryRightRingsOptiont1,Steel Ring
+HandAccessoryRightRingsOptionf0,None
+HandAccessoryRightRingsOptionf1,Nails
+HandAccessoryRightRingsOptionf2,Claws
 HandAccessoryRightRingsSelectBase,Choose your rings
 HandAccessoryRightRingsSelectIndex,Choose a ring for the Index
 HandAccessoryRightRingsSelectMiddle,Choose a ring for the Middle finger
 HandAccessoryRightRingsSelectPinkie,Choose a ring for the Pinkie
 HandAccessoryRightRingsSelectRing,Choose a ring for the Ring finger
+HandAccessoryRightRingsSelectRingGem,Add a gem to the ring finger?
 HandAccessoryRightRingsSelectThumb,Choose a ring for the Thumb
+HandAccessoryRightRingsSelectFingernails,Add right hand nails or claws?
 HatBallCapBackSelect,Select strap location.
 HatBallCapBackStrapOver,Over the hair
 HatBallCapBackStrapUnder,Under the hair
@@ -1805,6 +2810,11 @@ HatLatexHabitSelect,Choose Fit
 HatLatexHabitSetLoose,SourceCharacter loosens DestinationCharacter latex habit.
 HatLatexHabitSetTight,SourceCharacter tightens DestinationCharacter latex habit.
 HatLatexHabitTight,Tight
+HatNPCBalloonSelect,Select the balloon type
+HatNPCBalloonExclamationMark,Exclamation
+HatNPCBalloonQuestionMark,Question
+HatNPCBalloonHeart,Heart
+HatNPCBalloonArrow,Arrow
 HatNunHabitAss,Ass
 HatNunHabitBlank,Blank
 HatNunHabitBreasts,Breasts
@@ -1855,6 +2865,26 @@ HatSwimCapSelectHair,Adjust Hair Openings
 HatSwimCapSelectPattern,Choose Pattern
 HatSwimCapSetHair,SourceCharacter adjusts DestinationCharacter swimcap hair openings.
 HatSwimCapSetPattern,SourceCharacter swaps DestinationCharacter swimcap pattern.
+HatJesterHat,Jester hat
+HatJesterHatModuleLeftPart,Left Prong
+HatJesterHatModuleRightPart,Right Prong
+HatJesterHatModuleTopPart,Top Prong
+HatJesterHatOptionl0,None
+HatJesterHatOptionl1,Stripes
+HatJesterHatOptionl2,Dots
+HatJesterHatOptionl3,Stripes & Dots
+HatJesterHatOptionr0,None
+HatJesterHatOptionr1,Stripes
+HatJesterHatOptionr2,Dots
+HatJesterHatOptionr3,Stripes & Dots
+HatJesterHatOptiont0,None
+HatJesterHatOptiont1,Stripes
+HatJesterHatOptiont2,Dots
+HatJesterHatOptiont3,Stripes & Dots
+HatJesterHatSelectBase,Customise your Jester Hat
+HatJesterHatSelectLeftPart,Choose left style
+HatJesterHatSelectRightPart,Choose right style
+HatJesterHatSelectTopPart,Choose top style
 HeadphoneEarPlugsPoseHeavy,Heavy
 HeadphoneEarPlugsPoseLight,Light
 HeadphoneEarPlugsPoseNoiseCancelling,Noise-Cancelling
@@ -2000,6 +3030,26 @@ ItemArmsBitchSuitSetz0,SourceCharacter zips up DestinationCharacter AssetName.
 ItemArmsBitchSuitSetz1,SourceCharacter unzips DestinationCharacter AssetName.
 ItemArmsBitchSuitSetz2,"SourceCharacter uses a seamless AssetName on DestinationCharacterName body, fully covering TargetPronounObject."
 ItemArmsBitchSuitSetz3,SourceCharacter unzips DestinationCharacter AssetName and fully exposes TargetPronounPossessive breasts and pussy.
+ItemArmsPawPaddedPetsuitArmsSelect,Select Padding
+ItemArmsPawPaddedPetsuitArmsSetNone,SourceCharacter puts the petsuit arms without paws on DestinationCharacter arms.
+ItemArmsPawPaddedPetsuitArmsSetPadding,SourceCharacter puts the petsuit arms with paws on DestinationCharacter arms.
+ItemArmsPawPaddedPetsuitArmsNone,No Paw Padding
+ItemArmsPawPaddedPetsuitArmsPadding,Paw Padding
+ItemArmsStrappedPetsuitArmsModuleShine,Shine over restraint
+ItemArmsStrappedPetsuitArmsModuleExtras,Extras
+ItemArmsStrappedPetsuitArmsOptiong0,No shine
+ItemArmsStrappedPetsuitArmsOptiong1,Shine
+ItemArmsStrappedPetsuitArmsOptiona0,Normal
+ItemArmsStrappedPetsuitArmsOptiona1,Front Arms Attachment
+ItemArmsStrappedPetsuitArmsOptiona2,Side Arms Attachment
+ItemArmsStrappedPetsuitArmsSelectBase,Configure the restraint.
+ItemArmsStrappedPetsuitArmsSelectShine,Select Shine.
+ItemArmsStrappedPetsuitArmsSelectExtras,Select Extras.
+ItemArmsStrappedPetsuitArmsSetg0,SourceCharacter removes shine from TargetPronounPossessive AssetName.
+ItemArmsStrappedPetsuitArmsSetg1,SourceCharacter adds shine over TargetPronounPossessive AssetName.
+ItemArmsStrappedPetsuitArmsSeta0,SourceCharacter detaches straps from AssetName.
+ItemArmsStrappedPetsuitArmsSeta1,SourceCharacter attaches AssetName in front.
+ItemArmsStrappedPetsuitArmsSeta2,SourceCharacter attaches AssetName to the side.
 ItemArmsCeilingShacklesHeadLevel,On head level
 ItemArmsCeilingShacklesOverhead,Over the head
 ItemArmsCeilingShacklesSetHeadLevel,SourceCharacter lowers the ceiling shackles on TargetCharacter a bit.
@@ -2451,6 +3501,59 @@ ItemBreastFuturisticBraTempC,°C
 ItemBreastFuturisticBraTracking,Tracking Signal:
 ItemBreastFuturisticBraTrackingGood,Good
 ItemBreastWhip,(You clumsily whip your own breast and tummy.  It would be more painful if someone else did it.)
+ItemButtWolfTail3SelectBase,
+ItemButtWolfTail3SelectRotation,Select position:
+ItemButtWolfTail3SelectStyle,Select style:
+ItemButtWolfTail3Optionr0,Top Left
+ItemButtWolfTail3Optionr1,Top Right
+ItemButtWolfTail3Optionr2,Bottom Left
+ItemButtWolfTail3Optionr3,Bottom Right
+ItemButtWolfTail3Options0,Original Style
+ItemButtWolfTail3Options1,Flipped Styles
+ItemButtWolfTail3ModuleStyle,Style
+ItemButtWolfTail3ModuleRotation,Rotation
+ItemButtWolfTail3Setr0,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtWolfTail3Setr1,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtWolfTail3Setr2,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtWolfTail3Setr3,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtWolfTail3Sets0,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtWolfTail3Sets1,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtKittenTail1Select,Select position:
+ItemButtKittenTail1TL,Top Left
+ItemButtKittenTail1TR,Top Right
+ItemButtKittenTail1BL,Bottom Left
+ItemButtKittenTail1BR,Bottom Right
+ItemButtKittenTail1SetTL,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtKittenTail1SetTR,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtKittenTail1SetBL,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtKittenTail1SetBR,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtKittenTail2Select,Select position:
+ItemButtKittenTail2TL,Top Left
+ItemButtKittenTail2TR,Top Right
+ItemButtKittenTail2BL,Bottom Left
+ItemButtKittenTail2BR,Bottom Right
+ItemButtKittenTail2SetTL,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtKittenTail2SetTR,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtKittenTail2SetBL,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtKittenTail2SetBR,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtRaccoonTailPlugSelect,Select position:
+ItemButtRaccoonTailPlugTL,Top Left
+ItemButtRaccoonTailPlugTR,Top Right
+ItemButtRaccoonTailPlugBL,Bottom Left
+ItemButtRaccoonTailPlugBR,Bottom Right
+ItemButtRaccoonTailPlugSetTL,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtRaccoonTailPlugSetTR,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtRaccoonTailPlugSetBL,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtRaccoonTailPlugSetBR,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtFoxTailSelect,Select tail position:
+ItemButtFoxTailTL,Top Left
+ItemButtFoxTailTR,Top Right
+ItemButtFoxTailBL,Bottom Left
+ItemButtFoxTailBR,Bottom Right
+ItemButtFoxTailSetTL,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtFoxTailSetTR,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtFoxTailSetBL,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
+ItemButtFoxTailSetBR,SourceCharacter turns the plug around in DestinationCharacter butt to set it in a better position.
 ItemButtAnalBeads2Select,Select the number of inserted beads
 ItemButtAnalBeads2Set1Decrease,SourceCharacter pulls a bead from DestinationCharacter butt
 ItemButtAnalBeads2Set1Increase,SourceCharacter inserts a bead in DestinationCharacter butt
@@ -2600,6 +3703,19 @@ ItemDevicesInflatableBodyBagSetBloated,SourceCharacter adjusts DestinationCharac
 ItemDevicesInflatableBodyBagSetInflated,SourceCharacter adjusts DestinationCharacter inflatable body bag to be half filled.
 ItemDevicesInflatableBodyBagSetLight,SourceCharacter adjusts DestinationCharacter inflatable body bag to be only lightly filled.
 ItemDevicesInflatableBodyBagSetMax,SourceCharacter adjusts DestinationCharacter inflatable body bag to fill the maximum amount.
+ItemDevicesInflatableRestraintBagModuleHood,Hood
+ItemDevicesInflatableRestraintBagModuleInflate,Inflation
+ItemDevicesInflatableRestraintBagModuleLinkCanister,Canister
+ItemDevicesInflatableRestraintBagSelectBase,Configure the Inflatable Restraint Bag
+ItemDevicesInflatableRestraintBagSelectInflate,Set Inflation
+ItemDevicesInflatableRestraintBagSelectHood,Set Hood
+ItemDevicesInflatableRestraintBagSelectLinkCanister,Set Canister
+ItemDevicesInflatableRestraintBagOptiono0,Deflated
+ItemDevicesInflatableRestraintBagOptiono1,Inflated
+ItemDevicesInflatableRestraintBagOptiont0,No Hood
+ItemDevicesInflatableRestraintBagOptiont1,Hood
+ItemDevicesInflatableRestraintBagOptiong0,No Canister
+ItemDevicesInflatableRestraintBagOptiong1,Canister
 ItemDevicesKabeshiriWallModuleArms,Arms
 ItemDevicesKabeshiriWallModuleCum,Cum Options
 ItemDevicesKabeshiriWallModuleLegs,Legs
@@ -2652,6 +3768,9 @@ ItemDevicesLockerSetVentless,SourceCharacter removes vents to DestinationCharact
 ItemDevicesLockerSetVents,SourceCharacter adds vents to DestinationCharacter locker.
 ItemDevicesLockerVentless,Ventless
 ItemDevicesLockerVents,Vents
+ItemDevicesLongBagOpaque,Opaque
+ItemDevicesLongBagSelect,Select Appearance
+ItemDevicesLongBagTranslucent,Translucent
 ItemDevicesLuckyWheelModuleArrow,Arrow
 ItemDevicesLuckyWheelModuleGame,Game
 ItemDevicesLuckyWheelModuleMisc,Extras
@@ -2696,14 +3815,16 @@ ItemDevicesPetBedSetBlanket,SourceCharacter gives TargetCharacter a blanket.
 ItemDevicesPetBedSetNoBlanket,SourceCharacter removes the blanket from TargetCharacter.
 ItemDevicesPoleSelect,Select Pole state
 ItemDevicesPoleSetTied,SourceCharacter ties TargetCharacter to the pole.
+ItemDevicesPoleSetTiedElbow,SourceCharacter ties TargetCharacter to the pole.
 ItemDevicesPoleSetUntied,SourceCharacter unties TargetCharacter from the pole.
 ItemDevicesPoleTied,Tie to pole
+ItemDevicesPoleTiedElbow,Tie elbows to pole
 ItemDevicesPoleUntied,Untie from pole
 ItemDevicesTheHangingFrameInflated,Inflated
 ItemDevicesTheHangingFrameNormal,Frame
 ItemDevicesTheHangingFrameSelect,Select option
 ItemDevicesTheHangingFrameSetInflated,SourceCharacter adjusts DestinationCharacter Hanging Frame to inflated frame.
-ItemDevicesTheHangingFrameSetNormal,SourceCharacter adjusts DestinationCharacter Hanging Frame to standart frame.
+ItemDevicesTheHangingFrameSetNormal,SourceCharacter adjusts DestinationCharacter Hanging Frame to standard frame.
 ItemDevicesTrolleyClosed,Closed
 ItemDevicesTrolleyOpen,Open
 ItemDevicesTrolleySelect,Select Options
@@ -2713,8 +3834,8 @@ ItemDevicesVacBedDeluxeModuleArms,Arm Position
 ItemDevicesVacBedDeluxeModuleLegs,Leg Position
 ItemDevicesVacBedDeluxeOptiona0,Arms Down
 ItemDevicesVacBedDeluxeOptiona1,Arms Yoked
-ItemDevicesVacBedDeluxeOptionl0,Legs Together
-ItemDevicesVacBedDeluxeOptionl1,Legs Spread
+ItemDevicesVacBedDeluxeOptionl0,Legs Spread
+ItemDevicesVacBedDeluxeOptionl1,Legs Together
 ItemDevicesVacBedDeluxeSelectArms,Select arm position
 ItemDevicesVacBedDeluxeSelectBase,Select options
 ItemDevicesVacBedDeluxeSelectLegs,Select leg position
@@ -2771,6 +3892,78 @@ ItemDevicesWoodenRackSett2,SourceCharacter tightens DestinationCharacter ropes.
 ItemDevicesWoodenRackSett3,SourceCharacter shackles DestinationCharacter wrists.
 ItemDevicesWoodenRackSett4,SourceCharacter tightens DestinationCharacter chains.
 ItemDevicesWoodenRackSett5,SourceCharacter puts DestinationCharacter neck and wrists in stocks.
+ItemDevicesHighchairSelectBase,Select an option
+ItemDevicesHighchairModuleDrink,Drink
+ItemDevicesHighchairSelectDrink,Select drink
+ItemDevicesHighchairOptionb0,No Drink
+ItemDevicesHighchairSetb0,SourceCharacter removes DestinationCharacter drink
+ItemDevicesHighchairOptionb1,Bottle of Milk
+ItemDevicesHighchairSetb1,SourceCharacter gives DestinationCharacter bottle of milk
+ItemDevicesHighchairOptionb2,Sippy Cup
+ItemDevicesHighchairSetb2,SourceCharacter gives DestinationCharacter sippy cup
+ItemDevicesHighchairModuleFood,Food
+ItemDevicesHighchairSelectFood,Select food
+ItemDevicesHighchairOptiona0,No Food
+ItemDevicesHighchairSeta0,SourceCharacter removes DestinationCharacter food
+ItemDevicesHighchairOptiona1,Baby Food
+ItemDevicesHighchairSeta1,SourceCharacter gives DestinationCharacter baby food
+ItemDevicesHighchairOptiona2,Plate of Food
+ItemDevicesHighchairSeta2,SourceCharacter gives DestinationCharacter plate of food
+ItemDevicesHighchairOptiona3,Cookies
+ItemDevicesHighchairSeta3,SourceCharacter gives DestinationCharacter cookies
+ItemDevicesHighchairModuleStains,Stains
+ItemDevicesHighchairSelectStains,Select stain option
+ItemDevicesHighchairOptionc0,No Stains
+ItemDevicesHighchairSetc0,SourceCharacter removes DestinationCharacter stains
+ItemDevicesHighchairOptionc1,Stains
+ItemDevicesHighchairSetc1,DestinationCharacter makes food stains
+ItemDevicesPottySelectBase,Select an option
+ItemDevicesPottySelectText,Select text
+ItemDevicesPottyModuleText,Text
+ItemDevicesPottyOptione0,Text
+ItemDevicesPottySete0,SourceCharacter writes text on DestinationCharacter's potty.
+ItemDevicesGiftBoxOpen,Open Gift
+ItemDevicesGiftBoxClosed,Close Gift
+ItemDevicesGiftBoxSelect,Change Gift
+ItemDevicesGiftBoxSetOpen,SourceCharacter opens the gift.
+ItemDevicesGiftBoxSetClosed,SourceCharacter closes the gift.
+ItemDevicesXFrameSelectBase,Configure the X-Frame
+ItemDevicesXFrameSelectArmRestraint,Select Arm Restraints
+ItemDevicesXFrameSelectLegRestraint,Select Leg Restraints
+ItemDevicesXFrameSelectChains,Select Chains
+ItemDevicesXFrameSelectWaistRope,Select Waist Rope
+ItemDevicesXFrameSelectStains,Select Stains
+ItemDevicesXFrameModuleArmRestraint,Arm Restraints
+ItemDevicesXFrameModuleLegRestraint,Leg Restraints
+ItemDevicesXFrameModuleChains,Chains
+ItemDevicesXFrameModuleWaistRope,Waist Rope
+ItemDevicesXFrameModuleStains,Stains
+ItemDevicesXFrameOptiona0,None
+ItemDevicesXFrameOptiona1,Cuff Loops
+ItemDevicesXFrameOptiona2,Cuff Chains
+ItemDevicesXFrameOptiona3,Rope Ties
+ItemDevicesXFrameOptionb0,None
+ItemDevicesXFrameOptionb1,Cuff Loops
+ItemDevicesXFrameOptionb2,Rope Ties
+ItemDevicesXFrameOptionb3,Ankle & Knees Tied
+ItemDevicesXFrameOptionb4,Legs Tied Behind Cross
+ItemDevicesXFrameOptionc0,None
+ItemDevicesXFrameOptionc1,Chains
+ItemDevicesXFrameOptions0,None
+ItemDevicesXFrameOptions1,Stains
+ItemDevicesXFrameSeta0,SourceCharacter frees DestinationCharacter wrists from the X-Frame.
+ItemDevicesXFrameSeta1,SourceCharacter attaches DestinationCharacter wrist cuffs to the X-Frame.
+ItemDevicesXFrameSeta2,SourceCharacter attaches DestinationCharacter wrist cuffs to the X-Frame with chains.
+ItemDevicesXFrameSeta3,SourceCharacter ties DestinationCharacter wrists to the X-Frame with ropes.
+ItemDevicesXFrameSetb0,SourceCharacter frees DestinationCharacter ankles from the X-Frame.
+ItemDevicesXFrameSetb1,SourceCharacter attaches DestinationCharacter ankle cuffs to the X-Frame.
+ItemDevicesXFrameSetb2,SourceCharacter ties DestinationCharacter ankles to the X-Frame with ropes.
+ItemDevicesXFrameSetb3,SourceCharacter ties DestinationCharacter ankles and knees together with ropes.
+ItemDevicesXFrameSetb4,SourceCharacter ties DestinationCharacter legs behind the X-Frame with ropes.
+ItemDevicesXFrameSetc0,SourceCharacter removes the extra chains on DestinationCharacter X-Frame.
+ItemDevicesXFrameSetc1,SourceCharacter attaches extra chains on DestinationCharacter X-Frame.
+ItemDevicesXFrameSets0,SourceCharacter cleans DestinationCharacter X-Frame from stains.
+ItemDevicesXFrameSets1,SourceCharacter stains DestinationCharacter X-Frame.
 ItemFeetSteelAnkleCuffsChained,Chain Attached
 ItemFeetSteelAnkleCuffsClosed,Attached
 ItemFeetSteelAnkleCuffsNone,Detached
@@ -2788,6 +3981,27 @@ ItemFeetWoodenCuffsSetSpread2,SourceCharacter uses wooden cuffs to lock Destinat
 ItemFeetWoodenCuffsSetSpread3,SourceCharacter uses wooden cuffs to lock DestinationCharacter feet closely together.
 ItemFeetWoodenCuffsSpread2,Widely Spread.
 ItemFeetWoodenCuffsSpread3,Close together.
+ItemHandheldLaptopClosed,Closed
+ItemHandheldLaptopOpen,Open
+ItemHandheldLaptopSelect,Select the laptop style
+ItemHandheldLaptopSetOpen,SourceCharacter opens DestinationCharacter AssetName.
+ItemHandheldLaptopSetClosed,SourceCharacter closes DestinationCharacter AssetName.
+ItemHandheldChocolateModuleType,Change
+ItemHandheldChocolateOptionp0,Wrapped
+ItemHandheldChocolateOptionp1,Foiled
+ItemHandheldChocolateOptionp2,Golden ticket
+ItemHandheldChocolateOptionp3,Chocolate
+ItemHandheldChocolateSetp0,SourceCharacter makes DestinationCharacter AssetName show fully wrapped.
+ItemHandheldChocolateSetp1,SourceCharacter makes DestinationCharacter AssetName show aluminum foil inside the wrapping paper.
+ItemHandheldChocolateSetp2,SourceCharacter opened DestinationCharacter AssetName and found a gold ticket inside!
+ItemHandheldChocolateSetp3,SourceCharacter reveals DestinationCharacter AssetName from the wrapping paper.
+ItemHandheldChocolateSelectBase,Change your bar type
+ItemHandheldChocolateSelectType,Chocolate bar type...
+ItemHandheldDragonPlushSelect,Select Position
+ItemHandheldDragonPlushSetHolding,SourceCharacter holds a cute Dragon Plush!
+ItemHandheldDragonPlushHolding,Holding
+ItemHandheldDragonPlushSetFloor,SourceCharacter places PronounPossessive Dragon Plush on the floor
+ItemHandheldDragonPlushFloor,Floor
 ItemHandheldSmartphoneModuleCase,Cases
 ItemHandheldSmartphoneOptionc0,No Case
 ItemHandheldSmartphoneOptionc1,Matte
@@ -2875,6 +4089,7 @@ ItemHeadDroneMaskModuleLayering,Adv. Layering
 ItemHeadDroneMaskModuleMouth,Mouth
 ItemHeadDroneMaskModulePattern,Pattern
 ItemHeadDroneMaskModuleSight,Lenses
+ItemHeadDroneMaskModuleVisibility,Visibility
 ItemHeadDroneMaskNoLayering,Must be equipped in the head slot
 ItemHeadDroneMaskOptione0,Smooth
 ItemHeadDroneMaskOptione1,Open
@@ -2884,7 +4099,9 @@ ItemHeadDroneMaskOptione4,Holes
 ItemHeadDroneMaskOptione5,Sculpted
 ItemHeadDroneMaskOptione6,Concave
 ItemHeadDroneMaskOptiong0,Off
-ItemHeadDroneMaskOptiong1,On
+ItemHeadDroneMaskOptiong1,Face On
+ItemHeadDroneMaskOptiong2,Pattern On
+ItemHeadDroneMaskOptiong3,All On
 ItemHeadDroneMaskOptionh0,Mask
 ItemHeadDroneMaskOptionh1,Hood
 ItemHeadDroneMaskOptionh2,Total Hood
@@ -2901,14 +4118,28 @@ ItemHeadDroneMaskOptionm3,Smile
 ItemHeadDroneMaskOptionm4,Holes
 ItemHeadDroneMaskOptionm5,Sculpted
 ItemHeadDroneMaskOptionm6,Subtle
+ItemHeadDroneMaskOptionm7,Thin
+ItemHeadDroneMaskOptionm8,ThinOh
 ItemHeadDroneMaskOptionp0,None
 ItemHeadDroneMaskOptionp1,Barcode
 ItemHeadDroneMaskOptionp2,Scarab
 ItemHeadDroneMaskOptionp3,Hexagon
 ItemHeadDroneMaskOptionp4,Lines
 ItemHeadDroneMaskOptionp5,Text
+ItemHeadDroneMaskOptionp6,Machine
+ItemHeadDroneMaskOptionp7,Fishnet
+ItemHeadDroneMaskOptionp8,Hex Grid
+ItemHeadDroneMaskOptionp9,Circle
+ItemHeadDroneMaskOptionp10,Split Circle
+ItemHeadDroneMaskOptionp11,Heart
+ItemHeadDroneMaskOptionp12,Style Heart
+ItemHeadDroneMaskOptionp13,Small Heart
+ItemHeadDroneMaskOptionp14,Lock
+ItemHeadDroneMaskOptionp15,Big X
 ItemHeadDroneMaskOptions0,Opaque
 ItemHeadDroneMaskOptions1,One-Way
+ItemHeadDroneMaskOptionb0,Hide Blush and Face Paint
+ItemHeadDroneMaskOptionb1,Show Blush and Face Paint
 ItemHeadDroneMaskSelectBase,Select Mask Details
 ItemHeadDroneMaskSelectEyes,Select Eye Shape
 ItemHeadDroneMaskSelectGlow,Switch Glow Function
@@ -2917,6 +4148,7 @@ ItemHeadDroneMaskSelectLayering,Advanced Layering
 ItemHeadDroneMaskSelectMouth,Select Mouth Shape
 ItemHeadDroneMaskSelectPattern,Select Mask Pattern
 ItemHeadDroneMaskSelectSight,Select Lens Quality
+ItemHeadDroneMaskSelectVisibility,Select Visibility Options
 ItemHeadDroneMaskSetEyes,SourceCharacter changes the eyes on DestinationCharacter smooth latex mask.
 ItemHeadDroneMaskSetGlow,SourceCharacter flicks the glow switch on DestinationCharacter smooth latex mask.
 ItemHeadDroneMaskSetHelmet,SourceCharacter changes the coverage of DestinationCharacter smooth latex mask.
@@ -2924,6 +4156,7 @@ ItemHeadDroneMaskSetLayering,SourceCharacter adjusts the visibility of gags on D
 ItemHeadDroneMaskSetMouth,SourceCharacter changes the mouth on DestinationCharacter smooth latex mask.
 ItemHeadDroneMaskSetPattern,SourceCharacter changes the pattern on DestinationCharacter smooth latex mask.
 ItemHeadDroneMaskSetSight,SourceCharacter changes the inner lining of DestinationCharacter smooth latex mask.
+ItemHeadDroneMaskSetVisibility,SourceCharacter changes the visibility options of DestinationCharacter smooth latex mask.
 ItemHeadDuctTapeDouble,Double
 ItemHeadDuctTapeMummy,Mummy
 ItemHeadDuctTapeOpen,Open Mummy
@@ -3032,6 +4265,45 @@ ItemHeadWebBlindfoldBlindfold,Blindfold
 ItemHeadWebBlindfoldCocoon,Cocoon
 ItemHeadWebBlindfoldSetBlindfold,SourceCharacter creates a blindfold out of web for TargetCharacter
 ItemHeadWebBlindfoldSetCocoon,SourceCharacter creates a cocoon out of web for TargetCharacter
+ItemHeadHypnoticVisorSelectBase,Select Hypnotic Visor Details
+ItemHeadHypnoticVisorSelectFrame,Select Hypnotic Visor Frame
+ItemHeadHypnoticVisorSelectPattern,Select Hypnotic Visor Pattern
+ItemHeadHypnoticVisorSelectDecal,Select Hypnotic Visor Decal
+ItemHeadHypnoticVisorSelectText,Select Hypnotic Visor Text
+ItemHeadHypnoticVisorModuleFrame,Visor Frame
+ItemHeadHypnoticVisorModulePattern,Hypnosis algorithm
+ItemHeadHypnoticVisorModuleDecal,Visor Branding
+ItemHeadHypnoticVisorModuleText,Subliminal Message
+ItemHeadHypnoticVisorOptiont0,Frame A
+ItemHeadHypnoticVisorSett0,SourceCharacter changes DestinationCharacter hypnotic visor frame.
+ItemHeadHypnoticVisorOptiont1,Frame B
+ItemHeadHypnoticVisorSett1,SourceCharacter changes DestinationCharacter hypnotic visor frame.
+ItemHeadHypnoticVisorOptionp0,Opaque
+ItemHeadHypnoticVisorSetp0,SourceCharacter removes DestinationCharacter hypnotic visor pattern.
+ItemHeadHypnoticVisorOptionp1,Pattern 1
+ItemHeadHypnoticVisorSetp1,SourceCharacter changes DestinationCharacter hypnotic visor pattern.
+ItemHeadHypnoticVisorOptionp2,Pattern 2
+ItemHeadHypnoticVisorSetp2,SourceCharacter changes DestinationCharacter hypnotic visor pattern.
+ItemHeadHypnoticVisorOptionp3,Pattern 3
+ItemHeadHypnoticVisorSetp3,SourceCharacter changes DestinationCharacter hypnotic visor pattern.
+ItemHeadHypnoticVisorOptiond0,None
+ItemHeadHypnoticVisorSetd0,SourceCharacter removes DestinationCharacter hypnotic visor branding.
+ItemHeadHypnoticVisorOptiond1,Bunny
+ItemHeadHypnoticVisorSetd1,SourceCharacter puts a bunny branding on DestinationCharacter hypnotic visor.
+ItemHeadHypnoticVisorOptiond2,Cat
+ItemHeadHypnoticVisorSetd2,SourceCharacter puts a cat branding on DestinationCharacter hypnotic visor.
+ItemHeadHypnoticVisorOptiond3,Snake
+ItemHeadHypnoticVisorSetd3,SourceCharacter puts a snake branding on DestinationCharacter hypnotic visor.
+ItemHeadHypnoticVisorOptiond4,Fox
+ItemHeadHypnoticVisorSetd4,SourceCharacter puts a fox branding on DestinationCharacter hypnotic visor.
+ItemHeadHypnoticVisorOptiond5,Pony
+ItemHeadHypnoticVisorSetd5,SourceCharacter puts a pony branding on DestinationCharacter hypnotic visor.
+ItemHeadHypnoticVisorOptiond6,Xeno
+ItemHeadHypnoticVisorSetd6,SourceCharacter puts a xeno branding on DestinationCharacter hypnotic visor.
+ItemHeadHypnoticVisorOptiond7,Leaf
+ItemHeadHypnoticVisorSetd7,SourceCharacter puts a leaf branding on DestinationCharacter hypnotic visor.
+ItemHeadHypnoticVisorOptione0,Text
+ItemHeadHypnoticVisorSete0,SourceCharacter changes DestinationCharacter hypnotic visor subliminal message.
 ItemHoodBigMouthHoodEmpty,None
 ItemHoodBigMouthHoodLenses,Lenses
 ItemHoodBigMouthHoodMesh,Mesh
@@ -3175,6 +4447,7 @@ ItemHoodDroneMaskModuleLayering,Adv. Layering
 ItemHoodDroneMaskModuleMouth,Mouth
 ItemHoodDroneMaskModulePattern,Pattern
 ItemHoodDroneMaskModuleSight,Lenses
+ItemHoodDroneMaskModuleVisibility,Visibility
 ItemHoodDroneMaskOptione0,Smooth
 ItemHoodDroneMaskOptione1,Open
 ItemHoodDroneMaskOptione2,Spirals
@@ -3183,7 +4456,9 @@ ItemHoodDroneMaskOptione4,Holes
 ItemHoodDroneMaskOptione5,Sculpted
 ItemHoodDroneMaskOptione6,Concave
 ItemHoodDroneMaskOptiong0,Off
-ItemHoodDroneMaskOptiong1,On
+ItemHoodDroneMaskOptiong1,Face On
+ItemHoodDroneMaskOptiong2,Pattern On
+ItemHoodDroneMaskOptiong3,All On
 ItemHoodDroneMaskOptionh0,Mask
 ItemHoodDroneMaskOptionh1,Hood
 ItemHoodDroneMaskOptionh2,Total Hood
@@ -3200,14 +4475,28 @@ ItemHoodDroneMaskOptionm3,Smile
 ItemHoodDroneMaskOptionm4,Holes
 ItemHoodDroneMaskOptionm5,Sculpted
 ItemHoodDroneMaskOptionm6,Subtle
+ItemHoodDroneMaskOptionm7,Thin
+ItemHoodDroneMaskOptionm8,ThinOh
 ItemHoodDroneMaskOptionp0,None
 ItemHoodDroneMaskOptionp1,Barcode
 ItemHoodDroneMaskOptionp2,Scarab
 ItemHoodDroneMaskOptionp3,Hexagon
 ItemHoodDroneMaskOptionp4,Lines
 ItemHoodDroneMaskOptionp5,Text
+ItemHoodDroneMaskOptionp6,Machine
+ItemHoodDroneMaskOptionp7,Fishnet
+ItemHoodDroneMaskOptionp8,Hex Grid
+ItemHoodDroneMaskOptionp9,Circle
+ItemHoodDroneMaskOptionp10,Split Circle
+ItemHoodDroneMaskOptionp11,Heart
+ItemHoodDroneMaskOptionp12,Style Heart
+ItemHoodDroneMaskOptionp13,Small Heart
+ItemHoodDroneMaskOptionp14,Lock
+ItemHoodDroneMaskOptionp15,Big X
 ItemHoodDroneMaskOptions0,Opaque
 ItemHoodDroneMaskOptions1,One-Way
+ItemHoodDroneMaskOptionb0,Hide Blush and Face Paint
+ItemHoodDroneMaskOptionb1,Show Blush and Face Paint
 ItemHoodDroneMaskSelectBase,Select Mask Details
 ItemHoodDroneMaskSelectEyes,Select Eye Shape
 ItemHoodDroneMaskSelectGlow,Switch Glow Function
@@ -3216,6 +4505,7 @@ ItemHoodDroneMaskSelectLayering,Advanced Layering
 ItemHoodDroneMaskSelectMouth,Select Mouth Shape
 ItemHoodDroneMaskSelectPattern,Select Mask Pattern
 ItemHoodDroneMaskSelectSight,Select Lens Quality
+ItemHoodDroneMaskSelectVisibility,Select Visibility Options
 ItemHoodDroneMaskSetEyes,SourceCharacter changes the eyes on DestinationCharacter smooth latex mask.
 ItemHoodDroneMaskSetGlow,SourceCharacter flicks the glow switch on DestinationCharacter smooth latex mask.
 ItemHoodDroneMaskSetHelmet,SourceCharacter changes the coverage of DestinationCharacter smooth latex mask.
@@ -3223,6 +4513,7 @@ ItemHoodDroneMaskSetLayering,SourceCharacter adjusts the visibility of gags and 
 ItemHoodDroneMaskSetMouth,SourceCharacter changes the mouth on DestinationCharacter smooth latex mask.
 ItemHoodDroneMaskSetPattern,SourceCharacter changes the pattern on DestinationCharacter smooth latex mask.
 ItemHoodDroneMaskSetSight,SourceCharacter changes the inner lining of DestinationCharacter smooth latex mask.
+ItemHoodDroneMaskSetVisibility,SourceCharacter changes the visibility options of DestinationCharacter smooth latex mask.
 ItemHoodGGTSHelmetGoodGirl,Good Girl
 ItemHoodGGTSHelmetGoodSlaveGirl,Good Slave Girl
 ItemHoodGGTSHelmetPGirl,Perfect Girl
@@ -3378,6 +4669,27 @@ ItemHoodOldGasMaskSeta2,SourceCharacter attaches a tube to DestinationCharacter 
 ItemHoodOldGasMaskSeta3,SourceCharacter attaches a rebreather to DestinationCharacter gas mask.
 ItemHoodOldGasMaskSetl0,SourceCharacter removes the blinding lenses from DestinationCharacter gas mask.
 ItemHoodOldGasMaskSetl1,SourceCharacter attaches blinding lenses to DestinationCharacter gas mask.
+ItemHoodCybertechMaskModuleVisor,Visor
+ItemHoodCybertechMaskModuleCanteen,Canteen
+ItemHoodCybertechMaskModuleLayering,Position
+ItemHoodCybertechMaskSelectBase,Select mask configuration.
+ItemHoodCybertechMaskSelectVisor,Select visor type.
+ItemHoodCybertechMaskSelectCanteen,Select canteen attachment.
+ItemHoodCybertechMaskSelectLayering,Select mask position.
+ItemHoodCybertechMaskSetv0,SourceCharacter switches DestinationCharacter visor out for a see-through one.
+ItemHoodCybertechMaskSetv1,SourceCharacter switches DestinationCharacter visor out for a tinted one.
+ItemHoodCybertechMaskSetv2,SourceCharacter switches the hypnotic program on DestinationCharacter visor on.
+ItemHoodCybertechMaskOptionv0,See-through
+ItemHoodCybertechMaskOptionv1,Tinted
+ItemHoodCybertechMaskOptionv2,Hypnosis Program
+ItemHoodCybertechMaskSetc0,SourceCharacter removes DestinationCharacter canteen.
+ItemHoodCybertechMaskSetc1,SourceCharacter plugs a canteen into DestinationCharacter straw hole.
+ItemHoodCybertechMaskOptionc0,None
+ItemHoodCybertechMaskOptionc1,On
+ItemHoodCybertechMaskSetl0,SourceCharacter positions DestinationCharacter mask under DestinationCharacter hair.
+ItemHoodCybertechMaskSetl1,SourceCharacter positions DestinationCharacter mask over DestinationCharacter hair.
+ItemHoodCybertechMaskOptionl0,Under hair
+ItemHoodCybertechMaskOptionl1,Over hair
 ItemHoodOpenFaceHoodSetHideBackHair,SourceCharacter changes the style of DestinationCharacter hood.
 ItemHoodOpenFaceHoodSetShowBackHair,SourceCharacter changes the style of DestinationCharacter hood.
 ItemHoodOpenMouthPlugHoodModuleFakeMouth,Fake Mouth
@@ -4221,7 +5533,7 @@ ItemNeckExtendablePostureCollarSetc1,SourceCharacter adds a thin cover to Destin
 ItemNeckExtendablePostureCollarSetc2,SourceCharacter adds a medium cover to DestinationCharacter extendable posture collar.
 ItemNeckExtendablePostureCollarSetc3,SourceCharacter adds a thick cover to DestinationCharacter extendable posture collar.
 ItemNeckExtendablePostureCollarSetc4,SourceCharacter adds a complete cover to DestinationCharacter extendable posture collar.
-ItemNeckExtendablePostureCollarSetg0,SourceCharacter frees DestinationCharacter mouth from PronounPossesive extendable posture collar.
+ItemNeckExtendablePostureCollarSetg0,SourceCharacter frees DestinationCharacter mouth from PronounPossessive extendable posture collar.
 ItemNeckExtendablePostureCollarSetg1,SourceCharacter adds a panel gag to DestinationCharacter extendable posture collar.
 ItemNeckExtendablePostureCollarSetg2,SourceCharacter adds a ballgag to DestinationCharacter extendable posture collar.
 ItemNeckExtendablePostureCollarSeth0,SourceCharacter removes the hood of DestinationCharacter extendable posture collar.
@@ -4337,6 +5649,11 @@ ItemNeckTechnoCollarSetc4,SourceCharacter sets DestinationCharacter collar to a 
 ItemNeckTechnoCollarSets0,SourceCharacter sets DestinationCharacter shock unit to low intensity.
 ItemNeckTechnoCollarSets1,SourceCharacter sets DestinationCharacter shock unit to moderate intensity.
 ItemNeckTechnoCollarSets2,SourceCharacter sets DestinationCharacter shock unit to high intensity.
+ItemNipplesPiercingsPiercingNameBadgeLeftNipple,Left Nipple
+ItemNipplesPiercingsPiercingNameBadgeRightNipple,Right Nipple
+ItemNipplesPiercingsPiercingNameBadgeSelect,Select The Wearing Position
+ItemNipplesPiercingsPiercingNameBadgeSourceCharacterputDestinationCharacterAssetNameontheleftbreast,SourceCharacter put DestinationCharacter AssetName on the left breast
+ItemNipplesPiercingsPiercingNameBadgeSourceCharacterputDestinationCharacterAssetNameontherightbreast,SourceCharacter put DestinationCharacter AssetName on the right breast
 ItemNipplesPlateClampsLoose,SourceCharacter loosens DestinationCharacter clamps.
 ItemNipplesPlateClampsSelectTightness,Select Tightness
 ItemNipplesPlateClampsTight,SourceCharacter tigthens DestinationCharacter clamps.
@@ -4748,6 +6065,11 @@ ItemVulvaDoubleEndDildoNormal,Normal Size
 ItemVulvaDoubleEndDildoSelect,Select the size of the double ended dildo.
 ItemVulvaDoubleEndDildoSetLarge,DestinationCharacterName AssetName grows to it's large size.
 ItemVulvaDoubleEndDildoSetNormal,DestinationCharacterName AssetName shrinks down to it's normal size.
+ItemVulvaMysteryBoxClosed,Closed
+ItemVulvaMysteryBoxOpen,Open
+ItemVulvaMysteryBoxSetClosed,SourceCharacter replaces the lid on DestinationCharacter box and ties the bow.
+ItemVulvaMysteryBoxSetOpen,SourceCharacter unties DestinationCharacter bow and removes the lid.
+ItemVulvaMysteryBoxSelect,Choose the state of the box.
 ItemVulvaPiercingsRoundClitPiercingBell,Bell
 ItemVulvaPiercingsRoundClitPiercingChain,Chain
 ItemVulvaPiercingsRoundClitPiercingHaremChain,Harem Chains
@@ -4773,6 +6095,13 @@ ItemVulvaStitchesSetZigZag,SourceCharacter stitches DestinationCharacter pussy s
 ItemVulvaStitchesSkewed,Skewed
 ItemVulvaStitchesStraight,Straight
 ItemVulvaStitchesZigZag,Zig Zag
+ItemVulvaUsedCondomSelect,Select the style
+ItemVulvaUsedCondomA,Sperm
+ItemVulvaUsedCondomB,Drip
+ItemVulvaUsedCondomC,Clean
+ItemVulvaUsedCondomSetA,SourceCharacter makes DestinationCharacter AssetName have a single drop of fluid.
+ItemVulvaUsedCondomSetB,SourceCharacter makes DestinationCharacter AssetName drip a long stream.
+ItemVulvaUsedCondomSetC,SourceCharacter makes DestinationCharacter AssetName have no fluid.
 ItemVulvaVibratingWand,(You slowly massage your pussy with the wand.  Trembling from pleasure and excitement.)
 JewelryJewelrySetModuleEars1,Right Ear
 JewelryJewelrySetModuleEars2,Left Ear
@@ -4809,8 +6138,8 @@ JewelryJewelrySetOptionf11,Cheeks Bridge and Dermals
 JewelryJewelrySetOptionf2,Left Dermals
 JewelryJewelrySetOptionf3,Right Dermals
 JewelryJewelrySetOptionf4,Bridge Piercing
-JewelryJewelrySetOptionf5,Left Monroe
-JewelryJewelrySetOptionf6,Right Monroe
+JewelryJewelrySetOptionf5,Monroe
+JewelryJewelrySetOptionf6,Madonna
 JewelryJewelrySetOptionf7,Cheek Studs
 JewelryJewelrySetOptionf8,Cheeks and Bridge
 JewelryJewelrySetOptionf9,Bridge and Dermals
@@ -4923,6 +6252,7 @@ MaskDroneMaskModuleHelmet,Coverage
 MaskDroneMaskModuleLayering,Adv. Layering
 MaskDroneMaskModuleMouth,Mouth
 MaskDroneMaskModulePattern,Pattern
+MaskDroneMaskModuleVisibility,Visibility
 MaskDroneMaskOptione0,Smooth
 MaskDroneMaskOptione1,Open
 MaskDroneMaskOptione2,Spirals
@@ -4931,7 +6261,9 @@ MaskDroneMaskOptione4,Holes
 MaskDroneMaskOptione5,Sculpted
 MaskDroneMaskOptione6,Concave
 MaskDroneMaskOptiong0,Off
-MaskDroneMaskOptiong1,On
+MaskDroneMaskOptiong1,Face On
+MaskDroneMaskOptiong2,Pattern On
+MaskDroneMaskOptiong3,All On
 MaskDroneMaskOptionh0,Mask
 MaskDroneMaskOptionh1,Hood
 MaskDroneMaskOptionh2,Total Hood
@@ -4948,12 +6280,26 @@ MaskDroneMaskOptionm3,Smile
 MaskDroneMaskOptionm4,Holes
 MaskDroneMaskOptionm5,Sculpted
 MaskDroneMaskOptionm6,Subtle
+MaskDroneMaskOptionm7,Thin
+MaskDroneMaskOptionm8,ThinOh
 MaskDroneMaskOptionp0,None
 MaskDroneMaskOptionp1,Barcode
 MaskDroneMaskOptionp2,Scarab
 MaskDroneMaskOptionp3,Hexagon
 MaskDroneMaskOptionp4,Lines
 MaskDroneMaskOptionp5,Text
+MaskDroneMaskOptionp6,Machine
+MaskDroneMaskOptionp7,Fishnet
+MaskDroneMaskOptionp8,Hex Grid
+MaskDroneMaskOptionp9,Circle
+MaskDroneMaskOptionp10,Split Circle
+MaskDroneMaskOptionp11,Heart
+MaskDroneMaskOptionp12,Style Heart
+MaskDroneMaskOptionp13,Small Heart
+MaskDroneMaskOptionp14,Lock
+MaskDroneMaskOptionp15,Big X
+MaskDroneMaskOptionb0,Hide Blush and Face Paint
+MaskDroneMaskOptionb1,Show Blush and Face Paint
 MaskDroneMaskSelectBase,Select Mask Details
 MaskDroneMaskSelectEyes,Select Eye Shape
 MaskDroneMaskSelectGlow,Switch Glow Function
@@ -4961,6 +6307,7 @@ MaskDroneMaskSelectHelmet,Select Coverage
 MaskDroneMaskSelectLayering,Advanced Layering
 MaskDroneMaskSelectMouth,Select Mouth Shape
 MaskDroneMaskSelectPattern,Select Mask Pattern
+MaskDroneMaskSelectVisibility,Select Visibility Options
 MaskGlitterDotsBoth,Dots Both Sides
 MaskGlitterDotsLeft,Dots Left
 MaskGlitterDotsRight,Dots Right
@@ -5056,8 +6403,8 @@ ModularChastityBeltResetOrgasm,Reset orgasms
 ModularChastityBeltResetShock,Reset shocks
 ModularChastityBeltShock,Trigger Shock
 ModularChastityBeltShockCount,Shocks
-ModularChastityBeltTimeSinceLastOrgasm,Days since orgasm
-ModularChastityBeltTimeWorn,Days worn
+ModularChastityBeltTimeSinceLastOrgasm,Time since orgasm
+ModularChastityBeltTimeWorn,Time worn
 ModularChastityBeltTriggerShock,Trigger shock
 MouthFullModuleLips,Lips
 MouthFullModuleTongue,Tongue
@@ -5147,6 +6494,7 @@ OnlineBountySuitcaseOngoing,SourceCharacter's suitcase will be open in TIMEREMAI
 OnlineBountySuitcaseOngoingOpened,SourceCharacter's data will be ready in TIMEREMAINING minutes. Make sure PronounSubject is secure until then!
 OnlineBountySuitcaseStart,SourceCharacter starts unlocking DestinationCharacterName suitcase! PronounSubject will finish in 5 minutes.
 OnlineBountySuitcaseStartOpened,SourceCharacter starts stealing more data from DestinationCharacterName laptop! PronounSubject will finish in 5 minutes.
+OnlineStruggleInterrupt,TargetCharacter struggles were interrupted by SourceCharacter.
 OpacityLabel,Change Opacity
 OpenFaceHoodStyleHideBackHair,Hair in
 OpenFaceHoodStyleShowBackHair,Hair out
@@ -5192,6 +6540,25 @@ PantiesMaleCatsuitPantiesTucked,Tucked
 PantiesPoofyDiaperPoofy,Extra Padding
 PantiesPoofyDiaperRegularPadding,Regular Padding
 PantiesPoofyDiaperSelect,Select the amount of padding.
+PantiesRoyalDiaperHerMajesty,Her Majesty
+PantiesRoyalDiaperHisMajesty,His Majesty
+PantiesRoyalDiaperSimple,Simple
+PantiesRoyalDiaperSelect,Select a diaper motiv.
+PantiesRoyalDiaperLock,Lock
+PantiesRoyalDiaperNone,Plain
+PantiesPullDownPantiesPutOn,Put On
+PantiesPullDownPantiesPulledAside,Pulled Aside
+PantiesPullDownPantiesCrotchExposed,Crotch Exposed
+PantiesPullDownPantiesAroundThighs,Around Thighs
+PantiesPullDownPantiesAroundKnees,Around Knees
+PantiesPullDownPantiesAroundAnkles,Around Ankles
+PantiesPullDownPantiesSelect,Customize the state of the panties
+PantiesPullDownPantiesSetPutOn,SourceCharacter puts panties on DestinationCharacter.
+PantiesPullDownPantiesSetPulledAside,SourceCharacter pulls aside DestinationCharacter panties.
+PantiesPullDownPantiesSetCrotchExposed,SourceCharacter pulls down DestinationCharacter panties to the crotch.
+PantiesPullDownPantiesSetAroundThighs,SourceCharacter pulls down DestinationCharacter panties to the thighs.
+PantiesPullDownPantiesSetAroundKnees,SourceCharacter pulls down DestinationCharacter panties to the knees.
+PantiesPullDownPantiesSetAroundAnkles,SourceCharacter pulls down DestinationCharacter panties to the ankles.
 PasswordChangeSuccess,SourceCharacter changes the password of the lock on DestinationCharacter FocusAssetGroup.
 PasswordFail,SourceCharacter tries the word Password but fails to open the lock on DestinationCharacter FocusAssetGroup.
 PasswordPadlockChangePassword,Accept
@@ -5301,6 +6668,7 @@ RopeBondageCrossed,Crossed Tie
 RopeBondageCrossedBoxtie,Crossed Boxtie
 RopeBondageCrotch,Crotch Rope
 RopeBondageDiamond,Diamond Tie
+RopeBondageHishi,Hishi Tie
 RopeBondageFrogtie,Frogtie Tie
 RopeBondageFullBinding,Full Binding Tie
 RopeBondageHarness,Body Harness
@@ -5314,7 +6682,8 @@ RopeBondageKneesThighs,Knees and Thighs Tie
 RopeBondageLink,Link Tie
 RopeBondageMermaid,Mermaid Tie
 RopeBondageOverPanties,Over Panties
-RopeBondageRopeCuffs,Rope Cuffs
+RopeBondageRopeCuffsBack,Rope Cuffs (Behind Back)
+RopeBondageRopeCuffsFront,Rope Cuffs (In Front)
 RopeBondageSimpleHogtie,Simple Hogtie
 RopeBondageStar,Star Harness Tie
 RopeBondageSuspension,Suspension Tie
@@ -5330,6 +6699,7 @@ RopeBondageWristElbowTie,Wrist and Elbow Tie
 RopeBondageWristTie,Wrist Tie
 RopeHarnessSetCrotch,SourceCharacter uses the rope on TargetCharacter to do a crotch rope tie.
 RopeHarnessSetDiamond,SourceCharacter uses the rope on TargetCharacter to do a diamond style harness.
+RopeHarnessSetHishi,SourceCharacter uses the rope on TargetCharacter to do a Hishi style harness.
 RopeHarnessSetHarness,SourceCharacter uses the rope on TargetCharacter to do a body harness.
 RopeHarnessSetStar,SourceCharacter uses the rope on TargetCharacter to tie a star harness.
 RopeHarnessSetWaist,SourceCharacter uses the rope on TargetCharacter to tie a waist rope on TargetPronounObject.
@@ -5378,7 +6748,6 @@ SelectOpenFaceHoodStyle,Select a hood style.
 SelectPersonalCageHeight,Use the lever to:
 SelectPiercingState,Select the piercing attachment
 SelectPriorityType,Select the visibility
-SelectRibbonStyle,Select a style.
 SelectRibbonType,Select the ribbon bondage
 SelectRopeBondage,Select the rope bondage
 SelectSpreaderType,Select leg spreader width.
@@ -5439,6 +6808,15 @@ ShoesThighBootsSetb1,SourceCharacter adds bands to DestinationCharacter boots.
 ShoesThighBootsSetl0,SourceCharacter shortens DestinationCharacter boots.
 ShoesThighBootsSetl1,SourceCharacter extends the sock on DestinationCharacter boots.
 ShoesThighBootsSetl2,SourceCharacter extends DestinationCharacter boots.
+ShoesZipperLeatherBootsModuleLeftSide,Left Side
+ShoesZipperLeatherBootsModuleRightSide,Right Side
+ShoesZipperLeatherBootsOptionl0,Close
+ShoesZipperLeatherBootsOptionl1,Open
+ShoesZipperLeatherBootsOptionr0,Close
+ShoesZipperLeatherBootsOptionr1,Open
+ShoesZipperLeatherBootsSelectBase,Choose Appearance
+ShoesZipperLeatherBootsSelectRightSide,Choose Right Appearance
+ShoesZipperLeatherBootsSelectLeftSide,Choose Left Appearance
 ShowMessageInChat,Show chat message
 SlaveCollarChangeType,SourceCharacter changes DestinationCharacter collar model.
 SlaveCollarSelectType,Select the slave collar model
@@ -5446,8 +6824,7 @@ SlipperyClassroom,Slippery Classroom
 SlowLeaveAttempt,SourceCharacter slowly heads for the door.
 SlowLeaveCancel,SourceCharacter stops heading for the door.
 SlowLeaveInterrupt,SourceCharacter was stopped from leaving.
-SlowStop,"SourceCharacter gets in the way of , preventing TargetPronounObject from leaving."
-OnlineStruggleInterrupt,TargetCharacter struggles were interrupted by SourceCharacter.
+SlowStop,"SourceCharacter gets in the way of TargetCharacter, preventing TargetPronounObject from leaving."
 SocksLeftLooseSocksFlat,Flat style
 SocksLeftLooseSocksNormal,Loose style
 SocksLeftLooseSocksSelect,Choose how to wear left socks:
@@ -5468,11 +6845,6 @@ StandUp,SourceCharacter stands up
 StandUpFail,SourceCharacter tries to stand up but loses PronounPossessive balance and falls!
 StandUpPass,SourceCharacter manages to get to PronounPossessive feet.
 StopHoldLeash,SourceCharacter releases the leash of TargetCharacter.
-StreetEyewearSelectType,Select a style.
-StreetEyewearTypeHalf,Half-Frame
-StreetEyewearTypeHalfOver,Half over hair
-StreetEyewearTypeNormal,Normal Frame
-StreetEyewearTypeNormalOver,Normal over hair
 StruggleAssist,SourceCharacter tries to help TargetCharacter to struggle free.
 SturdyLeatherBeltsPoseFour,Four
 SturdyLeatherBeltsPoseOne,One
@@ -5488,6 +6860,24 @@ SuctionLevelLight,Light
 SuctionLevelLoose,Loose
 SuctionLevelMaximum,Maximum
 SuctionLevelMedium,Medium
+SuitGlossyBodystockingModuleChestStyle,Breast
+SuitGlossyBodystockingModuleHandStyle,Gloves
+SuitGlossyBodystockingModuleTailorStyle,Seams
+SuitGlossyBodystockingOptionb0,Covered
+SuitGlossyBodystockingOptionb1,Exposed
+SuitGlossyBodystockingOptionh0,Full
+SuitGlossyBodystockingOptionh1,No Gloves
+SuitGlossyBodystockingOptionh2,Fingerless
+SuitGlossyBodystockingOptionh3,Cutout
+SuitGlossyBodystockingOptionm0,Sleeves
+SuitGlossyBodystockingOptionm1,Torso Only
+SuitGlossyBodystockingOptionm2,All Seams
+SuitGlossyBodystockingOptionm3,No Torso
+SuitGlossyBodystockingOptionm4,No Seams
+SuitGlossyBodystockingSelectBase,Glossy Bodystocking Style
+SuitGlossyBodystockingSelectChestStyle,Breast Style
+SuitGlossyBodystockingSelectHandStyle,Seams Style
+SuitGlossyBodystockingSelectTailorStyle,Seams Style
 SuitGloveTypeNoGloves,No Gloves
 SuitGloveTypeOpaqueGloves,Opaque Gloves
 SuitGloveTypeTransparentGloves,See-through Gloves
@@ -5509,6 +6899,10 @@ SuitLowerMaleSeamlessCatsuitLock,Null Bulge
 SuitLowerMaleSeamlessCatsuitSelect,Select Bulge Type.
 SuitLowerMaleSeamlessCatsuitSkinTight,Skin Tight Bulge
 SuitLowerMaleSeamlessCatsuitTucked,Tucked
+SuitTransparentBunnyGirlMiddleTrans,Middle Trans
+SuitTransparentBunnyGirlOpaque,Opaque
+SuitTransparentBunnyGirlOverallTrans,Overall Trans
+SuitTransparentBunnyGirlSelect,Select Transparent Bunny Girl Style
 SuspensionChange,SourceCharacter uses AssetName to suspend TargetCharacter from the ceiling.
 SuspensionChangeLower,SourceCharacter lowers the height of DestinationCharacter suspension.
 SuspensionChangeRaise,SourceCharacter raises the height of DestinationCharacter suspension.
@@ -5521,6 +6915,75 @@ SybianIncreaseTo1,DestinationCharacterName sybian builds up to a moderate pace.
 SybianIncreaseTo2,DestinationCharacterName sybian starts buzzing strongly!
 SybianIncreaseTo3,DestinationCharacterName sybian jumps up to maximum intensity!
 Tails,Tails
+TailStrapsFoxTailStrapSelect,Select tail position:
+TailStrapsFoxTailStrapTL,Top Left
+TailStrapsFoxTailStrapTR,Top Right
+TailStrapsFoxTailStrapBL,Bottom Left
+TailStrapsFoxTailStrapBR,Bottom Right
+TailStrapsWolfTailStrap3SelectBase,
+TailStrapsWolfTailStrap3SelectRotation,Select position:
+TailStrapsWolfTailStrap3SelectStyle,Select style:
+TailStrapsWolfTailStrap3Optionr0,Top Left
+TailStrapsWolfTailStrap3Optionr1,Top Right
+TailStrapsWolfTailStrap3Optionr2,Bottom Left
+TailStrapsWolfTailStrap3Optionr3,Bottom Right
+TailStrapsWolfTailStrap3Options0,Original Style
+TailStrapsWolfTailStrap3Options1,Flipped Styles
+TailStrapsWolfTailStrap3ModuleStyle,Style
+TailStrapsWolfTailStrap3ModuleRotation,Rotation
+TailStrapsRaccoonTailStrapSelect,Select position:
+TailStrapsRaccoonTailStrapTL,Top Left
+TailStrapsRaccoonTailStrapTR,Top Right
+TailStrapsRaccoonTailStrapBL,Bottom Left
+TailStrapsRaccoonTailStrapBR,Bottom Right
+TailStrapsKittenTailStrap1Select,Select position:
+TailStrapsKittenTailStrap1TL,Top Left
+TailStrapsKittenTailStrap1TR,Top Right
+TailStrapsKittenTailStrap1BL,Bottom Left
+TailStrapsKittenTailStrap1BR,Bottom Right
+TailStrapsKittenTailStrap2Select,Select position:
+TailStrapsKittenTailStrap2TL,Top Left
+TailStrapsKittenTailStrap2TR,Top Right
+TailStrapsKittenTailStrap2BL,Bottom Left
+TailStrapsKittenTailStrap2BR,Bottom Right
+TailStrapsKitsuneTailStrapsSelectBase,Pick which tails to show:
+TailStrapsKitsuneTailStrapsModuleTail1,Tail One
+TailStrapsKitsuneTailStrapsModuleTail2,Tail Two
+TailStrapsKitsuneTailStrapsModuleTail3,Tail Three
+TailStrapsKitsuneTailStrapsModuleTail4,Tail Four
+TailStrapsKitsuneTailStrapsModuleTail5,Tail Five
+TailStrapsKitsuneTailStrapsModuleTail6,Tail Six
+TailStrapsKitsuneTailStrapsModuleTail7,Tail Seven
+TailStrapsKitsuneTailStrapsModuleTail8,Tail Eight
+TailStrapsKitsuneTailStrapsModuleTail9,Tail Nine
+TailStrapsKitsuneTailStrapsOptionshow1_0,Show
+TailStrapsKitsuneTailStrapsOptionshow1_1,Hide
+TailStrapsKitsuneTailStrapsOptionshow2_0,Show
+TailStrapsKitsuneTailStrapsOptionshow2_1,Hide
+TailStrapsKitsuneTailStrapsOptionshow3_0,Show
+TailStrapsKitsuneTailStrapsOptionshow3_1,Hide
+TailStrapsKitsuneTailStrapsOptionshow4_0,Show
+TailStrapsKitsuneTailStrapsOptionshow4_1,Hide
+TailStrapsKitsuneTailStrapsOptionshow5_0,Show
+TailStrapsKitsuneTailStrapsOptionshow5_1,Hide
+TailStrapsKitsuneTailStrapsOptionshow6_0,Show
+TailStrapsKitsuneTailStrapsOptionshow6_1,Hide
+TailStrapsKitsuneTailStrapsOptionshow7_0,Show
+TailStrapsKitsuneTailStrapsOptionshow7_1,Hide
+TailStrapsKitsuneTailStrapsOptionshow8_0,Show
+TailStrapsKitsuneTailStrapsOptionshow8_1,Hide
+TailStrapsKitsuneTailStrapsOptionshow9_0,Show Left
+TailStrapsKitsuneTailStrapsOptionshow9_1,Hide
+TailStrapsKitsuneTailStrapsOptionshow9_2,Show Right
+TailStrapsKitsuneTailStrapsSelectTail1,Tail One
+TailStrapsKitsuneTailStrapsSelectTail2,Tail Two
+TailStrapsKitsuneTailStrapsSelectTail3,Tail Three
+TailStrapsKitsuneTailStrapsSelectTail4,Tail Four
+TailStrapsKitsuneTailStrapsSelectTail5,Tail Five
+TailStrapsKitsuneTailStrapsSelectTail6,Tail Six
+TailStrapsKitsuneTailStrapsSelectTail7,Tail Seven
+TailStrapsKitsuneTailStrapsSelectTail8,Tail Eight
+TailStrapsKitsuneTailStrapsSelectTail9,Tail Nine
 TamperLockSetBy,Locked by:
 TamperLockSetTime,Locked on:
 TapedClitEggDecreaseTo-1,DestinationCharacterName vibrating egg on TargetPronounPossessive clitoris stops vibrating.
@@ -5535,11 +6998,11 @@ TextItemChange,"SourceCharacter changes the text on DestinationCharacterName Ass
 TextItemRemove,SourceCharacter removes the text from DestinationCharacterName AssetName
 TextItemSelect,Configure item text
 tightens,tightens
-TimerAddRemoveUnknownTime,SourceCharacter adds an unknown amount of time to the padlock on DestinationCharacter FocusAssetGroup
-TimerAddTime,SourceCharacter adds TimerTime TimerUnit to the padlock on DestinationCharacter FocusAssetGroup.
+TimerAddRemoveUnknownTime,SourceCharacter changes the timer on the padlock on DestinationCharacter FocusAssetGroup
+TimerAddTime,SourceCharacter adds TimerTime to the padlock on DestinationCharacter FocusAssetGroup.
 TimerRelease,The LockName on DestinationCharacterName FocusAssetGroup opens with a click
 TimerReleaseMany,The locks on DestinationCharacterName UnlockedGroups open with a click
-TimerRemoveTime,SourceCharacter removes TimerTime TimerUnit from the padlock on DestinationCharacter FocusAssetGroup.
+TimerRemoveTime,SourceCharacter removes TimerTime from the padlock on DestinationCharacter FocusAssetGroup.
 TimerRestart,SourceCharacter restarts the five minutes timer padlock on DestinationCharacter FocusAssetGroup.
 ToeTapePoseFull,Full
 ToeTapePoseToes,Toes
@@ -5611,6 +7074,9 @@ WebBondageSuspended,Suspended
 WebBondageSuspensionHogtied,Suspension Hogtied
 WebBondageTangled,Tangled
 WebBondageWrapped,Wrapped
+WingsSpiderArachnid,Arachnid
+WingsSpiderBiped,Biped
+WingsSpiderSelect,Select
 WingsSteampunkWingsOff,Off
 WingsSteampunkWingsOn,On
 WingsSteampunkWingsSelect,Select the state.
@@ -5618,7 +7084,19 @@ WingsDragonWingsSpread,Spread
 WingsDragonWingsFolded,Folded
 WingsDragonWingsBound,Bound
 WingsDragonWingsSelect,Select the state
-YourRoom,<i>Your private room</i>
+WingsSeraphWingsSelectBase,Toggle Wings
+WingsSeraphWingsSelectWing1,Wing 1
+WingsSeraphWingsSelectWing2,Wing 2
+WingsSeraphWingsSelectWing3,Wing 3
+WingsSeraphWingsModuleWing1,Wing 1
+WingsSeraphWingsModuleWing2,Wing 2
+WingsSeraphWingsModuleWing3,Wing 3
+WingsSeraphWingsOptionshow10,Show
+WingsSeraphWingsOptionshow11,Hide
+WingsSeraphWingsOptionshow20,Show
+WingsSeraphWingsOptionshow21,Hide
+WingsSeraphWingsOptionshow30,Show
+WingsSeraphWingsOptionshow31,Hide
 ZipBondageZipFeetFull,Full Binding
 ZipBondageZipFeetLight,Light Binding
 ZipBondageZipFeetMedium,Medium Binding
@@ -5767,15 +7245,27 @@ ClothLatexHobbleDressOptionb0,None
 ClothLatexHobbleDressOptionb1,Belt below the knee (Slow)
 ClothLatexHobbleDressOptionb2,Ankle belt (Slow)
 ClothLatexHobbleDressOptionb3,Belts in both positions (Slow)
-PincenezSelectType,Select a style:
-PincenezTypeNoAcc,Normal
-PincenezTypeNoAccOver,Normal over hair
-PincenezTypeAcc,With accessory
-PincenezTypeAccOver,With accessory over hair
+GlassesPincenezSelectBase,Pince-nez custom menu:
+GlassesPincenezModulePosition,Hair position
+GlassesPincenezSelectPosition,Glasses position options:
+GlassesPincenezOptionp0,Under front hair
+GlassesPincenezOptionp1,Over front hair
+GlassesPincenezModuleAccessory,Glasses acessory
+GlassesPincenezSelectAccessory,Accessory options:
+GlassesPincenezOptiona0,No accessory
+GlassesPincenezOptiona1,Accessory added
 QualityHarnessGagSetBallGag,SourceCharacter attaches ball gag to DestinationCharacter gag harness.
+QualityHarnessGagSetLargeBallGag,SourceCharacter attaches large ball gag to DestinationCharacter gag harness.
 QualityHarnessGagSetRingGag,SourceCharacter attaches ring gag to DestinationCharacter gag harness.
+QualityHarnessGagSetLargeRingGag,SourceCharacter attaches large ring gag to DestinationCharacter gag harness.
+QualityHarnessGagSetWiffleGag,SourceCharacter attaches wiffle gag to DestinationCharacter gag harness.
+QualityHarnessGagSetBitGag,SourceCharacter attaches bit gag to DestinationCharacter gag harness.
 QualityHarnessGagTypeRingGag,Ring Gag
+QualityHarnessGagTypeLargeRingGag,Large Ring Gag
 QualityHarnessGagTypeBallGag,Ball Gag
+QualityHarnessGagTypeLargeBallGag,Large Ball Gag
+QualityHarnessGagTypeBitGag,Bit Gag
+QualityHarnessGagTypeWiffleGag,Wiffle Gag
 ItemArmsArmbinderSuitSelectBase,Armbinder Suit customization menu:
 ItemArmsArmbinderSuitModuleCollar,Collar
 ItemArmsArmbinderSuitSelectCollar,Collar menu
@@ -5797,7 +7287,7 @@ ItemArmsArmbinderSuitModuleZipper,Genital access
 ItemArmsArmbinderSuitSelectZipper,Suit's zipper menu
 ItemArmsArmbinderSuitOptionz0,Zipped up
 ItemArmsArmbinderSuitOptionz1,Open
-ItemArmsArmbinderSuitModuleLegs,Leg lenght & belts
+ItemArmsArmbinderSuitModuleLegs,Leg length & belts
 ItemArmsArmbinderSuitSelectLegs,Lower suit menu
 ItemArmsArmbinderSuitOptionl0,No leg extension
 ItemArmsArmbinderSuitOptionl1,Leg extension
@@ -5869,6 +7359,7 @@ ItemHoodRubberMaskOptiong14,Wig N
 ItemHoodRubberMaskOptiong15,Wig O
 ItemHoodRubberMaskOptiong16,Wig P
 ItemHoodRubberMaskOptiong17,Wig Q
+ItemHoodRubberMaskOptiong18,Wig R
 ItemHoodRubberMaskModuleEyes,Eyes
 ItemHoodRubberMaskSelectEyes,Eye expression menu
 ItemHoodRubberMaskOptione0,Normal
@@ -5923,6 +7414,7 @@ ItemHoodRubberMaskSetg14,SourceCharacter puts the wig N on the DestinationCharac
 ItemHoodRubberMaskSetg15,SourceCharacter puts the wig O on the DestinationCharacter head.
 ItemHoodRubberMaskSetg16,SourceCharacter puts the wig P on the DestinationCharacter head.
 ItemHoodRubberMaskSetg17,SourceCharacter puts the wig Q on the DestinationCharacter head.
+ItemHoodRubberMaskSetg18,SourceCharacter puts the wig R on the DestinationCharacter head.
 ItemHoodRubberMaskSete0,SourceCharacter chooses a normal eyes in DestinationCharacter mask.
 ItemHoodRubberMaskSete1,SourceCharacter chooses a closed eyes in DestinationCharacter mask.
 ItemHoodRubberMaskSete2,SourceCharacter chooses a wide open eyes in DestinationCharacter mask.
@@ -5965,6 +7457,7 @@ MaskRubberMaskOptiong14,Wig N
 MaskRubberMaskOptiong15,Wig O
 MaskRubberMaskOptiong16,Wig P
 MaskRubberMaskOptiong17,Wig Q
+MaskRubberMaskOptiong18,Wig R
 MaskRubberMaskModuleEyes,Eyes
 MaskRubberMaskSelectEyes,Eye expression menu
 MaskRubberMaskOptione0,Normal
@@ -6034,6 +7527,20 @@ MaskFaceScarsSelect8,Apply
 MaskFaceScarsSelect9,Apply
 MaskFaceScarsSelect10,Apply
 MaskFaceScarsSelect11,Apply
+MaskCybertechMaskModuleVisor,Visor
+MaskCybertechMaskModuleCanteen,Canteen
+MaskCybertechMaskModuleLayering,Position
+MaskCybertechMaskSelectBase,Select mask configuration.
+MaskCybertechMaskSelectVisor,Select visor type.
+MaskCybertechMaskSelectCanteen,Select canteen attachment.
+MaskCybertechMaskSelectLayering,Select mask position.
+MaskCybertechMaskOptionv0,See-through
+MaskCybertechMaskOptionv1,Tinted
+MaskCybertechMaskOptionv2,Hypnosis Program
+MaskCybertechMaskOptionc0,None
+MaskCybertechMaskOptionc1,On
+MaskCybertechMaskOptionl0,Under hair
+MaskCybertechMaskOptionl1,Over hair
 ItemDevicesBrickWallSelect,Build and choose the brick wall's height:
 ItemDevicesBrickWallNone,No brick
 ItemDevicesBrickWallLegs,Up to the hips
@@ -6115,6 +7622,26 @@ HairFrontHairFront71SetBasic,SourceCharacter changes DestinationCharacter hair.
 HairFrontHairFront71SetTranslucent,SourceCharacter changes DestinationCharacter hair.
 HairFrontHairFront71Basic,Basic
 HairFrontHairFront71Translucent,Translucent
+HairFrontHairFront76aModuleStrands,Strands
+HairFrontHairFront76aModuleExtra,Extra
+HairFrontHairFront76aOptionStrands0,Colored Strands
+HairFrontHairFront76aOptionStrands1,No Strands
+HairFrontHairFront76aOptionExtra0,Braids
+HairFrontHairFront76aOptionExtra1,Extra
+HairFrontHairFront76aOptionExtra2,None
+HairFrontHairFront76aSelectBase,Select Options
+HairFrontHairFront76aSelectStrands,Select Strands
+HairFrontHairFront76aSelectExtra,Select Extras
+HairFrontHairFront76bModuleStrands,Strands
+HairFrontHairFront76bModuleExtra,Extra
+HairFrontHairFront76bOptionStrands0,Colored Strands
+HairFrontHairFront76bOptionStrands1,No Strands
+HairFrontHairFront76bOptionExtra0,Braids
+HairFrontHairFront76bOptionExtra1,Extra
+HairFrontHairFront76bOptionExtra2,None
+HairFrontHairFront76bSelectBase,Select Options
+HairFrontHairFront76bSelectStrands,Select Strands
+HairFrontHairFront76bSelectExtra,Select Extras
 PremiumMuzzleMouthSetCrossStraps,SourceCharacter adds extra straps to DestinationCharacter muzzle
 PremiumMuzzleMouthSetNormal,SourceCharacter turns DestinationCharacter muzzle back to normal.
 PremiumMuzzleMouthSetExtraMuzzle,SourceCharacter attaches an extra panel over DestinationCharacter muzzle.
@@ -6146,7 +7673,7 @@ ItemHandsFullMittensOptionr4,Harness belts
 ItemHandsFullMittensOptionr5,Armbinder mode
 ItemHandsFullMittensOptionr6,Ankle shackles combo
 ItemHandsFullMittensSetr0,SourceCharacter removes any restraint accessory from DestinationCharacterName mittens.
-ItemHandsFullMittensSetr1,SourceCharacter tied DestinationCharacterName mittens to the bar in yoke pose. 
+ItemHandsFullMittensSetr1,SourceCharacter tied DestinationCharacterName mittens to the bar in yoke pose.
 ItemHandsFullMittensSetr2,SourceCharacter tied DestinationCharacterName mittens to the bar with hands up.
 ItemHandsFullMittensSetr3,SourceCharacter binds DestinationCharacterName arms as straitjacket style.
 ItemHandsFullMittensSetr4,SourceCharacter binds DestinationCharacterName hands in the back and put some harness belt on TargetPronounObject torso.
@@ -6562,9 +8089,16 @@ ItemMouth3HorrorMuzzleNone,Plain
 ItemMouth3HorrorMuzzleRivets,With rivets
 ItemMouth3HorrorMuzzleSetNone,SourceCharacter puts on DestinationCharacter mouth a plain Horror Muzzle.
 ItemMouth3HorrorMuzzleSetRivets,SourceCharacter puts on DestinationCharacter mouth a Horror Muzzle with rivets.
-GlassesRoundSunglassesSelect,Select a style:
-GlassesRoundSunglassesNormal,Behind hair
-GlassesRoundSunglassesOver,Over hair
+GlassesRoundSunglassesSelectBase,Round Sunglasses custom menu:
+GlassesRoundSunglassesModulePosition,Hair position
+GlassesRoundSunglassesSelectPosition,Glasses position options:
+GlassesRoundSunglassesPosition,Street Eyewear position options:
+GlassesRoundSunglassesOptionp0,Under front hair
+GlassesRoundSunglassesOptionp1,Over front hair
+GlassesRoundSunglassesModuleLenses,Lenses type
+GlassesRoundSunglassesSelectLenses,Type of lenses:
+GlassesRoundSunglassesOptionl0,Darker lenses
+GlassesRoundSunglassesOptionl1,Clear lenses
 ItemMouthAsylumMuzzleSelect,Asylum Muzzle options:
 ItemMouthAsylumMuzzleNormal,Single layer
 ItemMouthAsylumMuzzlePadded,Plus padded layer
@@ -6590,6 +8124,253 @@ ItemNeckAsylumCollarNormal,Single layer
 ItemNeckAsylumCollarPadded,Plus padded layer
 ItemNeckAsylumCollarSetNormal,SourceCharacter removes padded layer under the DestinationCharacter Asylum Collar.
 ItemNeckAsylumCollarSetPadded,SourceCharacter adds a padded layer under the DestinationCharacter Asylum Collar.
+ItemHandheldPlushie,Plushies
+ItemHandheldPlushieSelectBase,Select a plushie:
+ItemHandheldPlushieModuleDenOfSin,Den of Sin
+ItemHandheldPlushieSelectDenOfSin,The Den of Sin:
+ItemHandheldPlushieOptionDenOfSin0,None
+ItemHandheldPlushieSetDenOfSin0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionDenOfSin1,Sin
+ItemHandheldPlushieSetDenOfSin1,SourceCharacter places an adorable Sin plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionDenOfSin2,Raven
+ItemHandheldPlushieSetDenOfSin2,SourceCharacter places a charming Raven plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionDenOfSin3,Cassandra Lee
+ItemHandheldPlushieSetDenOfSin3,SourceCharacter places a scary Cassandra Lee plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionDenOfSin4,Riki
+ItemHandheldPlushieSetDenOfSin4,SourceCharacter places a cute Riki plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionDenOfSin5,Roslin
+ItemHandheldPlushieSetDenOfSin5,SourceCharacter places a cute Roslin plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionDenOfSin6,Felix
+ItemHandheldPlushieSetDenOfSin6,SourceCharacter places a soft Felix plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionDenOfSin7,Donna
+ItemHandheldPlushieSetDenOfSin7,SourceCharacter places a Princess Donnna plushie in DestinationCharacter hands.
+ItemHandheldPlushieModuleGangriels,Gangriel's Rock Bar
+ItemHandheldPlushieSelectGangriels,Gangriel's Rock Bar
+ItemHandheldPlushieOptionGangriels0,None
+ItemHandheldPlushieSetGangriels0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionGangriels1,Gangriel
+ItemHandheldPlushieSetGangriels1,SourceCharacter places an authentic Gangriel plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionGangriels2,Mabel
+ItemHandheldPlushieSetGangriels2,SourceCharacter places a squeaky Mabel plushie in DestinationCharacter hands.
+ItemHandheldPlushieSelectCelestialEnchants,Celestial Enchants:
+ItemHandheldPlushieModuleCelestialEnchants,Celestial Enchants
+ItemHandheldPlushieSetCelestialEnchants0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionCelestialEnchants0,None
+ItemHandheldPlushieOptionCelestialEnchants1,Celiko
+ItemHandheldPlushieSetCelestialEnchants1,SourceCharacter places an amazing Celiko plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionCelestialEnchants2,Lavender
+ItemHandheldPlushieSetCelestialEnchants2,SourceCharacter places a cute Lavender plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionCelestialEnchants3,Siscuit
+ItemHandheldPlushieSetCelestialEnchants3,SourceCharacter places a cute Siscuit plushie in DestinationCharacter hands.
+ItemHandheldPlushieSelectLatexLab,Latex Lab
+ItemHandheldPlushieModuleLatexLab,Latex Lab
+ItemHandheldPlushieOptionLatexLab0,None
+ItemHandheldPlushieSetLatexLab0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab1,Aeri
+ItemHandheldPlushieSetLatexLab1,SourceCharacter places a cute Aeri plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab2,Delta
+ItemHandheldPlushieSetLatexLab2,SourceCharacter places a cute Delta plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab3,Khloe
+ItemHandheldPlushieSetLatexLab3,SourceCharacter places a cute Khloe plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab4,Lillian
+ItemHandheldPlushieSetLatexLab4,SourceCharacter places a cute Lillian plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab5,Tiny Raven
+ItemHandheldPlushieSetLatexLab5,SourceCharacter places a cute Tiny Raven plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab6,Xdress
+ItemHandheldPlushieSetLatexLab6,SourceCharacter places a cute XDress plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab7,Elora
+ItemHandheldPlushieSetLatexLab7,SourceCharacter places a cute Elora plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab8,Lisa
+ItemHandheldPlushieSetLatexLab8,SourceCharacter places a cute Lisa plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab9,Melanie
+ItemHandheldPlushieSetLatexLab9,SourceCharacter places a cute Melanie plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab10,Iris
+ItemHandheldPlushieSetLatexLab10,SourceCharacter places a cute Iris plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab11,Kelsey
+ItemHandheldPlushieSetLatexLab11,SourceCharacter places a cute Kelsey plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab12,Fae
+ItemHandheldPlushieSetLatexLab12,SourceCharacter places a cute Fae plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab13,Maria
+ItemHandheldPlushieSetLatexLab13,SourceCharacter places a pretty Maria plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionLatexLab14,Lyko
+ItemHandheldPlushieSetLatexLab14,SourceCharacter places a cute Lyko plushie in DestinationCharacter hands.
+ItemHandheldPlushieSelectVoidOrder,Void Order
+ItemHandheldPlushieModuleVoidOrder,Void Order
+ItemHandheldPlushieOptionVoidOrder0,None
+ItemHandheldPlushieSetVoidOrder0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder1,Magdalena
+ItemHandheldPlushieSetVoidOrder1,SourceCharacter places an enigmatic Magdalena plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder2,Sonic
+ItemHandheldPlushieSetVoidOrder2,SourceCharacter places a chaotic Sonic plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder3,Jagódka
+ItemHandheldPlushieSetVoidOrder3,SourceCharacter places a playful Jagódka plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder4,Shade
+ItemHandheldPlushieSetVoidOrder4,SourceCharacter places a spooky Shade plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder5,Void Order Paladin
+ItemHandheldPlushieSetVoidOrder5,SourceCharacter places a stoic Void Order Paladin plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder6,Hazel
+ItemHandheldPlushieSetVoidOrder6,SourceCharacter places a cute Hazel plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder7,Lisa
+ItemHandheldPlushieSetVoidOrder7,SourceCharacter places a cute Lisa plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder8,Robin
+ItemHandheldPlushieSetVoidOrder8,SourceCharacter places a cute Robin plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder9,Sneaki
+ItemHandheldPlushieSetVoidOrder9,SourceCharacter places a cute Sneaki plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder10,Mai
+ItemHandheldPlushieSetVoidOrder10,SourceCharacter places a cute Mai plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder11,Tachi
+ItemHandheldPlushieSetVoidOrder11,SourceCharacter places a cute Tachi plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder12,Carol
+ItemHandheldPlushieSetVoidOrder12,SourceCharacter places a cute Carol plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder13,Jakkie
+ItemHandheldPlushieSetVoidOrder13,SourceCharacter places a cute Jakkie plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder14,Void Inquisitor
+ItemHandheldPlushieSetVoidOrder14,SourceCharacter places a cute Void Inquisitor plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder15,Void Maid
+ItemHandheldPlushieSetVoidOrder15,SourceCharacter places a cute Void Maid plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder16,Void Priestess
+ItemHandheldPlushieSetVoidOrder16,SourceCharacter places a cute Void Priestess plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder17,Void Psyker
+ItemHandheldPlushieSetVoidOrder17,SourceCharacter places a cute Void Psyker plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder18,Dante
+ItemHandheldPlushieSetVoidOrder18,SourceCharacter places a cute Dante plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder19,Sarah Jade Kelly
+ItemHandheldPlushieSetVoidOrder19,SourceCharacter places an unforgetable Sarah Jade Kelly plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder20,Wolfie
+ItemHandheldPlushieSetVoidOrder20,SourceCharacter places a cute Wolfie plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder21,Vi
+ItemHandheldPlushieSetVoidOrder21,SourceCharacter places a cute Vi plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder22,Needle
+ItemHandheldPlushieSetVoidOrder22,SourceCharacter places a cute Needle plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder23,Mist
+ItemHandheldPlushieSetVoidOrder23,SourceCharacter places a cute Mist plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder24,Milim
+ItemHandheldPlushieSetVoidOrder24,SourceCharacter places a cute Milim plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder25,Lisa
+ItemHandheldPlushieSetVoidOrder25,SourceCharacter places a cute Lisa plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder26,Kirumi
+ItemHandheldPlushieSetVoidOrder26,SourceCharacter places a cute Kirumi plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder27,Alex Carameii
+ItemHandheldPlushieSetVoidOrder27,SourceCharacter places a cute Alex Carameii plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVoidOrder28,Katrina Thunder
+ItemHandheldPlushieSetVoidOrder28,SourceCharacter places a cute Katrina Thunder plushie in DestinationCharacter hands.
+ItemHandheldPlushieSelectEnsLivingRoom,En's Living Room
+ItemHandheldPlushieModuleEnsLivingRoom,En's Living Room
+ItemHandheldPlushieOptionEnsLivingRoom0,None
+ItemHandheldPlushieSetEnsLivingRoom0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionEnsLivingRoom1,Alunra
+ItemHandheldPlushieSetEnsLivingRoom1,SourceCharacter places a cute Alunra plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionEnsLivingRoom2,Mel
+ItemHandheldPlushieSetEnsLivingRoom2,SourceCharacter places a cute Mel plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionEnsLivingRoom3,Zannah
+ItemHandheldPlushieSetEnsLivingRoom3,SourceCharacter places a cute Zannah plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionEnsLivingRoom4,Zoe
+ItemHandheldPlushieSetEnsLivingRoom4,SourceCharacter places a cute Zoe plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionEnsLivingRoom5,Chloe
+ItemHandheldPlushieSetEnsLivingRoom5,SourceCharacter places a cute Chloe plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionEnsLivingRoom6,Liesel
+ItemHandheldPlushieSetEnsLivingRoom6,SourceCharacter places a cute Liesel plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionEnsLivingRoom7,Skylar
+ItemHandheldPlushieSetEnsLivingRoom7,SourceCharacter places a cute Skylar plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionEnsLivingRoom8,Amy
+ItemHandheldPlushieSetEnsLivingRoom8,SourceCharacter places a cute Amy plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionEnsLivingRoom9,Arelia
+ItemHandheldPlushieSetEnsLivingRoom9,SourceCharacter places a cute Arelia plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionEnsLivingRoom10,Dawn
+ItemHandheldPlushieSetEnsLivingRoom10,SourceCharacter places a cute Dawn plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionEnsLivingRoom11,Bella
+ItemHandheldPlushieSetEnsLivingRoom11,SourceCharacter places a cute Bella plushie in DestinationCharacter hands.
+ItemHandheldPlushieSelectDawnsDarlings,Dawn's Darlings
+ItemHandheldPlushieModuleDawnsDarlings,Dawn's Darlings
+ItemHandheldPlushieOptionDawnsDarlings0,None
+ItemHandheldPlushieSetDawnsDarlings0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionDawnsDarlings1,Kin
+ItemHandheldPlushieSetDawnsDarlings1,SourceCharacter places a cute Kin plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionDawnsDarlings2,Laura
+ItemHandheldPlushieSetDawnsDarlings2,SourceCharacter places a cute Laura plushie in DestinationCharacter hands.
+ItemHandheldPlushieSelectVagrants,Vagrants/Misc
+ItemHandheldPlushieModuleVagrants,Vagrants/Misc
+ItemHandheldPlushieOptionVagrants0,None
+ItemHandheldPlushieSetVagrants0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants1,Nabi
+ItemHandheldPlushieSetVagrants1,SourceCharacter places a cute Nabi plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants2,Hoshi-Ko
+ItemHandheldPlushieSetVagrants2,SourceCharacter places a cute Hoshi-Ko plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants3,Layottu
+ItemHandheldPlushieSetVagrants3,SourceCharacter places a cute Layottu plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants4,Sabie
+ItemHandheldPlushieSetVagrants4,SourceCharacter places a cute Sabie plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants5,Little Sera
+ItemHandheldPlushieSetVagrants5,SourceCharacter places a cute Little Sera plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants6,Mana
+ItemHandheldPlushieSetVagrants6,SourceCharacter places a cute Mana plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants7,Minerva
+ItemHandheldPlushieSetVagrants7,SourceCharacter places a cute Minerva plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants8,Zoi
+ItemHandheldPlushieSetVagrants8,SourceCharacter places a cute Zoi plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants9,Takao
+ItemHandheldPlushieSetVagrants9,SourceCharacter places a flashy Takao plushie in DestinationCharacter hands
+ItemHandheldPlushieOptionVagrants10,Carol
+ItemHandheldPlushieSetVagrants10,SourceCharacter places a mischievous Carol plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants11,Brioche
+ItemHandheldPlushieSetVagrants11,SourceCharacter places a cute Brioche plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants12,Flare
+ItemHandheldPlushieSetVagrants12,SourceCharacter places a cute Flare plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants13,Lara
+ItemHandheldPlushieSetVagrants13,SourceCharacter places a cute Lara plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionVagrants14,Kitty
+ItemHandheldPlushieSetVagrants14,SourceCharacter places a cute Kitty plushie in DestinationCharacter hands.
+ItemHandheldPlushieModuleNelsStorage,Nel's Storage Room
+ItemHandheldPlushieSelectNelsStorage,Nel's Storage Room
+ItemHandheldPlushieOptionNelsStorage0,None
+ItemHandheldPlushieSetNelsStorage0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionNelsStorage1,Nel
+ItemHandheldPlushieSetNelsStorage1,SourceCharacter places a cute Nel plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionNelsStorage2,Fallen
+ItemHandheldPlushieSetNelsStorage2,SourceCharacter places a cute Fallen plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionNelsStorage3,Reina
+ItemHandheldPlushieSetNelsStorage3,SourceCharacter places a cute Reina plushie in DestinationCharacter hands.
+ItemHandheldPlushieModuleCCLounge,CC's Lounge
+ItemHandheldPlushieSelectCCLounge,CC's Lounge
+ItemHandheldPlushieOptionCCLounge0,None
+ItemHandheldPlushieSetCCLounge0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionCCLounge1,Dana
+ItemHandheldPlushieSetCCLounge1,SourceCharacter places a cute Dana plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionCCLounge2,Deasy
+ItemHandheldPlushieSetCCLounge2,SourceCharacter places a cute Deasy plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionCCLounge3,Jennifer
+ItemHandheldPlushieSetCCLounge3,SourceCharacter places a cute Jennifer plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionCCLounge4,Tsuki
+ItemHandheldPlushieSetCCLounge4,SourceCharacter places a cute Tsuki plushie in DestinationCharacter hands.
+ItemHandheldPlushieModuleSakisDen,Saki's Den
+ItemHandheldPlushieSelectSakisDen,Saki's Den
+ItemHandheldPlushieOptionSakisDen0,None
+ItemHandheldPlushieSetSakisDen0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionSakisDen1,Saki
+ItemHandheldPlushieSetSakisDen1,SourceCharacter places a pretty Saki plushie in DestinationCharacter hands.
+ItemHandheldPlushieGroup,Choose the plushie group:
+ItemHandheldPlushieDenofSinSelect,Choose the plushie:
+ItemHandheldPlushieModuleSarahsWorld,Sarah's World
+ItemHandheldPlushieSelectSarahsWorld,Sarah's World
+ItemHandheldPlushieSarahsWorldSelect,Choose the plushie:
+ItemHandheldPlushieOptionSarahsWorld0,None
+ItemHandheldPlushieSetSarahsWorld0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionSarahsWorld1,Sarah
+ItemHandheldPlushieSetSarahsWorld1,SourceCharacter places a sexy Sarah plushie in DestinationCharacter hands.
+ItemHandheldPlushieOptionSarahsWorld2,Samantha
+ItemHandheldPlushieSetSarahsWorld2,SourceCharacter places a sexy Samantha plushie in DestinationCharacter hands.
+ItemHandheldPlushieModuleDollMakerClub,Doll Maker Club
+ItemHandheldPlushieSelectDollMakerClub,Doll Maker Club
+ItemHandheldPlushieDollMakerClubSelect,Choose the plushie:
+ItemHandheldPlushieOptionDollMakerClub0,None
+ItemHandheldPlushieSetDollMakerClub0,SourceCharacter removes a plushie from DestinationCharacter hands.
+ItemHandheldPlushieOptionDollMakerClub1,Courtney
+ItemHandheldPlushieSetDollMakerClub1,SourceCharacter places a cute Courtney plushie in DestinationCharacter hands.
+ItemHandheldCigaretteSelect,Choose position of the cigarette:
+ItemHandheldCigaretteInMouth,In Mouth
+ItemHandheldCigaretteInHand,In Hand
+ItemHandheldCigaretteSetInMouth,SourceCharacter puts the cigarette in DestinationCharacterName mouth.
+ItemHandheldCigaretteSetInHand,SourceCharacter keeps the cigarette in DestinationCharacterName hand.
 ItemHandheldKyosensuSelect,Choose your Kyo-sensu paper art:
 ItemHandheldKyosensuType1,Cherry blossoms
 ItemHandheldKyosensuType2,Lightning bolt
@@ -6616,6 +8397,29 @@ ItemHandheldUchiwaSetType3,SourceCharacter chooses a sun art for DestinationChar
 ItemHandheldUchiwaSetType4,SourceCharacter chooses a wave art for DestinationCharacter Uchiwa fan.
 ItemHandheldUchiwaSetType5,SourceCharacter chooses a moon art for DestinationCharacter Uchiwa fan.
 ItemHandheldUchiwaSetType6,SourceCharacter chooses a flowers art for DestinationCharacter Uchiwa fan.
+ItemHandheldCustomPaddleSelectBase,
+ItemHandheldCustomPaddleModuleCustomText,Custom Text
+ItemHandheldCustomPaddleSelectCustomText,Pick your Custom Text:
+ItemHandheldCustomPaddleOptionc0,Blank
+ItemHandheldCustomPaddleOptionc1,Brat
+ItemHandheldCustomPaddleOptionc2,Hearts
+ItemHandheldCustomPaddleOptionc3,Owned
+ItemHandheldCustomPaddleOptionc4,Pet
+ItemHandheldCustomPaddleOptionc5,Slave
+ItemHandheldCustomPaddleOptionc6,Slut
+ItemHandheldCustomPaddleOptionc7,Toy
+ItemHandheldCustomPaddleOptionc8,Bitch
+ItemHandheldCustomPaddleSetc0,SourceCharacter removed the Custom Text from DestinationCharacter Custom paddle.
+ItemHandheldCustomPaddleSetc1,SourceCharacter set the Custom Text to "Brat" on DestinationCharacter Custom paddle.
+ItemHandheldCustomPaddleSetc2,SourceCharacter set the Custom Text to "Hearts" on DestinationCharacter Custom paddle.
+ItemHandheldCustomPaddleSetc3,SourceCharacter set the Custom Text to "Owned" on DestinationCharacter Custom paddle.
+ItemHandheldCustomPaddleSetc4,SourceCharacter set the Custom Text to "Pet" on DestinationCharacter Custom paddle.
+ItemHandheldCustomPaddleSetc5,SourceCharacter set the Custom Text to "Slave" on DestinationCharacter Custom paddle.
+ItemHandheldCustomPaddleSetc6,SourceCharacter set the Custom Text to "Slut" on DestinationCharacter Custom paddle.
+ItemHandheldCustomPaddleSetc7,SourceCharacter set the Custom Text to "Toy" on DestinationCharacter Custom paddle.
+ItemHandheldCustomPaddleSetc8,SourceCharacter set the Custom Text to "Bitch" on DestinationCharacter Custom paddle.
+ItemHandheldCustomPaddleActivitySpankItem,SourceCharacter hits DestinationCharacter FocusAssetGroup with PronounPossessive ActivityAsset leaving a mark.
+ItemHandheldCustomPaddleActivityRubItem,SourceCharacter rubs DestinationCharacter FocusAssetGroup with PronounPossessive ActivityAsset.
 ItemDevicesLeatherCageSelectBase,Leather cage main menu:
 ItemDevicesLeatherCageModuleFace,Belts
 ItemDevicesLeatherCageSelectFace,Belts options:
@@ -6837,3 +8641,421 @@ ItemLegsBarrelCorsetSetw0,SourceCharacter removes a belt from the DestinationCha
 ItemLegsBarrelCorsetSetw1,SourceCharacter equips a belt on the DestinationCharacter belly.
 ItemLegsBarrelCorsetSetx0,SourceCharacter removes a pair of belts from the DestinationCharacter thigh.
 ItemLegsBarrelCorsetSetx1,SourceCharacter equips a pair of belts on the DestinationCharacter thigh.
+ItemLegsPawPaddedPetsuitLegsSelect,Select Padding
+ItemLegsPawPaddedPetsuitLegsSetNone,SourceCharacter puts the petsuit legs without paws on DestinationCharacter legs.
+ItemLegsPawPaddedPetsuitLegsSetPadding,SourceCharacter puts the petsuit legs with paws on DestinationCharacter legs.
+ItemLegsPawPaddedPetsuitLegsNone,No Paw Padding
+ItemLegsPawPaddedPetsuitLegsPadding,Paw Padding
+ClothAccessoryRuffledCollarSelect,Choker addon option:
+ClothAccessoryRuffledCollarNone,No choker
+ClothAccessoryRuffledCollarChoker,Choker added
+NecklaceBeadNecklace,Bead Necklace
+NecklaceBeadNecklaceSelect,Choose A Pendant:
+NecklaceBeadNecklaceGemstone,Gemstone
+NecklaceBeadNecklaceIceSickle,Ice Sickle
+NecklaceBeadNecklacePawPad,Paw Pad
+NecklaceBeadNecklaceRazor,Razor
+NecklaceBeadNecklaceShuriken,Shuriken
+NecklaceBeadNecklaceTeeth,Teeth
+NecklaceBeadNecklaceDragon,Dragon
+NecklaceBeadNecklaceCursedEye,Cursed Eye
+NecklaceRuffledCollarSelect,Choker addon option:
+NecklaceRuffledCollarNone,No choker
+NecklaceRuffledCollarChoker,Choker added
+ItemMouthCompGagSelectBase,Customize this gagging process following these steps:
+ItemMouthCompGagModuleFoamBall,Foam balls
+ItemMouthCompGagSelectFoamBall,How much foam balls going inside the mouth?
+ItemMouthCompGagOptionb0,Just a single ball
+ItemMouthCompGagOptionb1,Two foam balls
+ItemMouthCompGagOptionb2,Three foam balls
+ItemMouthCompGagOptionb3,Mouth empty
+ItemMouthCompGagModuleUnderTape,Primary foam tape
+ItemMouthCompGagSelectUnderTape,Use a piece of foam tape over the mouth?
+ItemMouthCompGagOptiont0,Not apply it
+ItemMouthCompGagOptiont1,Apply it!
+ItemMouthCompGagModuleRubberGlue,Additional glue
+ItemMouthCompGagSelectRubberGlue,Apply a glue for improve gag adherence?
+ItemMouthCompGagOptiong0,It's unnecessary
+ItemMouthCompGagOptiong1,Sure!
+ItemMouthCompGagModuleRubberTape,Rubber tape
+ItemMouthCompGagSelectRubberTape,Do you want to reinforce it with thick rubber tape's piece?
+ItemMouthCompGagOptionr0,Maybe not
+ItemMouthCompGagOptionr1,Placed!
+ItemMouthCompGagModuleMetalStrip,Metal strip harness
+ItemMouthCompGagSelectMetalStrip,Do you want to install a metal strip muzzle and bolts?
+ItemMouthCompGagOptions0,Skip it
+ItemMouthCompGagOptions1,Done!
+ItemMouthCompGagModuleFoamTape,Foam tape face cover
+ItemMouthCompGagSelectFoamTape,How would you like cover all these gags?
+ItemMouthCompGagOptionm0,That's enough
+ItemMouthCompGagOptionm1,Cover mouth and neck
+ItemMouthCompGagOptionm2,Partially hooded but hair
+ItemMouthCompGagOptionm3,Partially hooded but eyes
+ItemMouthCompGagOptionm4,Completely hooded
+ItemMouthCompGagSetb0,SourceCharacter puts a foam ball in DestinationCharacter mouth.
+ItemMouthCompGagSetb1,SourceCharacter puts two foam balls in DestinationCharacter mouth.
+ItemMouthCompGagSetb2,SourceCharacter fills the DestinationCharacter mouth with three foam balls.
+ItemMouthCompGagSetb3,SourceCharacter remove all foam balls from DestinationCharacter mouth.
+ItemMouthCompGagSett0,SourceCharacter removes the primary foam tape layer from DestinationCharacter mouth.
+ItemMouthCompGagSett1,SourceCharacter wraps the DestinationCharacter mouth with a foam tape primary layer.
+ItemMouthCompGagSetg0,SourceCharacter clears the glue from DestinationCharacter face.
+ItemMouthCompGagSetg1,SourceCharacter improves the gag adherence applying some glue on DestinationCharacter face.
+ItemMouthCompGagSetr0,SourceCharacter takes it easy and remove the rubber tape from DestinationCharacter mouth.
+ItemMouthCompGagSetr1,SourceCharacter improves this gag installing a thick rubber tape on DestinationCharacter mouth.
+ItemMouthCompGagSets0,SourceCharacter frees the DestinationCharacter mouth from metal strip.
+ItemMouthCompGagSets1,SourceCharacter locks all previous gags on DestinationCharacter mouth with a metal strip and bolts.
+ItemMouthCompGagSetm0,SourceCharacter unwraps all foam tape last layer from DestinationCharacter face.
+ItemMouthCompGagSetm1,SourceCharacter wraps the DestinationCharacter neck and face with foam tape.
+ItemMouthCompGagSetm2,SourceCharacter wraps the DestinationCharacter neck face and eyes with foam tape.
+ItemMouthCompGagSetm3,SourceCharacter hoods the DestinationCharacter head but TargetPronounPossessive eyes with foam tape.
+ItemMouthCompGagSetm4,SourceCharacter hoods completely the DestinationCharacter head with foam tape.
+ItemMouth2CompGagSelectBase,Customize this gagging process following these steps:
+ItemMouth2CompGagModuleFoamBall,Foam balls
+ItemMouth2CompGagSelectFoamBall,How much foam balls going inside the mouth?
+ItemMouth2CompGagOptionb0,Just a single ball
+ItemMouth2CompGagOptionb1,Two foam balls
+ItemMouth2CompGagOptionb2,Three foam balls
+ItemMouth2CompGagOptionb3,Mouth empty
+ItemMouth2CompGagModuleUnderTape,Primary foam tape
+ItemMouth2CompGagSelectUnderTape,Use a piece of foam tape over the mouth?
+ItemMouth2CompGagOptiont0,Not apply it
+ItemMouth2CompGagOptiont1,Apply it!
+ItemMouth2CompGagModuleRubberGlue,Additional glue
+ItemMouth2CompGagSelectRubberGlue,Apply a glue for improve gag adherence?
+ItemMouth2CompGagOptiong0,It's unnecessary
+ItemMouth2CompGagOptiong1,Sure!
+ItemMouth2CompGagModuleRubberTape,Rubber tape
+ItemMouth2CompGagSelectRubberTape,Do you want to reinforce it with thick rubber tape's piece?
+ItemMouth2CompGagOptionr0,Maybe not
+ItemMouth2CompGagOptionr1,Placed!
+ItemMouth2CompGagModuleMetalStrip,Metal strip harness
+ItemMouth2CompGagSelectMetalStrip,Do you want to install a metal strip muzzle and bolts?
+ItemMouth2CompGagOptions0,Skip it
+ItemMouth2CompGagOptions1,Done!
+ItemMouth2CompGagModuleFoamTape,Foam tape face cover
+ItemMouth2CompGagSelectFoamTape,How would you like cover all these gags?
+ItemMouth2CompGagOptionm0,That's enough
+ItemMouth2CompGagOptionm1,Cover mouth and neck
+ItemMouth2CompGagOptionm2,Partially hooded but hair
+ItemMouth2CompGagOptionm3,Partially hooded but eyes
+ItemMouth2CompGagOptionm4,Completely hooded
+ItemMouth2CompGagSetb0,SourceCharacter puts a foam ball in DestinationCharacter mouth.
+ItemMouth2CompGagSetb1,SourceCharacter puts two foam balls in DestinationCharacter mouth.
+ItemMouth2CompGagSetb2,SourceCharacter fills the DestinationCharacter mouth with three foam balls.
+ItemMouth2CompGagSetb3,SourceCharacter remove all foam balls from DestinationCharacter mouth.
+ItemMouth2CompGagSett0,SourceCharacter removes the primary foam tape layer from DestinationCharacter mouth.
+ItemMouth2CompGagSett1,SourceCharacter wraps the DestinationCharacter mouth with a foam tape primary layer.
+ItemMouth2CompGagSetg0,SourceCharacter clears the glue from DestinationCharacter face.
+ItemMouth2CompGagSetg1,SourceCharacter improves the gag adherence applying some glue on DestinationCharacter face.
+ItemMouth2CompGagSetr0,SourceCharacter takes it easy and remove the rubber tape from DestinationCharacter mouth.
+ItemMouth2CompGagSetr1,SourceCharacter improves this gag installing a thick rubber tape on DestinationCharacter mouth.
+ItemMouth2CompGagSets0,SourceCharacter frees the DestinationCharacter mouth from metal strip.
+ItemMouth2CompGagSets1,SourceCharacter locks all previous gags on DestinationCharacter mouth with a metal strip and bolts.
+ItemMouth2CompGagSetm0,SourceCharacter unwraps all foam tape last layer from DestinationCharacter face.
+ItemMouth2CompGagSetm1,SourceCharacter wraps the DestinationCharacter neck and face with foam tape.
+ItemMouth2CompGagSetm2,SourceCharacter wraps the DestinationCharacter neck face and eyes with foam tape.
+ItemMouth2CompGagSetm3,SourceCharacter hoods the DestinationCharacter head but TargetPronounPossessive eyes with foam tape.
+ItemMouth2CompGagSetm4,SourceCharacter hoods completely the DestinationCharacter head with foam tape.
+ShoesZipperBBootsSelect,Choose your Zipper Ballet Boots length:
+ShoesZipperBBootsNormal,Under knee
+ShoesZipperBBootsFullLeg,Full leg length
+ItemBootsZipperBBootsSelect,Choose the Zipper Ballet Boots length:
+ItemBootsZipperBBootsNormal,Under knee
+ItemBootsZipperBBootsFullLeg,Full leg length
+ItemBootsZipperBBootsSetNormal,SourceCharacter wears a under knee Zipper Ballet Boots on the DestinationCharacter feet.
+ItemBootsZipperBBootsSetFullLeg,SourceCharacter wears a full leg Zipper Ballet Boots on the DestinationCharacter feet.
+ItemBootsSingleBalletBootSelectBase,Single Ballet Boot main menu
+ItemBootsSingleBalletBootModuleMode,Restraint mode
+ItemBootsSingleBalletBootSelectMode,Restraint level options:
+ItemBootsSingleBalletBootOptionm0,Normal restraint
+ItemBootsSingleBalletBootOptionm1,Can't stand up
+ItemBootsSingleBalletBootOptionm2,Training hops
+ItemBootsSingleBalletBootModuleThighs,Boot lenght
+ItemBootsSingleBalletBootSelectThighs,Boot lenght options:
+ItemBootsSingleBalletBootOptiont0,Under knee
+ItemBootsSingleBalletBootOptiont1,Full boot
+ItemBootsSingleBalletBootModuleLowerBelts,Lower belts
+ItemBootsSingleBalletBootSelectLowerBelts,Lower belts reinforcement options:
+ItemBootsSingleBalletBootOptione0,None
+ItemBootsSingleBalletBootOptione1,Apply them
+ItemBootsSingleBalletBootModuleThighBelts,Thigh belts
+ItemBootsSingleBalletBootSelectThighBelts,Thigh belts reinforcement options:
+ItemBootsSingleBalletBootOptionb0,None
+ItemBootsSingleBalletBootOptionb1,Apply them
+ItemBootsSingleBalletBootModuleFoamTape,Foam tape cover
+ItemBootsSingleBalletBootSelectFoamTape,Foam tape cover options:
+ItemBootsSingleBalletBootOptionf0,None
+ItemBootsSingleBalletBootOptionf1,Wrap until under knee
+ItemBootsSingleBalletBootOptionf2,Wrap full leg
+ItemBootsSingleBalletBootModulePillory,Metal pillories
+ItemBootsSingleBalletBootSelectPillory,Metal pillories options:
+ItemBootsSingleBalletBootOptionp0,None
+ItemBootsSingleBalletBootOptionp1,Install pillories
+ItemBootsSingleBalletBootModuleVibration,Vibrating Module
+ItemBootsSingleBalletBootSelectVibration,Vibrating device selector:
+ItemBootsSingleBalletBootOptionv0,Disabled
+ItemBootsSingleBalletBootOptionv1,Light
+ItemBootsSingleBalletBootOptionv2,Medium
+ItemBootsSingleBalletBootOptionv3,Intense
+ItemBootsSingleBalletBootOptionv4,Full on
+ItemBootsSingleBalletBootSetm0,SourceCharacter adjustes DestinationCharacter toes into Single Ballet Boot just to stand on TargetPronounPossessive own.
+ItemBootsSingleBalletBootSetm1,SourceCharacter adjustes DestinationCharacter toes into Single Ballet Boot restraining any attempt by TargetPronounObject to get up.
+ItemBootsSingleBalletBootSetm2,SourceCharacter adjustes DestinationCharacter toes into Single Ballet Boot for some hop training.
+ItemBootsSingleBalletBootSett0,SourceCharacter puts a Single Ballet Boot's standard version on DestinationCharacter legs.
+ItemBootsSingleBalletBootSett1,SourceCharacter puts a Single Ballet Boot's full leg variation on DestinationCharacter legs.
+ItemBootsSingleBalletBootSete0,SourceCharacter unties belts from DestinationCharacter ankles and legs.
+ItemBootsSingleBalletBootSete1,SourceCharacter ties DestinationCharacter ankles and legs using some belts.
+ItemBootsSingleBalletBootSetb0,SourceCharacter unties belts from DestinationCharacter thighs.
+ItemBootsSingleBalletBootSetb1,SourceCharacter ties the DestinationCharacter thighs using some belts.
+ItemBootsSingleBalletBootSetf0,SourceCharacter unwraps any foam tape from DestinationCharacter legs.
+ItemBootsSingleBalletBootSetf1,SourceCharacter wraps DestinationCharacter up to the knees using foam tape.
+ItemBootsSingleBalletBootSetf2,SourceCharacter wraps DestinationCharacter legs completely using foam tape.
+ItemBootsSingleBalletBootSetp0,SourceCharacter removes all metal pillory from DestinationCharacter legs.
+ItemBootsSingleBalletBootSetp1,SourceCharacter installs metal pillories on DestinationCharacter legs.
+ItemBootsSingleBalletBootSetv0,SourceCharacter turns off the vibration device from DestinationCharacter boot.
+ItemBootsSingleBalletBootSetv1,SourceCharacter sets the DestinationCharacter boot vibration device to lowest speed.
+ItemBootsSingleBalletBootSetv2,SourceCharacter sets the DestinationCharacter boot vibration device to average speed.
+ItemBootsSingleBalletBootSetv3,SourceCharacter sets the DestinationCharacter boot vibration device to high speed.
+ItemBootsSingleBalletBootSetv4,SourceCharacter sets the DestinationCharacter boot vibration device to max speed.
+ItemDevicesSingleBalletBootSelectBase,Single Ballet Boot main menu
+ItemDevicesSingleBalletBootModuleMode,Restraint mode
+ItemDevicesSingleBalletBootSelectMode,Restraint level options:
+ItemDevicesSingleBalletBootOptionm0,Normal restraint
+ItemDevicesSingleBalletBootOptionm1,Can't stand up
+ItemDevicesSingleBalletBootOptionm2,Training hops
+ItemDevicesSingleBalletBootModuleThighs,Boot lenght
+ItemDevicesSingleBalletBootSelectThighs,Boot lenght options:
+ItemDevicesSingleBalletBootOptiont0,Under knee
+ItemDevicesSingleBalletBootOptiont1,Full boot
+ItemDevicesSingleBalletBootModuleLowerBelts,Lower belts
+ItemDevicesSingleBalletBootSelectLowerBelts,Lower belts reinforcement options:
+ItemDevicesSingleBalletBootOptione0,None
+ItemDevicesSingleBalletBootOptione1,Apply them
+ItemDevicesSingleBalletBootModuleThighBelts,Thigh belts
+ItemDevicesSingleBalletBootSelectThighBelts,Thigh belts reinforcement options:
+ItemDevicesSingleBalletBootOptionb0,None
+ItemDevicesSingleBalletBootOptionb1,Apply them
+ItemDevicesSingleBalletBootModuleFoamTape,Foam tape cover
+ItemDevicesSingleBalletBootSelectFoamTape,Foam tape cover options:
+ItemDevicesSingleBalletBootOptionf0,None
+ItemDevicesSingleBalletBootOptionf1,Wrap until under knee
+ItemDevicesSingleBalletBootOptionf2,Wrap full leg
+ItemDevicesSingleBalletBootModulePillory,Metal pillories
+ItemDevicesSingleBalletBootSelectPillory,Metal pillories options:
+ItemDevicesSingleBalletBootOptionp0,None
+ItemDevicesSingleBalletBootOptionp1,Install pillories
+ItemDevicesSingleBalletBootModuleVibration,Vibrating Module
+ItemDevicesSingleBalletBootSelectVibration,Vibrating device selector:
+ItemDevicesSingleBalletBootOptionv0,Disabled
+ItemDevicesSingleBalletBootOptionv1,Light
+ItemDevicesSingleBalletBootOptionv2,Medium
+ItemDevicesSingleBalletBootOptionv3,Intense
+ItemDevicesSingleBalletBootOptionv4,Full on
+ItemDevicesSingleBalletBootSetm0,SourceCharacter adjustes DestinationCharacter toes into Single Ballet Boot just to stand on TargetPronounPossessive own.
+ItemDevicesSingleBalletBootSetm1,SourceCharacter adjustes DestinationCharacter toes into Single Ballet Boot restraining any attempt by TargetPronounObject to get up.
+ItemDevicesSingleBalletBootSetm2,SourceCharacter adjustes DestinationCharacter toes into Single Ballet Boot for some hop training.
+ItemDevicesSingleBalletBootSett0,SourceCharacter puts a Single Ballet Boot's standard version on DestinationCharacter legs.
+ItemDevicesSingleBalletBootSett1,SourceCharacter puts a Single Ballet Boot's full leg variation on DestinationCharacter legs.
+ItemDevicesSingleBalletBootSete0,SourceCharacter unties belts from DestinationCharacter ankles and legs.
+ItemDevicesSingleBalletBootSete1,SourceCharacter ties DestinationCharacter ankles and legs using some belts.
+ItemDevicesSingleBalletBootSetb0,SourceCharacter unties belts from DestinationCharacter thighs.
+ItemDevicesSingleBalletBootSetb1,SourceCharacter ties DestinationCharacter thighs using some belts.
+ItemDevicesSingleBalletBootSetf0,SourceCharacter unwraps any foam tape from DestinationCharacter legs.
+ItemDevicesSingleBalletBootSetf1,SourceCharacter wraps DestinationCharacter up to the knees using foam tape.
+ItemDevicesSingleBalletBootSetf2,SourceCharacter wraps DestinationCharacter legs completely using foam tape.
+ItemDevicesSingleBalletBootSetp0,SourceCharacter removes all metal pillory from DestinationCharacter legs.
+ItemDevicesSingleBalletBootSetp1,SourceCharacter installs metal pillories on DestinationCharacter legs.
+ItemDevicesSingleBalletBootSetv0,SourceCharacter turns off the vibration device from DestinationCharacter boot.
+ItemDevicesSingleBalletBootSetv1,SourceCharacter sets DestinationCharacter boot vibration device to lowest speed.
+ItemDevicesSingleBalletBootSetv2,SourceCharacter sets DestinationCharacter boot vibration device to average speed.
+ItemDevicesSingleBalletBootSetv3,SourceCharacter sets DestinationCharacter boot vibration device to high speed.
+ItemDevicesSingleBalletBootSetv4,SourceCharacter sets DestinationCharacter boot vibration device to max speed.
+ItemHandheldFoamRollSelect,Just a single foam roll to hold but...
+ItemHandheldFoamRollRoll,Keep it as a roll
+ItemHandheldFoamRollMittens,Try it!
+ItemHandheldFoamRollSetRoll,SourceCharacter unwraps the foam tape from TargetPronounPossessive hands and returns this roll to DestinationCharacter to hold.
+ItemHandheldFoamRollSetMittens,SourceCharacter uses this foam roll to wrap DestinationCharacter hands.
+ClothLowerPVCHobbleSkirtSelectBase,PVC Hobble Dress main menu:
+ClothLowerPVCHobbleSkirtModuleLength,Length option
+ClothLowerPVCHobbleSkirtSelectLength,Select a skirt length:
+ClothLowerPVCHobbleSkirtOptionl0,Classic full lenght
+ClothLowerPVCHobbleSkirtOptionl1,Half legs
+ClothLowerPVCHobbleSkirtOptionl2,Full and mermaid end
+ClothLowerPVCHobbleSkirtModulePosition,Layer mode
+ClothLowerPVCHobbleSkirtSelectPosition,Define which layer this skirt will appear on:
+ClothLowerPVCHobbleSkirtOptionp0,Default
+ClothLowerPVCHobbleSkirtOptionp1,Over clothes
+ClothLowerPVCHobbleSkirtOptionp2,Under clothes
+ClothLowerPVCHobbleSkirtModuleSlow,Tightness mode
+ClothLowerPVCHobbleSkirtSelectSlow,Adjust your skirt tightness:
+ClothLowerPVCHobbleSkirtOptions0,Loose mode
+ClothLowerPVCHobbleSkirtOptions1,Zipper down
+ItemHoodTransparentLatexHoodSelectBase,Transparent Latex Hood customization main menu:
+ItemHoodTransparentLatexHoodModuleType,Restriction type
+ItemHoodTransparentLatexHoodSelectType,Choose a latex hood opening model:
+ItemHoodTransparentLatexHoodOptiont0,Nose and mouth
+ItemHoodTransparentLatexHoodOptiont1,Only nose
+ItemHoodTransparentLatexHoodOptiont2,Only mouth
+ItemHoodTransparentLatexHoodOptiont3,Plain hood
+ItemHoodTransparentLatexHoodModuleLayer,Face position
+ItemHoodTransparentLatexHoodSelectLayer,About hood layer option:
+ItemHoodTransparentLatexHoodOptionl0,Over mask
+ItemHoodTransparentLatexHoodOptionl1,Under mask
+ItemHoodTransparentLatexHoodSett0,SourceCharacter covers DestinationCharacter head with a safety Transparent hood.
+ItemHoodTransparentLatexHoodSett1,SourceCharacter covers DestinationCharacter head with a Transparent hood with nose openings.
+ItemHoodTransparentLatexHoodSett2,SourceCharacter covers DestinationCharacter head with a Transparent hood with a mouth opening.
+ItemHoodTransparentLatexHoodSett3,SourceCharacter covers DestinationCharacter head with a Transparent hood without air opening.
+ItemHoodTransparentLatexHoodSetl0,SourceCharacter puts the Transparent hood on DestinationCharacter previous head items.
+ItemHoodTransparentLatexHoodSetl1,SourceCharacter puts the Transparent hood under DestinationCharacter previous head items.
+ShoesPumpHighHeelsSelect,Select your Pump High Heels style:
+ShoesPumpHighHeelsStraps,With straps
+ShoesPumpHighHeelsNone,No straps
+GlassesVintageSunglassesSelectBase,Customize your Vintage Sungalsses:
+GlassesVintageSunglassesModulePosition,Layer position
+GlassesVintageSunglassesSelectPosition,Layer position adjustment menu:
+GlassesVintageSunglassesOptionp0,Under hair front
+GlassesVintageSunglassesOptionp1,Over hair front
+GlassesVintageSunglassesModuleFaceline,Face position
+GlassesVintageSunglassesSelectFaceline,Face position adjustment menu:
+GlassesVintageSunglassesOptionf0,Normal
+GlassesVintageSunglassesOptionf1,Dropped
+GlassesShutterSunshadesSelectBase,Customize your Shutter Sunshades:
+GlassesShutterSunshadesModulePosition,Layer position
+GlassesShutterSunshadesSelectPosition,Layer position adjustment menu:
+GlassesShutterSunshadesOptionp0,Under hair front
+GlassesShutterSunshadesOptionp1,Over hair front
+GlassesShutterSunshadesModuleLenses,Lenses type
+GlassesShutterSunshadesSelectLenses,Choose a pair of lenses:
+GlassesShutterSunshadesOptionl0,Shutter type
+GlassesShutterSunshadesOptionl1,Clear lenses
+GlassesShutterSunshadesOptionl2,Colorful lenses
+ClothAccessoryLargeBeltClassicSelectBase,Welcome to classic large belt main menu
+ClothAccessoryLargeBeltClassicModuleBelt,Belt mode
+ClothAccessoryLargeBeltClassicSelectBelt,Choose your belt style:
+ClothAccessoryLargeBeltClassicOptionb0,Loose
+ClothAccessoryLargeBeltClassicOptionb1,Fit
+ClothAccessoryLargeBeltClassicOptionb2,Lower loose
+ClothAccessoryLargeBeltClassicModulePosition,Layer position
+ClothAccessoryLargeBeltClassicSelectPosition,Layer position adjustment menu:
+ClothAccessoryLargeBeltClassicOptionp0,Classic layer
+ClothAccessoryLargeBeltClassicOptionp1,lower priority
+ClothAccessoryLargeBeltClassicOptionp2,lowest priority
+ClothAccessoryLargeBeltClassicModuleBelt,Belt mode
+ClothAccessoryLargeBeltClassicSelectBelt,Choose your belt style:
+ClothAccessoryLargeBeltClassicOptionb0,Loose
+ClothAccessoryLargeBeltClassicOptionb1,Fit
+ClothAccessoryLargeBeltClassicOptionb2,Lower loose
+ItemNeckSteampunkCollarSelectBase,Steampunk collar customization menu:
+ItemNeckSteampunkCollarModuleStraps,Extra Straps
+ItemNeckSteampunkCollarSelectStraps,Extra straps options:
+ItemNeckSteampunkCollarOptiont0,Standard collar
+ItemNeckSteampunkCollarOptiont1,Straps added
+ItemNeckSteampunkCollarModuleGag,Inner gag
+ItemNeckSteampunkCollarSelectGag,Gag options:
+ItemNeckSteampunkCollarOptiong0,No gag applied
+ItemNeckSteampunkCollarOptiong1,Ball gag
+ItemNeckSteampunkCollarOptiong2,Ring gag
+ItemNeckSteampunkCollarOptiong3,Pussy gag
+ItemNeckSteampunkCollarOptiong4,Infl.gag Light
+ItemNeckSteampunkCollarOptiong5,Infl.gag Inflated
+ItemNeckSteampunkCollarOptiong6,Infl.gag Bloated
+ItemNeckSteampunkCollarModuleSpike,Spiked collar
+ItemNeckSteampunkCollarSelectSpike,Spiked collar accessory options:
+ItemNeckSteampunkCollarOptions0,Without collar
+ItemNeckSteampunkCollarOptions1,Collar installed
+ItemNeckSteampunkCollarOptions2,Higher layer collar
+ItemNeckSteampunkCollarModuleCover,Over mouth cover
+ItemNeckSteampunkCollarSelectCover,Over mouth cover options:
+ItemNeckSteampunkCollarOptionc0,No cover
+ItemNeckSteampunkCollarOptionc1,Perforated leather
+ItemNeckSteampunkCollarOptionc2,Spiked semi-sphere
+ItemNeckSteampunkCollarOptionc3,Rubber dildo
+ItemNeckSteampunkCollarSett0,SourceCharacter removes the additional straps from DestinationCharacter head.
+ItemNeckSteampunkCollarSett1,SourceCharacter reinforces the collar with straps on DestinationCharacter head.
+ItemNeckSteampunkCollarSetg0,SourceCharacter removes any gag from DestinationCharacter mouth.
+ItemNeckSteampunkCollarSetg1,SourceCharacter puts a ball gag in DestinationCharacter mouth.
+ItemNeckSteampunkCollarSetg2,SourceCharacter puts a ring gag in DestinationCharacter mouth.
+ItemNeckSteampunkCollarSetg3,SourceCharacter installs a pussy lips gag in the DestinationCharacter mouth.
+ItemNeckSteampunkCollarSetg4,SourceCharacter puts an inflatable gag in DestinationCharacter mouth and leaves it empty.
+ItemNeckSteampunkCollarSetg5,SourceCharacter puts an inflatable gag in DestinationCharacter mouth and pump it to the half size.
+ItemNeckSteampunkCollarSetg6,SourceCharacter puts an inflatable gag in DestinationCharacter mouth and pump it to the limit.
+ItemNeckSteampunkCollarSets0,SourceCharacter removes the steel spiked collar from DestinationCharacter neck.
+ItemNeckSteampunkCollarSets1,SourceCharacter just installs a steel spiked collar on DestinationCharacter neck.
+ItemNeckSteampunkCollarSets2,SourceCharacter installs a higher layer steel spiked collar on DestinationCharacter neck.
+ItemNeckSteampunkCollarSetc0,SourceCharacter removes any mouth cover from DestinationCharacter collar.
+ItemNeckSteampunkCollarSetc1,SourceCharacter covers the DestinationCharacter mouth with a perforated leather device.
+ItemNeckSteampunkCollarSetc2,SourceCharacter covers the DestinationCharacter mouth with a spiked half-sphere metal object.
+ItemNeckSteampunkCollarSetc3,SourceCharacter covers the DestinationCharacter mouth with a rubber dildo device.
+SelectDollType,Select the doll type.
+MinidollsItemHandheldSetHaruhi,SourceCharacter places a charming Ruruplush in DestinationCharacter hands.
+MinidollsItemHandheldSetMina,SourceCharacter places an adorable Minadoll in DestinationCharacter hands.
+MinidollsItemHandheldSetLonely,SourceCharacter places a glossy Lonelytex in DestinationCharacter hands.
+MinidollsItemHandheldSetSalem,SourceCharacter places a cute Pootlem in DestinationCharacter hands.
+MinidollsItemHandheldSetNadine,SourceCharacter places a sexy Plushdine in DestinationCharacter hands.
+MinidollsItemHandheldTypeHaruhi,Haruhi
+MinidollsItemHandheldTypeMina,Mina
+MinidollsItemHandheldTypeLonely,Lonely
+MinidollsItemHandheldTypeSalem,Salem
+MinidollsItemHandheldTypeNadine,Nadine
+ItemMouthBishopGagSelect,Add or Remove Panel
+ItemMouthBishopGagOpen,Open
+ItemMouthBishopGagCovered,Covered
+ItemMouthBishopGagSetOpen,SourceCharacter removes the panel from DestinationCharacter gag.
+ItemMouthBishopGagSetCovered,SourceCharacter attaches the panel to DestinationCharacter gag.
+ItemMouthBallGag2SelectBase,Configure the ball gag
+ItemMouthBallGag2SelectStrapType,Configure the strap
+ItemMouthBallGag2SelectBallType,Configure the ball
+ItemMouthBallGag2ModuleStrapType,Strap type
+ItemMouthBallGag2ModuleBallType,Ball type
+ItemMouthBallGag2Options0,Basic
+ItemMouthBallGag2Options1,Harness
+ItemMouthBallGag2Optionb0,Regular
+ItemMouthBallGag2Optionb1,Large
+ItemMouthBallGag2Optionb2,XL
+ItemMouthBallGag2Sets0,SourceCharacter changes the strap to a basic strap on DestinationCharacter gag.
+ItemMouthBallGag2Sets1,SourceCharacter changes the strap to a harness on DestinationCharacter gag.
+ItemMouthBallGag2Setb0,SourceCharacter changes the ball to a regular sized one on DestinationCharacter gag.
+ItemMouthBallGag2Setb1,SourceCharacter changes the ball to a large sized one on DestinationCharacter gag.
+ItemMouthBallGag2Setb2,SourceCharacter changes the ball to a XL sized one on DestinationCharacter gag.
+ItemNoseNoseShackleModuleShackle,Shackle
+ItemNoseNoseShackleModuleAttachment,Attachment
+ItemNoseNoseShackleOptions0,Single Bar
+ItemNoseNoseShackleOptions1,Double Bar
+ItemNoseNoseShackleOptiona0,None
+ItemNoseNoseShackleOptiona1,Long Chain
+ItemNoseNoseShackleOptiona2,Short Chain
+ItemNoseNoseShackleOptiona3,Leash
+ItemNoseNoseShackleSelectBase,Choose Appearance
+ItemNoseNoseShackleSelectShackle,Choose Shackle Type
+ItemNoseNoseShackleSelectAttachment,Choose Attachment
+ItemNoseNoseShackleSets0,SourceCharacter fits a single-bar shackle into DestinationCharacter nose.
+ItemNoseNoseShackleSets1,SourceCharacter fits a double-bar shackle into DestinationCharacter nose.
+ItemNoseNoseShackleSeta0,SourceCharacter removes the attachment from DestinationCharacter nose shackle.
+ItemNoseNoseShackleSeta1,SourceCharacter attaches a long chain to DestinationCharacter nose shackle.
+ItemNoseNoseShackleSeta2,SourceCharacter attaches a short chain to DestinationCharacter nose shackle.
+ItemNoseNoseShackleSeta3,SourceCharacter attaches a leash to DestinationCharacter nose shackle.
+ItemVulvaPiercingsModularVulvaPiercingsModuleFastening,Fastening
+ItemVulvaPiercingsModularVulvaPiercingsModuleShield,Attach Shield
+ItemVulvaPiercingsModularVulvaPiercingsOptionf0,No Fastening
+ItemVulvaPiercingsModularVulvaPiercingsOptionf1,Barbells
+ItemVulvaPiercingsModularVulvaPiercingsOptionf2,Rings
+ItemVulvaPiercingsModularVulvaPiercingsOptions0,No
+ItemVulvaPiercingsModularVulvaPiercingsOptions1,Yes
+ItemVulvaPiercingsModularVulvaPiercingsSelectBase,Choose Options
+ItemVulvaPiercingsModularVulvaPiercingsSelectFastening,Choose Fastening
+ItemVulvaPiercingsModularVulvaPiercingsSelectShield,Attach Clit Shield?
+ItemVulvaPiercingsModularVulvaPiercingsSetf0,SourceCharacter unfastens DestinationCharacter chastity piercings.
+ItemVulvaPiercingsModularVulvaPiercingsSetf1,SourceCharacter fastens DestinationCharacter chastity piercings with barbells.
+ItemVulvaPiercingsModularVulvaPiercingsSetf2,SourceCharacter fastens DestinationCharacter chastity piercings with rings.
+ItemVulvaPiercingsModularVulvaPiercingsSets0,SourceCharacter removes the shield from DestinationCharacter chastity piercings.
+ItemVulvaPiercingsModularVulvaPiercingsSets1,SourceCharacter adds a shield to DestinationCharacter chastity piercings.
+ItemDevicesInflatableRestraintBagSeto0,SourceCharacter deflates the bag on TargetCharacter
+ItemDevicesInflatableRestraintBagSeto1,SourceCharacter inflates the bag on TargetCharacter
+ItemDevicesInflatableRestraintBagSett0,SourceCharacter removes the hood on TargetCharacter
+ItemDevicesInflatableRestraintBagSett1,SourceCharacter adds a hood on TargetCharacter
+ItemDevicesInflatableRestraintBagSetg0,SourceCharacter removes the canister on TargetCharacter
+ItemDevicesInflatableRestraintBagSetg1,SourceCharacter adds a canister on TargetCharacter
+ItemDevicesLongBagSetOpaque,SourceCharacter made DestinationCharacter sack opaque.
+ItemDevicesLongBagSetTranslucent,SourceCharacter made DestinationCharacter sack translucent.
+ItemNipplesPiercingsPiercingNameBadgeSetRightNipple,SourceCharacter puts the AssetName on DestinationCharacter right nipple.
+ItemNipplesPiercingsPiercingNameBadgeSetLeftNipple,SourceCharacter puts the AssetName on DestinationCharacter left nipple.

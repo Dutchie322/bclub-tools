@@ -37,7 +37,7 @@
       </ng-container>
       <ng-container matColumnDef="pronouns">
         <th mat-header-cell *matHeaderCellDef>Pronouns</th>
-        <td mat-cell *matCellDef="let character">{{ characterPronouns(character) }}</td>
+        <td mat-cell *matCellDef="let character">{{ character.pronouns$ | async }}</td>
       </ng-container>
       <ng-container matColumnDef="owner">
         <th mat-header-cell *matHeaderCellDef>Owner</th>
