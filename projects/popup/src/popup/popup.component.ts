@@ -25,6 +25,8 @@ import { IPlayerCharacter } from 'src/app/shared/models';
 import { NewVersionNotificationComponent } from '../new-version-notification/new-version-notification.component';
 import { requestOnlineFriends } from 'projects/content-script/src/update-friends';
 
+type ProcessedCharacter = IChatRoomCharacter & { pronouns$: Promise<string>; }
+
 @Component({
     selector: 'app-popup',
     imports: [
@@ -54,7 +56,7 @@ export class PopupComponent implements AfterViewInit {
     };
   }
 
-  public characters = new MatTableDataSource<IChatRoomCharacter>();
+  public characters = new MatTableDataSource<ProcessedCharacter>();
   public onlineFriends = new MatTableDataSource<IMember>();
   public player: IStoredPlayer;
   public alternativeCharacters: IPlayerCharacter[];
@@ -78,9 +80,9 @@ export class PopupComponent implements AfterViewInit {
       retrieve(tabId, 'player').then(player => this.player = player);
       retrieve(tabId, 'onlineFriends').then(friends => this.onlineFriends.data = friends || []);
       retrieve(tabId, 'chatRoomCharacter').then(characters => {
-        this.characters.data = characters.map(character => {
+        this.characters.data = characters.map((character: ProcessedCharacter) => {
           const value = character.Appearance.find(a => a.Group === 'Pronouns').Name;
-          (character as any).pronouns$ = findPronouns(value);
+          character.pronouns$ = findPronouns(value);
           return character;
         });
         if (this.characters.data.length == 0) {
@@ -97,7 +99,7 @@ export class PopupComponent implements AfterViewInit {
           if (changes.chatRoomCharacter) {
             this.characters.data = changes.chatRoomCharacter.newValue.map(character => {
               const value = character.Appearance.find(a => a.Group === 'Pronouns').Name;
-              (character as any).pronouns$ = findPronouns(value);
+              character.pronouns$ = findPronouns(value);
               return character;
             });
             if (this.characters.data.length == 0) {

@@ -48,7 +48,7 @@ export class ChatLineComponent {
     const cleanChatLog = {
       ...chatLog,
       content: this.sanitizeMessage(chatLog.content)
-    };
+    } as ProcessedChatLog;
 
     if (chatLog.type === 'Whisper' && !chatLog.target) {
       // Fill in the target so that we can display whispers more clearly
@@ -59,7 +59,7 @@ export class ChatLineComponent {
     }
 
     if (chatLog.type === 'Action' || chatLog.type === 'Activity' || chatLog.type === 'ServerMessage') {
-      (cleanChatLog as any).rendered$ = renderContent(chatLog);
+      cleanChatLog.rendered$ = renderContent(chatLog);
     }
 
     return cleanChatLog;
