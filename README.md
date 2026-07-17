@@ -6,6 +6,8 @@ Available on the Chrome Web Store: https://chrome.google.com/webstore/detail/bon
 
 ## Features
 - Automatic logging of chat rooms, with a viewer to read the transcripts back.
+- See where and when you met and talked with certain people.
+- Read back on beep message exchanges with someone.
 - Ability to send a desktop notification when a custom keyword is mentioned.
 - Friends list in popup.
 - Quick overview of the characters in the currently joined chat room (name, pronouns, ownership, and dominant level).
