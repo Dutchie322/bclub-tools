@@ -1,4 +1,11 @@
+import { ISettings } from 'models';
 import { IStorageMap, StorageKeys, GlobalStorageKeys, IGlobalStorageMap, CHARACTER_STORAGE_KEYS, ALL_STORAGE_KEYS } from './IStorageMap';
+
+export async function retrieveSettings() {
+  await ensureSettings();
+
+  return retrieveGlobal('settings');
+}
 
 export async function retrieveGlobal<K extends GlobalStorageKeys>(key: K): Promise<IGlobalStorageMap[K]> {
   return (await chrome.storage.local.get([key]))[key] || {} as IGlobalStorageMap[K];
@@ -47,4 +54,52 @@ export async function clearStorage(tabId: number) {
 
 export async function clearCharacterStorage(tabId: number) {
   await chrome.storage.local.remove(CHARACTER_STORAGE_KEYS.map(key => `${key}_${tabId}`));
+}
+
+async function ensureSettings() {
+  // Ensure default settings
+  const settings = await retrieveGlobal('settings');
+
+  if (settings.tools) {
+    if (settings.tools.chatRoomRefresh) {
+      delete settings.tools.chatRoomRefresh;
+    }
+    if (settings.tools.fpsCounter) {
+      delete settings.tools.fpsCounter;
+    }
+    if (settings.tools.wardrobeSize) {
+      delete settings.tools.wardrobeSize;
+    }
+  }
+  if (settings.notifications) {
+    if (settings.notifications.beeps) {
+      delete settings.notifications.beeps;
+    }
+    if (settings.notifications.friendOnline) {
+      delete settings.notifications.friendOnline;
+    }
+    if (settings.notifications.friendOffline) {
+      delete settings.notifications.friendOffline;
+    }
+    if (settings.notifications.actions) {
+      delete settings.notifications.actions;
+    }
+    if (settings.notifications.mentions) {
+      delete settings.notifications.mentions;
+    }
+    if (settings.notifications.whispers) {
+      delete settings.notifications.whispers;
+    }
+  }
+
+  await storeGlobal('settings', {
+    notifications: {
+      keywords: [],
+      ...(settings ? settings.notifications : {})
+    },
+    tools: {
+      chatRoomRefreshInterval: 0,
+      ...(settings ? settings.tools : {})
+    }
+  } as ISettings);
 }

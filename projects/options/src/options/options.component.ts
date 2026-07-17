@@ -17,7 +17,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { storeGlobal, ISettings, retrieveGlobal, executeForAllGameTabs, IMember } from 'models';
+import { storeGlobal, ISettings, executeForAllGameTabs, IMember, retrieveSettings } from 'models';
 import { DatabaseService } from 'src/app/shared/database.service';
 import { humanFileSize } from 'src/app/shared/utils/human-file-size';
 import { ExportService, IExportProgressState } from 'src/app/shared/export.service';
@@ -94,7 +94,7 @@ export class OptionsComponent implements OnDestroy {
     private maintenanceService: MaintenanceService,
     private snackBar: MatSnackBar
   ) {
-    retrieveGlobal('settings').then(settings => {
+    retrieveSettings().then(settings => {
       this.settingsForm.patchValue(settings, {
         emitEvent: false
       });

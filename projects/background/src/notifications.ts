@@ -1,10 +1,10 @@
 /// <reference types="chrome"/>
 
-import { retrieveGlobal, retrieve, IChatLog, renderContent } from '../../../models';
+import { retrieve, IChatLog, renderContent, retrieveSettings } from '../../../models';
 
 export async function notifyIncomingMessage(tabId: number, chatLog: IChatLog) {
   const player = await retrieve(tabId, 'player');
-  const settings = await retrieveGlobal('settings');
+  const settings = await retrieveSettings();
 
   if (player.MemberNumber === chatLog.sender.id) {
     // Don't notify things we did ourselves.

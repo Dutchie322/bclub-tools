@@ -12,9 +12,6 @@ import {
   IChatRoomSync,
   IClientMessage,
   IEnrichedChatRoomChat,
-  retrieveGlobal,
-  storeGlobal,
-  ISettings,
   IChatRoomSyncSingle,
   executeForAllGameTabs,
   IStoredPlayer,
@@ -25,7 +22,8 @@ import {
   retrieveMember,
   IClientAccountBeep,
   clearCharacterStorage,
-  retrieveAppearance
+  retrieveAppearance,
+  retrieveSettings
 } from '../../../models';
 import { checkForGame } from '../../content-script/src/check-for-game';
 import { checkForLoggedInState } from '../../content-script/src/check-for-logged-in-state';
@@ -41,52 +39,6 @@ chrome.action.onClicked.addListener(() => {
 });
 
 chrome.runtime.onInstalled.addListener(async () => {
-  // Ensure default settings
-  const settings = await retrieveGlobal('settings');
-
-  if (settings.tools) {
-    if (settings.tools.chatRoomRefresh) {
-      delete settings.tools.chatRoomRefresh;
-    }
-    if (settings.tools.fpsCounter) {
-      delete settings.tools.fpsCounter;
-    }
-    if (settings.tools.wardrobeSize) {
-      delete settings.tools.wardrobeSize;
-    }
-  }
-  if (settings.notifications) {
-    if (settings.notifications.beeps) {
-      delete settings.notifications.beeps;
-    }
-    if (settings.notifications.friendOnline) {
-      delete settings.notifications.friendOnline;
-    }
-    if (settings.notifications.friendOffline) {
-      delete settings.notifications.friendOffline;
-    }
-    if (settings.notifications.actions) {
-      delete settings.notifications.actions;
-    }
-    if (settings.notifications.mentions) {
-      delete settings.notifications.mentions;
-    }
-    if (settings.notifications.whispers) {
-      delete settings.notifications.whispers;
-    }
-  }
-
-  await storeGlobal('settings', {
-    notifications: {
-      keywords: [],
-      ...(settings ? settings.notifications : {})
-    },
-    tools: {
-      chatRoomRefreshInterval: 0,
-      ...(settings ? settings.tools : {})
-    }
-  } as ISettings);
-
   // Inject content scripts in applicable tabs
   executeForAllGameTabs(tab => {
     chrome.scripting.executeScript({
@@ -159,7 +111,7 @@ async function handleContentScriptMessage(message: any, sender: chrome.runtime.M
 
 async function injectScripts(handshake: string, tabId: number) {
   const path = chrome.runtime.getURL('content-script/hooks.js')
-  const settings = await retrieveGlobal('settings');
+  const settings = await retrieveSettings();
   let results = await chrome.scripting.executeScript({
     target: {
       tabId
