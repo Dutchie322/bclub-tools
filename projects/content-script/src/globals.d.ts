@@ -5,6 +5,7 @@ import type { ChatRoomSpace, CurrentScreen, IChatRoom } from '../../../models/ga
 declare global {
   var ChatRoomData: IChatRoom;
   var ChatRoomSpace: ChatRoomSpace;
+  var ChatSearchQueryString: string;
   var ChatSearchResultOffset: number;
   var CurrentScreen: CurrentScreen;
   var CharacterAppearanceReturnRoom: CurrentScreen;
@@ -14,4 +15,5 @@ declare global {
 
   var CommonDrawAppearanceBuild: (C: any, callbacks: object) => void;
   declare function ServerSend<Ev extends EventNames<ClientToServerEvents>>(Message: Ev, ...args: EventParams<ClientToServerEvents, Ev>): void;
+  declare function ChatSearchQuery(Query: string);
 }

@@ -7,7 +7,6 @@ import {
   IPlayer
 } from '../../../models';
 
-let lastExecutedSearch: ServerChatRoomSearchRequest;
 let activeTimer: any;
 
 function configureNextRefresh(interval: number) {
@@ -30,7 +29,7 @@ function configureNextRefresh(interval: number) {
 
     if (ChatSearchResultOffset === 0) {
       // Only refresh chat rooms if we're on the first page.
-      ServerSend('ChatRoomSearch', lastExecutedSearch);
+      ChatSearchQuery(ChatSearchQueryString);
     } else {
       // Otherwise, we'll try again in the next cycle.
       configureNextRefresh(interval);
@@ -143,9 +142,7 @@ export function getEventMappers(searchInterval: number) {
       return {};
     },
     // Not a mapping function, rather store the latest search query.
-    ChatRoomSearch(data) {
-      lastExecutedSearch = data;
-
+    ChatRoomSearch() {
       configureNextRefresh(searchInterval);
 
       return false as const;
