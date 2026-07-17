@@ -5,7 +5,7 @@ import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 import { map, reduce, switchMap, startWith, tap } from 'rxjs/operators';
 
 import { ChatLogsService } from '../shared/chat-logs.service';
-import { IChatLog } from 'models';
+import { IChatLog, loadAndCacheDictionariesForChatLog } from 'models';
 import { ChatLineComponent } from './chat-line/chat-line.component';
 import { CommonModule } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
@@ -41,6 +41,7 @@ export class ChatReplayComponent {
   ) {
     this.loading$ = this.loadingSubject.asObservable();
     this.chatReplay$ = combineLatest([
+      loadAndCacheDictionariesForChatLog(),
       (this.showWhispers.valueChanges as Observable<boolean>).pipe(
         startWith(this.showWhispers.value as boolean)
       ),
@@ -54,7 +55,7 @@ export class ChatReplayComponent {
       )
     ]).pipe(
       tap(() => this.loadingSubject.next(true)),
-      switchMap(([showWhispers, params]) =>
+      switchMap(([_, showWhispers, params]) =>
         this.chatLogsService.findChatReplay(params.memberNumber, params.sessionId, params.chatRoom).pipe(
           reduce((acc, value) => {
             if (value.type === 'Whisper' && !showWhispers) {
@@ -70,3 +71,4 @@ export class ChatReplayComponent {
     );
   }
 }
+

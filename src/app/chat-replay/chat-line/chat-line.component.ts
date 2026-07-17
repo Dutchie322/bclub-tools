@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { IChatLog, renderContent } from 'models';
 
+type ProcessedChatLog = IChatLog & { rendered$?: Promise<string> };
+
 @Component({
     selector: 'app-chat-line',
     imports: [
@@ -11,23 +13,14 @@ import { IChatLog, renderContent } from 'models';
     styleUrls: ['./chat-line.component.scss']
 })
 export class ChatLineComponent {
-  private renderedContent: Promise<string>;
-  private cleanChatLog: IChatLog;
+  private cleanChatLog: ProcessedChatLog;
 
   @Input()
-  public get chatLog(): IChatLog {
+  public get chatLog(): ProcessedChatLog {
     return this.cleanChatLog;
   }
   public set chatLog(chatLog: IChatLog) {
     this.cleanChatLog = this.copyChatLog(chatLog);
-  }
-
-  public renderContent(chatLog: IChatLog) {
-    if (!this.renderedContent) {
-      this.renderedContent = renderContent(chatLog);
-    }
-
-    return this.renderedContent;
   }
 
   public getColor(color: string) {
@@ -63,6 +56,10 @@ export class ChatLineComponent {
         name: chatLog.session.nickname || chatLog.session.name,
         memberNumber: chatLog.session.memberNumber
       };
+    }
+
+    if (chatLog.type === 'Action' || chatLog.type === 'Activity' || chatLog.type === 'ServerMessage') {
+      (cleanChatLog as any).rendered$ = renderContent(chatLog);
     }
 
     return cleanChatLog;

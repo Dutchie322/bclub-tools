@@ -254,7 +254,7 @@ export async function findTitle(titleCode: string): Promise<string> {
   return TitleTextCache[`Title${titleCode}`];
 }
 
-function loadAndCacheDictionariesForChatLog() {
+export function loadAndCacheDictionariesForChatLog() {
   if (!loadingChatLogDictionaries) {
     loadingChatLogDictionaries = Promise.all([
       loadDictionary('ActivityDictionary', data => {
