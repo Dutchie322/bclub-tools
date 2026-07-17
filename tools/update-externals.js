@@ -48,7 +48,8 @@ const assets = [
   'Assets/Female3DCG/Female3DCG.csv',
   'Screens/Character/Preference/ActivityDictionary.csv',
   'Screens/Character/InformationSheet/Text_InformationSheet.csv',
-  'Screens/Interface.csv'
+  'Screens/Character/Title/Text_Title.csv',
+  'Screens/Interface.csv',
 ];
 
 const scripts = [

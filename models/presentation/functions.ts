@@ -20,6 +20,7 @@ const ActivityNameCache: Record<string, string>[] = [];
 const AssetNameCache: IAsset[] = [];
 const InformationSheetTextCache: Record<string, string>[] = [];
 const InterfaceTextCache: Record<string, string>[] = [];
+const TitleTextCache: Record<string, string>[] = [];
 const MemberCache: Record<number, Promise<IMember>> = {};
 
 export async function renderContent(chatLog: IChatLog): Promise<string> {
@@ -250,7 +251,7 @@ export async function findPronouns(pronounsCode: string): Promise<string> {
 export async function findTitle(titleCode: string): Promise<string> {
   await loadAndCacheDictionariesForMemberInfo();
 
-  return InformationSheetTextCache[`Title${titleCode}`];
+  return TitleTextCache[`Title${titleCode}`];
 }
 
 function loadAndCacheDictionariesForChatLog() {
@@ -286,6 +287,11 @@ function loadAndCacheDictionariesForMemberInfo() {
       loadDictionary('Text_InformationSheet', data => {
         for (const text of data) {
           InformationSheetTextCache[text[0]] = text[1];
+        }
+      }),
+      loadDictionary('Text_Title', data => {
+        for (const text of data) {
+          TitleTextCache[text[0]] = text[1];
         }
       }),
       loadDictionary('Female3DCG', data => {
