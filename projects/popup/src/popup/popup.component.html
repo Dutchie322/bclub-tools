@@ -73,8 +73,19 @@
           <span *ngIf="!friend.chatRoomName && !friend.isPrivateRoom" class="unavailable-chat-room">Not in a chat room</span>
         </td>
       </ng-container>
+      <ng-container matColumnDef="chatRoomSize">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Size</th>
+        <td mat-cell *matCellDef="let friend">
+          <ng-container *ngIf="friend.chatRoomMemberCount; else chatRoomCountUnknown">
+            {{ friend.chatRoomMemberCount }}/{{ friend.chatRoomLimit }}
+          </ng-container>
+          <ng-template #chatRoomCountUnknown>
+            <span class="unavailable-chat-room">-</span>
+          </ng-template>
+        </td>
+      </ng-container>
       <ng-container matColumnDef="chatRoomSpace">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Chat Room Space</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Space</th>
         <td mat-cell *matCellDef="let friend">
           <ng-container *ngIf="friend.chatRoomSpace === null || friend.chatRoomSpace === undefined; else chatRoomSpaceAvailable">
             <span class="unavailable-chat-room">None</span>

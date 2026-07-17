@@ -106,7 +106,7 @@ export function listenToServerEvents(handshake: string) {
       Private: data.Private
     };
   });
-  createForwarder<ServerAccountQueryResponse, any>(handshake, 'AccountQueryResult', data => {
+  createForwarder<ServerAccountQueryResponse, ServerAccountQueryOnlineFriends>(handshake, 'AccountQueryResult', data => {
     if (data.Query !== 'OnlineFriends') {
       return false;
     }
@@ -116,6 +116,8 @@ export function listenToServerEvents(handshake: string) {
       Result: data.Result ? data.Result.map(result => ({
         ChatRoomName: result.ChatRoomName,
         ChatRoomSpace: result.ChatRoomSpace,
+        ChatRoomMemberCount: result.ChatRoomMemberCount,
+        ChatRoomLimit: result.ChatRoomLimit,
         MemberName: result.MemberName,
         MemberNumber: result.MemberNumber,
         Private: result.Private,

@@ -66,7 +66,7 @@
     "@typescript-eslint/eslint-plugin": "^8.31.0",
     "@typescript-eslint/parser": "^8.31.0",
     "archiver": "^7.0.1",
-    "bc-stubs": "^115.0.1",
+    "bc-stubs": "^130.0.0",
     "eslint": "^9.25.1",
     "html-webpack-plugin": "^5.6.3",
     "jasmine-core": "~5.7.0",

@@ -3,7 +3,6 @@ import {
   IChatRoomCharacter,
   IMember,
   putValue,
-  IPlayerWithRelations,
   decompress,
   retrieveMember,
 } from '../../../models';
@@ -13,14 +12,13 @@ interface PlayerContext {
   Name: string;
 }
 
-export async function writeMember(context: PlayerContext, data: IAccountQueryResultOnlineFriend | IChatRoomCharacter) {
-  function isAccountQueryResultOnlineFriend(input: any): input is IAccountQueryResultOnlineFriend {
-    return (input as IAccountQueryResultOnlineFriend).ChatRoomName !== undefined;
-  }
-  function isChatRoomCharacter(input: any): input is IChatRoomCharacter {
-    return (input as IChatRoomCharacter).ID !== undefined;
-  }
+export enum DataSource {
+  Unknown,
+  OnlineFriends,
+  ChatRoom
+}
 
+export async function writeMember(context: PlayerContext, data: IAccountQueryResultOnlineFriend | IChatRoomCharacter, source: DataSource) {
   let member = await retrieveMember(context.MemberNumber, data.MemberNumber);
 
   member = Object.assign({}, member, {
@@ -31,11 +29,11 @@ export async function writeMember(context: PlayerContext, data: IAccountQueryRes
 
   delete member.type;
 
-  if (isAccountQueryResultOnlineFriend(data)) {
-    member = Object.assign(member, mapAccountQueryResultOnlineFriend(data));
+  if (source == DataSource.OnlineFriends) {
+    member = Object.assign(member, mapAccountQueryResultOnlineFriend(data as IAccountQueryResultOnlineFriend));
   }
-  if (isChatRoomCharacter(data)) {
-    member = Object.assign(member, mapChatRoomCharacter(data));
+  if (source == DataSource.ChatRoom) {
+    member = Object.assign(member, mapChatRoomCharacter(data as IChatRoomCharacter));
     member.lastSeen = new Date();
   }
 
@@ -47,6 +45,8 @@ function mapAccountQueryResultOnlineFriend(data: IAccountQueryResultOnlineFriend
     memberName: data.MemberName,
     chatRoomName: data.ChatRoomName,
     chatRoomSpace: data.ChatRoomSpace,
+    chatRoomMemberCount: data.ChatRoomMemberCount,
+    chatRoomLimit: data.ChatRoomLimit,
     isPrivateRoom: data.Private
   };
 }

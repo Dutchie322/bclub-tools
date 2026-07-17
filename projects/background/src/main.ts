@@ -29,7 +29,7 @@ import { checkForGame } from '../../content-script/src/check-for-game';
 import { checkForLoggedInState } from '../../content-script/src/check-for-logged-in-state';
 import { importAndHook } from '../../content-script/src/import-and-hook';
 import { notifyIncomingMessage } from './notifications';
-import { writeMember, removeChatRoomData } from './member';
+import { writeMember, removeChatRoomData, DataSource } from './member';
 import { writeBeepMessage } from './beep-message';
 
 chrome.action.onClicked.addListener(() => {
@@ -212,7 +212,7 @@ async function handleAccountBeep(tabId: number, message: IServerMessage<IAccount
 
 async function handleAccountQueryOnlineFriendsResult(tabId: number, message: IServerMessage<IAccountQueryOnlineFriendsResult>) {
   const player = await retrieve(tabId, 'player');
-  const friends = await Promise.all(message.data.Result.map(friend => writeMember(player, friend)));
+  const friends = await Promise.all(message.data.Result.map(friend => writeMember(player, friend, DataSource.OnlineFriends)));
 
   await store(tabId, 'onlineFriends', friends);
 }
@@ -244,7 +244,7 @@ async function handleChatRoomSync(tabId: number, message: IServerMessage<IChatRo
   await store(tabId, 'chatRoomCharacter', message.data.Character);
 
   const player = await retrieve(tabId, 'player');
-  message.data.Character.forEach(character => writeMember(player, character));
+  message.data.Character.forEach(character => writeMember(player, character, DataSource.ChatRoom));
 }
 
 async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<IChatRoomSyncSingle | IChatRoomSyncCharacter>) {
@@ -254,7 +254,7 @@ async function handleChatRoomSyncSingle(tabId: number, message: IServerMessage<I
   await store(tabId, 'chatRoomCharacter', characters);
 
   const player = await retrieve(tabId, 'player');
-  await writeMember(player, message.data.Character);
+  await writeMember(player, message.data.Character, DataSource.ChatRoom);
 }
 
 async function handleChatRoomSyncMemberJoin(tabId: number, message: IServerMessage<IChatRoomSyncCharacter>) {

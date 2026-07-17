@@ -11,8 +11,10 @@ export interface IAccountQueryEmailResult {
 }
 
 export interface IAccountQueryResultOnlineFriend {
-  ChatRoomName: string | null;
-  ChatRoomSpace: ChatRoomSpace | null;
+  ChatRoomName?: string;
+  ChatRoomSpace?: ChatRoomSpace;
+  ChatRoomMemberCount?: number;
+  ChatRoomLimit?: number;
   MemberName: string;
   MemberNumber: number;
   Private?: boolean;

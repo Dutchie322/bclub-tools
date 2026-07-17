@@ -13,6 +13,8 @@ export interface IMember {
   lastSeen?: Date;
   chatRoomName?: string;
   chatRoomSpace?: string;
+  chatRoomMemberCount?: number;
+  chatRoomLimit?: number;
   isPrivateRoom?: boolean | undefined;
   creation?: Date;
   title?: string;

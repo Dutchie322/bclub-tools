@@ -21,7 +21,6 @@ import {
   storeGlobal,
   findPronouns
 } from 'models';
-import { ChatLogsService } from 'src/app/shared/chat-logs.service';
 import { IPlayerCharacter } from 'src/app/shared/models';
 import { NewVersionNotificationComponent } from '../new-version-notification/new-version-notification.component';
 import { requestOnlineFriends } from 'projects/content-script/src/update-friends';
@@ -63,14 +62,13 @@ export class PopupComponent implements AfterViewInit {
 
   public characterColumns = ['name', 'pronouns', 'owner', 'reputation'];
   public chatRoomColumns = ['name', 'creator', 'members', 'description'];
-  public onlineFriendColumns = ['memberName', 'chatRoomName', 'chatRoomSpace'];
+  public onlineFriendColumns = ['memberName', 'chatRoomName', 'chatRoomSize', 'chatRoomSpace'];
 
   get loggedIn() {
     return this.player && this.player.MemberNumber > 0;
   }
 
   constructor(
-    private chatLogsService: ChatLogsService,
     private snackBar: MatSnackBar,
     private ngZone: NgZone,
     private viewContainerRef: ViewContainerRef

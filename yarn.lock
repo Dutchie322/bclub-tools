@@ -2777,6 +2777,11 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz#821f8442f4175d8f0467b9daf26e3a18e2d02af2"
   integrity sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==
 
+"@total-typescript/ts-reset@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@total-typescript/ts-reset/-/ts-reset-0.6.1.tgz#aebb29b6a79bb404e4cf618da6a392c94ed73a45"
+  integrity sha512-cka47fVSo6lfQDIATYqb/vO1nvFfbPw7uWLayIXIhGETj0wcOOlrlkobOMDNQOFr9QOafegUPq13V2+6vtD7yg==
+
 "@tsconfig/node10@^1.0.7":
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.11.tgz#6ee46400685f130e278128c7b38b7e031ff5b2f2"
@@ -3730,11 +3735,12 @@ batch@0.6.1:
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
   integrity sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==
 
-bc-stubs@^115.0.1:
-  version "115.0.1"
-  resolved "https://registry.yarnpkg.com/bc-stubs/-/bc-stubs-115.0.1.tgz#5a31aea08cb84a9441669fadf7bbfbbfd08c576b"
-  integrity sha512-KG149guflhIWId/F6esiUlEzfR/qOmSino/vyfwB9f0OmCVYuL3PHaGpb6xkk0OEiqw8KWqPSgMlOfNpA3p1wQ==
+bc-stubs@^130.0.0:
+  version "130.0.0"
+  resolved "https://registry.yarnpkg.com/bc-stubs/-/bc-stubs-130.0.0.tgz#4e288c818329ae29ce6b7167e27d237bcf9ea91d"
+  integrity sha512-WXbJz9nn6PraZReYPYrDBao5mF8Jtn4xo6hwagjyYeuwdH+e57WwMB8g20pKgTBcbzv2tt/OHgrJcrYfZR2lIA==
   dependencies:
+    "@total-typescript/ts-reset" "^0.6.1"
     socket.io-client "4.6.1"
 
 bcrypt-pbkdf@^1.0.0:
