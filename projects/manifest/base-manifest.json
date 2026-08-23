@@ -11,6 +11,7 @@
         "*://*.bondageprojects.com/*",
         "*://*.bondageprojects.elementfx.com/*",
         "*://*.bondage-europe.com/*",
+        "*://*.bondageeurope.com/*",
         "*://*.bondage-asia.com/*"
       ],
       "run_at": "document_idle",
@@ -28,6 +29,7 @@
         "*://*.bondageprojects.com/*",
         "*://*.bondageprojects.elementfx.com/*",
         "*://*.bondage-europe.com/*",
+        "*://*.bondageeurope.com/*",
         "*://*.bondage-asia.com/*"
       ],
       "resources": [
