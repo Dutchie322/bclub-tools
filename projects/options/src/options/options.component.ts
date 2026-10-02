@@ -238,23 +238,31 @@ export class OptionsComponent implements OnDestroy {
     }
 
     console.log('Clearing appearances...');
-    const transaction = await this.databaseService.transaction('members', 'readwrite');
+    const transaction = await this.databaseService.transaction(['appearances', 'members'], 'readwrite');
     transaction.onerror = event => {
       console.error(event);
     };
+    transaction.oncomplete = () => {
+      console.log('Appearances cleared.');
+      this.updateUsage();
+    };
+
+    transaction.objectStore('appearances').clear();
+
+    // Legacy appearances stored on members
     const cursorRequest = transaction.objectStore('members').openCursor();
     cursorRequest.addEventListener('success', event => {
       const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
       if (!cursor) {
-        console.log('Appearances cleared.');
-        this.updateUsage();
         return;
       }
 
       const member = cursor.value as IMember;
-      delete member.appearance;
-      delete member.appearanceMetaData;
-      cursor.update(member);
+      if (member.appearance || member.appearanceMetaData) {
+        delete member.appearance;
+        delete member.appearanceMetaData;
+        cursor.update(member);
+      }
       cursor.continue();
     });
     cursorRequest.addEventListener('error', event => {

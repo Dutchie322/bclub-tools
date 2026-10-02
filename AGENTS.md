@@ -329,7 +329,7 @@ Conventions:
   - The UI warns that a **game reload is required**. The interval is only passed in at hook injection. It also `chrome.tabs.sendMessage`s the settings to game tabs, but nothing listens.
   - Data section: storage estimate (`navigator.storage.estimate`), Export (with an optional images checkbox), Import.
   - Maintenance section: "Scan & Fix Member Database" → `MaintenanceService.runImmediately()`.
-  - Danger zone: "Delete appearances" and "Delete database" (clears every object store).
+  - Danger zone: "Delete appearances" (clears the `appearances` store and strips legacy `member.appearance` fields) and "Delete database" (clears every object store).
 - `options_ui.open_in_tab: true`.
 
 ### Fallback (`projects/fallback/`)
@@ -398,7 +398,6 @@ Legacy `member.appearance` blobs are migrated away lazily by the background's `h
 
 - `known-bugs.txt`: search auto-refresh can't be cancelled after an extension reload (the old timer keeps running in the page).
 - `mapCharacter` / `mapAppearance` are **duplicated** in `server-event-listeners.ts` and `user-input-listener.ts`. Only the server copy maps `Difficulty` to `Difficulty.Level` (a number). `IMember.difficulty` relies on that through a cast marked `FIXME`.
-- Options "Delete appearances" only removes the legacy `members.appearance` fields. **It does not clear the `appearances` store**, so most image data stays.
 - Options sends settings with `chrome.tabs.sendMessage` to game tabs, but the content script has no `onMessage` listener, so it does nothing. That's why the "reload the game" warning exists.
 - `notifications.ts` uses `iconUrl: 'assets/bclub-logo.png'`, but the logo ships at `log-viewer/assets/bclub-logo.png`.
 - bc-stubs is only partly loaded: the content-script tsconfig `include` glob matches nothing, so `ServerInit` and hook-name typos are silently untyped (`never`). See §4a.
