@@ -23,6 +23,7 @@ import {
   IClientAccountBeep,
   clearCharacterStorage,
   retrieveAppearance,
+  dataUrlToBlob,
   retrieveSettings
 } from '../../../models';
 import { checkForGame } from '../../content-script/src/check-for-game';
@@ -288,7 +289,7 @@ async function handleCommonDrawAppearanceBuild(tabId: number, message: IClientMe
     appearance = {
       contextMemberNumber: player.MemberNumber,
       memberNumber: message.data.MemberNumber,
-      appearance: message.data.ImageData,
+      appearance: dataUrlToBlob(message.data.ImageData),
       appearanceMetaData: {
         canvasHeight: message.data.CanvasHeight,
         heightModifier: message.data.HeightModifier,
@@ -299,7 +300,7 @@ async function handleCommonDrawAppearanceBuild(tabId: number, message: IClientMe
       timestamp: new Date()
     };
   } else {
-    appearance.appearance = message.data.ImageData;
+    appearance.appearance = dataUrlToBlob(message.data.ImageData);
     appearance.appearanceMetaData = {
       canvasHeight: message.data.CanvasHeight,
       heightModifier: message.data.HeightModifier,

@@ -349,9 +349,10 @@ export class ImportService {
         break;
 
       case 'appearance.png':
+      case 'appearance.webp':
         appearance.contextMemberNumber = context;
         appearance.memberNumber = memberNumber;
-        appearance.appearance = 'data:image/png;base64,' + ImportService.toBase64(data);
+        appearance.appearance = new Blob([data], { type: fileName === 'appearance.webp' ? 'image/webp' : 'image/png' });
         storesToUpdate.add('appearances');
 
         break;
@@ -391,14 +392,5 @@ export class ImportService {
     }
 
     return Promise.all(promises);
-  }
-
-  public static toBase64(bytes: Uint8Array): string {
-    let binary = '';
-    const len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
   }
 }

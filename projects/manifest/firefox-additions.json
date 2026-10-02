@@ -10,7 +10,7 @@
       "128": "log-viewer/assets/bclub-logo.png"
     }
   },
-  "content_security_policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-p3yB1/TaXxQvCGP8VLeC6YhL4t0EZvvXYoQc78HfITk='; img-src 'self' data:",
+  "content_security_policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-p3yB1/TaXxQvCGP8VLeC6YhL4t0EZvvXYoQc78HfITk='; img-src 'self' data: blob:",
   "permissions": [
     "activeTab",
     "notifications",

@@ -1,4 +1,4 @@
-import { Appearance, IBeepMessage, IChatLog, IMember } from 'models';
+import { Appearance, IBeepMessage, IChatLog, IMember, appearanceImageExtension } from 'models';
 import { DatabaseService } from './database.service';
 import { Injectable } from '@angular/core';
 import { Zip, ZipPassThrough, strToU8 } from 'fflate';
@@ -107,12 +107,7 @@ export class ExportService {
     for (const storeName of objectStoreNames) {
       switch (storeName) {
         case 'appearances':
-          if (!options.exportAppearances) {
-            break;
-          }
-
-          update('Gathering appearances');
-          await this.exportAppearances(update, transaction, archive);
+          // Exported separately below, see exportAppearances
           break;
 
         case 'beepMessages':
@@ -132,39 +127,67 @@ export class ExportService {
       }
     }
 
+    if (options.exportAppearances && objectStoreNames.includes('appearances')) {
+      update('Gathering appearances');
+      await this.exportAppearances(archive);
+    }
+
     update('Generating archive');
     archive.end();
 
     return archive;
   }
 
-  private async exportAppearances(update: UpdateCallback, transaction: IDBTransaction, archive: Zip): Promise<void> {
-    return new Promise(resolve => {
-      transaction.objectStore('appearances').openCursor().addEventListener('success', event => {
-        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+  /**
+   * Uses its own transaction, because reading Blobs is asynchronous and would
+   * cause a shared transaction to be committed prematurely. Legacy data URLs
+   * are written immediately, Blobs are read after the cursor is done.
+   */
+  private async exportAppearances(archive: Zip): Promise<void> {
+    const transaction = await this.databaseService.transaction('appearances', 'readonly');
+    const blobAppearances = await new Promise<Appearance[]>((resolve, reject) => {
+      const results: Appearance[] = [];
+      const request = transaction.objectStore('appearances').openCursor();
+      request.addEventListener('error', () => reject(request.error));
+      request.addEventListener('success', () => {
+        const cursor = request.result;
         if (cursor) {
           const appearance = cursor.value as Appearance;
-
-          let deflate = new ZipPassThrough(`members/${appearance.contextMemberNumber}/${appearance.memberNumber}/appearance.png`);
-          archive.add(deflate);
-          deflate.compression = 0;
-          deflate.mtime = appearance.timestamp;
-          deflate.push(decode(appearance.appearance.substring(22)), true);
-
-          deflate = new ZipPassThrough(`members/${appearance.contextMemberNumber}/${appearance.memberNumber}/appearance-meta-data.json`);
-          archive.add(deflate);
-          deflate.mtime = appearance.timestamp;
-          deflate.push(strToU8(JSON.stringify({
-            ...appearance.appearanceMetaData,
-            timestamp: appearance.timestamp
-          }, undefined, 2)), true);
-
+          const image = appearance.appearance;
+          if (typeof image === 'string') {
+            this.addAppearanceToArchive(archive, appearance, decode(image.substring(image.indexOf(',') + 1)));
+          } else {
+            results.push(appearance);
+          }
           cursor.continue();
         } else {
-          resolve();
+          resolve(results);
         }
       });
     });
+
+    for (const appearance of blobAppearances) {
+      const data = new Uint8Array(await (appearance.appearance as Blob).arrayBuffer());
+      this.addAppearanceToArchive(archive, appearance, data);
+    }
+  }
+
+  private addAppearanceToArchive(archive: Zip, appearance: Appearance, data: Uint8Array) {
+    const folder = `members/${appearance.contextMemberNumber}/${appearance.memberNumber}`;
+
+    let deflate = new ZipPassThrough(`${folder}/appearance.${appearanceImageExtension(appearance.appearance)}`);
+    archive.add(deflate);
+    deflate.compression = 0;
+    deflate.mtime = appearance.timestamp;
+    deflate.push(data, true);
+
+    deflate = new ZipPassThrough(`${folder}/appearance-meta-data.json`);
+    archive.add(deflate);
+    deflate.mtime = appearance.timestamp;
+    deflate.push(strToU8(JSON.stringify({
+      ...appearance.appearanceMetaData,
+      timestamp: appearance.timestamp
+    }, undefined, 2)), true);
   }
 
   private async exportBeepMessages(update: UpdateCallback, transaction: IDBTransaction, archive: Zip): Promise<void> {

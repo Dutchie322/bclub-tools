@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, tap, map, switchMap, mergeMap, catchError, filter } from 'rxjs/operators';
 import { Subscription, Observable, of } from 'rxjs';
-import { Appearance, IBeepMessage, IMember, IMemberAppearanceMetaData, SharedRoom, putValue, decompress, findTitle, retrieveAppearanceWithFallback, retrieveBeepMessages, retrieveSharedRooms, findPronouns } from 'models';
+import { AppearanceMetaData, IBeepMessage, IMember, IMemberAppearanceMetaData, SharedRoom, putValue, decompress, findTitle, retrieveAppearanceWithFallback, retrieveBeepMessages, retrieveSharedRooms, findPronouns } from 'models';
 import { MemberService } from 'src/app/shared/member.service';
 import { CommonModule, NgStyle } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar';
@@ -17,6 +17,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 
 type BeepMessageView = Partial<IBeepMessage> & { break?: boolean };
+interface AppearanceView {
+  url: string;
+  appearanceMetaData?: AppearanceMetaData;
+}
 
 @Component({
   selector: 'app-member-info',
@@ -41,9 +45,10 @@ export class MemberInfoComponent implements OnDestroy {
   private memberNumber: number;
   private pronounsPromise: Promise<string>;
   private titlePromise: Promise<string>;
+  private appearanceObjectUrl?: string;
 
   public member$: Observable<IMember | undefined>;
-  public appearance$: Observable<Appearance | undefined>;
+  public appearance$: Observable<AppearanceView | undefined>;
   public beepMessages$: Observable<BeepMessageView[]>;
   public sharedRooms$: Observable<SharedRoom[]>;
   public isError = false;
@@ -100,6 +105,22 @@ export class MemberInfoComponent implements OnDestroy {
         const memberNumber = +params.get('memberNumber');
 
         return retrieveAppearanceWithFallback(playerCharacter, memberNumber);
+      }),
+      map(appearance => {
+        this.revokeAppearanceObjectUrl();
+        if (!appearance) {
+          return undefined;
+        }
+
+        // Newer appearances are stored as Blobs, older ones as data URLs
+        let url: string;
+        if (typeof appearance.appearance === 'string') {
+          url = appearance.appearance;
+        } else {
+          url = this.appearanceObjectUrl = URL.createObjectURL(appearance.appearance);
+        }
+
+        return { url, appearanceMetaData: appearance.appearanceMetaData };
       })
     );
 
@@ -155,6 +176,14 @@ export class MemberInfoComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.formSubscription.unsubscribe();
+    this.revokeAppearanceObjectUrl();
+  }
+
+  private revokeAppearanceObjectUrl() {
+    if (this.appearanceObjectUrl) {
+      URL.revokeObjectURL(this.appearanceObjectUrl);
+      this.appearanceObjectUrl = undefined;
+    }
   }
 
   public absolute(x: number) {

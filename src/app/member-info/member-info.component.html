@@ -4,7 +4,7 @@
 <ng-container [formGroup]="memberForm" *ngIf="member">
   <div class="character-sheet" [ngClass]="{'with-appearance': !!appearance, 'without-appearance': !appearance}">
     <div *ngIf="appearance" class="character-appearance" [ngStyle]="imageContainerStyle">
-      <img #appearanceImage [src]="appearance.appearance || ''" [ngStyle]="imageStyle" (load)="calculateAppearanceImageStyles(appearance.appearanceMetaData, $event.target)" />
+      <img #appearanceImage [src]="appearance.url" [ngStyle]="imageStyle" (load)="calculateAppearanceImageStyles(appearance.appearanceMetaData, $event.target)" />
     </div>
     <mat-toolbar class="navigation">
       <a mat-button [routerLink]="['/', this.playerCharacter]">

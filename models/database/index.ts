@@ -1,4 +1,5 @@
 export * from './Appearance';
+export * from './appearance-functions';
 export * from './beep-message-functions';
 export * from './chat-log-functions';
 export * from './functions';

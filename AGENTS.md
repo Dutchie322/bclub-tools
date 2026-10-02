@@ -96,7 +96,7 @@ Extension pages (log viewer, popup, options) read IndexedDB and `chrome.storage`
    - `importAndHook(chrome.runtime.getURL('content-script/hooks.js'), handshake, settings.tools.chatRoomRefreshInterval, chrome.runtime.getManifest().version)` in MAIN. This does `import(/* webpackIgnore: true */ path)` → `registerHooks(...)`. `hooks.js` is listed in `web_accessible_resources` (`use_dynamic_url`).
    - `checkForLoggedInState(handshake)` in MAIN posts a `client`/`VariablesUpdate` with `CurrentScreen` and `Player.{MemberNumber,Name}`.
 5. **`hooks.ts`** (MAIN, real module, so imports are OK) calls `bcModSdk.registerMod({name:'BCT', fullName:'Bondage Club Tools', …}, {allowReplace:true})`. It hooks:
-   - `CommonDrawAppearanceBuild` → `sendCharacterAppearance` (`draw-listeners.ts`). This debounces 1 s per member, then takes `Canvas.toDataURL('image/png')` plus height metadata and posts `client`/`CommonDrawAppearanceBuild`.
+   - `CommonDrawAppearanceBuild` → `sendCharacterAppearance` (`draw-listeners.ts`). This debounces 1 s per member, then encodes the canvas asynchronously with `Canvas.toBlob(cb, 'image/webp', 0.9)`, converts it to a data URL (extension messaging is JSON-only), and posts it plus height metadata as `client`/`CommonDrawAppearanceBuild`.
    - `ServerInit` → re-attaches the socket listeners in a `setTimeout` (after reconnect, a new `ServerSocket` exists).
    - It also attaches the listeners immediately on first run.
 6. Every message from page to background goes through `window.postMessage({handshake, type, event, data, ...})`. The content-script listener drops anything without `handshake/type/event` or with the wrong handshake, then calls `chrome.runtime.sendMessage`. If that call throws (extension reloaded or removed), it unregisters itself. The handshake prevents duplicate data when the extension updates while the game stays open.
@@ -142,7 +142,7 @@ Extension pages (log viewer, popup, options) read IndexedDB and `chrome.storage`
 | server `ChatRoomSearchResponse` (banned/kicked), client `ChatRoomLeave` | clear `chatRoomCharacter` |
 | server `LoginResponse`, client `VariablesUpdate` (MemberNumber > 0) | `setPlayerLoggedIn`: `store(tab,'player')`, `chrome.action.setPopup({tabId, popup:'popup/index.html'})`, title `"<name>: <player>"` |
 | client `VariablesUpdate` with `CurrentScreen === 'Login'` | `cleanUpData(tab)`: strip room data from online friends, clear per-character keys, reset popup/title |
-| client `CommonDrawAppearanceBuild` | upsert into `appearances` store. Delete legacy `member.appearance`/`appearanceMetaData` from `members` (lazy migration) |
+| client `CommonDrawAppearanceBuild` | `dataUrlToBlob` → upsert into `appearances` store as a `Blob`. Delete legacy `member.appearance`/`appearanceMetaData` from `members` (lazy migration) |
 
 Other listeners:
 - `chrome.tabs.onRemoved` → `cleanUpData(tab, true)` (clears all per-tab keys including the handshake).
@@ -218,7 +218,7 @@ Open with `openDatabase()` in `models/database/functions.ts`. It `alert()`s on `
 |---|---|---|---|
 | `chatRoomLogs` | autoIncrement `id` | `senderMemberNumber_idx` = [session.memberNumber, sender.id, session.id, chatRoom] (shared rooms) · `sessionMemberNumber_idx` = session.memberNumber (list own characters) · `member_session_chatRoom_idx` = [chatRoom, session.id, session.memberNumber] (session list + replay) | `IChatLog` |
 | `members` | [playerMemberNumber, memberNumber] | `memberName_idx` = [playerMemberNumber, memberName] | `IMember` |
-| `appearances` | [contextMemberNumber, memberNumber] | none | `Appearance` (base64 PNG data URL + `AppearanceMetaData`) |
+| `appearances` | [contextMemberNumber, memberNumber] | none | `Appearance` (`appearance` is a WebP `Blob` for new data, or a legacy base64 PNG data URL string; + `AppearanceMetaData`) |
 | `beepMessages` | autoIncrement `id` | `context_member_idx` = [contextMemberNumber, memberNumber] | `IBeepMessage` |
 
 - **All data is scoped per logged-in player character.** The scope is called "context", `playerMemberNumber`, or `session.memberNumber` depending on the store. A chat "session" is `Player.CharacterID` (it changes on every login). Sessions plus room name identify one log.
@@ -228,6 +228,7 @@ Open with `openDatabase()` in `models/database/functions.ts`. It `alert()`s on `
   - `retrieveMember`, `isMemberKnown`, `retrieveAppearance`, `retrieveAppearanceWithFallback` (falls back to legacy `member.appearance`)
   - `retrieveBeepMessages`, `retrieveSharedRooms` (`nextunique` cursor on `senderMemberNumber_idx`)
 - Angular code mostly uses `DatabaseService` (`src/app/shared/database.service.ts`). It caches one connection and offers `transaction`, `read`, `write`, `cursor` (Observable), and `objectStoreNames`.
+- Appearance images are stored as `Blob`s (WebP); older records still hold PNG data URL strings and are **not converted**, only overwritten the next time the member is drawn. Readers must handle both (`typeof appearance === 'string'`; `appearanceImageExtension()`; member-info uses `URL.createObjectURL`, which needs `blob:` in the CSP `img-src`).
 - Deprecated fields are kept for old data:
   - `IMember.type` (deleted on write)
   - `IMember.appearance` / `appearanceMetaData` (moved to `appearances` in v6)
@@ -304,9 +305,9 @@ Conventions:
   - `ExportService`: `fflate` `Zip` streamed into a `FileSystemFileHandle` from `showSaveFilePicker`. Zip layout:
     - `chatRoomLogs/<player>/<yyyymmdd-hhmm> - <room>.json` (grouped by session + room, `id` stripped)
     - `beepMessages/<player>/<member>.json`
-    - `members/<player>/<member>/data.json`, plus `appearance.png` / `appearance-meta-data.json` only when "include images" is ticked
+    - `members/<player>/<member>/data.json`, plus `appearance.{webp,png}` / `appearance-meta-data.json` only when "include images" is ticked. Appearances are exported last in their own transaction, because reading Blobs is async and would auto-commit the shared transaction
   - `ImportService`: picks the file type from magic bytes (`PK\x03\x04` → zip, `{` → JSON).
-    - Zip: streamed with `Unzip` + `AsyncUnzipInflate`. Logs and beeps are `add`ed, and members and appearances are `upsertValue`d.
+    - Zip: streamed with `Unzip` + `AsyncUnzipInflate`. Logs and beeps are `add`ed, and members and appearances are `upsertValue`d. Appearance images are stored as `Blob`s with their original bytes (PNG or WebP).
     - Legacy JSON: `{members, chatRoomLogs}` is added directly.
   - `MaintenanceService`: see §7a.
   - Utils: `utils/base64.ts` (from JSZip), `utils/date.ts`, `utils/human-file-size.ts`.
