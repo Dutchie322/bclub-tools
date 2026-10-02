@@ -117,7 +117,7 @@ async function injectScripts(handshake: string, tabId: number) {
       tabId
     },
     func: importAndHook,
-    args: [path, handshake, settings.tools.chatRoomRefreshInterval],
+    args: [path, handshake, settings.tools.chatRoomRefreshInterval, chrome.runtime.getManifest().version],
     world: 'MAIN'
   });
   console.log(`Injection result for 'injectHookRegistration':`, results);

@@ -18,12 +18,13 @@ import { forwardUserSentEvents } from './user-input-listener';
  *
  * @param handshake The handshake needed to make calls to the extension.
  * @param searchInterval The configured refresh interval for the search page.
+ * @param version The version of the extension, taken from the manifest.
  */
-export function registerHooks(handshake: string, searchInterval: number) {
+export function registerHooks(handshake: string, searchInterval: number, version: string) {
   const mod = bcModSdk.registerMod({
     name: 'BCT',
     fullName: 'Bondage Club Tools',
-    version: '0.7.0',
+    version,
     repository: 'https://github.com/Dutchie322/bclub-tools'
   }, {
     // Update the callbacks if the extension gets updated
