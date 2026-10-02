@@ -229,7 +229,7 @@ Open with `openDatabase()` in `models/database/functions.ts`. It `alert()`s on `
   - `retrieveMember`, `isMemberKnown`, `retrieveAppearance`, `retrieveAppearanceWithFallback` (falls back to legacy `member.appearance`)
   - `retrieveBeepMessages`, `retrieveSharedRooms` (`nextunique` cursor on `senderMemberNumber_idx`)
 - Angular code mostly uses `DatabaseService` (`src/app/shared/database.service.ts`). It caches one connection and offers `transaction`, `read`, `write`, `cursor` (Observable), and `objectStoreNames`.
-- Appearance images are stored as `Blob`s (WebP); older records still hold PNG data URL strings and are **not converted**, only overwritten the next time the member is drawn. Readers must handle both (`typeof appearance === 'string'`; `appearanceImageExtension()`; member-info uses `URL.createObjectURL`, which needs `blob:` in the CSP `img-src`).
+- Appearance images are stored as `Blob`s (WebP); older records may still hold PNG data URL strings until maintenance (§7a) converts them or the member is drawn again. Readers must handle both (`typeof appearance === 'string'`; `appearanceImageExtension()`; member-info uses `URL.createObjectURL`, which needs `blob:` in the CSP `img-src`).
 - Deprecated fields are kept for old data:
   - `IMember.type` (deleted on write)
   - `IMember.appearance` / `appearanceMetaData` (moved to `appearances` in v6)
@@ -244,7 +244,7 @@ Open with `openDatabase()` in `models/database/functions.ts`. It `alert()`s on `
 - **Global keys** (`IGlobalStorageMap`, via `retrieveGlobal`/`storeGlobal`):
   - `settings: ISettings`, which is `{notifications:{keywords:string[]}, tools:{chatRoomRefreshInterval:number /*seconds, 0=off*/}}`
   - `migration: {readChangelogVersion}`
-  - `maintenance: {lastCompleted?, resumeAfter?}` (§7a)
+  - `maintenance: {lastCompleted?, resume?: {store, after?}}` (§7a)
   - `retrieveGlobal` returns `{}` when a key is missing.
 - **Always read settings through `retrieveSettings()`.** It calls `ensureSettings()` first, which deletes deprecated keys (`beeps`, `friendOnline`, `friendOffline`, `actions`, `mentions`, `whispers`, `chatRoomRefresh`, `fpsCounter`, `wardrobeSize`) and writes back defaults.
 - **Per-tab keys** are stored as `` `${key}_${tabId}` `` (`IStorageMap`, via `retrieve`/`store`):
@@ -344,27 +344,31 @@ File: `models/database/maintenance-functions.ts` (exported through the `models` 
 - `dc9280e` (2024‑05‑22, "jank way of fixing member store corruption", originally inside MemberService)
 - `5770c39` / `dec44c9` (2024‑07‑14): moved into `MaintenanceService`, given an options button, and set to run automatically when the log viewer opens
 - DB v6 (`e11ce88`, 2025‑04): images moved into the separate `appearances` store
-- Moved out of the log viewer into the background service worker, scanning in time-limited slices that resume where the previous one stopped
+- Moved out of the log viewer into the background service worker, scanning in time-limited slices that resume where the previous one stopped. Extended to `appearances`, including conversion of legacy PNG data URLs to WebP blobs
 
 Legacy `member.appearance` blobs are migrated away lazily by the background's `handleCommonDrawAppearanceBuild`. Options "Delete appearances" also strips them.
 
 **Triggers:**
 - Background: a `chrome.alarms` alarm named `maintenance` (period 5 min) → `runScheduledMaintenance()`. The alarm is created at service-worker startup only if it doesn't exist yet, because re-creating it resets its schedule. Requires the `alarms` permission.
-  - Each run scans for at most **10 s**. When paused, it stores the last scanned key in `maintenance.resumeAfter` and the next alarm continues from there.
-  - After a pass reaches the end of the store, `maintenance.lastCompleted` is set and a new pass starts only once an hour has passed.
+  - Each run scans for at most **10 s**. When paused, it stores the current store and last handled key in `maintenance.resume` and the next alarm continues from there.
+  - After a pass reaches the end of the last store, `maintenance.lastCompleted` is set and a new pass starts only once an hour has passed.
 - Options → "Scan & Fix Member Database" → `runFullMaintenance()`: a full pass from the start without a time limit, with a spinner. It resets the stored state.
 - The log viewer and popup don't run it.
 
-**Algorithm (`fixMembers(startAfter, deadline)`):**
-1. One cursor over the **whole** `members` store in key order (`[playerMemberNumber, memberNumber]`), so every context is covered, whether or not it has chat logs.
-2. Each readonly transaction lives at most 250 ms (and processes at least one record), then a new one continues after the last key. Short transactions keep the store available for `writeMember` and the log viewer.
-3. On a cursor `error`: `getAllKeys(lowerBound(lastKey, true), 1)` reads **keys only** to find the faulty record, which is then `delete`d in a readwrite transaction. The scan continues after the faulty key, even if the delete failed. If no key is found, the pass ends.
+**Algorithm.** A pass runs the `TASKS` in order, each over one store: `members`, then `appearances` (both keyed `[context, memberNumber]`). `runTask(db, task, startAfter, deadline)`:
+1. One cursor over the **whole** store in key order, so every context is covered, whether or not it has chat logs.
+2. Each readonly transaction lives at most 250 ms (and handles at least one record), then a new one continues after the last key. Short transactions keep the store available for `writeMember`, appearance writes and the log viewer.
+3. On a cursor `error`: `getAllKeys(lowerBound(lastKey, true), 1)` reads **keys only** to find the faulty record, which is then `delete`d in a readwrite transaction. The scan continues after the faulty key, even if the delete failed. If no key is found, the task ends.
+4. A task may define `needsProcessing`/`process`/`isUnchanged`. The scan stops at a record that needs processing, because async work would auto-commit the cursor's transaction. `process` runs outside any transaction, then a readwrite transaction re-reads the record and only `put`s the result if `isUnchanged`. Failures are logged and the record is skipped.
+   - `appearances`: string values (legacy PNG data URLs) are re-encoded with `createImageBitmap` + `OffscreenCanvas.convertToBlob({type: 'image/webp', quality: 0.9})`, the same quality as the game hook. If WebP encoding isn't supported, the PNG is stored as a `Blob`. It's only stored if the record still holds the same string, so a fresh image drawn meanwhile is never overwritten.
 
 **Limitations:**
 - Recovery **deletes the whole member record, including the user's notes**. The member is recreated on the next sighting through `writeMember`, but the notes are lost.
-- **Only `members` is scanned.** `appearances` holds the large image values and is the most likely corruption site, but it is **not covered**. Neither are `chatRoomLogs` or `beepMessages`. A corrupt appearance shows up as a failing `retrieveAppearance` (MemberInfo page, export), and nothing repairs it automatically.
+- A deleted appearance is recreated the next time the member is drawn.
+- `chatRoomLogs` and `beepMessages` are not scanned.
+- Legacy `member.appearance` fields inside `members` records are not moved or converted by maintenance.
 - It gives no feedback apart from `console.log` diagnostics (background service worker console) and the options spinner stopping.
-- **Guidance:** give any new cursor-based reader over large stores an error path that rejects or completes, so the UI never hangs. If corruption handling is extended, the natural step is to make the scanner generic per store, starting with `appearances` (same key shape).
+- **Guidance:** give any new cursor-based reader over large stores an error path that rejects or completes, so the UI never hangs. To cover another store, add a task to `TASKS` and to the `MaintainedStore` type. `resume.after` assumes `[number, number]` keys, so autoIncrement stores need a different type there.
 
 ## 8. Common task recipes
 

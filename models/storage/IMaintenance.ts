@@ -1,6 +1,12 @@
+import type { MaintainedStore } from '../database/maintenance-functions';
+
 export interface IMaintenance {
-  /** When the last full scan of the member database finished. */
+  /** When the last full maintenance pass finished. */
   lastCompleted?: number;
-  /** Key of the last scanned member when a scan was paused. */
-  resumeAfter?: [number, number];
+  /** Where a paused maintenance pass continues. */
+  resume?: {
+    store: MaintainedStore;
+    /** Key of the last handled record, or undefined to start at the beginning of the store. */
+    after?: [number, number];
+  };
 }
