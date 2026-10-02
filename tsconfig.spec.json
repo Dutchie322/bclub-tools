@@ -4,9 +4,8 @@
     "outDir": "./out-tsc/spec",
   },
   "include": [
-    "projects/**/*.spec.ts",
     "projects/**/*.d.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "tests/**/*.spec.ts"
   ]
 }

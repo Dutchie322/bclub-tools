@@ -39,6 +39,7 @@ projects/
 models/                  shared types + functions (barrel models/index.ts), used by EVERYTHING
 release/                 create-package.js (zips), firefox-updates.json, store text/screenshots
 tools/update-externals.js  pulls game CSVs + Typedef.d.ts from upstream Bondage-College (gitgud.io)
+tests/                   all unit specs, mirroring the source layout (see §3)
 e2e/                     legacy Protractor scaffolding, unused
 known-bugs.txt           short list of known issues
 ```
@@ -60,9 +61,14 @@ known-bugs.txt           short list of known issues
   - The root `.eslintrc.json` ignores `projects/**/*`. `projects/popup` and `projects/options` re-include themselves through their own `.eslintrc.json`.
   - **background and content-script are not linted.**
   - Rules: `app` component/directive prefix, `@typescript-eslint/no-unused-vars` with `_` prefix allowed.
-- `yarn test` runs Karma + Jasmine (ng-mocks, sinon-chrome).
-  - There is a single spec: `projects/popup/src/new-version-notification/new-version-notification.component.spec.ts`.
-  - Tests are **disabled in CI**.
+- `yarn test` runs Karma + Jasmine (ng-mocks, sinon-chrome) in a real Chrome, so IndexedDB, `OffscreenCanvas` etc. are the real thing.
+  - All specs live in `tests/`, mirroring the source layout, and import the code under test through root-relative paths (`models/...`, `projects/popup/src/...`). Which test target runs them (its `include` globs are relative to the project's `sourceRoot`):
+    - `log-viewer`: `tests/models/**` and `tests/src/**` (e.g. `tests/models/database/maintenance-functions.spec.ts`, which uses the real `bclub-tools` database in the test page's origin and stubs `chrome.storage.local` by hand)
+    - `popup`: `tests/projects/popup/**` (`new-version-notification.component.spec.ts`)
+    - `options` has no test target (it never had specs). Add one, modelled on popup's, when it does.
+  - Both targets use the root `karma.conf.cjs`. It's `.cjs` because `"type": "module"` would make a `.js` config ESM. Without it, Angular's built-in config requires the uninstalled `karma-coverage`.
+  - `tests/polyfills.ts` defines Node's `global`, which sinon (via sinon-chrome) needs. It's in popup's test `polyfills`.
+  - Headless run: `yarn test:ci` (= `ng test --no-watch --no-progress --browsers=ChromeHeadlessCI`; `ng test <project> ...` for one project). Karma finds the browser through `CHROME_BIN`. The devcontainer (`.devcontainer/Dockerfile`) installs Debian's `chromium` and sets `CHROME_BIN=/usr/bin/chromium`. `ChromeHeadlessCI` adds `--no-sandbox`, which containers need.
 - CI is `.github/workflows/node.js.yml`. It runs on `master`, `feature/**`, and PRs to master: `yarn` → `yarn build` → `yarn lint` → `yarn package`, then uploads `dist` as an artifact.
 - **TS settings:** `strict: false` (expect `!`, `any`, implicit nulls), `noImplicitReturns`, `noPropertyAccessFromIndexSignature`, `noImplicitOverride`, `isolatedModules`, ES2022, `moduleResolution: bundler`. Angular strict templates are on.
 - **Style:** 2-space indent, single quotes, UTF-8, final newline (`.editorconfig`). Angular Material prebuilt theme `rose-red`. Component styles are SCSS.
@@ -398,7 +404,7 @@ Legacy `member.appearance` blobs are migrated away lazily by the background's `h
 - `ChatRoomSyncSingle` / `MemberLeave` handlers use `findIndex` without checking for `-1`.
 - Unused code: `addArchiveLinkMessageToChat` (`projects/content-script/src/add-message-to-chat.ts`), `isDevelopmentMode` / `log`, `isMemberKnown`, and the `e2e/` folder.
 - `presentation` `MemberCache` is keyed by memberNumber only, not by context player.
-- `strict` mode is off. Background and content-script are not linted. Only one unit test exists, and CI doesn't run it.
+- `strict` mode is off. Background and content-script are not linted. There are only a few unit tests, and CI doesn't run them.
 - `openDatabase()` is called for **every** `startTransaction` in `models/database` helpers (no connection reuse outside `DatabaseService`).
 - Firefox: the manifest is generated (MV2, persistent background, CSP hash, gecko id `{69662ce5-5fcc-4d0a-ad93-b8b663bd47ac}`, self-hosted `release/firefox-updates.json`), but the extension doesn't work there.
 - Gitignored: `dist/`, `.angular/cache`, `projects/manifest/private-*-additions.json`, `*.zip`.

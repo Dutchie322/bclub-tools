@@ -2,7 +2,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { MockBuilder, MockRender } from 'ng-mocks';
 import * as chrome from 'sinon-chrome';
 
-import { NewVersionNotificationComponent } from './new-version-notification.component';
+import { NewVersionNotificationComponent } from 'projects/popup/src/new-version-notification/new-version-notification.component';
 import { MatSnackBarRef } from '@angular/material/snack-bar';
 
 describe('NewVersionNotificationComponent', () => {
