@@ -15,7 +15,11 @@ function createBasePackage() {
   addAllFilesToArchive(archive, 'log-viewer', import.meta.dirname + '/../dist/log-viewer/');
   addAllFilesToArchive(archive, 'options', import.meta.dirname + '/../dist/options/');
   addAllFilesToArchive(archive, 'popup', import.meta.dirname + '/../dist/popup/');
-  addFilesToArchiveRoot(archive, [import.meta.dirname + '/../dist/index.html', import.meta.dirname + '/../dist/main.js']);
+  addFilesToArchiveRoot(archive, [
+    import.meta.dirname + '/../dist/index.html',
+    import.meta.dirname + '/../dist/main.js',
+    import.meta.dirname + '/../dist/release-notes.json'
+  ]);
   return archive;
 }
 

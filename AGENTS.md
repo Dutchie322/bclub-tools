@@ -37,7 +37,7 @@ projects/
   fallback/              plain TS → webpack → dist/index.html + dist/main.js (legacy URL redirector)
   manifest/              base-manifest.json + {chrome,firefox}-additions.json + create-manifests.js
 models/                  shared types + functions (barrel models/index.ts), used by EVERYTHING
-release/                 create-package.js (zips), firefox-updates.json, store text/screenshots
+release/                 create-package.js (zips), publish-chrome.js (Web Store upload), notes/<version>.md, firefox-updates.json, store text/screenshots
 tools/update-externals.js  pulls game CSVs + Typedef.d.ts from upstream Bondage-College (gitgud.io)
 tests/                   all unit specs, mirroring the source layout (see §3)
 e2e/                     legacy Protractor scaffolding, unused
@@ -69,14 +69,15 @@ known-bugs.txt           short list of known issues
   - Both targets use the root `karma.conf.cjs`. It's `.cjs` because `"type": "module"` would make a `.js` config ESM. Without it, Angular's built-in config requires the uninstalled `karma-coverage`.
   - `tests/polyfills.ts` defines Node's `global`, which sinon (via sinon-chrome) needs. It's in popup's test `polyfills`.
   - Headless run: `yarn test:ci` (= `ng test --no-watch --no-progress --browsers=ChromeHeadlessCI`; `ng test <project> ...` for one project). Karma finds the browser through `CHROME_BIN`. The devcontainer (`.devcontainer/Dockerfile`) installs Debian's `chromium` and sets `CHROME_BIN=/usr/bin/chromium`. `ChromeHeadlessCI` adds `--no-sandbox`, which containers need.
-- CI is `.github/workflows/node.js.yml`. It runs on `master`, `feature/**`, and PRs to master: `yarn` → `yarn build` → `yarn lint` → `yarn package`, then uploads `dist` as an artifact.
+- CI is `.github/workflows/node.js.yml` (the release workflow is described below). It runs on `master`, `feature/**`, and PRs to master: `yarn` → `yarn build` → `yarn lint` → `yarn package`, then uploads `dist` as an artifact.
 - **TS settings:** `strict: false` (expect `!`, `any`, implicit nulls), `noImplicitReturns`, `noPropertyAccessFromIndexSignature`, `noImplicitOverride`, `isolatedModules`, ES2022, `moduleResolution: bundler`. Angular strict templates are on.
 - **Style:** 2-space indent, single quotes, UTF-8, final newline (`.editorconfig`). Angular Material prebuilt theme `rose-red`. Component styles are SCSS.
-- **Release / version bump** (matches recent commit history):
-  1. Bump `version` in `projects/manifest/base-manifest.json` (currently `0.7.3`).
-  2. Update the release blurb in `projects/popup/src/new-version-notification/new-version-notification.component.html`. The popup shows it once per version, with a link to `github.com/Dutchie322/bclub-tools/releases/tag/v<version>`.
-  3. Build and package with `yarn build && yarn package`. Publish a GitHub release tagged `v<version>`, because that is where the popup's "Full changelog" button points.
-  - The version lives only in the manifest. The Mod SDK registration in `hooks.ts` receives it at runtime (§4a), so it never needs editing.
+- **Release** (tag-driven; human steps and one-time Google Cloud setup are in README "Releasing"):
+  1. Write `release/notes/X.Y.Z.md`. Its first non-empty line is the popup's "New release" summary; the whole file becomes the GitHub release body.
+  2. Push tag `vX.Y.Z`. `.github/workflows/release.yml` sets `BCT_VERSION=X.Y.Z` and runs build → lint → test:ci → package. It then authenticates as a service account through Workload Identity Federation (`google-github-actions/auth`; environment `chrome-web-store`, variables `GCP_WORKLOAD_IDENTITY_PROVIDER`, `CWS_SERVICE_ACCOUNT`, `CWS_PUBLISHER_ID`), runs `yarn publish:chrome` (`release/publish-chrome.js`: Web Store API v2 upload → poll `fetchStatus` → publish; `--upload-only` skips publish), and runs `gh release create`.
+  - **The version comes from the tag, not the repo.** `base-manifest.json` holds the placeholder `0.0.0`. `create-manifests.js` overrides `version` with `BCT_VERSION` when it is set, and **throws if `release/notes/<version>.md` is missing** or the version is malformed.
+  - `create-manifests.js` also writes `dist/release-notes.json` (`{version, summary}`, `summary` null without a notes file outside release mode). `create-package.js` includes it in the zips. The popup fetches it and passes the summary as `MAT_SNACK_BAR_DATA` to `NewVersionNotificationComponent`, so **don't hard-code release text in the template**.
+  - The Mod SDK registration in `hooks.ts` receives the version at runtime (§4a).
 - **Update game data:** `yarn tool:update-externals` downloads the CSVs below into `src/assets/` and `Scripts/Typedef.d.ts` into `models/game/`, at the git revision hard-coded in the `package.json` script. Change the hash to update. Files:
   - `ActivityDictionary.csv`, `AssetStrings.csv`, `Female3DCG.csv`, `Interface.csv`, `Text_InformationSheet.csv`, `Text_Title.csv`
 
@@ -325,7 +326,7 @@ Conventions:
   - **Online Friends**: sortable; room, size, space (`''`=Classic, `M`=Men's Lounge, `X`=Expanded).
 - Buttons: Log Viewer (opens `#/<player>`) and Options.
 - The "alternative characters" menu is disabled because it's too heavy on large DBs.
-- `NewVersionNotificationComponent` snackbar appears when `migration.readChangelogVersion !== manifest.version`. Dismissing it with the action records the version.
+- `NewVersionNotificationComponent` snackbar appears when `migration.readChangelogVersion !== manifest.version`. Its text is the summary from `release-notes.json` (§3, Release), or a generic "updated to vX" message. Dismissing it with the action records the version.
 - The popup is only set for tabs where the player is logged in (`setPopup` in the background). Otherwise clicking the action opens the log viewer.
 
 ### Options (`projects/options/`)

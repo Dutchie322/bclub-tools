@@ -1,0 +1,68 @@
+# Builds, tests and publishes the extension to the Chrome Web Store when a version tag (e.g. v1.2.3) is pushed.
+# See the "Releasing" section of README.md for the one-time setup.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+
+    runs-on: ubuntu-latest
+    environment: chrome-web-store
+
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+    - uses: actions/checkout@v4
+      name: Check out code
+    - name: Determine version
+      run: |
+        VERSION="${GITHUB_REF_NAME#v}"
+        if [ ! -f "release/notes/$VERSION.md" ]; then
+          echo "::error::release/notes/$VERSION.md is missing, write the release notes and tag again."
+          exit 1
+        fi
+        echo "BCT_VERSION=$VERSION" >> "$GITHUB_ENV"
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+    - run: yarn --frozen-lockfile
+      name: Install dependencies
+    - run: yarn build
+      name: Build extension
+    - run: yarn lint
+      name: Lint code
+    - run: yarn test:ci
+      name: Run tests
+    - run: yarn package
+      name: Package extension
+    - uses: actions/upload-artifact@v4
+      name: Upload artifacts
+      with:
+        name: bclub-tools-all
+        path: dist
+        if-no-files-found: error
+    - uses: google-github-actions/auth@v2
+      name: Authenticate with Google Cloud
+      id: auth
+      with:
+        workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ vars.CWS_SERVICE_ACCOUNT }}
+        token_format: access_token
+        access_token_scopes: https://www.googleapis.com/auth/chromewebstore
+    - run: yarn publish:chrome
+      name: Publish to Chrome Web Store
+      env:
+        CWS_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+        CWS_PUBLISHER_ID: ${{ vars.CWS_PUBLISHER_ID }}
+    - run: gh release create "$GITHUB_REF_NAME" dist/bclub-tools-chrome.zip --title "$GITHUB_REF_NAME" --notes-file "release/notes/$BCT_VERSION.md"
+      name: Create GitHub release
+      env:
+        GH_TOKEN: ${{ github.token }}

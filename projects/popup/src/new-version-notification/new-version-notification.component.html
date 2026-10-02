@@ -1,6 +1,10 @@
 <div class="snackbar-container">
   <span matSnackBarLabel>
-    <b>New release:</b> Added support for bondageeurope.com
+    @if (data.summary) {
+      <b>New release:</b> {{ data.summary }}
+    } @else {
+      Bondage Club Tools was updated to v{{ extensionVersion }}
+    }
   </span>
   <span matSnackBarActions>
     <button mat-raised-button

@@ -22,6 +22,7 @@
     "build-debug:fallback": "webpack-cli --config ./projects/fallback/webpack.config.js --context ./projects/fallback --mode=development",
     "tool:update-externals": "node ./tools/update-externals.js ddd7e593248ba9e7febd2c996b5a36108e19c199",
     "package": "node ./release/create-package.js",
+    "publish:chrome": "node ./release/publish-chrome.js",
     "test": "ng test",
     "test:ci": "npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI",
     "lint": "ng lint",

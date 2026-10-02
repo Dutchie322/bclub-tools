@@ -108,3 +108,61 @@ See also [this page](https://developer.chrome.com/extensions/getstarted).
 5. Open the extension's directory and select any file inside the extension, or select the packaged extension (.zip file).
 
 See also [this page](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Temporary_Installation_in_Firefox).
+
+# Releasing
+
+Releases are published to the Chrome Web Store by the [Release workflow](.github/workflows/release.yml) when a version tag is pushed. The version comes from the tag; the manifest in the repository only holds the `0.0.0` placeholder for local builds.
+
+1. Write the release notes in `release/notes/X.Y.Z.md`.
+   - The **first line** is shown in the popup after updating, so keep it short and plain text.
+   - The whole file (Markdown) becomes the GitHub release text.
+   - The release fails if this file is missing.
+2. Commit and push.
+3. Tag and push the tag: `git tag vX.Y.Z && git push origin vX.Y.Z`.
+4. The workflow builds, lints, tests, uploads the package to the Web Store, submits it for review and creates the GitHub release.
+
+If the workflow fails after the upload, the Web Store won't accept the same version again: fix the problem and release the next patch version instead.
+
+To build a release locally, set the version: `BCT_VERSION=X.Y.Z yarn build && yarn package`.
+
+## One-time setup
+
+The workflow logs in as a Google Cloud service account through Workload Identity Federation, so there are no keys or tokens to store or renew.
+
+1. In the [Google Cloud console](https://console.cloud.google.com), pick or create a project, enable the **Chrome Web Store API** and create the service account (it needs no roles):
+   ```sh
+   PROJECT_ID=my-project
+   gcloud services enable chromewebstore.googleapis.com --project "$PROJECT_ID"
+   gcloud iam service-accounts create cws-publisher --project "$PROJECT_ID"
+   SA_EMAIL="cws-publisher@$PROJECT_ID.iam.gserviceaccount.com"
+   ```
+2. In the [Developer Dashboard](https://chrome.google.com/webstore/devconsole) under **Account**, add `$SA_EMAIL` as service account (only one is allowed per publisher). Note the publisher ID under **Publisher > Settings**.
+3. Let GitHub Actions of this repository act as the service account:
+   ```sh
+   gcloud iam workload-identity-pools create github --project "$PROJECT_ID" --location global
+   gcloud iam workload-identity-pools providers create-oidc bclub-tools --project "$PROJECT_ID" --location global \
+     --workload-identity-pool github \
+     --issuer-uri "https://token.actions.githubusercontent.com" \
+     --attribute-mapping "google.subject=assertion.sub,attribute.repository=assertion.repository" \
+     --attribute-condition "assertion.repository == 'Dutchie322/bclub-tools'"
+   POOL=$(gcloud iam workload-identity-pools describe github --project "$PROJECT_ID" --location global --format 'value(name)')
+   for ROLE in roles/iam.workloadIdentityUser roles/iam.serviceAccountTokenCreator; do
+     gcloud iam service-accounts add-iam-policy-binding "$SA_EMAIL" --project "$PROJECT_ID" --role "$ROLE" \
+       --member "principalSet://iam.googleapis.com/$POOL/attribute.repository/Dutchie322/bclub-tools"
+   done
+   gcloud iam workload-identity-pools providers describe bclub-tools --project "$PROJECT_ID" --location global \
+     --workload-identity-pool github --format 'value(name)'
+   ```
+4. In GitHub, go to **Settings > Environments**, create the environment `chrome-web-store` and add these **variables** (none of them is secret):
+   - `GCP_WORKLOAD_IDENTITY_PROVIDER`: the provider name printed by the last command above
+   - `CWS_SERVICE_ACCOUNT`: `$SA_EMAIL`
+   - `CWS_PUBLISHER_ID`: the publisher ID from step 2
+
+To test the upload locally without submitting for review (your own account needs the `roles/iam.serviceAccountTokenCreator` role on the service account):
+
+```sh
+BCT_VERSION=X.Y.Z yarn build && yarn package
+CWS_PUBLISHER_ID=... \
+CWS_ACCESS_TOKEN=$(gcloud auth print-access-token --impersonate-service-account "$SA_EMAIL" --scopes https://www.googleapis.com/auth/chromewebstore) \
+  yarn publish:chrome --upload-only
+```
