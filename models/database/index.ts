@@ -8,3 +8,4 @@ export * from './IChatLog';
 export * from './IMember';
 export * from './member-functions';
 export * from './projections/shared-room';
+export * from './maintenance-functions';

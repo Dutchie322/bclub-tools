@@ -17,12 +17,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { storeGlobal, ISettings, executeForAllGameTabs, IMember, retrieveSettings } from 'models';
+import { storeGlobal, ISettings, executeForAllGameTabs, IMember, retrieveSettings, runFullMaintenance } from 'models';
 import { DatabaseService } from 'src/app/shared/database.service';
 import { humanFileSize } from 'src/app/shared/utils/human-file-size';
 import { ExportService, IExportProgressState } from 'src/app/shared/export.service';
 import { ImportService, IImportProgressState } from 'src/app/shared/import.service';
-import { MaintenanceService } from 'src/app/shared/maintenance.service';
 
 @Component({
     selector: 'app-options',
@@ -91,7 +90,6 @@ export class OptionsComponent implements OnDestroy {
     private databaseService: DatabaseService,
     private exportService: ExportService,
     private importService: ImportService,
-    private maintenanceService: MaintenanceService,
     private snackBar: MatSnackBar
   ) {
     retrieveSettings().then(settings => {
@@ -228,7 +226,7 @@ export class OptionsComponent implements OnDestroy {
 
   public async fixMembers() {
     this.databaseOperationInProgress = true;
-    await this.maintenanceService.runImmediately();
+    await runFullMaintenance();
     this.databaseOperationInProgress = false;
   }
 

@@ -1,6 +1,5 @@
 /// <reference types="chrome"/>
 import { Component } from '@angular/core';
-import { MaintenanceService } from './shared/maintenance.service';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -10,8 +9,4 @@ import { RouterOutlet } from '@angular/router';
     ],
     template: '<router-outlet></router-outlet>'
 })
-export class AppComponent {
-  public constructor(maintenanceService: MaintenanceService) {
-    maintenanceService.runWithCheck();
-  }
-}
+export class AppComponent {}

@@ -24,7 +24,8 @@ import {
   clearCharacterStorage,
   retrieveAppearance,
   dataUrlToBlob,
-  retrieveSettings
+  retrieveSettings,
+  runScheduledMaintenance
 } from '../../../models';
 import { checkForGame } from '../../content-script/src/check-for-game';
 import { checkForLoggedInState } from '../../content-script/src/check-for-logged-in-state';
@@ -47,6 +48,21 @@ chrome.runtime.onInstalled.addListener(async () => {
       files: ['content-script/main.js']
     });
   });
+});
+
+// Alarms may be cleared on browser restart, so make sure it exists whenever the
+// service worker starts. Creating it unconditionally would reset its schedule.
+chrome.alarms.get('maintenance').then(alarm => {
+  if (!alarm) {
+    chrome.alarms.create('maintenance', { delayInMinutes: 1, periodInMinutes: 5 });
+  }
+});
+
+chrome.alarms.onAlarm.addListener(alarm => {
+  if (alarm.name === 'maintenance') {
+    return runScheduledMaintenance();
+  }
+  return undefined;
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

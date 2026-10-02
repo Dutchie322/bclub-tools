@@ -27,7 +27,7 @@ Reference for coding agents. It captures how the project is put together and how
 ```
 src/                     Log Viewer Angular app (angular project "log-viewer", root "")
   app/                   routes + components (see §7)
-  app/shared/            services reused by options/popup too (Database, ChatLogs, Member, Export, Import, Maintenance)
+  app/shared/            services reused by options/popup too (Database, ChatLogs, Member, Export, Import)
   assets/                game CSVs (fetched at runtime), fonts, bclub-logo.png
 projects/
   popup/                 Angular app: toolbar popup
@@ -147,6 +147,7 @@ Extension pages (log viewer, popup, options) read IndexedDB and `chrome.storage`
 Other listeners:
 - `chrome.tabs.onRemoved` → `cleanUpData(tab, true)` (clears all per-tab keys including the handshake).
 - `chrome.runtime.onInstalled` re-injects `content-script/main.js` into already-open game tabs.
+- `chrome.alarms.onAlarm` (`maintenance`) → `runScheduledMaintenance()` (§7a).
 - `chrome.action.onClicked` opens `/log-viewer/index.html`. It only fires when no popup is set, meaning the tab is not logged in.
 
 Supporting modules:
@@ -237,13 +238,13 @@ Open with `openDatabase()` in `models/database/functions.ts`. It `alert()`s on `
   2. Extend `upgradeDatabase` idempotently and add a changelog line.
   3. Update `StoreNames`.
   4. Update Export/Import services and options "Delete database" (it iterates all store names automatically).
-  5. Consider MaintenanceService (§7a).
+  5. Consider maintenance (§7a).
 
 ### chrome.storage.local (`models/storage/`)
 - **Global keys** (`IGlobalStorageMap`, via `retrieveGlobal`/`storeGlobal`):
   - `settings: ISettings`, which is `{notifications:{keywords:string[]}, tools:{chatRoomRefreshInterval:number /*seconds, 0=off*/}}`
   - `migration: {readChangelogVersion}`
-  - `maintenance: {lastRun}`
+  - `maintenance: {lastCompleted?, resumeAfter?}` (§7a)
   - `retrieveGlobal` returns `{}` when a key is missing.
 - **Always read settings through `retrieveSettings()`.** It calls `ensureSettings()` first, which deletes deprecated keys (`beeps`, `friendOnline`, `friendOffline`, `actions`, `mentions`, `whispers`, `chatRoomRefresh`, `fpsCounter`, `wardrobeSize`) and writes back defaults.
 - **Per-tab keys** are stored as `` `${key}_${tabId}` `` (`IStorageMap`, via `retrieve`/`store`):
@@ -298,7 +299,6 @@ Conventions:
   | `:playerCharacter/member/:memberNumber` | `MemberInfoComponent` | profile (title, pronouns, difficulty, lover/owner, decompressed description), appearance image (cropped with CSS transforms from metadata), beep history (newest first, with a break marker when the gap is over 4 h), shared rooms, **notes** (autosaved after a 1 s debounce through `putValue('members')`) |
   | `:memberNumber/:sessionId/:chatRoom` | `ChatReplayComponent` | streams logs through `ChatLogsService.findChatReplay`, has a whisper toggle, renders each line with `ChatLineComponent` (Chat/Whisper/Emote as text; Action/Activity/ServerMessage through `renderContent`; label colours derived from the sender colour) |
   | `**` | `AppComponent` | |
-- `AppComponent` constructor → `MaintenanceService.runWithCheck()` (§7a).
 - Shared services (`src/app/shared/`):
   - `ChatLogsService`: `findPlayerCharacters`, `findChatRoomsForMemberNumber`, `findChatReplay`.
   - `MemberService`: `findMembersWithName(player)` (cursor over the player's key range, only records with `memberName`) and `retrieveMember` (Observable that errors if not found).
@@ -309,7 +309,6 @@ Conventions:
   - `ImportService`: picks the file type from magic bytes (`PK\x03\x04` → zip, `{` → JSON).
     - Zip: streamed with `Unzip` + `AsyncUnzipInflate`. Logs and beeps are `add`ed, and members and appearances are `upsertValue`d. Appearance images are stored as `Blob`s with their original bytes (PNG or WebP).
     - Legacy JSON: `{members, chatRoomLogs}` is added directly.
-  - `MaintenanceService`: see §7a.
   - Utils: `utils/base64.ts` (from JSZip), `utils/date.ts`, `utils/human-file-size.ts`.
 
 ### Popup (`projects/popup/`)
@@ -328,53 +327,44 @@ Conventions:
   - Settings form, autosaved through `storeGlobal('settings')` with a snackbar: notification keyword chips, and search refresh interval `[0,10,15,30,60,120,300,600]` s.
   - The UI warns that a **game reload is required**. The interval is only passed in at hook injection. It also `chrome.tabs.sendMessage`s the settings to game tabs, but nothing listens.
   - Data section: storage estimate (`navigator.storage.estimate`), Export (with an optional images checkbox), Import.
-  - Maintenance section: "Scan & Fix Member Database" → `MaintenanceService.runImmediately()`.
+  - Maintenance section: "Scan & Fix Member Database" → `runFullMaintenance()` (§7a).
   - Danger zone: "Delete appearances" (clears the `appearances` store and strips legacy `member.appearance` fields) and "Delete database" (clears every object store).
 - `options_ui.open_in_tab: true`.
 
 ### Fallback (`projects/fallback/`)
 `dist/index.html` + `main.js` redirect legacy `?page=/log-viewer…` and `?page=/options` URLs to the real pages.
 
-## 7a. MaintenanceService: IndexedDB corruption recovery
+## 7a. Maintenance: IndexedDB corruption recovery
 
-File: `src/app/shared/maintenance.service.ts`.
+File: `models/database/maintenance-functions.ts` (exported through the `models` barrel).
 
 **Why it exists.** Chrome IndexedDB records can become unreadable at random. Reading one makes the request or cursor fire `error`, typically Chrome's *"UnknownError: Failed to read large IndexedDB value"*, when the external blob that backs a large value is lost. The suspected trigger is large values, specifically the base64 PNG appearance data that used to be stored **inside `members` records**. The user-visible symptom: `MemberService.findMembersWithName`'s cursor dies partway, its error handler only logs, and its promise never resolves. The people list in ChatSessions then stays empty, which is the "people do not show up anymore" case named on the options page.
 
 **History:**
 - `dc9280e` (2024‑05‑22, "jank way of fixing member store corruption", originally inside MemberService)
-- `5770c39` / `dec44c9` (2024‑07‑14): moved into this service, given an options button, and set to run automatically when the log viewer opens
+- `5770c39` / `dec44c9` (2024‑07‑14): moved into `MaintenanceService`, given an options button, and set to run automatically when the log viewer opens
 - DB v6 (`e11ce88`, 2025‑04): images moved into the separate `appearances` store
+- Moved out of the log viewer into the background service worker, scanning in time-limited slices that resume where the previous one stopped
 
 Legacy `member.appearance` blobs are migrated away lazily by the background's `handleCommonDrawAppearanceBuild`. Options "Delete appearances" also strips them.
 
 **Triggers:**
-- `AppComponent` constructor → `runWithCheck()`, throttled to **once per hour** through global storage `maintenance.lastRun`:
-  - On a fresh install the stored value is `{}`, so `now - undefined` is `NaN`, the `< 3600000` check fails, and the scan runs.
-  - `lastRun` is written **before** scanning, so a crashed scan is not retried for an hour.
-  - `runImmediately()` is fire-and-forget (not awaited, errors unhandled).
-- Options → "Scan & Fix Member Database" → `runImmediately()` directly, with a spinner.
-- Background and popup never run it.
+- Background: a `chrome.alarms` alarm named `maintenance` (period 5 min) → `runScheduledMaintenance()`. The alarm is created at service-worker startup only if it doesn't exist yet, because re-creating it resets its schedule. Requires the `alarms` permission.
+  - Each run scans for at most **10 s**. When paused, it stores the last scanned key in `maintenance.resumeAfter` and the next alarm continues from there.
+  - After a pass reaches the end of the store, `maintenance.lastCompleted` is set and a new pass starts only once an hour has passed.
+- Options → "Scan & Fix Member Database" → `runFullMaintenance()`: a full pass from the start without a time limit, with a spinner. It resets the stored state.
+- The log viewer and popup don't run it.
 
-**Algorithm:**
-1. `runImmediately()` gets the list of **own player characters** (contexts) from `ChatLogsService.findPlayerCharacters()`, a `nextunique` cursor over `chatRoomLogs.sessionMemberNumber_idx`. It does not get this list from `members`. `members` is then scanned only inside each listed context's key range, so member records stored under a context that has **no chat logs are never scanned**. Examples: only online-friends data was captured, logs were deleted, or members were imported without their logs. This cursor loads full log values, which is slow on big DBs; the popup disabled the same call for that reason.
-2. For each player: `while (!await this.fixMembers(memberNumber));`, which repeats until a pass completes cleanly.
-3. `fixMembers(player)` opens a readonly cursor on `members` over `IDBKeyRange.bound([player,0],[player,Infinity])` and remembers `lastGoodKey` at each step. Reading the values is what surfaces the corruption. A complete pass → `true`.
-4. On a cursor `error` → reject `{lastGoodKey}`. Then:
-   - A new transaction calls `getAllKeys(IDBKeyRange.lowerBound(lastGoodKey, true))`. It reads **keys only**, so the broken value is never touched.
-   - It takes `[0]` as the faulty key and `delete`s it in a readwrite transaction.
-   - On success → `false`, so the scan restarts from the beginning.
-   - If `getAllKeys` or `delete` fires `error` → `true` (gives up: "more severely broken").
+**Algorithm (`fixMembers(startAfter, deadline)`):**
+1. One cursor over the **whole** `members` store in key order (`[playerMemberNumber, memberNumber]`), so every context is covered, whether or not it has chat logs.
+2. Each readonly transaction lives at most 250 ms (and processes at least one record), then a new one continues after the last key. Short transactions keep the store available for `writeMember` and the log viewer.
+3. On a cursor `error`: `getAllKeys(lowerBound(lastKey, true), 1)` reads **keys only** to find the faulty record, which is then `delete`d in a readwrite transaction. The scan continues after the faulty key, even if the delete failed. If no key is found, the pass ends.
 
-**Limitations and edge cases (current behaviour, not fixed):**
+**Limitations:**
 - Recovery **deletes the whole member record, including the user's notes**. The member is recreated on the next sighting through `writeMember`, but the notes are lost.
-- If the **first** record in a player's range is corrupt, `lastGoodKey` is `undefined`. `IDBKeyRange.lowerBound(undefined)` then throws `DataError` and the run aborts with an unhandled rejection.
-- If `getAllKeys` returns an empty array, `delete(undefined)` throws inside a `.then` callback, the inner promise never resolves, and the loop **hangs**.
-- `getAllKeys` has no upper bound, so it returns the keys of every later player too. That's wasteful but harmless.
-- Each corrupt record triggers a full rescan, which is O(records × corrupt records).
-- **Only `members` is scanned.** `appearances` now holds the large PNG values and is the most likely corruption site, but it is **not covered**. Neither are `chatRoomLogs` or `beepMessages`. A corrupt appearance shows up as a failing `retrieveAppearance` (MemberInfo page, export), and nothing repairs it automatically.
-- It gives no feedback apart from `console.log` diagnostics and the options spinner stopping.
-- **Guidance:** give any new cursor-based reader over large stores an error path that rejects or completes, so the UI never hangs. If corruption handling is extended, the natural step is to make this scanner generic per store, starting with `appearances`.
+- **Only `members` is scanned.** `appearances` holds the large image values and is the most likely corruption site, but it is **not covered**. Neither are `chatRoomLogs` or `beepMessages`. A corrupt appearance shows up as a failing `retrieveAppearance` (MemberInfo page, export), and nothing repairs it automatically.
+- It gives no feedback apart from `console.log` diagnostics (background service worker console) and the options spinner stopping.
+- **Guidance:** give any new cursor-based reader over large stores an error path that rejects or completes, so the UI never hangs. If corruption handling is extended, the natural step is to make the scanner generic per store, starting with `appearances` (same key shape).
 
 ## 8. Common task recipes
 
