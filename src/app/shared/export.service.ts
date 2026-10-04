@@ -66,7 +66,7 @@ export class ExportService {
       return { total: 0 };
     }
 
-    return Promise.all(objectStoreNames.map(storeName =>
+    return Promise.all(objectStoreNames.filter(storeName => storeName !== 'chatSessions').map(storeName =>
       this.databaseService.read(storeName, objectStore => objectStore.count())))
       .then(counts => ({
         total: counts.reduce((prev, cur) => prev + cur, 0)
@@ -113,6 +113,10 @@ export class ExportService {
         case 'beepMessages':
           update('Gathering beep messages');
           await this.exportBeepMessages(update, transaction, archive);
+          break;
+
+        case 'chatSessions':
+          // Derived from chatRoomLogs, recreated on import
           break;
 
         case 'chatRoomLogs':

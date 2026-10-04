@@ -141,7 +141,7 @@ Extension pages (log viewer, popup, options) read IndexedDB and `chrome.storage`
 | server `AccountBeep` | `writeBeepMessage(player, data, 'Incoming')` → `beepMessages` |
 | client `AccountBeep` | same, `'Outgoing'` |
 | server `AccountQueryResult` (OnlineFriends) | `writeMember(..., DataSource.OnlineFriends)` for each friend, `store(tab,'onlineFriends', members)` |
-| server `ChatRoomMessage` | `writeChatLog` → `chatRoomLogs`. If `!inFocus`, `notifyIncomingMessage` |
+| server `ChatRoomMessage` | `writeChatLog` → `chatRoomLogs` + `chatSessions` (one transaction). If `!inFocus`, `notifyIncomingMessage` |
 | client `ChatRoomChat` | Whisper only → `writeChatLog` |
 | server `ChatRoomSync` | `store(tab,'chatRoomCharacter', chars)` + `writeMember(ChatRoom)` for each |
 | server `ChatRoomSyncSingle` / `ChatRoomSyncCharacter` | both go to `handleChatRoomSyncSingle`: replace the char in the stored list + `writeMember` |
@@ -219,22 +219,24 @@ The popup also injects `requestOnlineFriends` (`projects/content-script/src/upda
 
 ## 5. Data storage
 
-### IndexedDB: database `bclub-tools`, **version 6**
+### IndexedDB: database `bclub-tools`, **version 7**
 Open with `openDatabase()` in `models/database/functions.ts`. It `alert()`s on `blocked`, and on `versionchange` it closes and alerts. `upgradeDatabase()` in `models/database/upgrades.ts` is **state-based and idempotent**: it checks for stores and indexes rather than stepping through versions, with a changelog comment at the top.
 
 | Store | Key | Indexes | Type |
 |---|---|---|---|
-| `chatRoomLogs` | autoIncrement `id` | `senderMemberNumber_idx` = [session.memberNumber, sender.id, session.id, chatRoom] (shared rooms) · `sessionMemberNumber_idx` = session.memberNumber (list own characters) · `member_session_chatRoom_idx` = [chatRoom, session.id, session.memberNumber] (session list + replay) | `IChatLog` |
-| `members` | [playerMemberNumber, memberNumber] | `memberName_idx` = [playerMemberNumber, memberName] | `IMember` |
+| `chatRoomLogs` | autoIncrement `id` | `senderMemberNumber_idx` = [session.memberNumber, sender.id, session.id, chatRoom] (shared rooms) · `sessionMemberNumber_idx` = session.memberNumber (list own characters) · `member_session_chatRoom_idx` = [chatRoom, session.id, session.memberNumber] (replay; also used to fill `chatSessions` during the v7 upgrade) | `IChatLog` |
+| `chatSessions` | [memberNumber, sessionId, chatRoom] | `member_start_idx` = [memberNumber, start] · `member_chatRoom_idx` = [memberNumber, chatRoomSortKey, start] | `IChatSessionRecord`: derived from `chatRoomLogs` (`start` = earliest log, `chatRoomSortKey` = upper-case room). Not exported; import rebuilds it |
+| `members` | [playerMemberNumber, memberNumber] | `memberName_idx` = [playerMemberNumber, memberName] · `lastSeen_idx` = [playerMemberNumber, lastSeen] · `nickname_idx` = [playerMemberNumber, nickname] · `normalizedNickname_idx` = [playerMemberNumber, normalizedNickname] (sorting/filtering the people list) | `IMember` |
 | `appearances` | [contextMemberNumber, memberNumber] | none | `Appearance` (`appearance` is a WebP `Blob` for new data, or a legacy base64 PNG data URL string; + `AppearanceMetaData`) |
 | `beepMessages` | autoIncrement `id` | `context_member_idx` = [contextMemberNumber, memberNumber] | `IBeepMessage` |
 
 - **All data is scoped per logged-in player character.** The scope is called "context", `playerMemberNumber`, or `session.memberNumber` depending on the store. A chat "session" is `Player.CharacterID` (it changes on every login). Sessions plus room name identify one log.
-- `StoreNames` type: `'appearances' | 'beepMessages' | 'chatRoomLogs' | 'members'`.
+- `StoreNames` type: `'appearances' | 'beepMessages' | 'chatRoomLogs' | 'chatSessions' | 'members'`.
 - Helpers in `models/database/`:
   - `startTransaction`, `executeRequest`, `executeInTransaction`, `upsertValue` (merge into existing), `putValue`
   - `retrieveMember`, `isMemberKnown`, `retrieveAppearance`, `retrieveAppearanceWithFallback` (falls back to legacy `member.appearance`)
   - `retrieveBeepMessages`, `retrieveSharedRooms` (`nextunique` cursor on `senderMemberNumber_idx`)
+  - `recordChatSessions(transaction, chatLogs)`: **every writer of `chatRoomLogs` must call it** in the same transaction (background `writeChatLog`, both imports), so `chatSessions` stays in sync. It keeps the earliest start per session.
 - Angular code mostly uses `DatabaseService` (`src/app/shared/database.service.ts`). It caches one connection and offers `transaction`, `read`, `write`, `cursor` (Observable), and `objectStoreNames`.
 - Appearance images are stored as `Blob`s (WebP); older records may still hold PNG data URL strings until maintenance (§7a) converts them or the member is drawn again. Readers must handle both (`typeof appearance === 'string'`; `appearanceImageExtension()`; member-info uses `URL.createObjectURL`, which needs `blob:` in the CSP `img-src`).
 - Deprecated fields are kept for old data:
@@ -302,13 +304,18 @@ Conventions:
   | Path | Component | What it shows |
   |---|---|---|
   | `''` | `PlayerCharactersComponent` | own characters found in `chatRoomLogs` |
-  | `:memberNumber` | `ChatSessionsComponent` (OnPush) | MatTable of sessions (room + start) and MatTable of known people. The filter form matches name/nickname/normalized nickname, number, and last-seen range |
+  | `:memberNumber` | `ChatSessionsComponent` (OnPush) | MatTable of sessions (room + start) and MatTable of known people, both backed by `IndexedDbDataSource`, so sorting, filtering and paging happen in the database and only the visible page is read. The filter form (debounced) matches name/nickname/normalized nickname, number, and last-seen range. People name sort is case-sensitive (index order) |
   | `:playerCharacter/member/:memberNumber` | `MemberInfoComponent` | profile (title, pronouns, difficulty, lover/owner, decompressed description), appearance image (cropped with CSS transforms from metadata), beep history (newest first, with a break marker when the gap is over 4 h), shared rooms, **notes** (autosaved after a 1 s debounce through `putValue('members')`) |
   | `:memberNumber/:sessionId/:chatRoom` | `ChatReplayComponent` | streams logs through `ChatLogsService.findChatReplay`, has a whisper toggle, renders each line with `ChatLineComponent` (Chat/Whisper/Emote as text; Action/Activity/ServerMessage through `renderContent`; label colours derived from the sender colour) |
   | `**` | `AppComponent` | |
 - Shared services (`src/app/shared/`):
-  - `ChatLogsService`: `findPlayerCharacters`, `findChatRoomsForMemberNumber`, `findChatReplay`.
-  - `MemberService`: `findMembersWithName(player)` (cursor over the player's key range, only records with `memberName`) and `retrieveMember` (Observable that errors if not found).
+  - `IndexedDbDataSource<T, F>` (`indexed-db-data-source.ts`): a CDK `DataSource` with the `MatTableDataSource` API (`sort`, `paginator`, `filter`) that hands sort/page/filter to an async `query` returning `{total, rows}`. Sort or filter changes go back to page 0, a failed query shows an empty page, and `loading$` drives a progress bar.
+  - `ChatLogsService`: `findPlayerCharacters`, `findChatSessionsPage` (cursor + `advance` on a `chatSessions` index), `findChatReplay`.
+  - `MemberService`:
+    - `findMemberKeys(player, sort, direction, filter)` reads only keys (`getAllKeys` / key cursors on the `members` indexes) and returns the ordered primary keys of named members. Never-seen members count as the oldest.
+    - `getMemberOverviewItems(keys)` reads one page of values and skips unreadable records.
+    - The component caches the key list per sort and filter.
+    - `retrieveMember` (Observable that errors if not found).
   - `ExportService`: `fflate` `Zip` streamed into a `FileSystemFileHandle` from `showSaveFilePicker`. Zip layout:
     - `chatRoomLogs/<player>/<yyyymmdd-hhmm> - <room>.json` (grouped by session + room, `id` stripped)
     - `beepMessages/<player>/<member>.json`
@@ -316,7 +323,7 @@ Conventions:
   - `ImportService`: picks the file type from magic bytes (`PK\x03\x04` → zip, `{` → JSON).
     - Zip: streamed with `Unzip` + `AsyncUnzipInflate`. Logs and beeps are `add`ed, and members and appearances are `upsertValue`d. Appearance images are stored as `Blob`s with their original bytes (PNG or WebP).
     - Legacy JSON: `{members, chatRoomLogs}` is added directly.
-  - Utils: `utils/base64.ts` (from JSZip), `utils/date.ts`, `utils/human-file-size.ts`.
+  - Utils: `utils/base64.ts` (from JSZip), `utils/date.ts`, `utils/human-file-size.ts`, `utils/indexed-db.ts` (`requestToPromise`, `readCursorPage`, `findPrimaryKeys`, `startsWithRange`).
 
 ### Popup (`projects/popup/`)
 - `PopupComponent` is bootstrapped directly with async animations.
@@ -345,7 +352,7 @@ Conventions:
 
 File: `models/database/maintenance-functions.ts` (exported through the `models` barrel).
 
-**Why it exists.** Chrome IndexedDB records can become unreadable at random. Reading one makes the request or cursor fire `error`, typically Chrome's *"UnknownError: Failed to read large IndexedDB value"*, when the external blob that backs a large value is lost. The suspected trigger is large values, specifically the base64 PNG appearance data that used to be stored **inside `members` records**. The user-visible symptom: `MemberService.findMembersWithName`'s cursor dies partway, its error handler only logs, and its promise never resolves. The people list in ChatSessions then stays empty, which is the "people do not show up anymore" case named on the options page.
+**Why it exists.** Chrome IndexedDB records can become unreadable at random. Reading one makes the request or cursor fire `error`, typically Chrome's *"UnknownError: Failed to read large IndexedDB value"*, when the external blob that backs a large value is lost. The suspected trigger is large values, specifically the base64 PNG appearance data that used to be stored **inside `members` records**. The user-visible symptom (before DB v7): the people list's cursor (`MemberService.findMembersWithName`, since replaced) died partway, its error handler only logs, and its promise never resolves. The people list in ChatSessions then stays empty, which is the "people do not show up anymore" case named on the options page.
 
 **History:**
 - `dc9280e` (2024‑05‑22, "jank way of fixing member store corruption", originally inside MemberService)

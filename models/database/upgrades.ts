@@ -10,7 +10,14 @@
 // - Added appearances object store
 // - Added senderMemberNumber_idx to chatRoomLogs
 // - Removed chatRoom_idx, senderName_idx and sessionId_idx from chatRoomLogs
+//
+// Version 7:
+// - Added chatSessions object store, filled from the existing chatRoomLogs
+// - Added lastSeen_idx, nickname_idx and normalizedNickname_idx to members
 ///////////////////////////////////////////////////////////////////////////////
+
+import { createChatSessionRecord } from './chat-session-functions';
+import { IChatLog } from './IChatLog';
 
 /**
  * Performs the changes needed to get the database to the latest version.
@@ -60,6 +67,19 @@ export function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
     }
   }
 
+  // chatSessions
+  if (!db.objectStoreNames.contains('chatSessions')) {
+    const chatSessionsStore = db.createObjectStore('chatSessions', {
+      autoIncrement: false,
+      keyPath: ['memberNumber', 'sessionId', 'chatRoom']
+    });
+    // Used to show the sessions of a character sorted by start date
+    chatSessionsStore.createIndex('member_start_idx', ['memberNumber', 'start']);
+    // Used to show the sessions of a character sorted by chat room
+    chatSessionsStore.createIndex('member_chatRoom_idx', ['memberNumber', 'chatRoomSortKey', 'start']);
+    fillChatSessions(chatRoomLogsStore, chatSessionsStore);
+  }
+
   // members
   let memberStore: IDBObjectStore;
   if (!db.objectStoreNames.contains('members')) {
@@ -73,6 +93,16 @@ export function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
     if (memberStore.indexNames.contains('type_idx')) {
       memberStore.deleteIndex('type_idx');
     }
+  }
+  // Used to sort and filter the people of a character
+  if (!memberStore.indexNames.contains('lastSeen_idx')) {
+    memberStore.createIndex('lastSeen_idx', ['playerMemberNumber', 'lastSeen']);
+  }
+  if (!memberStore.indexNames.contains('nickname_idx')) {
+    memberStore.createIndex('nickname_idx', ['playerMemberNumber', 'nickname']);
+  }
+  if (!memberStore.indexNames.contains('normalizedNickname_idx')) {
+    memberStore.createIndex('normalizedNickname_idx', ['playerMemberNumber', 'normalizedNickname']);
   }
 
   // appearances
@@ -94,4 +124,43 @@ export function upgradeDatabase(db: IDBDatabase, transaction: IDBTransaction) {
     // Used to retrieve beep message exchanges with a specific person
     beepMessagesStore.createIndex('context_member_idx', ['contextMemberNumber', 'memberNumber']);
   }
+}
+
+/**
+ * Creates a `chatSessions` record for every session already in `chatRoomLogs`.
+ * The start of a session is the timestamp of its first chat log.
+ *
+ * Only keys are read to find the sessions, and every failing request is
+ * skipped instead of aborting the upgrade, so unreadable chat logs can't
+ * prevent the database from opening.
+ *
+ * @param chatRoomLogsStore The chatRoomLogs store of the upgrade transaction
+ * @param chatSessionsStore The chatSessions store of the upgrade transaction
+ */
+function fillChatSessions(chatRoomLogsStore: IDBObjectStore, chatSessionsStore: IDBObjectStore) {
+  const skipError = (event: Event) => {
+    console.warn('Skipped chat session while filling chatSessions', (event.target as IDBRequest).error);
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  // With nextunique, the primary key is the lowest one, i.e. the first chat log
+  const request = chatRoomLogsStore.index('member_session_chatRoom_idx').openKeyCursor(null, 'nextunique');
+  request.addEventListener('error', skipError);
+  request.addEventListener('success', () => {
+    const cursor = request.result;
+    if (!cursor) {
+      return;
+    }
+
+    const getRequest = chatRoomLogsStore.get(cursor.primaryKey) as IDBRequest<IChatLog>;
+    getRequest.addEventListener('error', skipError);
+    getRequest.addEventListener('success', () => {
+      const session = createChatSessionRecord(getRequest.result);
+      if (session) {
+        chatSessionsStore.put(session).addEventListener('error', skipError);
+      }
+    });
+    cursor.continue();
+  });
 }

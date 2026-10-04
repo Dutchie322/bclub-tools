@@ -1,6 +1,6 @@
 import { upgradeDatabase } from "./upgrades";
 
-export type StoreNames = 'appearances' | 'beepMessages' | 'chatRoomLogs' | 'members';
+export type StoreNames = 'appearances' | 'beepMessages' | 'chatRoomLogs' | 'chatSessions' | 'members';
 type TransactionModes = Exclude<IDBTransactionMode, 'versionchange'>;
 
 /**
@@ -12,7 +12,7 @@ type TransactionModes = Exclude<IDBTransactionMode, 'versionchange'>;
  */
 export function openDatabase() {
   return new Promise<IDBDatabase>((resolve, reject) => {
-    const request = indexedDB.open('bclub-tools', 6);
+    const request = indexedDB.open('bclub-tools', 7);
 
     request.addEventListener('blocked', () => {
       alert('Could not open database, make sure all tabs are closed and reload.');

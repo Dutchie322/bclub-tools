@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { DatabaseService } from './database.service';
-import { IChatLog } from 'models';
-import { IChatSession, IPlayerCharacter } from './models';
+import { SortDirection } from '@angular/material/sort';
+import { IChatLog, IChatSessionRecord } from 'models';
+import { IChatSession, IPage, IPlayerCharacter } from './models';
 import { Observable } from 'rxjs';
+import { readCursorPage, requestToPromise, startsWithRange } from './utils/indexed-db';
+
+export type ChatSessionSort = 'start' | 'chatRoom';
 
 @Injectable({
   providedIn: 'root'
@@ -34,30 +38,35 @@ export class ChatLogsService {
     });
   }
 
-  public async findChatRoomsForMemberNumber(memberNumber: number): Promise<IChatSession[]> {
-    const transaction = await this.databaseService.transaction('chatRoomLogs');
-    return new Promise(resolve => {
-      const chatRooms: IChatSession[] = [];
-      transaction.objectStore('chatRoomLogs')
-        .index('member_session_chatRoom_idx')
-        .openCursor(null, 'nextunique')
-        .addEventListener('success', event => {
-          const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
-          if (cursor) {
-            const chatLog = cursor.value as IChatLog;
-            if (chatLog.session.memberNumber === memberNumber) {
-              chatRooms.push({
-                sessionId: chatLog.session.id,
-                chatRoom: chatLog.chatRoom,
-                start: chatLog.timestamp
-              });
-            }
-            cursor.continue();
-          } else {
-            resolve(chatRooms);
-          }
-        });
-    });
+  /**
+   * Retrieves one page of the chat sessions of a player character, sorted by
+   * the database.
+   *
+   * @param memberNumber The member number of the player character
+   * @param sort The column to sort on
+   * @param direction The sort direction, ascending when empty
+   * @param pageIndex The page to retrieve
+   * @param pageSize The number of sessions per page
+   * @returns The sessions of the page and the total number of sessions
+   */
+  public async findChatSessionsPage(memberNumber: number, sort: ChatSessionSort, direction: SortDirection, pageIndex: number, pageSize: number): Promise<IPage<IChatSession>> {
+    const transaction = await this.databaseService.transaction('chatSessions');
+    const index = transaction.objectStore('chatSessions')
+      .index(sort === 'chatRoom' ? 'member_chatRoom_idx' : 'member_start_idx');
+    const range = startsWithRange(memberNumber);
+
+    const [total, records] = await Promise.all([
+      requestToPromise(index.count(range)),
+      readCursorPage<IChatSessionRecord>(index.openCursor(range, direction === 'desc' ? 'prev' : 'next'), pageIndex * pageSize, pageSize)
+    ]);
+    return {
+      total,
+      rows: records.map(record => ({
+        sessionId: record.sessionId,
+        chatRoom: record.chatRoom,
+        start: record.start
+      }))
+    };
   }
 
   public findChatReplay(memberNumber: number, sessionId: string, chatRoom: string): Observable<IChatLog> {

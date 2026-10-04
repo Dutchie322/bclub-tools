@@ -2,7 +2,9 @@ import {
   IEnrichedChatRoomMessage,
   IChatLog,
   IEnrichedChatRoomChat,
-  putValue,
+  startTransaction,
+  executeRequest,
+  recordChatSessions,
   hasSourceCharacter,
   hasTargetCharacter,
   hasCharacterReference,
@@ -71,7 +73,10 @@ export async function writeChatLog(data: IEnrichedChatRoomMessage | IEnrichedCha
     }
   }
 
-  return await putValue('chatRoomLogs', chatLog);
+  const transaction = await startTransaction(['chatRoomLogs', 'chatSessions'], 'readwrite');
+  await executeRequest(transaction, t => t.objectStore('chatRoomLogs').put(chatLog));
+  await recordChatSessions(transaction, [chatLog]);
+  return chatLog;
 }
 
 function createChatLogCharacter(char: IChatRoomCharacter): IChatMessageCharacter {

@@ -1,6 +1,7 @@
 <div class="overview">
   <div class="sessions">
     <mat-toolbar>Sessions</mat-toolbar>
+    <mat-progress-bar [mode]="(chatSessions.loading$ | async) ? 'indeterminate' : 'determinate'" value="0"></mat-progress-bar>
     <table mat-table [dataSource]="chatSessions" matSort #chatSessionsSort="matSort" matSortActive="start" matSortDirection="desc" matSortDisableClear>
       <ng-container matColumnDef="chatRoom">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Chat Room</th>
@@ -25,6 +26,7 @@
 
   <div class="people">
     <mat-toolbar>People</mat-toolbar>
+    <mat-progress-bar [mode]="(members.loading$ | async) ? 'indeterminate' : 'determinate'" value="0"></mat-progress-bar>
     <table mat-table [dataSource]="members" matSort #membersSort="matSort" matSortActive="lastSeen" matSortDirection="desc" matSortDisableClear>
       <ng-container matColumnDef="memberName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>

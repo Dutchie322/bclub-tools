@@ -1,21 +1,23 @@
 import { Component, ViewChild, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { map, tap, takeUntil } from 'rxjs/operators';
+import { debounceTime, map, tap, takeUntil } from 'rxjs/operators';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
-import { ChatLogsService } from '../shared/chat-logs.service';
-import { MemberOverviewItem, MemberService } from '../shared/member.service';
+import { ChatLogsService, ChatSessionSort } from '../shared/chat-logs.service';
+import { IndexedDbDataSource, PageQueryFunction } from '../shared/indexed-db-data-source';
+import { MemberFilter, MemberKey, MemberOverviewItem, MemberService, MemberSort } from '../shared/member.service';
 import { IChatSession } from '../shared/models';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { getEndOfDayDate } from '../shared/utils/date';
 import { Title } from '@angular/platform-browser';
 
@@ -29,6 +31,7 @@ import { Title } from '@angular/platform-browser';
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
+    MatProgressBarModule,
     MatSortModule,
     MatTableModule,
     MatToolbarModule,
@@ -50,12 +53,6 @@ export class ChatSessionsComponent implements OnDestroy {
   @ViewChild('chatSessionsSort', { static: true })
   public set chatSessionsSort(sort: MatSort) {
     this.chatSessions.sort = sort;
-    this.chatSessions.sortingDataAccessor = (data, sortHeaderId) => {
-      if (sortHeaderId === 'chatRoom') {
-        return data[sortHeaderId].toLocaleUpperCase();
-      }
-      return data[sortHeaderId];
-    };
   }
 
   @ViewChild('membersPaginator', { static: true })
@@ -66,18 +63,12 @@ export class ChatSessionsComponent implements OnDestroy {
   @ViewChild('membersSort', { static: true })
   public set membersSort(sort: MatSort) {
     this.members.sort = sort;
-    this.members.sortingDataAccessor = (data, sortHeaderId) => {
-      if (sortHeaderId === 'memberName') {
-        return data[sortHeaderId].toLocaleUpperCase();
-      }
-      return data[sortHeaderId];
-    };
   }
 
-  public chatSessions = new MatTableDataSource<IChatSession>();
+  public chatSessions = new IndexedDbDataSource<IChatSession>(null);
   public chatSessionsColumns = ['chatRoom', 'start'];
 
-  public members = new MatTableDataSource<MemberOverviewItem>();
+  public members = new IndexedDbDataSource<MemberOverviewItem, MemberFilter>({});
   public membersColumns = ['memberName', 'memberNumber', 'lastSeen'];
   public memberSearchForm = new FormGroup({
     memberName: new FormControl<string | null>(''),
@@ -101,39 +92,18 @@ export class ChatSessionsComponent implements OnDestroy {
     route.paramMap.pipe(
       map(params => +params.get('memberNumber')),
       tap(memberNumber => title.setTitle(`Sessions & People (${memberNumber}) - Bondage Club Tools`)),
-      tap(async memberNumber => this.chatSessions.data = await chatLogsService.findChatRoomsForMemberNumber(memberNumber)),
-      tap(async memberNumber => this.members.data = await memberService.findMembersWithName(memberNumber)),
+      tap(memberNumber => {
+        this.chatSessions.query = ({ sort, pageIndex, pageSize }) =>
+          chatLogsService.findChatSessionsPage(memberNumber, sort.active as ChatSessionSort, sort.direction, pageIndex, pageSize);
+        this.members.query = this.createMembersQuery(memberService, memberNumber);
+      }),
       takeUntil(this.destroySubject)
     )
     .subscribe();
 
-    this.members.filterPredicate = (data, filter) => {
-      // filter is actually of type "any" because it's the value from the memberSearchForm
-      const anyFilter = filter as unknown as {
-        memberName: string | null;
-        memberNumber: string | null;
-        lastSeenRange: { start: Date | null; end: Date | null; }
-      };
-      let match = true;
-      if (anyFilter['memberName']) {
-        match = match && (
-          data.memberName.toLocaleUpperCase().indexOf(anyFilter['memberName']) > -1 ||
-          data.memberNickname?.toLocaleUpperCase().indexOf(anyFilter['memberName']) > -1 ||
-          data.memberNormalizedNickname?.toLocaleUpperCase().indexOf(anyFilter['memberName']) > -1
-        );
-      }
-      if (anyFilter['memberNumber']) {
-        match = match && data.memberNumber.toString().indexOf(anyFilter['memberNumber']) > -1;
-      }
-      if (anyFilter['lastSeenRange'] && anyFilter['lastSeenRange'].start) {
-        match = match && data.lastSeen && data.lastSeen > anyFilter['lastSeenRange'].start;
-      }
-      if (anyFilter['lastSeenRange'] && anyFilter['lastSeenRange'].end) {
-        match = match && data.lastSeen && data.lastSeen < anyFilter['lastSeenRange'].end;
-      }
-      return match;
-    };
     this.memberSearchForm.valueChanges.pipe(
+      // Every change queries the database
+      debounceTime(300),
       tap(values => this.members.filter = this.sanitizeFilterValues(values)),
       takeUntil(this.destroySubject)
     ).subscribe();
@@ -155,14 +125,37 @@ export class ChatSessionsComponent implements OnDestroy {
     });
   }
 
-  private sanitizeFilterValues(values: Partial<{ memberName: string; memberNumber: string; lastSeenRange: Partial<{ start: Date; end: Date; }>; }>): string {
-    return {
-      memberName: values.memberName && values.memberName.toLocaleUpperCase(),
-      memberNumber: values.memberNumber,
-      lastSeenRange: {
-        start: values.lastSeenRange.start,
-        end: values.lastSeenRange.end && getEndOfDayDate(values.lastSeenRange.end)
+  /**
+   * Creates the query for the people table. The ordered keys of all matching
+   * people are kept between page changes, so turning a page only reads the
+   * members on that page.
+   */
+  private createMembersQuery(memberService: MemberService, memberNumber: number): PageQueryFunction<MemberOverviewItem, MemberFilter> {
+    let cached: { sortAndFilter: string; keys: Promise<MemberKey[]> } | null = null;
+    return async ({ sort, filter, pageIndex, pageSize }) => {
+      const sortAndFilter = JSON.stringify([sort, filter]);
+      if (cached?.sortAndFilter !== sortAndFilter) {
+        const keys = memberService.findMemberKeys(memberNumber, sort.active as MemberSort, sort.direction, filter);
+        cached = { sortAndFilter, keys };
+        // Don't keep a failed attempt around
+        keys.catch(() => cached = null);
       }
-    } as unknown as string;
+
+      const keys = await cached.keys;
+      const offset = pageIndex * pageSize;
+      return {
+        total: keys.length,
+        rows: await memberService.getMemberOverviewItems(keys.slice(offset, offset + pageSize))
+      };
+    };
+  }
+
+  private sanitizeFilterValues(values: Partial<{ memberName: string; memberNumber: string; lastSeenRange: Partial<{ start: Date; end: Date; }>; }>): MemberFilter {
+    return {
+      memberName: values.memberName || undefined,
+      memberNumber: values.memberNumber || undefined,
+      lastSeenStart: values.lastSeenRange?.start || undefined,
+      lastSeenEnd: (values.lastSeenRange?.end && getEndOfDayDate(values.lastSeenRange.end)) || undefined
+    };
   }
 }

@@ -1,4 +1,4 @@
-import { IMember, IChatLog, StoreNames, Appearance, startTransaction, AppearanceMetaData, IBeepMessage, executeRequest, upsertValue, parseJson } from 'models';
+import { IMember, IChatLog, StoreNames, Appearance, startTransaction, AppearanceMetaData, IBeepMessage, executeRequest, upsertValue, parseJson, recordChatSessions } from 'models';
 import { Injectable } from '@angular/core';
 import { AsyncUnzipInflate, Unzip } from 'fflate';
 import { Observable, from } from 'rxjs';
@@ -114,12 +114,16 @@ export class ImportService {
 
   private async importDatabaseFromJson(update: UpdateCallback, importObject: JsonExport) {
     update('Importing database...');
-    const transaction = await startTransaction(ValidStoresForJsonImport, 'readwrite');
+    const transaction = await startTransaction([...ValidStoresForJsonImport, 'chatSessions'], 'readwrite');
 
     return new Promise<void>((resolve, reject) => {
       transaction.onerror = event => {
         reject(event);
       };
+
+      if (importObject.chatRoomLogs) {
+        recordChatSessions(transaction, importObject.chatRoomLogs).catch(reject);
+      }
 
       ValidStoresForJsonImport.forEach(storeName => {
         update(`Importing ${storeName}...`);
@@ -309,11 +313,12 @@ export class ImportService {
 
   private async importChatLog(data: Uint8Array) {
     const chatLogs = parseJson<IChatLog[]>(ImportService.Decoder.decode(data));
-    const transaction = await startTransaction('chatRoomLogs', 'readwrite');
+    const transaction = await startTransaction(['chatRoomLogs', 'chatSessions'], 'readwrite');
 
     for (const chatLog of chatLogs) {
       await executeRequest(transaction, transaction => transaction.objectStore('chatRoomLogs').add(chatLog));
     }
+    await recordChatSessions(transaction, chatLogs);
   }
 
   private async importMember(context: number, memberNumber: number, fileName: string, data: Uint8Array) {
