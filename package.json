@@ -41,7 +41,7 @@
     "@angular/platform-browser-dynamic": "^19.2.8",
     "@angular/router": "^19.2.8",
     "bondage-club-mod-sdk": "^1.2.0",
-    "fflate": "^0.8.1",
+    "fflate": "^0.8.3",
     "lz-string": "^1.5.0",
     "papaparse": "^5.5.2",
     "rxjs": "^7.8.2",
